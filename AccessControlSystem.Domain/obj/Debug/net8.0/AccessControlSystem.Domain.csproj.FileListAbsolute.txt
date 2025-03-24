@@ -1,0 +1,12 @@
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\bin\Debug\net8.0\AccessControlSystem.Domain.deps.json
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\bin\Debug\net8.0\AccessControlSystem.Domain.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\bin\Debug\net8.0\AccessControlSystem.Domain.pdb
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.csproj.AssemblyReference.cache
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.AssemblyInfoInputs.cache
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.AssemblyInfo.cs
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.csproj.CoreCompileInputs.cache
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\refint\AccessControlSystem.Domain.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.pdb
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\ref\AccessControlSystem.Domain.dll

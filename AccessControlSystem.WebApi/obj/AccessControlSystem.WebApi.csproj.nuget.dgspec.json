@@ -1,0 +1,545 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj": {}
+  },
+  "projects": {
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj",
+        "projectName": "AccessControlSystem.Application",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.9.1, )"
+            },
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj",
+        "projectName": "AccessControlSystem.Common",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[7.1.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.1.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj",
+        "projectName": "AccessControlSystem.Domain",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj",
+        "projectName": "AccessControlSystem.Infrastructure.Data",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj",
+        "projectName": "AccessControlSystem.Infrastructure.IoC",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[11.9.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj",
+        "projectName": "AccessControlSystem.Reporting",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AspNetCore.Reporting": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "ReportViewerCore.NETCore": {
+              "target": "Package",
+              "version": "[15.1.26, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj",
+        "projectName": "AccessControlSystem.WebApi",
+        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj",
+        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
+        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj"
+              },
+              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj": {
+                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.CodeAnalysis.Common": {
+              "target": "Package",
+              "version": "[4.8.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

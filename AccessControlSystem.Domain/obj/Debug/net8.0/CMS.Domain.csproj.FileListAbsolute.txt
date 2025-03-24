@@ -1,0 +1,12 @@
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\bin\Debug\net8.0\CMS.Domain.deps.json
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\bin\Debug\net8.0\CMS.Domain.dll
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\bin\Debug\net8.0\CMS.Domain.pdb
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.csproj.AssemblyReference.cache
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.AssemblyInfoInputs.cache
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.AssemblyInfo.cs
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.csproj.CoreCompileInputs.cache
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.dll
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\refint\CMS.Domain.dll
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\CMS.Domain.pdb
+D:\Tasks\CMS\CMS V6 - Implement Authentication Using Jwt Bearer Token\CMS.Domain\obj\Debug\net8.0\ref\CMS.Domain.dll

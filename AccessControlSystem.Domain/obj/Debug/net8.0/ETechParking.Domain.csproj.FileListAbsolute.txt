@@ -1,0 +1,13 @@
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\bin\Debug\net8.0\ETechParking.Domain.deps.json
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\bin\Debug\net8.0\ETechParking.Domain.dll
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\bin\Debug\net8.0\ETechParking.Domain.pdb
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.csproj.AssemblyReference.cache
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.AssemblyInfoInputs.cache
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.AssemblyInfo.cs
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.csproj.CoreCompileInputs.cache
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.sourcelink.json
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.dll
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\refint\ETechParking.Domain.dll
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ETechParking.Domain.pdb
+D:\Tasks\ETechParking\ETechParking\ETechParking.Domain\obj\Debug\net8.0\ref\ETechParking.Domain.dll

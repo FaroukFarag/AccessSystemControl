@@ -1,0 +1,15 @@
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.csproj.AssemblyReference.cache
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.GeneratedMSBuildEditorConfig.editorconfig
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.AssemblyInfoInputs.cache
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.AssemblyInfo.cs
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.csproj.CoreCompileInputs.cache
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.sourcelink.json
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\bin\Debug\net8.0\Reports\Shifts.rdlc
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\bin\Debug\net8.0\Reports\Tickets.rdlc
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\bin\Debug\net8.0\ETechParking.Reporting.deps.json
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\bin\Debug\net8.0\ETechParking.Reporting.dll
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\bin\Debug\net8.0\ETechParking.Reporting.pdb
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.dll
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\refint\ETechParking.Reporting.dll
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ETechParking.Reporting.pdb
+D:\Tasks\ETechParking\ETechParking\ETechParking.Reports\obj\Debug\net8.0\ref\ETechParking.Reporting.dll
