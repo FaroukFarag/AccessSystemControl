@@ -10,3 +10,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\refint\AccessControlSystem.Common.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\ref\AccessControlSystem.Common.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.sourcelink.json

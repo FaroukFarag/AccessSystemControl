@@ -21,3 +21,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastruct
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.IoC\obj\Debug\net8.0\refint\AccessControlSystem.Infrastructure.IoC.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.IoC\obj\Debug\net8.0\AccessControlSystem.Infrastructure.IoC.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.IoC\obj\Debug\net8.0\ref\AccessControlSystem.Infrastructure.IoC.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.IoC\obj\Debug\net8.0\AccessControlSystem.Infrastructure.IoC.sourcelink.json

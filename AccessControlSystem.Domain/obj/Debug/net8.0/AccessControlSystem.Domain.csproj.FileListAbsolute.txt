@@ -10,3 +10,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\refint\AccessControlSystem.Domain.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\ref\AccessControlSystem.Domain.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Domain\obj\Debug\net8.0\AccessControlSystem.Domain.sourcelink.json

@@ -15,3 +15,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Application
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Application\obj\Debug\net8.0\refint\AccessControlSystem.Application.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Application\obj\Debug\net8.0\AccessControlSystem.Application.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Application\obj\Debug\net8.0\ref\AccessControlSystem.Application.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Application\obj\Debug\net8.0\AccessControlSystem.Application.sourcelink.json

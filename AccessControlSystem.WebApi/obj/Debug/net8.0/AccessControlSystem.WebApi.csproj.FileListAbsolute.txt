@@ -218,3 +218,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.WebApi\obj\
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.WebApi\obj\Debug\net8.0\AccessControlSystem.WebApi.genruntimeconfig.cache
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.WebApi\obj\Debug\net8.0\ref\AccessControlSystem.WebApi.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.WebApi\obj\Debug\net8.0\AccessControlSystem.WebApi.MvcApplicationPartsAssemblyInfo.cs
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.WebApi\obj\Debug\net8.0\AccessControlSystem.WebApi.sourcelink.json

@@ -17,3 +17,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastruct
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.Data\obj\Debug\net8.0\AccessControlSystem.Infrastructure.Data.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.Data\obj\Debug\net8.0\AccessControlSystem.Infrastructure.Data.genruntimeconfig.cache
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.Data\obj\Debug\net8.0\ref\AccessControlSystem.Infrastructure.Data.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Infrastructure.Data\obj\Debug\net8.0\AccessControlSystem.Infrastructure.Data.sourcelink.json

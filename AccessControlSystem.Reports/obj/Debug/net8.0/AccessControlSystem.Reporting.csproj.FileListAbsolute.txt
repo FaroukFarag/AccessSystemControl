@@ -10,3 +10,4 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Reports\obj
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Reports\obj\Debug\net8.0\refint\AccessControlSystem.Reporting.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Reports\obj\Debug\net8.0\AccessControlSystem.Reporting.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Reports\obj\Debug\net8.0\ref\AccessControlSystem.Reporting.dll
+D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Reports\obj\Debug\net8.0\AccessControlSystem.Reporting.sourcelink.json
