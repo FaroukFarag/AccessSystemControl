@@ -1,16 +1,20 @@
 ﻿using AccessControlSystem.Application.AutoMapper.Abstraction;
+using AccessControlSystem.Application.AutoMapper.Devices;
 using AccessControlSystem.Application.AutoMapper.Roles;
 using AccessControlSystem.Application.AutoMapper.Shared;
 using AccessControlSystem.Application.AutoMapper.Subscriptions;
 using AccessControlSystem.Application.AutoMapper.Users;
 using AccessControlSystem.Application.Interfaces.Abstraction;
+using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Roles;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Application.Services.Devices;
 using AccessControlSystem.Application.Services.Roles;
 using AccessControlSystem.Application.Services.Subscriptions;
 using AccessControlSystem.Application.Services.Users;
+using AccessControlSystem.Application.Validators.Devices;
 using AccessControlSystem.Application.Validators.Roles;
 using AccessControlSystem.Application.Validators.Subscriptions;
 using AccessControlSystem.Application.Validators.Users;
@@ -19,6 +23,7 @@ using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Common.Tokens.Services;
 using AccessControlSystem.Domain.Constants;
 using AccessControlSystem.Domain.Interfaces.Repositories.Abstraction;
+using AccessControlSystem.Domain.Interfaces.Repositories.Devices;
 using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
@@ -29,6 +34,7 @@ using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Data.Context;
 using AccessControlSystem.Infrastructure.Data.Repositories.Abstraction;
+using AccessControlSystem.Infrastructure.Data.Repositories.Devices;
 using AccessControlSystem.Infrastructure.Data.Repositories.Roles;
 using AccessControlSystem.Infrastructure.Data.Repositories.Subscriptions;
 using AccessControlSystem.Infrastructure.Data.Repositories.Users;
@@ -56,9 +62,10 @@ public static class DependencyContainer
     {
         services.AddScoped(typeof(IBaseService<,,>), typeof(BaseService<,,>))
             .AddScoped<ITokensService, TokensService>()
-            .AddScoped<ISubscriptionService, SubscriptionService>()
             .AddScoped<IUserService, UserService>()
-            .AddScoped<IRoleService, RoleService>();
+            .AddScoped<IRoleService, RoleService>()
+            .AddScoped<ISubscriptionService, SubscriptionService>()
+            .AddScoped<IDeviceService, DeviceService>();
     }
 
     public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -72,9 +79,10 @@ public static class DependencyContainer
     public static void RegisterRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>))
-            .AddScoped<ISubscriptionRepository, SubscriptionRepository>()
             .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<IRoleRepository, RoleRepository>();
+            .AddScoped<IRoleRepository, RoleRepository>()
+            .AddScoped<ISubscriptionRepository, SubscriptionRepository>()
+            .AddScoped<IDeviceRepository, DeviceRepository>();
     }
 
     public static void RegisterSpecifications(this IServiceCollection services)
@@ -92,19 +100,21 @@ public static class DependencyContainer
     {
         services.AddAutoMapper(typeof(BaseModelProfile).Assembly);
         services.AddAutoMapper(typeof(PaginatedModelProfile).Assembly);
-        services.AddAutoMapper(typeof(SubscriptionProfile).Assembly);
         services.AddAutoMapper(typeof(UserProfile).Assembly);
         services.AddAutoMapper(typeof(RoleProfile).Assembly);
+        services.AddAutoMapper(typeof(SubscriptionProfile).Assembly);
+        services.AddAutoMapper(typeof(DeviceProfile).Assembly);
     }
 
     public static void RegisterValidators(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssemblyContaining<SubscriptionDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<ResetPasswordDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<ForgotPasswordDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<RoleDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<SubscriptionDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<DeviceDtoValidator>();
     }
 
     public static void RegisterIdentity(this IServiceCollection services)

@@ -8,7 +8,7 @@ public class SubscriptionConfigurations : IEntityTypeConfiguration<Subscription>
 {
     public void Configure(EntityTypeBuilder<Subscription> builder)
     {
-        builder.Property(l => l.Name)
+        builder.Property(s => s.Name)
             .HasMaxLength(50)
             .IsRequired();
     }

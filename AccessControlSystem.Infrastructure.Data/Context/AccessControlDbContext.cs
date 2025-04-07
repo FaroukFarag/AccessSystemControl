@@ -1,6 +1,7 @@
 ﻿using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Subscriptions;
 using AccessControlSystem.Domain.Models.Users;
+using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Devices;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Roles;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Subscriptions;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Users;
@@ -20,5 +21,6 @@ public class AccessControlDbContext(DbContextOptions options) : IdentityDbContex
         modelBuilder.ApplyConfiguration(new UserConfigurations());
         modelBuilder.ApplyConfiguration(new RoleConfigurations());
         modelBuilder.ApplyConfiguration(new SubscriptionConfigurations());
+        modelBuilder.ApplyConfiguration(new DeviceConfigurations());
     }
 }

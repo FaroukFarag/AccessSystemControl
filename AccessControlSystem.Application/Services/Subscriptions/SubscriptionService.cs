@@ -8,6 +8,10 @@ using AutoMapper;
 
 namespace AccessControlSystem.Application.Services.Subscriptions;
 
-public class SubscriptionService(IBaseRepository<Subscription, int> repository, IUnitOfWork unitOfWork, IMapper mapper) : BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
+public class SubscriptionService(
+    IBaseRepository<Subscription, int> repository,
+    IUnitOfWork unitOfWork,
+    IMapper mapper) :
+    BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
 {
 }

@@ -14,19 +14,19 @@ public class BaseLookupConfiguration<TEntity, TEnum>(string tableName) : IEntity
     {
         builder.ToTable(_tableName);
 
-        builder.HasKey(e => e.Id);
+        builder.HasKey(bl => bl.Id);
 
-        builder.Property(e => e.Id)
+        builder.Property(bl => bl.Id)
            .ValueGeneratedNever();
 
-        builder.Property(e => e.Name)
+        builder.Property(bl => bl.Name)
                .IsRequired()
                .HasMaxLength(50);
 
         builder.HasData(
             Enum.GetValues(typeof(TEnum))
                 .Cast<TEnum>()
-                .Select(e => new TEntity { Id = Convert.ToInt32(e), Name = e.ToString() })
+                .Select(bl => new TEntity { Id = Convert.ToInt32(bl), Name = bl.ToString() })
         );
     }
 }
