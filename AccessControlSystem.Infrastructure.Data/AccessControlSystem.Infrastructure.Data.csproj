@@ -25,4 +25,8 @@
     <ProjectReference Include="..\AccessControlSystem.Domain\AccessControlSystem.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelsConfigurations\Units\" />
+  </ItemGroup>
+
 </Project>
