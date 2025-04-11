@@ -7,7 +7,7 @@ public class SubscriptionDtoValidator : AbstractValidator<SubscriptionDto>
 {
     public SubscriptionDtoValidator()
     {
-        RuleFor(s => s.Name)
+        RuleFor(s => s.CustomerName)
             .NotEmpty()
             .MaximumLength(50);
     }

@@ -8,6 +8,6 @@ public class PaginatedModelProfile : Profile
 {
     public PaginatedModelProfile()
     {
-        CreateMap<PaginatedModel, PaginatedModelDto>();
+        CreateMap<PaginatedModel, PaginatedModelDto>().ReverseMap();
     }
 }

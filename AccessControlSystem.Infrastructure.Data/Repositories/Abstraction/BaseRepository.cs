@@ -4,8 +4,10 @@ using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
 using AccessControlSystem.Domain.Models.Shared;
 using AccessControlSystem.Infrastructure.Data.Context;
 using AccessControlSystem.Infrastructure.Data.Shared.Filters;
+using AccessControlSystem.Infrastructure.Data.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace AccessControlSystem.Infrastructure.Data.Repositories.Abstraction;
 
@@ -51,8 +53,18 @@ public class BaseRepository<TEntity, TPrimaryKey>(
     {
         var query = ApplySpecification(spec);
 
-        return await query.FirstOrDefaultAsync(e => EF.Property<TPrimaryKey>(e, "Id")!.Equals(id))
-               ?? throw new ArgumentException($"Entity with id {id} not found.");
+        if (id is ITuple)
+        {
+            var predicate = CompositeKeyHelper.BuildCompositeKeyPredicate<TEntity, TPrimaryKey>(id);
+            return await query.FirstOrDefaultAsync(predicate)
+                ?? throw new ArgumentException($"Entity with id {id} not found.");
+        }
+
+        else
+        {
+            return await query.FirstOrDefaultAsync(e => EF.Property<TPrimaryKey>(e, "Id")!.Equals(id))
+                ?? throw new ArgumentException($"Entity with id {id} not found.");
+        }
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(IBaseSpecification<TEntity>? spec = null)

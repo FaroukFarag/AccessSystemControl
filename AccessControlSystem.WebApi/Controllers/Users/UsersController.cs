@@ -9,7 +9,6 @@ namespace AccessControlSystem.WebApi.Controllers.Users;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin")]
 public class UsersController(IUserService userService)
     : BaseController<IUserService, User, UserDto, int>(userService)
 {

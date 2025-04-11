@@ -1,4 +1,5 @@
 ﻿using AccessControlSystem.Application.AutoMapper.Abstraction;
+using AccessControlSystem.Application.AutoMapper.AccessGroups;
 using AccessControlSystem.Application.AutoMapper.Devices;
 using AccessControlSystem.Application.AutoMapper.Roles;
 using AccessControlSystem.Application.AutoMapper.Shared;
@@ -6,17 +7,22 @@ using AccessControlSystem.Application.AutoMapper.Subscriptions;
 using AccessControlSystem.Application.AutoMapper.Units;
 using AccessControlSystem.Application.AutoMapper.Users;
 using AccessControlSystem.Application.Interfaces.Abstraction;
+using AccessControlSystem.Application.Interfaces.AccessGroupDevices;
+using AccessControlSystem.Application.Interfaces.AccessGroups;
 using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Roles;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Interfaces.Units;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Application.Services.AccessGroupDevices;
+using AccessControlSystem.Application.Services.AccessGroups;
 using AccessControlSystem.Application.Services.Devices;
 using AccessControlSystem.Application.Services.Roles;
 using AccessControlSystem.Application.Services.Subscriptions;
 using AccessControlSystem.Application.Services.Units;
 using AccessControlSystem.Application.Services.Users;
+using AccessControlSystem.Application.Validators.AccessGroups;
 using AccessControlSystem.Application.Validators.Devices;
 using AccessControlSystem.Application.Validators.Roles;
 using AccessControlSystem.Application.Validators.Subscriptions;
@@ -26,6 +32,8 @@ using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Common.Tokens.Services;
 using AccessControlSystem.Domain.Constants;
 using AccessControlSystem.Domain.Interfaces.Repositories.Abstraction;
+using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroupDevices;
+using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroups;
 using AccessControlSystem.Domain.Interfaces.Repositories.Devices;
 using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
@@ -38,6 +46,8 @@ using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Data.Context;
 using AccessControlSystem.Infrastructure.Data.Repositories.Abstraction;
+using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroupDevices;
+using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroups;
 using AccessControlSystem.Infrastructure.Data.Repositories.Devices;
 using AccessControlSystem.Infrastructure.Data.Repositories.Roles;
 using AccessControlSystem.Infrastructure.Data.Repositories.Subscriptions;
@@ -71,7 +81,9 @@ public static class DependencyContainer
             .AddScoped<IRoleService, RoleService>()
             .AddScoped<ISubscriptionService, SubscriptionService>()
             .AddScoped<IDeviceService, DeviceService>()
-            .AddScoped<IUnitService, UnitService>();
+            .AddScoped<IUnitService, UnitService>()
+            .AddScoped<IAccessGroupService, AccessGroupService>()
+            .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>();
     }
 
     public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -89,7 +101,9 @@ public static class DependencyContainer
             .AddScoped<IRoleRepository, RoleRepository>()
             .AddScoped<ISubscriptionRepository, SubscriptionRepository>()
             .AddScoped<IDeviceRepository, DeviceRepository>()
-            .AddScoped<IUnitRepository, UnitRepository>();
+            .AddScoped<IUnitRepository, UnitRepository>()
+            .AddScoped<IAccessGroupRepository, AccessGroupRepository>()
+            .AddScoped<IAccessGroupDeviceRepository, AccessGroupDeviceRepository>();
     }
 
     public static void RegisterSpecifications(this IServiceCollection services)
@@ -112,6 +126,7 @@ public static class DependencyContainer
         services.AddAutoMapper(typeof(SubscriptionProfile).Assembly);
         services.AddAutoMapper(typeof(DeviceProfile).Assembly);
         services.AddAutoMapper(typeof(UnitProfile).Assembly);
+        services.AddAutoMapper(typeof(AccessGroupProfile).Assembly);
     }
 
     public static void RegisterValidators(this IServiceCollection services)
@@ -123,6 +138,7 @@ public static class DependencyContainer
         services.AddValidatorsFromAssemblyContaining<RoleDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<SubscriptionDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<DeviceDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<AccessGroupDtoValidator>();
     }
 
     public static void RegisterIdentity(this IServiceCollection services)
