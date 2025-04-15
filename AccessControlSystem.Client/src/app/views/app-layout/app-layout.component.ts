@@ -33,7 +33,10 @@ export class AppLayoutComponent implements OnInit {
 
   initializeNavigation() {
     this.navigation = [
-      { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' }
+      { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' },
+      { id: 2, text: 'Subscriptions', icon: '/assets/icons/subscription.svg' },
+      { id: 3, text: 'Devices', icon: '/assets/icons/device.svg' },
+      { id: 4, text: 'Units', icon: '/assets/icons/unit.svg' }
     ];
   }
 

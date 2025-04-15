@@ -1,4 +1,5 @@
-﻿using AccessControlSystem.Application.Dtos.Devices;
+﻿using AccessControlSystem.Application.Common.Utilities;
+using AccessControlSystem.Application.Dtos.Devices;
 using AccessControlSystem.Domain.Models.Devices;
 using AutoMapper;
 
@@ -8,6 +9,10 @@ public class DeviceProfile : Profile
 {
     public DeviceProfile()
     {
-        CreateMap<Device, DeviceDto>().ReverseMap();
+        CreateMap<Device, DeviceDto>()
+            .ForMember(des => des.DeviceTypeName, opt => opt
+                .MapFrom(src => EnumHelper.GetDescription(src.DeviceType)));
+
+        CreateMap<DeviceDto, Device>();
     }
 }
