@@ -7962,19 +7962,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\TECHSHOP\\.nuget\\packages\\": {}
+    "C:\\Users\\shaimaa\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj",
+      "projectUniqueName": "D:\\DigitalAccessControl\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj",
       "projectName": "AccessControlSystem.WebApi",
-      "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj",
-      "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
-      "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.WebApi\\obj\\",
+      "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.WebApi\\AccessControlSystem.WebApi.csproj",
+      "packagesPath": "C:\\Users\\shaimaa\\.nuget\\packages\\",
+      "outputPath": "D:\\DigitalAccessControl\\AccessControlSystem.WebApi\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\shaimaa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7982,20 +7987,21 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj": {
-              "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj"
+            "D:\\DigitalAccessControl\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj": {
+              "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Application\\AccessControlSystem.Application.csproj"
             },
-            "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
-              "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj"
+            "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
+              "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj"
             },
-            "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj": {
-              "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj"
+            "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj": {
+              "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.IoC\\AccessControlSystem.Infrastructure.IoC.csproj"
             }
           }
         }
@@ -8004,7 +8010,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -8044,7 +8056,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

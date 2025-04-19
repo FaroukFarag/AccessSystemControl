@@ -3744,19 +3744,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\TECHSHOP\\.nuget\\packages\\": {}
+    "C:\\Users\\shaimaa\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj",
+      "projectUniqueName": "D:\\DigitalAccessControl\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj",
       "projectName": "AccessControlSystem.Reporting",
-      "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj",
-      "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
-      "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Reports\\obj\\",
+      "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Reports\\AccessControlSystem.Reporting.csproj",
+      "packagesPath": "C:\\Users\\shaimaa\\.nuget\\packages\\",
+      "outputPath": "D:\\DigitalAccessControl\\AccessControlSystem.Reports\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\shaimaa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3764,6 +3769,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3776,7 +3782,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -3807,7 +3819,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

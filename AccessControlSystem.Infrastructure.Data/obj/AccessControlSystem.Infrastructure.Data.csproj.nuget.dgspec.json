@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {}
+    "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {}
   },
   "projects": {
-    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
+    "D:\\DigitalAccessControl\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj",
+        "projectUniqueName": "D:\\DigitalAccessControl\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj",
         "projectName": "AccessControlSystem.Common",
-        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj",
-        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
-        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\obj\\",
+        "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj",
+        "packagesPath": "C:\\Users\\shaimaa\\.nuget\\packages\\",
+        "outputPath": "D:\\DigitalAccessControl\\AccessControlSystem.Common\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\shaimaa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,7 +39,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -73,21 +84,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
+    "D:\\DigitalAccessControl\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj",
+        "projectUniqueName": "D:\\DigitalAccessControl\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj",
         "projectName": "AccessControlSystem.Domain",
-        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj",
-        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
-        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\obj\\",
+        "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj",
+        "packagesPath": "C:\\Users\\shaimaa\\.nuget\\packages\\",
+        "outputPath": "D:\\DigitalAccessControl\\AccessControlSystem.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\shaimaa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -95,6 +110,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -107,7 +123,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -134,21 +156,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
+    "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj",
+        "projectUniqueName": "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj",
         "projectName": "AccessControlSystem.Infrastructure.Data",
-        "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj",
-        "packagesPath": "C:\\Users\\TECHSHOP\\.nuget\\packages\\",
-        "outputPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Infrastructure.Data\\obj\\",
+        "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\AccessControlSystem.Infrastructure.Data.csproj",
+        "packagesPath": "C:\\Users\\shaimaa\\.nuget\\packages\\",
+        "outputPath": "D:\\DigitalAccessControl\\AccessControlSystem.Infrastructure.Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\TECHSHOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\shaimaa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -156,17 +182,18 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
-                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj"
+              "D:\\DigitalAccessControl\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj": {
+                "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Common\\AccessControlSystem.Common.csproj"
               },
-              "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
-                "projectPath": "D:\\Tasks\\AccessControlSystem\\AccessControlSystem\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj"
+              "D:\\DigitalAccessControl\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj": {
+                "projectPath": "D:\\DigitalAccessControl\\AccessControlSystem.Domain\\AccessControlSystem.Domain.csproj"
               }
             }
           }
@@ -175,7 +202,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -222,7 +255,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
