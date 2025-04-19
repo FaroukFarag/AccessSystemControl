@@ -6680,8 +6680,7 @@
       "FluentValidation.DependencyInjectionExtensions >= 11.9.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.6",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.6",
-      "Microsoft.Extensions.Configuration.Abstractions >= 8.0.0",
-      "Microsoft.Extensions.DependencyInjection.Abstractions >= 8.0.0"
+      "Microsoft.Extensions.Configuration.Abstractions >= 8.0.0"
     ]
   },
   "packageFolders": {
@@ -6749,10 +6748,6 @@
             "version": "[8.0.6, )"
           },
           "Microsoft.Extensions.Configuration.Abstractions": {
-            "target": "Package",
-            "version": "[8.0.0, )"
-          },
-          "Microsoft.Extensions.DependencyInjection.Abstractions": {
             "target": "Package",
             "version": "[8.0.0, )"
           }

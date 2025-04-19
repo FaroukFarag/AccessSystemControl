@@ -11,4 +11,15 @@ namespace AccessControlSystem.WebApi.Controllers.Subscriptions;
 public class SubscriptionsController(ISubscriptionService service) :
     BaseController<ISubscriptionService, Subscription, SubscriptionDto, int>(service)
 {
+    [HttpPost("Create")]
+    public override Task<IActionResult> Create([FromForm] SubscriptionDto dto)
+    {
+        return base.Create(dto);
+    }
+
+    [HttpPut("Update")]
+    public override Task<IActionResult> Update([FromForm] SubscriptionDto dto)
+    {
+        return base.Update(dto);
+    }
 }

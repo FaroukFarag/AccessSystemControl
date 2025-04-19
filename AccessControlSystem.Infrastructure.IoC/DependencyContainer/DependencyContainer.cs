@@ -11,6 +11,7 @@ using AccessControlSystem.Application.Interfaces.AccessGroupDevices;
 using AccessControlSystem.Application.Interfaces.AccessGroups;
 using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Roles;
+using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Interfaces.Units;
 using AccessControlSystem.Application.Interfaces.Users;
@@ -83,7 +84,8 @@ public static class DependencyContainer
             .AddScoped<IDeviceService, DeviceService>()
             .AddScoped<IUnitService, UnitService>()
             .AddScoped<IAccessGroupService, AccessGroupService>()
-            .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>();
+            .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>()
+            .AddScoped<IImageService, ImageService>();
     }
 
     public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration)
