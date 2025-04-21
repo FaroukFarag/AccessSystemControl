@@ -6,6 +6,7 @@ namespace AccessControlSystem.Domain.Models.Devices;
 
 public class Device : BaseModel<int>
 {
+    public string ImagePath { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string MacAddress { get; set; } = default!;
     public DeviceType DeviceType { get; set; }

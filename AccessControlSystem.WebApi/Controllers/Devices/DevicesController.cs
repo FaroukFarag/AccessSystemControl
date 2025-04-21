@@ -11,4 +11,15 @@ namespace AccessControlSystem.WebApi.Controllers.Devices;
 public class DevicesController(IDeviceService service) :
     BaseController<IDeviceService, Device, DeviceDto, int>(service)
 {
+    [HttpPost("Create")]
+    public override Task<IActionResult> Create([FromForm] DeviceDto dto)
+    {
+        return base.Create(dto);
+    }
+
+    [HttpPut("Update")]
+    public override Task<IActionResult> Update([FromForm] DeviceDto dto)
+    {
+        return base.Update(dto);
+    }
 }
