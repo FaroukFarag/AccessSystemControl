@@ -1,0 +1,81 @@
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Subscriptions</h4>
+  </div>
+  <span>Review all Subscriptions details and information</span>
+</div>
+<div class="page-header">
+  <dx-drop-down-button text="Sort by"
+                       [dropDownOptions]="{ width: 180 }"
+                       [items]="sortBy"
+                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-button class="button-info me-1"
+             text="Add New Subscription"
+             (onClick)="showAddDevicePopup()">
+  </dx-button>
+</div>
+
+<!-- ADD DEVICE POPUP-->
+<dx-popup [width]="600"
+          [height]="400"
+          [showTitle]="true"
+          title="Add New Subscription"
+          [dragEnabled]="false"
+          [hideOnOutsideClick]="true"
+          [showCloseButton]="true"
+          [(visible)]="popupVisible">
+  <!--<dxi-popup-toolbar-item widget="dxButton"
+                          toolbar="top"
+                          locateInMenu="always"
+                          [options]="moreInfoButtonOptions">
+  </dxi-popup-toolbar-item>-->
+  <!--<dxi-popup-toolbar-item widget="dxButton"
+                          toolbar="bottom"
+                          location="after"
+                          [options]="closeButtonOptions">
+  </dxi-popup-toolbar-item>-->
+  <!--<dxo-position at="bottom" my="center" [of]="positionOf" collision="fit">
+  </dxo-position>-->
+  <div *dxTemplate="let data of 'content'">
+    <!--<dx-form id="form">
+      <dxi-item itemType="group" cssClass="form-group" [colCount]="4">
+
+        <dxi-item itemType="group" [colSpan]="3">
+          <dxi-item dataField="FirstName"></dxi-item>
+          <dxi-item dataField="LastName"></dxi-item>
+          <dxi-item dataField="State"
+                    editorType="dxSelectBox"
+                    [editorOptions]="{ items: states }"></dxi-item>
+        </dxi-item>
+
+    </dx-form>-->
+
+
+  </div>
+</dx-popup>
+<div class="row">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of subscriptions">
+    <div class="card mb-2">
+      <img src="/assets/images/beach.jpg" alt="Card Image" class="card-image" (click)="navigateToDetailsPage()">
+      <div class="village-name" (click)="navigateToDetailsPage()">{{sub.name}}</div>
+      <div class="top-right-text">Renewal in 2 months</div>
+
+
+    </div>
+
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
+      <div class="info"> Subscription: </div>
+      <div class="info-value"> {{sub.subscription }}</div>
+    </div>
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/device.svg" /></div>
+      <div class="info"> Devices: </div>
+      <div class="info-value">{{sub.dvices}}</div>
+    </div>
+
+  </div>
+</div>
+
+

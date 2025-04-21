@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'AccessControlSystem.Client' title`, () => {
+  it(`should have the 'Ws' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('AccessControlSystem.Client');
+    expect(app.title).toEqual('Ws');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, AccessControlSystem.Client');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Ws');
   });
 });

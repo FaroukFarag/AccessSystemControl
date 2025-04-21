@@ -595,7 +595,10 @@
           "System.IdentityModel.Tokens.Jwt": "7.1.2"
         },
         "runtime": {
-          "AccessControlSystem.Common.dll": {}
+          "AccessControlSystem.Common.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "AccessControlSystem.Domain/1.0.0": {
@@ -603,7 +606,10 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.6"
         },
         "runtime": {
-          "AccessControlSystem.Domain.dll": {}
+          "AccessControlSystem.Domain.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

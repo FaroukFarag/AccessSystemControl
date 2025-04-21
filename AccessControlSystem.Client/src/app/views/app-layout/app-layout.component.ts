@@ -1,45 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject,ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { HeaderComponent } from './header/header.component';
 import { ContentComponent } from './content/content.component';
 import { FooterComponent } from './footer/footer.component';
-import { DxDrawerModule, DxDrawerTypes } from 'devextreme-angular/ui/drawer';
-import { DxListModule, DxToolbarModule } from 'devextreme-angular';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { DxDrawerModule, DxDrawerComponent, DxDrawerTypes } from 'devextreme-angular/ui/drawer';
+import { DxListModule, DxToolbarModule } from 'devextreme-angular';
 @Component({
   selector: 'app-app-layout',
+  standalone: true,
   imports: [
     DxDrawerModule,
     ContentComponent,
     FooterComponent,
     DxToolbarModule,
     DxListModule,
-    CommonModule
+
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss'
 })
 export class AppLayoutComponent implements OnInit {
-  isClosed = false;
   selectedOpenMode: DxDrawerTypes.OpenedStateMode = 'shrink';
-  selectedPosition: DxDrawerTypes.PanelLocation = 'left';
-  selectedRevealMode: DxDrawerTypes.RevealMode = 'slide';
-  isDrawerOpen = true;
-  navigation: any = [];
 
+  canAccessMainLayout: boolean = false;
+  isFirstLogin: boolean = false;
+  isClosed = false;
   toggleSidebar() {
     this.isClosed = !this.isClosed;
   }
 
-  initializeNavigation() {
-    this.navigation = [
-      { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' },
-      { id: 2, text: 'Subscriptions', icon: '/assets/icons/subscription.svg' },
-      { id: 3, text: 'Devices', icon: '/assets/icons/device.svg' },
-      { id: 4, text: 'Units', icon: '/assets/icons/unit.svg' }
-    ];
-  }
-
+  selectedPosition: DxDrawerTypes.PanelLocation = 'left';
+  selectedRevealMode: DxDrawerTypes.RevealMode = 'slide';
+  isDrawerOpen = true;
+  
+ 
+  navigation:any = [
+    { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' },
+    { id: 2, text: 'Subscriptions', icon: '/assets/icons/subscriptions.svg' },
+    { id: 3, text: 'Devices', icon: '/assets/icons/device.svg' },
+    { id: 4 , text: 'Owners', icon: '/assets/icons/owners.svg' }
+  ]
+  constructor(private router: Router) { }
   toolbarContent = [{
     widget: 'dxButton',
     location: 'before',
@@ -49,30 +50,21 @@ export class AppLayoutComponent implements OnInit {
       onClick: () => this.isDrawerOpen = !this.isDrawerOpen,
     },
   },
-  {
-    widget: 'dxButton',
-    location: 'after',
-    options: {
-      icon: 'login',
-      stylingMode: 'text',
-      text: 'Log out',
-      onClick: () => console.log('LoggedOut'),
-    },
-  }];
+  //{
+  //  widget: 'dxButton',
+  //  location: 'after',
+  //  options: {
+  //    icon: 'login',
+  //    stylingMode: 'text',
+  //    text: 'Log out',
+  //  },
+  //},
+  ];
 
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit() { }
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.initializeNavigation();
-    }, 1000);
 
-  }
 }

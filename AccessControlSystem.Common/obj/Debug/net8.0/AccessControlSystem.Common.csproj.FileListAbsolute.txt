@@ -11,3 +11,16 @@ D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.pdb
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\ref\AccessControlSystem.Common.dll
 D:\Tasks\AccessControlSystem\AccessControlSystem\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.sourcelink.json
+D:\DigitalAccessControl\AccessControlSystem.Common\bin\Debug\net8.0\AccessControlSystem.Common.deps.json
+D:\DigitalAccessControl\AccessControlSystem.Common\bin\Debug\net8.0\AccessControlSystem.Common.dll
+D:\DigitalAccessControl\AccessControlSystem.Common\bin\Debug\net8.0\AccessControlSystem.Common.pdb
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.csproj.AssemblyReference.cache
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.AssemblyInfoInputs.cache
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.AssemblyInfo.cs
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.csproj.CoreCompileInputs.cache
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.sourcelink.json
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.dll
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\refint\AccessControlSystem.Common.dll
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\AccessControlSystem.Common.pdb
+D:\DigitalAccessControl\AccessControlSystem.Common\obj\Debug\net8.0\ref\AccessControlSystem.Common.dll

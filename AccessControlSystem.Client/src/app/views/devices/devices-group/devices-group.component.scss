@@ -1,0 +1,109 @@
+.section {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.device-card {
+  border-radius: 12px;
+  border-width: 1px;
+  border: 1px solid #E1E1E1;
+  padding: 10px 10px;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+
+  img {
+    width: 20%;
+  }
+}
+
+.device-name {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  color: #007BE2;
+}
+
+.info {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color: #A3A3A3;
+  line-height: 2rem;
+}
+
+.info-value {
+  font-family: Myriad Pro;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
+
+.active {
+  color: #00C013 !important;
+}
+
+.device-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+
+  .info {
+    margin-right: 15px;
+  }
+
+  .icon {
+    margin-right: 5px;
+  }
+}
+
+
+.group-name {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  h6 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 140%;
+    letter-spacing: 0px;
+    vertical-align: middle;
+  }
+
+  span {
+    font-size: 13px;
+    line-height: 140%;
+    letter-spacing: 0px;
+    vertical-align: baseline;
+    font-weight: 400;
+    line-height: 100%;
+    color: #A3A3A3;
+    margin-left: 4px;
+  }
+}
+
+
+.group-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+

@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "mzQPs5qazwtRu6kDkHx9KNSGfg0X11iqEzWnW1x/wKI=",
+  "Hash": "dU5gvbArAJ1VTw6R6yHhbakoKE4KvteTRxSll6u4qSU=",
   "Source": "AccessControlSystem.WebApi",
   "BasePath": "_content/AccessControlSystem.WebApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

@@ -1,0 +1,86 @@
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Subscriptions Name</h4>
+  </div>
+  <span>Review village details and information</span>
+</div>
+
+<div class="subscription-container mb-5">
+  <div class="header">
+    <div>
+      <strong>Plan:</strong> {{ subscription.plan }}
+    </div>
+    <div>
+      <strong>Payment:</strong> ${{ subscription.payment }} <span class="subtext">/ per month</span>
+    </div>
+    <div>
+      <strong>Start:</strong> {{ subscription.startDate }}
+    </div>
+    <div>
+      <strong>End:</strong> {{ subscription.endDate }}
+    </div>
+    <div class="actions">
+      <button class="cancel">Cancel subscription</button>
+      <button class="upgrade">Upgrade</button>
+    </div>
+  </div>
+
+  <div class="usage-section">
+    <div class="usage-card">
+      <div>Admins</div>
+      <div class="bar">
+        <div class="progress" [style.width.%]="getProgress(subscription.usage.admins.used, subscription.usage.admins.total)"></div>
+      </div>
+      <div>{{ subscription.usage.admins.used }} / {{ subscription.usage.admins.total }}</div>
+    </div>
+
+    <div class="usage-card">
+      <div>Devices</div>
+      <div class="bar">
+        <div class="progress" [style.width.%]="getProgress(subscription.usage.devices.used, subscription.usage.devices.total)"></div>
+      </div>
+      <div>{{ subscription.usage.devices.used }} / {{ subscription.usage.devices.total }}</div>
+    </div>
+
+    <div class="usage-card">
+      <div>Cards</div>
+      <div class="bar">
+        <div class="progress" [style.width.%]="getProgress(subscription.usage.cards.used, subscription.usage.cards.total)"></div>
+      </div>
+      <div>{{ subscription.usage.cards.used }} / {{ subscription.usage.cards.total }}</div>
+    </div>
+  </div>
+</div>
+
+
+<!--SECTION TWO-->
+<div class="devices-container">
+  <div class="devices-header">
+    <div class="title">
+      <strong>Devices</strong> <span class="count">({{ devices.length }})</span>
+    </div>
+    <div class="actions">
+      <button class="add-btn">Add device</button>
+      <a href="#" class="view-all">View All</a>
+    </div>
+  </div>
+
+  <div class="devices-slider">
+    <div class="device-card" *ngFor="let device of devices">
+      <img [src]="device.image" alt="Device image" class="device-img" />
+      <div class="device-name">{{ device.name }}</div>
+      <div class="device-status active">{{ device.status }}</div>
+
+      <div class="device-info">
+        <label><input type="checkbox" disabled /> Status:</label>
+        <label>
+          <input type="checkbox" disabled />
+          Mac Address: <span class="mac">{{ device.mac }}</span>
+        </label>
+        <label><input type="checkbox" disabled /> Device type: {{ device.type }}</label>
+      </div>
+    </div>
+  </div>
+
+</div>
