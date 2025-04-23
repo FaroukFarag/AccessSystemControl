@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import {
@@ -10,12 +10,16 @@ import {
   DxTextAreaModule,
   DxDateBoxModule,
   DxFormModule,
+  DxFileUploaderModule,
 } from 'devextreme-angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 import { DeviceService } from '../../../services/devices/device.service';
-
+import { DomSanitizer } from '@angular/platform-browser';
 import notify from 'devextreme/ui/notify';
+import { DxFormComponent } from 'devextreme-angular';
+
+
 @Component({
   selector: 'app-devices',
   standalone: true,
@@ -29,129 +33,125 @@ import notify from 'devextreme/ui/notify';
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
+    DxFileUploaderModule,
     ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DevicesComponent {
-
+  @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   popupVisible: boolean = false;
   sortBy = ['Recent', 'date'];
   devicesList: any;
-  constructor(private router: Router, private deviceService: DeviceService) { }
+  imageValidationError: string = '';
+  deviceData = {
+    deviceImageFile: null,
+    deviceImageUrl: '',
+    deviceName: '',
+    deviceType: '',
+    macAddress: ''
+  };
+  deviceTypeEditorOptions: any
+  deviceTypes = [{ 'name': 'Type 1' },
+    { 'name': 'Type 2' }]
 
-  devices: any = [
-    {
-    'id':'1',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'2',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'3',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'4',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'5',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'6',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'7',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'8',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'9',
-    'name': 'Device Name',
-    'status': 'Active',
-      'macAddress': " S00-B0-98",
-      'deviceType': 'Type name'
-  },  {
-    'id':'10',
-    'name': 'Device Name',
-    'status': 'Active',
-    'macAddress': " S00-B0-98",
-    'deviceType':'Type name'
-  }, {
-    'id':'11',
-    'name': 'Device Name',
-    'status': 'Active',
-    'macAddress': " S00-B0-98",
-    'deviceType':'Type name'
-  }, {
-    'id':'12',
-    'name': 'Device Name',
-    'status': 'Active',
-    'macAddress': " S00-B0-98",
-    'deviceType':'Type name'
-  }, {
-    'id':'13',
-    'name': 'Device Name',
-    'status': 'Active',
-    'macAddress': " S00-B0-98",
-    'deviceType':'Type name'
-  }, {
-    'id':'14',
-    'name': 'Device Name',
-    'status': 'Active',
-    'macAddress': " S00-B0-98",
-    'deviceType':'Type name'
-  },
-  ]
+  constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer) {
 
-  showAddDevicePopup() {
-    this.popupVisible = true;
+    this.deviceTypeEditorOptions = {
+      dataSource: this.deviceTypes,
+      valueExpr: 'name',
+      displayExpr: 'name',
+      searchEnabled: true,
+      showClearButton: true,
+      value: 'Type 1',
+      placeholder: 'Device type'
+    };
   }
-  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    notify(e.itemData.name || e.itemData, 'success', 600);
-  }
-  navigateToDetailsPage() {
-    this.router.navigate(['/device-details']);
-  }
-
-
 
   ngOnInit() {
     this.getAllDevices();
-    console.log("DEVICCES", this.devicesList);
   }
-
-
 
   getAllDevices() {
     this.deviceService.getAll('Devices/GetAll').subscribe((data: any) => {
       this.devicesList = data;
+      console.log("DEVICCES", this.devicesList);
+
     })
+  }
+
+  showAddDevicePopup() {
+    this.popupVisible = true;
+    this.deviceData = {
+      deviceImageFile: null,
+      deviceImageUrl: '',
+      deviceName: '',
+      deviceType: '',
+      macAddress: ''
+    };
+  }
+
+
+
+  navigateToDetailsPage(deviceId: string) {
+    this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
+  }
+
+
+  sanitizeImage(image: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(image);
+  }
+
+  onImageChange(e: any) {
+    const file = e.value[0];
+    if (file) {
+      this.deviceData.deviceImageFile = file;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.deviceData.deviceImageUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  submitDevice() {
+    this.imageValidationError = '';
+    if (!this.deviceData.deviceImageFile) {
+      this.imageValidationError = 'Image is required';
+    }
+
+    const result = this.dxForm.instance.validate();
+    if (!result.isValid) {
+      notify('Please fill in all required fields.', 'warning', 1500);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('ImageFile', this.deviceData.deviceImageFile || '');
+    formData.append('ImageEncode', this.deviceData.deviceImageUrl || '');
+    formData.append('Name', this.deviceData.deviceName);
+    formData.append('DeviceTypeName', this.deviceData.deviceType);
+    formData.append('DeviceType', '1'); // Replace with actual type ID if available
+    formData.append('MacAddress', this.deviceData.macAddress);
+    formData.append('Active', 'true');
+
+    this.deviceService.create('Devices/Create', formData as any).subscribe({
+      next: (response) => {
+        notify('Device created successfully', 'success', 1500);
+        this.popupVisible = false;
+        this.getAllDevices(); 
+      },
+      error: (err) => {
+        notify('Error creating device', 'error', 2000);
+        console.error(err);
+      }
+    });
+  }
+
+  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+    notify(e.itemData.name || e.itemData, 'success', 600);
   }
 
 }

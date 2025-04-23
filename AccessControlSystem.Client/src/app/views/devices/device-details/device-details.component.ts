@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
@@ -107,4 +108,13 @@ export class DeviceDetailsComponent {
 
 
   ];
+
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const deviceId = params['id'];
+      // use deviceId as needed
+    });
+  }
 }

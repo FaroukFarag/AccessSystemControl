@@ -123,3 +123,81 @@
 ::ng-deep .dx-widget.dx-button.dx-button-mode-outlined.dx-button-normal.dx-button-has-text.dx-item.dx-buttongroup-item.dx-item-content.dx-buttongroup-item-content.dx-buttongroup-first-item.dx-buttongroup-last-item.dx-shape-standard.dx-dropdownbutton-action.dx-buttongroup-item-has-width {
   border-radius: 8px !important;
 }
+
+.info-value.active {
+  color: green;
+  font-weight: bold;
+}
+
+.info-value.inactive {
+  color: red;
+  font-weight: bold;
+}
+
+/*----START POPUP STYLES----------*/
+/*Image Uploader Styles*/
+
+::ng-deep .dx-toolbar.dx-widget.dx-visibility-change-handler.dx-collection.dx-popup-title.dx-has-close-button {
+  border-bottom: none !important;
+}
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-normal.dx-button-has-text.dx-fileuploader-button {
+  padding: 8px 0px !important;
+  width: 93px !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+}
+::ng-deep .dx-fileuploader-input{
+    display:none!important;
+}
+::ng-deep .dx-fileuploader-files-container{
+    position:relative !important;
+    bottom:10px !important;
+}
+::ng-deep .dx-popup-wrapper > .dx-overlay-content {
+  background: #FAFAFA !important;
+}
+::ng-deep .dx-fileuploader-wrapper{
+    background:#fff !important;
+}
+.image-upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0px 0;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+::ng-deep .dx-fileuploader-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: end !important;
+}
+
+
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
+  width: 100% !important;
+}
+
+
+dx-form{
+    margin-bottom:24px!important;
+}
+::ng-deep .dx-texteditor.dx-editor-outlined {
+  border-radius: 8px !important;
+  height:45px !important;
+}
+.validation-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/*----END POPUP STYLES----------*/
