@@ -1,0 +1,80 @@
+<div class="dashboard">
+  <div class="breadcrumb mb-5">
+    <div class="page-title">
+      <h4>Hi Shaimaa,</h4>
+    </div>
+    <span>Take a look for your monthly overview</span>
+  </div>
+
+  <div class="summary-section">
+    <div class="card">
+      <h3>Subscriptions</h3>
+      <p class="main">17</p>
+      <p class="sub">Last Month: 14</p>
+    </div>
+    <div class="card">
+      <h3>Devices</h3>
+      <p class="main">120</p>
+      <p class="sub">Last Month: 39</p>
+    </div>
+    <div class="card chart-card">
+      <h3>Total sales</h3>
+      <dx-chart [dataSource]="salesData">
+        <dxi-series argumentField="month" valueField="sales" type="line"></dxi-series>
+      </dx-chart>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Devices Section -->
+
+<div class="device-section mt-4">
+  <div class="grid-header">
+    <h5>Devices</h5>
+    <div class="grid-header-btns">
+      <button type="button" class="btn view-all me-2">View All</button>
+    </div>
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="devices"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
+    <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
+    <dxi-column dataField="start" caption="Start Date"></dxi-column>
+    <dxi-column dataField="end" caption="End Date"></dxi-column>
+    <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
+  </dx-data-grid>
+</div>
+
+
+
+<div class="subscriptions-container mt-4">
+  <div class="grid-header">
+    <h2>Subscriptions <span>(17)</span></h2>
+    <div class="grid-header-btns">
+      <dx-drop-down-button text="Sort by"
+                           [dropDownOptions]="{ width: 180 }"
+                           [items]="sortBy"
+                           (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+      <button type="button" class="btn view-all me-2">View All</button>
+    </div>
+  </div>
+
+  <div class="subscriptions-scroll">
+    <div class="subscription-card card" *ngFor="let sub of subscriptions">
+      <div class="image" [style.backgroundImage]="'url(' + sub.image + ')'">
+        <div class="renewal-badge">Renewal in {{ sub.renewal }}</div>
+      </div>
+      <div class="card-details">
+        <h3>Village name</h3>
+        <p><strong>Subscription:</strong> {{ sub.type }}</p>
+        <p><strong>Devices:</strong> {{ sub.devices }} Device</p>
+      </div>
+    </div>
+  </div>
+</div>

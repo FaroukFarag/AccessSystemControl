@@ -1,0 +1,145 @@
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Owner Name</h4>
+  </div>
+  <span>Review unit details and information</span>
+</div>
+
+
+
+<div class="unit-details">
+
+  <!-- Top Section -->
+  <div class="top-section">
+    <!-- Left: Unit Info -->
+    <div class="unit-info">
+      <img class="unit-img" [src]="unit.image" alt="Unit" />
+      <div class="unit-meta ms-2">
+        <h3 class="unit-name">{{ unit.name }}</h3>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">Ahmed Adly</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unit.count }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> Devices:</span> <span class="value">{{ unit.group }}</span></div>
+      </div>
+    </div>
+
+    <!-- Right: Cards -->
+    <div class="cards-box">
+      <h4>Cards ({{ cards.length }})</h4>
+      <div class="card-entry" *ngFor="let card of cards">
+        <input type="checkbox" />
+        <span>Card name:</span>
+        <span class="card-name">{{ card.name }}</span>
+        <span class="status" [ngClass]="card.status">{{ card.status }}</span>
+        <i class="icon action">⚙️</i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="bottom-section">
+    <div class="subscription-details">
+      <div>
+        <span class="progress-name">Plan</span><br />
+        <span class="strong"> {{ subscription.plan }}</span>
+      </div>
+      <div>
+        <span class="progress-name">Payment</span><br />
+        <span class="strong"> ${{ subscription.payment.toFixed(2) }} <small class="small">/ year</small> </span>
+      </div>
+      <div>
+        <span class="progress-name">Subscription start date</span><br />
+        <span class="strong"> {{ subscription.start }}</span>
+      </div>
+      <div>
+        <span class="progress-name">Subscription end date</span><br />
+        <span class="strong">  {{ subscription.end }}</span>
+      </div>
+      <div class="actions">
+        <a href="#" class="cancel-subscription">Cancel subscription</a>
+        <a href="#" class="upgrade">Upgrade</a>
+      </div>
+    </div>
+
+    <!-- Usage Stats -->
+    <div class="stats">
+      <div class="stat">
+        <p><img class="icon" src="assets/icons/person.svg" /> Owners</p>
+        <div class="bar"><div class="fill" [style.width.%]="(3/5)*100"></div></div>
+        <small>3 / 5</small>
+      </div>
+      <div class="stat">
+        <p><img class="icon me-1" src="assets/icons/device.svg" />Devices</p>
+        <div class="bar"><div class="fill" [style.width.%]="(4/8)*100"></div></div>
+        <small>4 / 8</small>
+      </div>
+      <div class="stat">
+        <p><img class="icon me-1" src="assets/icons/visitor.svg" />Visitors <small>/ day</small></p>
+        <div class="bar"><div class="fill"></div></div>
+        <small>6 / 10</small>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+<div class="device-section">
+  <div class="group-header">
+    <h3>Devices group name <span class="count">(5)</span></h3>
+    <div class="group-actions">
+      <a href="#">Remove group</a>
+      <a href="#">View All</a>
+    </div>
+  </div>
+
+  <div class="device-grid">
+    <ng-container *ngFor="let device of groupDevices">
+      <div class="device-card">
+        <img src="/assets/images/device.png" alt="Device" />
+        <div class="device-info">
+          <a class="device-name" href="#">Device name</a>
+          <div class="status">
+            <span class="label">Status:</span>
+            <span class="value active">Active</span>
+          </div>
+          <div class="mac-address">
+            <span class="label">Mac Address:</span>
+            <span class="value">S00-B0-D0-63-...</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<div class="device-section">
+  <div class="all-header">
+    <h3>All Devices</h3>
+    <button class="add-button">+ Add Device</button>
+  </div>
+
+  <div class="device-grid">
+    <ng-container *ngFor="let device of allDevices">
+      <div class="device-card">
+        <img src="/assets/images/device.png" alt="Device" />
+        <div class="device-info">
+          <a class="device-name" href="#">Device name</a>
+          <div class="status">
+            <span class="label">Status:</span>
+            <span class="value active">Active</span>
+          </div>
+          <div class="mac-address">
+            <span class="label">Mac Address:</span>
+            <span class="value">S00-B0-D0-63-...</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

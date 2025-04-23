@@ -1,0 +1,43 @@
+<div class="breadcrumb">
+  <h4>Devices</h4>
+</div>
+<div class="page-header">
+
+</div>
+<div class="devices-group section">
+  <div class="group-header">
+    <div class="group-name">
+      <h6>Group name<span>(5)</span></h6>
+    </div>
+    <div class="Assigned-owners-btn">
+      Assigned owners
+    </div>
+  </div>
+  <div class="row m-auto">
+    <div class="col-lg-2 mx-3 mb-3 device-card" *ngFor="let device of devices">
+      <div class="card-header">
+        <img src="/assets/images/device.png" />
+        <span class="device-name">{{device.name}}</span>
+      </div>
+      <div class="device-info">
+        <div class="icon"><img src="/assets/icons/status.svg" /></div>
+        <div class="info"> Status: </div>
+        <div class="info-value active"> {{ device.status }}</div>
+      </div>
+      <div class="device-info">
+        <div class="icon"><img src="/assets/icons/status.svg" /></div>
+        <div class="info"> Mac Address: </div>
+        <div class="info-value ">{{device.macAddress}}</div>
+      </div>
+      <div class="device-info">
+        <div class="icon"><img src="/assets/icons/status.svg" /></div>
+        <div class="info"> Device type: </div>
+        <div class="info-value"> {{device.deviceType}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+

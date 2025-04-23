@@ -1,0 +1,140 @@
+.device-data {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .img {
+    flex: 5%;
+    width: 100%;
+  }
+
+  .device-info {
+    flex: 95%;
+  }
+}
+.device-name {
+  color: #007BE2;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  margin-bottom:20px;
+}
+.device-info {
+  display: flex;
+  flex-direction: column;
+}
+.info{
+    display:flex;
+    flex-direction:row;
+    margin-bottom:10px;
+}
+.icon {
+  margin-right: 14px;
+  width: 18px;
+  height: 18px;
+}
+.active {
+  color: #00C013 !important;
+}
+.info-name {
+  flex: 1%;
+  font-family: Myriad Pro;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color:#A3A3A3;
+}
+.info-value {
+  flex: 75%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color:#101010;
+}
+.device-trafic-section {
+padding:18px;
+  border-radius: 12px;
+  background:#ffff;
+}
+
+
+/**DATAGRID*/
+
+  ::ng-deep .dx-datagrid-header-panel {
+    border-bottom: none !important;
+  }
+
+  ::ng-deep .dx-datagrid-headers {
+    border-bottom: none !important;
+  }
+  ::ng-deep .dx-datagrid-rowsview .dx-row {
+    border-bottom: 1px solid #E1E1E1 !important;
+
+  }
+  ::ng-deep .dx-datagrid-pager{
+      border-top:none !important;
+   }
+::ng-deep .dx-datagrid .dx-column-lines > td {
+  border-left: none!important;
+  border-right:none!important;
+}
+
+
+  ::ng-deep .dx-toolbar .dx-toolbar-items-container {
+    height: 36px;
+    overflow: visible;
+  }
+
+  ::ng-deep .dx-datagrid-header-panel .dx-toolbar-items-container {
+    position: relative;
+    //overflow: hidden;
+    width: 60% !important;
+    height: 100%;
+    position: relative;
+    bottom: 40px;
+  }
+
+  ::ng-deep .dx-datagrid-search-panel.dx-show-invalid-badge.dx-textbox.dx-texteditor.dx-editor-outlined.dx-searchbox.dx-show-clear-button.dx-texteditor-empty.dx-widget {
+    width: 308px !important;
+    border: none;
+    background: #fafafa;
+    border-radius: 16px;
+    height: 42px;
+  }
+::ng-deep .dx-searchbox .dx-icon-search::before {
+  color: #007BE2!important;
+}
+td {
+  padding: 12px 0px;
+}
+
+  .grid-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    //top: 10px;
+
+    h5 {
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 140%;
+      letter-spacing: 0px;
+      vertical-align: middle;
+      color: #101010;
+    }
+
+    .grid-header-btns {
+      z-index: 999999;
+    }
+  }
+
+.btn-outline-info{
+    color:#414141;
+}

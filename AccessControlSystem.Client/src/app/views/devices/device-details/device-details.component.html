@@ -1,0 +1,77 @@
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Device Name</h4>
+  </div>
+  <span>Review Device details and information</span>
+</div>
+
+<div class="device-data">
+  <div class="img"><img src="/assets/images/device.png"  /></div>
+  <div class="device-info">
+    <div class="device-name">Device Name</div>
+
+    <div class="info">
+      <img class="icon " src="/assets/icons/status.svg" />
+      <span class="info-name">Stsus:</span>
+      <span class="info-value active">Active</span>
+    </div>
+    <div class="info">
+      <img class="icon" src="/assets/icons/device.svg" />
+      <span class="info-name">Device type:</span>
+      <span class="info-value">Type Name</span>
+    </div>
+    <div class="info">
+      <img class="icon " src="/assets/icons/mac-address.svg" />
+      <span class="info-name">Mac Address:</span>
+      <span class="info-value">00-B0-D0-63-C2-26</span>
+    </div>
+  </div>
+  
+  </div>
+
+
+<div class="device-trafic-section mt-4">
+  <div class="grid-header">
+    <h5>Device traffic</h5>
+    <div class="grid-header-btns">
+      <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg"class="me-1" />Report</button>
+    </div>
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="dataSource"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'"
+               >
+    <!--<dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [visible]="true"
+               [showPageSizeSelector]="true"
+               [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
+    <dxo-search-panel [visible]="true"
+                      [highlightCaseSensitive]="true"></dxo-search-panel>
+   
+
+    <dxi-column dataField="Traffic type"
+                caption="TRAFFIC TYPE"
+                dataType="string"
+                alignment="left"></dxi-column>
+    <dxi-column caption="TIME"
+                dataField="Time"
+                dataType="string"
+                format="time"
+                alignment="left"
+                ></dxi-column>
+    <dxi-column dataField="DATE" dataType="date"></dxi-column>
+    <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+
+    <dxi-column dataField="image" caption="IMAGE"  cellTemplate="imageCellTemplate"></dxi-column>
+
+    <div *dxTemplate="let d of 'imageCellTemplate'">
+ <img />
+    </div>
+  </dx-data-grid>
+</div>

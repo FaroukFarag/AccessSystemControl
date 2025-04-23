@@ -18,6 +18,9 @@ export class BaseService<T> {
     return this.http.post<T>(`${this.baseUrl}/${endpoint}`, entity);
   }
 
+
+
+
   getAll(endpoint: string): Observable<T[]> {
     return this.http.get<T[]>(`${this.baseUrl}/${endpoint}`);
   }

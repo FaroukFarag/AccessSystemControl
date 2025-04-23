@@ -1,0 +1,40 @@
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Owners</h4>
+  </div>
+  <span>Review all Owners details and information</span>
+</div>
+<div class="page-header">
+  <dx-drop-down-button text="Sort by"
+                       [dropDownOptions]="{ width: 180 }"
+                       [items]="sortBy"
+                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of subscriptions">
+    <div class="card mb-2">
+      <img src="/assets/images/beach.jpg" alt="Card Image" class="card-image" (click)="navigateToDetailsPage()">
+      <div class="village-name" (click)="navigateToDetailsPage()">{{sub.name}}</div>
+      <div class="top-right-text">Renewal in 2 months</div>
+
+
+    </div>
+
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
+      <div class="info"> Subscription: </div>
+      <div class="info-value"> {{sub.subscription }}</div>
+    </div>
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/device.svg" /></div>
+      <div class="info"> Devices: </div>
+      <div class="info-value">{{sub.dvices}}</div>
+    </div>
+
+  </div>
+</div>
+
+

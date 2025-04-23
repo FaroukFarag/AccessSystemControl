@@ -1,0 +1,104 @@
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Subscriptions</h4>
+  </div>
+  <span>Review all Subscriptions details and information</span>
+</div>
+<div class="page-header">
+  <dx-drop-down-button text="Sort by"
+                       [dropDownOptions]="{ width: 180 }"
+                       [items]="sortBy"
+                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-button class="button-info me-1"
+             text="Add New Subscription"
+             (onClick)="showAddDevicePopup()">
+  </dx-button>
+</div>
+
+<!-- ADD DEVICE POPUP-->
+<dx-popup [width]="600"
+          [height]="550"
+          [showTitle]="true"
+          title="Add ew Device"
+          [dragEnabled]="true"
+          [hideOnOutsideClick]="true"
+          [showCloseButton]="true"
+          [(visible)]="popupVisible">
+  <dx-form #subscriptionFormRef [formData]="subscriptionData" 
+           [colCount]="1"
+           [labelLocation]="'top'">
+    <dxi-item itemType="simple">
+      <div class="image-upload-wrapper">
+        <dx-file-uploader [selectButtonText]="'Choose File'"
+                          [labelText]="''"
+                          accept="image/*"
+                          uploadMode="useForm"
+                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+
+        <img *ngIf="subscriptionData.subscriptionImageUrl"
+             [src]="subscriptionData.subscriptionImageUrl"
+             alt="Device Preview"
+             class="thumbnail" />
+        <div *ngIf="imageValidationError" class="validation-message">
+          {{ imageValidationError }}
+        </div>
+      </div>
+    </dxi-item>
+
+    <dxi-item dataField="CustomerName" [editorOptions]="{ placeholder: 'Customer name' }">
+      <dxi-validation-rule type="required" message="Customer name is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="SubscriptionType" [editorOptions]="subscriptionTypeEditorOptions" editorType="dxSelectBox">
+      <dxi-validation-rule type="required" message="Subscription type is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'Device number' }">
+      <dxi-validation-rule type="required" message="Device number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="PaymentPerMonth" [editorOptions]="{ placeholder: 'Monthly Payment' }">
+      <dxi-validation-rule type="required" message="Monthly payment is required"></dxi-validation-rule>
+    </dxi-item>
+
+    <dxi-item dataField="StartDate" editorType="dxDateBox" [editorOptions]="{ type: 'date' }">
+      <dxi-validation-rule type="required" message="Start Date is required"></dxi-validation-rule>
+    </dxi-item>
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add new Subscription" type="success" (onClick)="submitSubscription()"></dx-button>
+  </dxi-item>
+
+</dx-popup>
+
+
+<!--All Subscriptions-->
+<div class="row">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of subscriptions">
+    <div class="card mb-2">
+      <img src="/assets/images/beach.jpg" alt="Card Image" class="card-image" (click)="navigateToDetailsPage()">
+      <div class="village-name" (click)="navigateToDetailsPage()">{{sub.name}}</div>
+      <div class="top-right-text">Renewal in 2 months</div>
+
+
+    </div>
+
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
+      <div class="info"> Subscription: </div>
+      <div class="info-value"> {{sub.subscription }}</div>
+    </div>
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/device.svg" /></div>
+      <div class="info"> Devices: </div>
+      <div class="info-value">{{sub.dvices}}</div>
+    </div>
+
+  </div>
+</div>
+
+
