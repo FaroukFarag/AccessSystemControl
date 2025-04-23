@@ -1,0 +1,66 @@
+<div id="data-grid-demo">
+    <h2 class="screen-title">Subscriptions</h2>
+    <dx-data-grid id="gridContainer" [dataSource]="subscriptionsList" keyExpr="id" [showBorders]="false"
+        [showColumnLines]="false" [showRowLines]="true" (onRowInserting)="onRowInserting($event)"
+        (onRowUpdating)="onRowUpdating($event)" (onRowRemoving)="onRowRemoving($event)" [rowAlternationEnabled]="false"
+        [remoteOperations]="true" [repaintChangesOnly]="true" [errorRowEnabled]="false" searchMode="contains"
+        (onExporting)="onExporting($event)">
+        <dxo-paging [enabled]="true" [pageSize]="5"></dxo-paging>
+        <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [showPageSizeSelector]="true"
+            [showInfo]="true" [showNavigationButtons]="true">
+        </dxo-pager>
+        <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true" [useIcons]="true">
+            <dxo-popup title="Subscription Info" [showTitle]="true" [width]="550" [height]="500"
+                [hideOnOutsideClick]="true">
+            </dxo-popup>
+            <dxo-form>
+                <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
+                    <dxi-item dataField="imageUrl" caption="Image" editorType="dxFileUploader"
+                        [editorOptions]="imageUploaderOptions">
+                        <dxi-validation-rule type="required" message="Image is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="customerName" caption="Customer Name">
+                        <dxi-validation-rule type="required" message="Customer Name is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="subscriptionType" caption="Subscription Type" editorType="dxSelectBox"
+                        [editorOptions]="subscriptionTypeEditorOptions">
+                        <dxi-validation-rule type="required" message="Subscription Type is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="deviceNumber" caption="Device Number" editorType="dxNumberBox">
+                        <dxi-validation-rule type="required" message="Device Number is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="paymentPerMonth" caption="Payment Per Month" editorType="dxNumberBox">
+                        <dxi-validation-rule type="required" message="Payment Per Month is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="startDate" caption="Start Date" editorType="dxDateBox"
+                        [editorOptions]="dateEditorOptions">
+                        <dxi-validation-rule type="required" message="Start Date is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="endDate" caption="End Date" editorType="dxDateBox"
+                        [editorOptions]="dateEditorOptions">
+                        <dxi-validation-rule type="required" message="End Date is required">
+                        </dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="note" caption="Note" editorType="dxTextArea">
+                    </dxi-item>
+                </dxi-item>
+            </dxo-form>
+        </dxo-editing>
+        <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+        <dxi-column [visible]="false" dataField="imageUrl" caption="Image"></dxi-column>
+        <dxi-column dataField="customerName" caption="Customer Name"></dxi-column>
+        <dxi-column dataField="subscriptionType" caption="Subscription Type"></dxi-column>
+        <dxi-column dataField="deviceNumber" caption="Device Number"></dxi-column>
+        <dxi-column dataField="paymentPerMonth" caption="Payment Per Month"></dxi-column>
+        <dxi-column dataField="startDate" dataType="date" [format]="'shortDate'" caption="Start Date"></dxi-column>
+        <dxi-column dataField="endDate" dataType="date" [format]="'shortDate'" caption="End Date"></dxi-column>
+        <dxi-column dataField="note" caption="Note"></dxi-column>
+        <dxo-export [enabled]="true" [allowExportSelectedData]="false"></dxo-export>
+    </dx-data-grid>
+</div>

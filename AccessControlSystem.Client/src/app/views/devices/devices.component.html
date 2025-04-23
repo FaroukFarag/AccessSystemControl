@@ -1,0 +1,40 @@
+<div id="data-grid-demo">
+  <h2 class="screen-title">Devices</h2>
+  <dx-data-grid id="gridContainer" [dataSource]="devicesList" keyExpr="id" [showBorders]="false"
+    [showColumnLines]="false" [showRowLines]="true" (onRowInserting)="onRowInserting($event)"
+    (onRowUpdating)="onRowUpdating($event)" (onRowRemoving)="onRowRemoving($event)" [rowAlternationEnabled]="false"
+    [remoteOperations]="true" [repaintChangesOnly]="true" [errorRowEnabled]="false" searchMode="contains"
+    (onExporting)="onExporting($event)">
+    <dxo-paging [enabled]="true" [pageSize]="5"></dxo-paging>
+    <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [showPageSizeSelector]="true" [showInfo]="true"
+      [showNavigationButtons]="true">
+    </dxo-pager>
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true" [useIcons]="true">
+      <dxo-popup title="Device Info" [showTitle]="true" [width]="550" [height]="500" [hideOnOutsideClick]="true">
+
+      </dxo-popup>
+      <dxo-form>
+        <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
+          <dxi-item dataField="name" caption="Name">
+            <dxi-validation-rule type="required" message="Name is required">
+            </dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="macAddress" caption="MAC Address">
+            <dxi-validation-rule type="required" message="MAC Address is required">
+            </dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="deviceType" caption="Device Type" editorType="dxSelectBox"
+            [editorOptions]="deviceTypeEditorOptions">
+            <dxi-validation-rule type="required" message="Device Type is required">
+            </dxi-validation-rule>
+          </dxi-item>
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
+    <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+    <dxi-column dataField="name" caption="Name" alignment="left"></dxi-column>
+    <dxi-column dataField="macAddress" Caption="MAC Address" alignment="left"></dxi-column>
+    <dxi-column dataField="deviceTypeName" Caption="Device Type" alignment="left"></dxi-column>
+    <dxo-export [enabled]="true" [allowExportSelectedData]="false"></dxo-export>
+  </dx-data-grid>
+</div>
