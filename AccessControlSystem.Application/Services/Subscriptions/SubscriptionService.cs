@@ -27,6 +27,20 @@ public class SubscriptionService(
         return await base.CreateAsync(subscriptionDto);
     }
 
+    public override async Task<SubscriptionDto> GetAsync(int id)
+    {
+        var subscription = await base.GetAsync(id);
+
+        if (!string.IsNullOrEmpty(subscription.ImagePath) && File.Exists(subscription.ImagePath))
+        {
+            var imageBytes = await File.ReadAllBytesAsync(subscription.ImagePath);
+
+            subscription.ImageEncode = $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
+        }
+
+        return subscription;
+    }
+
     public override async Task<IEnumerable<SubscriptionDto>> GetAllAsync()
     {
         var subscriptions = await base.GetAllAsync();

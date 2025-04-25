@@ -27,6 +27,20 @@ public class DeviceService(
         return await base.CreateAsync(deviceDto);
     }
 
+    public override async Task<DeviceDto> GetAsync(int id)
+    {
+        var device = await base.GetAsync(id);
+
+        if (!string.IsNullOrEmpty(device.ImagePath) && File.Exists(device.ImagePath))
+        {
+            var imageBytes = await File.ReadAllBytesAsync(device.ImagePath);
+
+            device.ImageEncode = $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
+        }
+
+        return device;
+    }
+
     public override async Task<IEnumerable<DeviceDto>> GetAllAsync()
     {
         var devices = await base.GetAllAsync();

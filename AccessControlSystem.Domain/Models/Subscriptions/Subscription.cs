@@ -6,9 +6,8 @@ using AccessControlSystem.Domain.Models.Users;
 
 namespace AccessControlSystem.Domain.Models.Subscriptions;
 
-public class Subscription : BaseModel<int>
+public class Subscription : BaseImageModel<int>
 {
-    public string ImagePath { get; set; } = default!;
     public string CustomerName { get; set; } = default!;
     public SubscriptionType SubscriptionType { get; set; }
     public int DeviceNumber { get; set; }
