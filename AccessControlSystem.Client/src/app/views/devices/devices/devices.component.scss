@@ -6,6 +6,7 @@
     margin-bottom:14px
 }
 .device-card {
+    width:20%;
   border-radius: 12px;
   border-width: 1px;
   border: 1px solid #E1E1E1;
@@ -200,4 +201,33 @@ dx-form{
   margin-top: 5px;
 }
 
-/*----END POPUP STYLES----------*/
+/*----END POPUP STYLES------*/
+
+
+/*------START GROOUP DEVICES STYLES-------*/
+.group-device-header{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:100%;
+}
+.group-devices {
+  border-radius: 20px;
+}
+.group-name {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 140%;
+  letter-spacing: 0px;
+  vertical-align: middle;
+  color:#101010;
+}
+
+.devices-number {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 140%;
+  letter-spacing: 0px;
+  vertical-align: middle;
+  color: #A3A3A3;
+}

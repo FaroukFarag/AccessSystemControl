@@ -53,9 +53,31 @@ export class DevicesComponent {
     macAddress: ''
   };
   deviceTypeEditorOptions: any
-  deviceTypes = [{ 'name': 'Type 1' },
-    { 'name': 'Type 2' }]
-
+ 
+  deviceTypes = [
+    {
+      'id': '1',
+      'name': 'Airfob Edge Reader'
+    },
+    {
+      'id': '2',
+      'name': 'Airfob Edge Reader Ultimate'
+    },
+    {
+      'id': '3',
+      'name': 'Airfob Tag'
+    },
+    {
+      'id': '4',
+      'name': 'Airfob Patch'
+    },  {
+      'id': '5',
+      'name': 'Suprema X-Station 2'
+    },  {
+      'id': '6',
+      'name': 'Wireless Door Locks'
+    },
+  ]
   constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer) {
 
     this.deviceTypeEditorOptions = {
@@ -133,7 +155,7 @@ export class DevicesComponent {
     formData.append('ImageEncode', this.deviceData.deviceImageUrl || '');
     formData.append('Name', this.deviceData.deviceName);
     formData.append('DeviceTypeName', this.deviceData.deviceType);
-    formData.append('DeviceType', '1'); // Replace with actual type ID if available
+    formData.append('DeviceType', '1'); 
     formData.append('MacAddress', this.deviceData.macAddress);
     formData.append('Active', 'true');
 

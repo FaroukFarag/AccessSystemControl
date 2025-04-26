@@ -1,11 +1,67 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>Devices</h4>
+    <h4>Devices <span class="devices-number">(2)</span></h4>
   </div>
   <span>Review all devices details and information</span>
 </div>
 
+
+<!-- GOUP DEVICES IF OWNER-->
+<!--PAGE HEADER IF Owner-->
+<!--<div class="page-header">
+  <dx-button class="button-info me-1"
+             text="Group devices"
+             >
+  </dx-button>
+
+  <dx-drop-down-button text="Sort by"
+                       [dropDownOptions]="{ width: 180 }"
+                       [items]="sortBy"
+                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+
+</div>-->
+
+<!-- GROUPED DEVICES VIEW -->
+<!--<div class="row m-auto bg-white px-2 py-3 mb-5 group-devices">
+  <div class="group-device-header">
+    <h5 class="mb-3 group-name">Group name <span class="devices-number">(2)</span></h5>
+    <dx-button class="button-info me-1"
+               text="Assigned owners">
+    </dx-button>
+  </div>
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
+    <div class="card-header">
+      <img [src]=" '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />-->
+      <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
+      <!--<span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/status.svg" /></div>
+      <div class="info"> Status: </div>
+      <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+        {{ device.active ? 'Active' : 'Not Active' }}
+      </div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+      <div class="info"> Mac Address: </div>
+      <div class="info-value ">{{device.macAddress}}</div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+      <div class="info"> Device type: </div>
+      <div class="info-value"> {{device.deviceType}}</div>
+    </div>
+  </div>
+</div>-->
+
+
+
+
+
+
+<!--PAGE HEADER IF ADMIN-->
 <div class="page-header">
   <dx-button class="button-info me-1"
              text="Add Device"
@@ -19,6 +75,7 @@
                        (onItemClick)="onItemClick($event)"></dx-drop-down-button>
 
 </div>
+
 
 <!-- ADD DEVICE POPUP-->
 <dx-popup [width]="600"
@@ -60,12 +117,19 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="deviceType"  [editorOptions]="deviceTypeEditorOptions" editorType="dxSelectBox">
-      <dxi-validation-rule type="required" message="Device type is required">
-      </dxi-validation-rule>
+
+    <dxi-item dataField="deviceType" editorType="dxSelectBox"
+              [editorOptions]="{
+         dataSource: deviceTypes,
+         placeholder: 'Device type',
+         valueExpr: 'id',
+         displayExpr: 'name'
+       }">
+      <dxi-validation-rule type="required" message="Device type is required"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
+   
 
   </dx-form>
   <dxi-item itemType="button">
@@ -77,7 +141,7 @@
 
 <!--ALL DEVICES-->
 <div class="row m-auto">
-  <div class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
     <div class="card-header">
       <img [src]=" '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
       <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
