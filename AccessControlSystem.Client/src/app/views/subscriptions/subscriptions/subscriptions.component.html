@@ -25,7 +25,7 @@
           [hideOnOutsideClick]="true"
           [showCloseButton]="true"
           [(visible)]="popupVisible">
-  <dx-form #subscriptionFormRef [formData]="subscriptionData" 
+  <dx-form #subscriptionFormRef [formData]="subscriptionData"
            [colCount]="1"
            [labelLocation]="'top'">
     <dxi-item itemType="simple">
@@ -51,11 +51,19 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="SubscriptionType" [editorOptions]="subscriptionTypeEditorOptions" editorType="dxSelectBox">
+
+    <dxi-item dataField="SubscriptionType" editorType="dxSelectBox"
+              [editorOptions]="{
+         dataSource: subscriptionTypes,
+         placeholder: 'Subscription type',
+         valueExpr: 'id',
+         displayExpr: 'name'
+       }">
       <dxi-validation-rule type="required" message="Subscription type is required">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
+
     <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'Device number' }">
       <dxi-validation-rule type="required" message="Device number is required">
       </dxi-validation-rule>
