@@ -7,6 +7,7 @@ import { SubscriptionDetailsComponent } from './views/subscriptions/subscription
 import { OwnerDetailsComponent } from './views/owners/owner-details/owner-details.component';
 import { OwnersComponent } from './views/owners/owners/owners.component';
 import { UnitsComponent } from './views/units/units/units.component';
+import { LoginComponent } from './views/login/login.component';
 
 export const routes: Routes = [
   {
@@ -49,14 +50,18 @@ export const routes: Routes = [
     path: 'unit-details',
     component: UnitsComponent
   },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
  
   //{
-  //  path: 'locations',
-  //  redirectTo: '/locations',
+  //  path: 'dashboard',
+  //  redirectTo: '/dashboard',
   //  pathMatch: 'full'
-  //}, 
+  //},
   //{
   //  path: '**',
-  //  redirectTo: '/locations'
+  //  redirectTo: '/dashboard'
   //}
 ];
