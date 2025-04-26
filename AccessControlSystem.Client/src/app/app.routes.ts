@@ -6,6 +6,7 @@ import { DeviceDetailsComponent } from './views/devices/device-details/device-de
 import { SubscriptionDetailsComponent } from './views/subscriptions/subscription-details/subscription-details.component';
 import { OwnerDetailsComponent } from './views/owners/owner-details/owner-details.component';
 import { OwnersComponent } from './views/owners/owners/owners.component';
+import { UnitsComponent } from './views/units/units/units.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,14 @@ export const routes: Routes = [
   {
     path: 'owner-details',
     component: OwnerDetailsComponent
+  },
+   {
+     path: 'units',
+     component: UnitsComponent
+  },
+  {
+    path: 'unit-details',
+    component: UnitsComponent
   },
  
   //{

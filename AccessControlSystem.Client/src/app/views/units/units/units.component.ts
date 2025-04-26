@@ -16,12 +16,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 
 import notify from 'devextreme/ui/notify';
-import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UnitService } from '../../../services/units/unit.service';
 
 
 @Component({
-  selector: 'app-subscriptions',
+  selector: 'app-units',
   standalone: true,
   imports: [CommonModule,
     DxPopupModule,
@@ -33,28 +33,32 @@ import { DomSanitizer } from '@angular/platform-browser';
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
-    DxFileUploaderModule,],
-  templateUrl: './subscriptions.component.html',
-  styleUrl: './subscriptions.component.scss'
+    DxFileUploaderModule,],  templateUrl: './units.component.html',
+  styleUrl: './units.component.scss'
 })
-export class SubscriptionsComponent {
+export class UnitsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
   sortBy = ['Recent', 'date'];
-  subscriptionssList: any;
+  unitsList: any;
   imageValidationError: string = '';
-  subscriptionData = {
-    subscriptionImageFile: null,
-    subscriptionImageUrl: '',
-    CustomerName: '',
-    SubscriptionType: '',
-    DeviceNumber: '',
-    PaymentPerMonth: '',
-    StartDate: new Date(),
-    EndDate: new Date(),
-    Note: ''
+  UnitsData = {
+    unitImageFile: null,
+    unitImageUrl: '',
+    Name: '',
+    Number: '',
+    Area: '',
+    CardNumber: '',
+    AccessGroupDevices: [],
+    ImageEncode: '',
+    ImageFile: null,
+    ImagePath: '',
+    Id: '0',
+    UserId: '1',
+    SubscriptionId: '1'
+   
   };
-  subscriptionTypeEditorOptions: any
+  deviceTypeEditorOptions: any
   subscriptionTypes = [
     {
       'id': '1',
@@ -67,23 +71,35 @@ export class SubscriptionsComponent {
     {
       'id': '3',
       'name': 'Enterprise'
-    },
-  ]
+  },
+ ]
 
-  constructor(private router: Router, private subscriptionsService: SubscriptionService, private sanitizer: DomSanitizer) {
-    this.subscriptionTypeEditorOptions = {
+  areasList = [
+    { id: 1, name: 'Area 1' },
+    { id: 2, name: 'Area 2' },
+    { id: 3, name: 'Area 3' }
+  ];
+  availableDevices = [
+    { id: 1, name: 'Group A' },
+    { id: 2, name: 'Group B' },
+    { id: 3, name: 'Group C' },
+    { id: 4, name: 'Group D' },
+  ];
+
+  constructor(private router: Router, private unitsService: UnitService, private sanitizer: DomSanitizer) {
+    this.deviceTypeEditorOptions = {
       dataSource: this.subscriptionTypes,
-      valueExpr: 'id',
+      valueExpr: 'name',
       displayExpr: 'name',
       searchEnabled: true,
       showClearButton: true,
       value: 'Type 1',
-      placeholder: 'Subscription type'
+      placeholder: 'Device Access'
     };
-  
-}
 
-  subscriptions: any = [
+  }
+
+  units: any = [
     {
       'id': '1',
       'name': 'Village Name',
@@ -96,7 +112,7 @@ export class SubscriptionsComponent {
       'dvices': "15"
     }, {
       'id': '3',
-       'name': 'Village Name',
+      'name': 'Village Name',
       'subscription': 'Standard',
       'dvices': "20"
     }, {
@@ -214,7 +230,7 @@ export class SubscriptionsComponent {
       'name': 'Village Name',
       'subscription': 'Standard',
       'dvices': "20"
-    }, 
+    },
   ]
 
 
@@ -224,24 +240,28 @@ export class SubscriptionsComponent {
   }
 
   getAllSubscriptions() {
-    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptionssList = data;
-      console.log("subscriptionssList", this.subscriptionssList);
+    this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
+      this.unitsList = data;
+      console.log("UnitsList", this.unitsList);
 
     })
   }
 
   showAddDevicePopup() {
-    this.subscriptionData = {
-      subscriptionImageFile: null,
-      subscriptionImageUrl: '',
-      CustomerName: '',
-      SubscriptionType: '',
-      DeviceNumber: '',
-      PaymentPerMonth: '',
-      StartDate: new Date(),
-      EndDate: new Date(),
-      Note: ''
+    this.UnitsData = {
+      unitImageFile: null,
+      unitImageUrl: '',
+      Name: '',
+      Number: '',
+      Area: '',
+      CardNumber: '',
+      AccessGroupDevices: [],
+      ImageEncode: '',
+      ImageFile: null,
+      ImagePath: '',
+      Id: '0',
+      UserId: '1',
+      SubscriptionId: '1'
     };
     this.imageValidationError = '';
     this.popupVisible = true;
@@ -250,7 +270,7 @@ export class SubscriptionsComponent {
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
   navigateToDetailsPage() {
-    this.router.navigate(['/subscription-details']);
+    this.router.navigate(['/unit-details']);
   }
 
 
@@ -264,18 +284,19 @@ export class SubscriptionsComponent {
   onImageChange(e: any) {
     const file = e.value[0];
     if (file) {
-      this.subscriptionData.subscriptionImageFile = file;
+      this.UnitsData.unitImageFile = file;
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.subscriptionData.subscriptionImageUrl = reader.result as string;
+        this.UnitsData.unitImageUrl = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
   }
 
-  submitSubscription() {
-    if (!this.subscriptionData.subscriptionImageFile) {
+
+  submitInits() {
+    if (!this.UnitsData.unitImageFile) {
       this.imageValidationError = 'Image is required';
       return;
     }
@@ -286,43 +307,39 @@ export class SubscriptionsComponent {
       return;
     }
 
-    const start = new Date(this.subscriptionData.StartDate);
-    const end = new Date(this.subscriptionData.EndDate);
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      notify('Invalid start or end date', 'error', 2000);
-      return;
-    }
-
-    const startFormatted = start.toISOString().split('T')[0]; 
-    const endFormatted = end.toISOString().split('T')[0]; 
-    console.log('Start Date:', startFormatted);
-    console.log('End Date:', endFormatted);
-
-    
     const formData = new FormData();
+    formData.append('ImageFile', this.UnitsData.unitImageFile || '');
+    formData.append('ImageEncode', this.UnitsData.unitImageUrl || '');
+    formData.append('Name', this.UnitsData.Name);
+    formData.append('Number', this.UnitsData.Number);
+    formData.append('Area', this.UnitsData.Area);
+    formData.append('CardNumber', this.UnitsData.CardNumber);
 
-+    formData.append('CustomerName', this.subscriptionData.CustomerName);
-    formData.append('SubscriptionType', Number(this.subscriptionData.SubscriptionType).toString());
-    formData.append('DeviceNumber', Number(this.subscriptionData.DeviceNumber).toString());
-    formData.append('PaymentPerMonth', Number(this.subscriptionData.PaymentPerMonth).toString());
-    formData.append('StartDate', startFormatted); 
-    formData.append('EndDate', endFormatted); 
-    formData.append('Note', this.subscriptionData.Note || '');
-    formData.append('ImagePath', ''); 
-    formData.append('ImageEncode', this.subscriptionData.subscriptionImageUrl || ''); 
-    formData.append('ImageFile', this.subscriptionData.subscriptionImageFile || '');
-    this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
+    formData.append('UserId', this.UnitsData.UserId);
+    formData.append('SubscriptionId', this.UnitsData.SubscriptionId);
+
+    const devices = Array.isArray(this.UnitsData.AccessGroupDevices)
+      ? this.UnitsData.AccessGroupDevices
+      : [];
+
+    devices.forEach((deviceId: number, index: number) => {
+      formData.append(`AccessGroupDevices[${index}]`, deviceId.toString());
+    });
+
+    formData.append('ImagePath', this.UnitsData.ImagePath);
+    formData.append('ImageEncode', this.UnitsData.ImageEncode);
+    formData.append('Id', this.UnitsData.Id);
+    formData.append('ImageFile', this.UnitsData.unitImageFile);
+
+    this.unitsService.create('Units/Create', formData as any).subscribe({
       next: (response) => {
         notify('Device created successfully', 'success', 1500);
         this.popupVisible = false;
-        this.getAllSubscriptions(); 
+        this.getAllSubscriptions();
       },
       error: (err) => {
-        console.error('Error creating device', err);
-        if (err && err.error && err.error.errors) {
-          console.error('Validation Errors:', err.error.errors);
-        }
         notify('Error creating device', 'error', 2000);
+        console.error(err);
       }
     });
   }

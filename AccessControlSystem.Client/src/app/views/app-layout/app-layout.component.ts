@@ -38,7 +38,8 @@ export class AppLayoutComponent implements OnInit {
     { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' },
     { id: 2, text: 'Subscriptions', icon: '/assets/icons/subscriptions.svg' },
     { id: 3, text: 'Devices', icon: '/assets/icons/device.svg' },
-    { id: 4 , text: 'Owners', icon: '/assets/icons/owners.svg' }
+    { id: 4 , text: 'Owners', icon: '/assets/icons/owners.svg' },
+    { id: 5, text: 'Units', icon: '/assets/icons/dashboard.svg' }
   ]
   constructor(private router: Router) { }
   toolbarContent = [{
