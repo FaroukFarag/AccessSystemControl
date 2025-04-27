@@ -12,18 +12,16 @@ import {
   DxFormModule,
   DxFileUploaderModule,
 } from 'devextreme-angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
-
+import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 import notify from 'devextreme/ui/notify';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
-
 @Component({
   selector: 'app-subscriptions',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     DxPopupModule,
     DxButtonModule,
     DxTemplateModule,
@@ -33,7 +31,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
-    DxFileUploaderModule,],
+    DxFileUploaderModule
+  ],
   templateUrl: './subscriptions.component.html',
   styleUrl: './subscriptions.component.scss'
 })
@@ -41,7 +40,7 @@ export class SubscriptionsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
   sortBy = ['Recent', 'date'];
-  subscriptionssList: any;
+  subscriptions: any;
   imageValidationError: string = '';
   subscriptionData = {
     subscriptionImageFile: null,
@@ -57,167 +56,31 @@ export class SubscriptionsComponent {
   subscriptionTypeEditorOptions: any
   subscriptionTypes = [
     {
-      'id': '1',
-      'name': 'Standard'
+      id: 1,
+      name: 'Standard'
     },
     {
-      'id': '2',
-      'name': 'Premium'
+      id: 2,
+      name: 'Premium'
     },
     {
-      'id': '3',
-      'name': 'Enterprise'
-    },
+      id: 3,
+      name: 'Enterprise'
+    }
   ]
 
-  constructor(private router: Router, private subscriptionsService: SubscriptionService, private sanitizer: DomSanitizer) {
+  constructor(
+    private router: Router,
+    private subscriptionsService: SubscriptionService,
+    private sanitizer: DomSanitizer) {
     this.subscriptionTypeEditorOptions = {
-      dataSource: this.subscriptionTypes,
       valueExpr: 'id',
       displayExpr: 'name',
       searchEnabled: true,
       showClearButton: true,
-      value: 'Type 1',
       placeholder: 'Subscription type'
     };
-  
-}
-
-  subscriptions: any = [
-    {
-      'id': '1',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '2',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "15"
-    }, {
-      'id': '3',
-       'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '4',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "24"
-    }, {
-      'id': '5',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '6',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '7',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '8',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '9',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '10',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '11',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '12',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '13',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '14',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '15',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '16',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '17',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '18',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '19',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '20',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '21',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '22',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '23',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '24',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '25',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '26',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, 
-  ]
-
-
+  }
 
   ngOnInit() {
     this.getAllSubscriptions();
@@ -225,8 +88,8 @@ export class SubscriptionsComponent {
 
   getAllSubscriptions() {
     this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptionssList = data;
-      console.log("subscriptionssList", this.subscriptionssList);
+      this.subscriptions = data;
+      console.log("subscriptionssList", this.subscriptions);
 
     })
   }
@@ -246,16 +109,14 @@ export class SubscriptionsComponent {
     this.imageValidationError = '';
     this.popupVisible = true;
   }
+
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
-  navigateToDetailsPage() {
-    this.router.navigate(['/subscription-details']);
+
+  navigateToDetailsPage(id: number) {
+    this.router.navigate(['/subscription-details', id]);
   }
-
-
-
-
 
   sanitizeImage(image: string) {
     return this.sanitizer.bypassSecurityTrustUrl(image);
@@ -281,6 +142,7 @@ export class SubscriptionsComponent {
     }
 
     const result = this.dxForm.instance.validate();
+
     if (!result.isValid) {
       notify('Please fill in all required fields.', 'warning', 1500);
       return;
@@ -288,44 +150,46 @@ export class SubscriptionsComponent {
 
     const start = new Date(this.subscriptionData.StartDate);
     const end = new Date(this.subscriptionData.EndDate);
+
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       notify('Invalid start or end date', 'error', 2000);
       return;
     }
 
-    const startFormatted = start.toISOString().split('T')[0]; 
-    const endFormatted = end.toISOString().split('T')[0]; 
+    const startFormatted = start.toISOString().split('T')[0];
+    const endFormatted = end.toISOString().split('T')[0];
+
     console.log('Start Date:', startFormatted);
     console.log('End Date:', endFormatted);
 
-    
     const formData = new FormData();
 
-+    formData.append('CustomerName', this.subscriptionData.CustomerName);
+    formData.append('CustomerName', this.subscriptionData.CustomerName);
     formData.append('SubscriptionType', Number(this.subscriptionData.SubscriptionType).toString());
     formData.append('DeviceNumber', Number(this.subscriptionData.DeviceNumber).toString());
     formData.append('PaymentPerMonth', Number(this.subscriptionData.PaymentPerMonth).toString());
-    formData.append('StartDate', startFormatted); 
-    formData.append('EndDate', endFormatted); 
+    formData.append('StartDate', startFormatted);
+    formData.append('EndDate', endFormatted);
     formData.append('Note', this.subscriptionData.Note || '');
-    formData.append('ImagePath', ''); 
-    formData.append('ImageEncode', this.subscriptionData.subscriptionImageUrl || ''); 
+    formData.append('ImagePath', '');
+    formData.append('ImageEncode', this.subscriptionData.subscriptionImageUrl || '');
     formData.append('ImageFile', this.subscriptionData.subscriptionImageFile || '');
+
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
       next: (response) => {
         notify('Device created successfully', 'success', 1500);
         this.popupVisible = false;
-        this.getAllSubscriptions(); 
+        this.getAllSubscriptions();
       },
       error: (err) => {
         console.error('Error creating device', err);
+
         if (err && err.error && err.error.errors) {
           console.error('Validation Errors:', err.error.errors);
         }
+
         notify('Error creating device', 'error', 2000);
       }
     });
   }
-
-
 }

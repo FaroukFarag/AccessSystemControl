@@ -14,7 +14,7 @@ public class Subscription : BaseImageModel<int>
     public decimal PaymentPerMonth { get; set; }
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
-    public string Note { get; set; } = default!;
+    public string? Note { get; set; }
 
     public IEnumerable<User> Users { get; set; } = default!;
     public IEnumerable<Device> Devices { get; set; } = default!;

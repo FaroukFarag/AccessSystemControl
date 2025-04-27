@@ -31,7 +31,7 @@ export const routes: Routes = [
 
   },
   {
-    path: 'subscription-details',
+    path: 'subscription-details/:id',
     component: SubscriptionDetailsComponent
   },
   {

@@ -8,6 +8,10 @@ public class SubscriptionProfile : Profile
 {
     public SubscriptionProfile()
     {
-        CreateMap<Subscription, SubscriptionDto>().ReverseMap();
+        CreateMap<Subscription, SubscriptionDto>()
+            .ForMember(des => des.SubscriptionTypeName, opt => opt
+                .MapFrom(src => src.SubscriptionType.ToString()));
+
+        CreateMap<SubscriptionDto, Subscription>();
     }
 }

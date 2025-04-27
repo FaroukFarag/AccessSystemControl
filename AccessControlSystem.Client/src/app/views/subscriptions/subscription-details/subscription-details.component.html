@@ -30,7 +30,8 @@
     <div class="usage-card">
       <div>Admins</div>
       <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription.usage.admins.used, subscription.usage.admins.total)"></div>
+        <div class="progress"
+          [style.width.%]="getProgress(subscription.usage.admins.used, subscription.usage.admins.total)"></div>
       </div>
       <div>{{ subscription.usage.admins.used }} / {{ subscription.usage.admins.total }}</div>
     </div>
@@ -38,7 +39,8 @@
     <div class="usage-card">
       <div>Devices</div>
       <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription.usage.devices.used, subscription.usage.devices.total)"></div>
+        <div class="progress"
+          [style.width.%]="getProgress(subscription.usage.devices.used, subscription.usage.devices.total)"></div>
       </div>
       <div>{{ subscription.usage.devices.used }} / {{ subscription.usage.devices.total }}</div>
     </div>
@@ -46,7 +48,8 @@
     <div class="usage-card">
       <div>Cards</div>
       <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription.usage.cards.used, subscription.usage.cards.total)"></div>
+        <div class="progress"
+          [style.width.%]="getProgress(subscription.usage.cards.used, subscription.usage.cards.total)"></div>
       </div>
       <div>{{ subscription.usage.cards.used }} / {{ subscription.usage.cards.total }}</div>
     </div>
