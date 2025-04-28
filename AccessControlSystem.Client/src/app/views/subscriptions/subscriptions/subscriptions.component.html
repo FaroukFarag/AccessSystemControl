@@ -42,8 +42,18 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
+    <dxi-item dataField="AdminNumber" [editorOptions]="{ placeholder: 'Admin number' }">
+      <dxi-validation-rule type="required" message="Admin number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
     <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'Device number' }">
       <dxi-validation-rule type="required" message="Device number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="CardNumber" [editorOptions]="{ placeholder: 'Card number' }">
+      <dxi-validation-rule type="required" message="Card number is required">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
