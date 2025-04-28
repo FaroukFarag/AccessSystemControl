@@ -13,6 +13,4 @@ public class AccessGroupDevice
 
     public AccessGroup AccessGroup { get; set; } = default!;
     public Device Device { get; set; } = default!;
-
-    public (int AccessGroupId, int DeviceId) GetKey() => (AccessGroupId, DeviceId);
 }

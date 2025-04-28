@@ -9,7 +9,9 @@ namespace AccessControlSystem.Infrastructure.Data.Repositories.AccessGroupDevice
 public class AccessGroupDeviceRepository(
     AccessControlDbContext context,
     ISpecificationCombiner<AccessGroupDevice> specificationCombiner) :
-    BaseRepository<AccessGroupDevice, (int AccessGroupId, int DeviceId)>(context, specificationCombiner),
+    BaseRepository<AccessGroupDevice, (int AccessGroupId, int DeviceId)>(
+        context,
+        specificationCombiner),
     IAccessGroupDeviceRepository
 {
 }

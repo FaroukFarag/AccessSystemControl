@@ -16,7 +16,9 @@ public class AccessGroupDeviceService(
         AccessGroupDevice,
         AccessGroupDeviceDto,
         (int AccessGroupId, int DeviceId)>(
-        repository, unitOfWork, mapper),
+        repository,
+        unitOfWork,
+        mapper),
     IAccessGroupDeviceService
 {
 }
