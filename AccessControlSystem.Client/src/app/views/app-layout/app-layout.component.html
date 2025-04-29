@@ -37,8 +37,8 @@
       <dx-toolbar [items]="toolbarContent" id="toolbar" class="toolbar-header"></dx-toolbar>
 
       <section>
-        <article class="app-layout--main-article">
-          <app-content class="">
+        <article class="app-layout--main-article"  [ngClass]="{'expanded': isDrawerOpen, 'collapsed': !isDrawerOpen}">
+          <app-content>
 
           </app-content>
         </article>

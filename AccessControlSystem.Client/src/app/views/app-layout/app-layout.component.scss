@@ -145,3 +145,16 @@ margin-top: 1.5rem;
   width: 220px !important;
 }
 
+
+
+.app-layout--main-article {
+  transition: width 0.3s ease; // smooth transition
+
+  &.expanded {
+    width: 85%;
+  }
+
+  &.collapsed {
+    width: 97%;
+  }
+}

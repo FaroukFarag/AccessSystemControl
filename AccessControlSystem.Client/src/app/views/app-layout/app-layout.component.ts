@@ -3,6 +3,7 @@ import { ContentComponent } from './content/content.component';
 import { Router } from '@angular/router';
 import { DxDrawerModule, DxDrawerTypes } from 'devextreme-angular/ui/drawer';
 import { DxListModule, DxToolbarModule } from 'devextreme-angular';
+import { CommonModule } from '@angular/common'; 
 @Component({
   selector: 'app-app-layout',
   standalone: true,
@@ -11,7 +12,7 @@ import { DxListModule, DxToolbarModule } from 'devextreme-angular';
     ContentComponent,
     DxToolbarModule,
     DxListModule,
-
+    CommonModule
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss'
