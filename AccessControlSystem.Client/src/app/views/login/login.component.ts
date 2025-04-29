@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http'; 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,
-    FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule], 
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -15,9 +15,26 @@ export class LoginComponent {
   password: string = '';
   rememberMe: boolean = false;
 
+  constructor(private http: HttpClient) { } 
+
   onSubmit() {
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-    console.log('Remember Me:', this.rememberMe);
+    const loginData = {
+      userName: this.email,  
+      password: this.password,
+      startDateTime: new Date().toISOString()
+    };
+
+    console.log('Sending login data:', loginData);
+
+    this.http.post('/api/Users/Login', loginData)
+      .subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          // You can redirect to dashboard, store token, etc. here
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+        }
+      });
   }
 }

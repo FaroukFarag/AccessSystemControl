@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { DeviceService } from '../../../services/devices/device.service';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-device-details',
@@ -108,13 +110,33 @@ export class DeviceDetailsComponent {
 
 
   ];
-
-  constructor(private route: ActivatedRoute) { }
+  deviceDetails: any = null; 
+  deviceId: string = '';
+  constructor(private route: ActivatedRoute, private deviceService: DeviceService) { }
+ 
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const deviceId = params['id'];
-      // use deviceId as needed
+      this.deviceId = params['id'];
+      if (this.deviceId) {
+        this.getDeviceDetails(this.deviceId);      }
     });
   }
+
+
+  getDeviceDetails(id: string) {
+    this.deviceService.getById('Devices/Get', id).subscribe({
+      next: (data: any) => {
+        this.deviceDetails = data;
+        console.log('Device Details:', this.deviceDetails);
+      },
+      error: (err) => {
+        console.error('Error fetching device details', err);
+        notify('Error fetching device details', 'error', 2000);
+      }
+    });
+
+  }
+
+
 }

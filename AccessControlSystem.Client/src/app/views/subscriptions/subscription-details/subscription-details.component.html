@@ -57,14 +57,17 @@
 </div>
 
 
-<!--SECTION TWO-->
+<!--SECTION TWO  SUBSCRIPTION DEVICES-->
 <div class="devices-container">
   <div class="devices-header">
     <div class="title">
       <strong>Devices</strong> <span class="count">({{ devices.length }})</span>
     </div>
     <div class="actions">
-      <button class="add-btn">Add device</button>
+      <dx-button class="button-info me-1"
+                 text="Add Device"
+                 (onClick)="showAddDevicePopup()">
+      </dx-button>
       <a href="#" class="view-all">View All</a>
     </div>
   </div>
@@ -87,3 +90,50 @@
   </div>
 
 </div>
+
+
+
+<!--ADD DEVICE POPUP-->
+<dx-popup [width]="600"
+          [height]="450"
+          [showTitle]="true"
+          title="Add New Device"
+          [dragEnabled]="true"
+          [hideOnOutsideClick]="true"
+          [showCloseButton]="true"
+          [(visible)]="popupVisible">
+  <dx-form [formData]="deviceData"
+           [colCount]="1"
+           [labelLocation]="'top'">
+
+
+    <dxi-item dataField="selectedDevices" editorType="dxTagBox"
+              [editorOptions]="{
+            dataSource: devicesList,
+            placeholder: 'Select devices',
+            valueExpr: 'id',
+            displayExpr: 'name',
+            itemTemplate: 'deviceTemplate',
+            showSelectionControls: true,
+            searchEnabled: true
+          }">
+      <dxi-validation-rule type="required" message="At least one device is required"></dxi-validation-rule>
+      <dxo-label text="Devices" [visible]="true"></dxo-label>
+    </dxi-item>
+
+    <!-- Device Template for showing image + name -->
+    <ng-template #deviceTemplate let-data>
+      <div class="device-item">
+        <img [src]="data.imagePath" alt="Device image" width="30" height="30" style="margin-right: 8px;" />
+        <span>{{data.name}}</span>
+      </div>
+    </ng-template>
+
+
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add Device" type="success" (onClick)="submitDevice()"></dx-button>
+  </dxi-item>
+
+</dx-popup>

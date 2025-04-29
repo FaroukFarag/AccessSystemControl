@@ -36,7 +36,8 @@ export class BaseService<T> {
   getById(endpoint: string, id: number | string): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/${endpoint}?id=${id}`);
   }
- 
+
+
   update(endpoint: string, entity: T): Observable<T> {
     return this.http.put<T>(`${this.baseUrl}/${endpoint}`, entity);
   }

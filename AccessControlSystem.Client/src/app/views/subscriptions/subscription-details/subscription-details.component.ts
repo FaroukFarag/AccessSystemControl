@@ -1,16 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import {
+  DxPopupModule,
+  DxButtonModule,
+  DxTemplateModule,
+  DxToolbarModule,
+  DxSelectBoxModule,
+  DxTextAreaModule,
+  DxDateBoxModule,
+  DxFormModule,
+  DxFileUploaderModule,
+} from 'devextreme-angular';
+import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
+import notify from 'devextreme/ui/notify';
+import { DxFormComponent } from 'devextreme-angular';
+import { DeviceService } from '../../../services/devices/device.service';
 
 @Component({
   selector: 'app-subscription-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+    DxPopupModule,
+    DxButtonModule,
+    DxTemplateModule,
+    DxToolbarModule,
+    DxSelectBoxModule,
+    DxTextAreaModule,
+    DxDateBoxModule,
+    DxFormModule,
+    DxDropDownButtonModule,
+    DxFileUploaderModule,],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss'
 })
 export class SubscriptionDetailsComponent implements OnInit {
+  @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
+  popupVisible: boolean = false;
   subscription = {
     plan: 'Standard',
     payment: 240,
@@ -29,12 +57,30 @@ export class SubscriptionDetailsComponent implements OnInit {
     type: 'Type name',
     image: '/assets/images/device.png'
   }));
+  imageValidationError: string = '';
+  deviceListEditorOptions: any
 
+  deviceData = {
+    selectedDevices: [] as number[],  
+  };
+  devicesList: any;
   constructor(
     private route: ActivatedRoute,
-    private subscriptionsService: SubscriptionService) {
-  }
+    private subscriptionsService: SubscriptionService,
+    private sanitizer: DomSanitizer,
+    private deviceService: DeviceService,) {
 
+    this.deviceListEditorOptions = {
+      dataSource: this.devicesList,
+      valueExpr: 'name',
+      displayExpr: 'name',
+      searchEnabled: true,
+      showClearButton: true,
+      value: '',
+      placeholder: 'Select Device'
+    };
+  }
+ 
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id')!;
 
@@ -45,5 +91,65 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   getProgress(used: number, total: number): number {
     return (used / total) * 100;
+  }
+
+  getAllDevices() {
+    this.deviceService.getAll('Devices/GetAll').subscribe((data: any) => {
+      this.devicesList = data;
+      console.log("DEVICCES", this.devicesList);
+
+    })
+  }
+
+
+  showAddDevicePopup() {
+    this.popupVisible = true;
+    this.getAllDevices();
+    this.deviceData = {
+      selectedDevices: [] as number[],  
+
+    };
+  }
+
+
+
+
+  submitDevice() {
+    const result = this.dxForm.instance.validate();
+    if (!result.isValid) {
+      notify('Please fill in all required fields.', 'warning', 1500);
+      return;
+    }
+
+    const subscriptionId = +this.route.snapshot.paramMap.get('id')!;
+
+    const selectedDevices = this.deviceData.selectedDevices;
+    if (!selectedDevices || selectedDevices.length === 0) {
+      notify('Please select at least one device.', 'warning', 1500);
+      return;
+    }
+
+    selectedDevices.forEach(deviceId => {
+      const payload = {
+        subscriptionId: subscriptionId,
+        deviceId: deviceId
+      };
+
+      this.deviceService.create('SubscriptionsDevices/Create', payload as any).subscribe({
+        next: () => {
+          notify(`Device ${deviceId} linked successfully`, 'success', 1500);
+        },
+        error: (err) => {
+          notify('Error linking device', 'error', 2000);
+          console.error(err);
+        }
+      });
+    });
+
+    this.popupVisible = false;
+  }
+
+  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+    notify(e.itemData.name || e.itemData, 'success', 600);
   }
 }

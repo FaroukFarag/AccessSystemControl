@@ -162,10 +162,14 @@ export class SubscriptionsComponent {
     console.log('Start Date:', startFormatted);
     console.log('End Date:', endFormatted);
 
+
+    const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
+    const subscriptionTypeName = selectedType ? selectedType.name : '';
+
     const formData = new FormData();
 
     formData.append('CustomerName', this.subscriptionData.CustomerName);
-    formData.append('SubscriptionType', Number(this.subscriptionData.SubscriptionType).toString());
+    formData.append('SubscriptionTypeName', Number(this.subscriptionData.SubscriptionType).toString());
     formData.append('DeviceNumber', Number(this.subscriptionData.DeviceNumber).toString());
     formData.append('PaymentPerMonth', Number(this.subscriptionData.PaymentPerMonth).toString());
     formData.append('StartDate', startFormatted);
