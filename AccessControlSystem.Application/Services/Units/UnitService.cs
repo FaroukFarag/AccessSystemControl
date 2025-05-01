@@ -59,7 +59,7 @@ IUnitOfWork unitOfWork,
         return units;
     }
 
-    public override async Task<UnitDto> Update(UnitDto newUnitDto)
+    public override async Task<UnitDto> UpdateAsync(UnitDto newUnitDto)
     {
         var unit = await GetAsync(newUnitDto.Id);
 
@@ -68,15 +68,15 @@ IUnitOfWork unitOfWork,
         newUnitDto.ImagePath = await _imageService
             .SaveImageAsync(newUnitDto.ImageFile, SubscriptionConstants.SubFolder);
 
-        return await base.Update(newUnitDto);
+        return await base.UpdateAsync(newUnitDto);
     }
 
-    public override async Task<UnitDto> Delete(int id)
+    public override async Task<UnitDto> DeleteAsync(int id)
     {
         var unit = await GetAsync(id);
 
         _imageService.DeleteImageAsync(unit.ImagePath!);
 
-        return await base.Delete(id);
+        return await base.DeleteAsync(id);
     }
 }

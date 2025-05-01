@@ -19,20 +19,26 @@ public abstract class BaseController<TService, TEntity, TEntityDto, TPrimaryKey>
     }
 
     [HttpPost("Create")]
-    public virtual async Task<IActionResult> Create(TEntityDto dto)
+    public virtual async Task<IActionResult> Create(TEntityDto entityDto)
     {
-        return Ok(await _service.CreateAsync(dto));
+        return Ok(await _service.CreateAsync(entityDto));
+    }
+
+    [HttpPost("CreateRange")]
+    public virtual async Task<IActionResult> CreateRange(IEnumerable<TEntityDto> entitiesDtos)
+    {
+        return Ok(await _service.CreateRangeAsync(entitiesDtos));
     }
 
     [HttpGet("Get")]
     public virtual async Task<IActionResult> Get(TPrimaryKey id)
     {
-        var dto = await _service.GetAsync(id);
+        var entityDto = await _service.GetAsync(id);
 
-        if (dto == null)
+        if (entityDto == null)
             return NotFound();
 
-        return Ok(dto);
+        return Ok(entityDto);
     }
 
     [HttpGet("GetAll")]
@@ -48,26 +54,32 @@ public abstract class BaseController<TService, TEntity, TEntityDto, TPrimaryKey>
     }
 
     [HttpPut("Update")]
-    public virtual async Task<IActionResult> Update(TEntityDto dto)
+    public virtual async Task<IActionResult> Update(TEntityDto entityDto)
     {
-        return Ok(await _service.Update(dto));
+        return Ok(await _service.UpdateAsync(entityDto));
+    }
+
+    [HttpPut("UpdateRange")]
+    public virtual async Task<IActionResult> UpdateRange(IEnumerable<TEntityDto> entitiesDtos)
+    {
+        return Ok(await _service.UpdateRangeAsync(entitiesDtos));
     }
 
     [HttpDelete("Delete")]
     public virtual async Task<IActionResult> Delete(TPrimaryKey id)
     {
-        var dto = await _service.Delete(id);
+        var entityDto = await _service.DeleteAsync(id);
 
-        if (dto == null)
+        if (entityDto == null)
             return NotFound();
 
-        return Ok(dto);
+        return Ok(entityDto);
     }
 
     [HttpDelete("DeleteRange")]
-    public virtual async Task<IActionResult> DeleteRange(IEnumerable<TEntityDto> dtos)
+    public virtual async Task<IActionResult> DeleteRange(IEnumerable<TEntityDto> entitiesDtos)
     {
-        return Ok(await _service.DeleteRange(dtos));
+        return Ok(await _service.DeleteRangeAsync(entitiesDtos));
     }
 
     protected int GetCurrentUserId()

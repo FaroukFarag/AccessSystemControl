@@ -128,22 +128,19 @@ export class SubscriptionDetailsComponent implements OnInit {
       notify('Please select at least one device.', 'warning', 1500);
       return;
     }
+debugger
+    const sd = selectedDevices.map(deviceId => {
+      return { subscriptionId, deviceId }
+    });
 
-    selectedDevices.forEach(deviceId => {
-      const payload = {
-        subscriptionId: subscriptionId,
-        deviceId: deviceId
-      };
-
-      this.deviceService.create('SubscriptionsDevices/Create', payload as any).subscribe({
-        next: () => {
-          notify(`Device ${deviceId} linked successfully`, 'success', 1500);
-        },
-        error: (err) => {
-          notify('Error linking device', 'error', 2000);
-          console.error(err);
-        }
-      });
+    this.deviceService.create('SubscriptionsDevices/CreateRange', sd as any).subscribe({
+      next: () => {
+        notify(`Devices linked successfully`, 'success', 1500);
+      },
+      error: (err) => {
+        notify('Error linking devices', 'error', 2000);
+        console.error(err);
+      }
     });
 
     this.popupVisible = false;

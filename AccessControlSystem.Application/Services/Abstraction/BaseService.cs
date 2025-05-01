@@ -29,6 +29,15 @@ public class BaseService<TEntity, TEntityDto, TPrimaryKey>(
         return _mapper.Map<TEntityDto>(entity);
     }
 
+    public virtual async Task<bool> CreateRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
+    {
+        var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
+
+        await _repository.CreateRangeAsync(entities);
+
+        return await _unitOfWork.Complete();
+    }
+
     public virtual async Task<TEntityDto> GetAsync(TPrimaryKey id)
     {
         var entity = await _repository.GetAsync(id);
@@ -61,7 +70,7 @@ public class BaseService<TEntity, TEntityDto, TPrimaryKey>(
         return entitiesDtos;
     }
 
-    public virtual async Task<TEntityDto> Update(TEntityDto newEntityDto)
+    public virtual async Task<TEntityDto> UpdateAsync(TEntityDto newEntityDto)
     {
         var entity = _mapper.Map<TEntity>(newEntityDto);
 
@@ -72,7 +81,16 @@ public class BaseService<TEntity, TEntityDto, TPrimaryKey>(
         return _mapper.Map<TEntityDto>(entity);
     }
 
-    public virtual async Task<TEntityDto> Delete(TPrimaryKey id)
+    public virtual async Task<bool> UpdateRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
+    {
+        var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
+
+        _repository.UpdateRange(entities);
+
+        return await _unitOfWork.Complete();
+    }
+
+    public virtual async Task<TEntityDto> DeleteAsync(TPrimaryKey id)
     {
         var entity = _repository.Delete(id);
         var entityDto = _mapper.Map<TEntityDto>(entity);
@@ -82,7 +100,7 @@ public class BaseService<TEntity, TEntityDto, TPrimaryKey>(
         return entityDto;
     }
 
-    public async virtual Task<bool> DeleteRange(IEnumerable<TEntityDto> entitiesDtos)
+    public async virtual Task<bool> DeleteRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
     {
         var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
 

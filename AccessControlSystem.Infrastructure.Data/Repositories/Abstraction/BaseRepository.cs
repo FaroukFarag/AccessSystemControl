@@ -20,36 +20,19 @@ public class BaseRepository<TEntity, TPrimaryKey>(
     private readonly AccessControlDbContext _context = context;
     private readonly ISpecificationCombiner<TEntity> _specificationCombiner = specificationCombiner;
 
-    public async Task<TEntity> CreateAsync(TEntity entity)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
         await _context.Set<TEntity>().AddAsync(entity);
 
         return entity;
     }
 
-    public TEntity Update(TEntity newEntity)
+    public virtual async Task CreateRangeAsync(IEnumerable<TEntity> entities)
     {
-        _context.Set<TEntity>().Update(newEntity);
-
-        return newEntity;
+        await _context.Set<TEntity>().AddRangeAsync(entities);
     }
 
-    public TEntity Delete(TPrimaryKey id)
-    {
-        var entity = _context.Set<TEntity>().Find(id) ??
-            throw new ArgumentException($"Entity with id {id} not found.");
-
-        _context.Set<TEntity>().Remove(entity);
-
-        return entity;
-    }
-
-    public void DeleteRange(IEnumerable<TEntity> entities)
-    {
-        _context.Set<TEntity>().RemoveRange(entities);
-    }
-
-    public async Task<TEntity> GetAsync(TPrimaryKey id, IBaseSpecification<TEntity>? spec = null)
+    public virtual async Task<TEntity> GetAsync(TPrimaryKey id, IBaseSpecification<TEntity>? spec = null)
     {
         var query = ApplySpecification(spec);
 
@@ -67,14 +50,14 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         }
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync(IBaseSpecification<TEntity>? spec = null)
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(IBaseSpecification<TEntity>? spec = null)
     {
         var query = ApplySpecification(spec);
 
         return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllPaginatedAsync(
+    public virtual async Task<IEnumerable<TEntity>> GetAllPaginatedAsync(
         PaginatedModel paginatedModel,
         IBaseSpecification<TEntity>? spec = null)
     {
@@ -87,7 +70,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllFilteredAsync<TFilterDto>(
+    public virtual async Task<IEnumerable<TEntity>> GetAllFilteredAsync<TFilterDto>(
         TFilterDto filterDto,
         IBaseSpecification<TEntity>? spec = null)
     {
@@ -101,14 +84,41 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return await query.ToListAsync();
     }
 
-    public async Task<long> GetCountAsync(IBaseSpecification<TEntity>? spec = null)
+    public virtual TEntity Update(TEntity newEntity)
+    {
+        _context.Set<TEntity>().Update(newEntity);
+
+        return newEntity;
+    }
+
+    public virtual void UpdateRange(IEnumerable<TEntity> newEntities)
+    {
+        _context.Set<TEntity>().UpdateRange(newEntities);
+    }
+
+    public virtual TEntity Delete(TPrimaryKey id)
+    {
+        var entity = _context.Set<TEntity>().Find(id) ??
+            throw new ArgumentException($"Entity with id {id} not found.");
+
+        _context.Set<TEntity>().Remove(entity);
+
+        return entity;
+    }
+
+    public virtual void DeleteRange(IEnumerable<TEntity> entities)
+    {
+        _context.Set<TEntity>().RemoveRange(entities);
+    }
+
+    public virtual async Task<long> GetCountAsync(IBaseSpecification<TEntity>? spec = null)
     {
         var query = ApplySpecification(spec);
 
         return await query.CountAsync();
     }
 
-    public async Task<decimal> GetSumAsync(
+    public virtual async Task<decimal> GetSumAsync(
         Expression<Func<TEntity, decimal>> selector,
         IBaseSpecification<TEntity>? spec = null)
     {
@@ -117,7 +127,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return await query.SumAsync(selector);
     }
 
-    public async Task<decimal> GetAverageAsync(
+    public virtual async Task<decimal> GetAverageAsync(
         Expression<Func<TEntity, decimal>> selector,
         IBaseSpecification<TEntity>? spec = null)
     {
@@ -126,7 +136,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return await query.AverageAsync(selector);
     }
 
-    public async Task<TResult> GetMaxAsync<TResult>(
+    public virtual async Task<TResult> GetMaxAsync<TResult>(
         Expression<Func<TEntity, TResult>> selector,
         IBaseSpecification<TEntity>? spec = null)
     {
@@ -135,7 +145,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return await query.MaxAsync(selector);
     }
 
-    public async Task<TResult> GetMinAsync<TResult>(
+    public virtual async Task<TResult> GetMinAsync<TResult>(
         Expression<Func<TEntity, TResult>> selector,
         IBaseSpecification<TEntity>? spec = null)
     {
@@ -154,6 +164,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return query
             .ApplyCriteria(spec.Criteria)
             .ApplyIncludes(spec.Includes)
+            .ApplyIncludesThen(spec.IncludesThen)
             .ApplyOrderBy(spec.OrderBy)
             .ApplyOrderByDescending(spec.OrderByDescending);
     }

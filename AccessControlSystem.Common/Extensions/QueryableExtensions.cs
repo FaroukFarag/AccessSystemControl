@@ -24,6 +24,22 @@ public static class QueryableExtensions
         return includes.Aggregate(query, (current, include) => current.Include(include));
     }
 
+    public static IQueryable<TEntity> ApplyIncludesThen<TEntity>(
+        this IQueryable<TEntity> query,
+        List<(Expression<Func<TEntity, IEnumerable<object>>> Path, Expression<Func<object, object>> ThenInclude)>? includesThen)
+        where TEntity : class
+    {
+        if (includesThen == null || includesThen.Count == 0)
+            return query;
+
+        foreach (var (path, thenInclude) in includesThen)
+        {
+            query = query.Include(path).ThenInclude(thenInclude);
+        }
+
+        return query;
+    }
+
     public static IQueryable<TEntity> ApplyOrderBy<TEntity>(
         this IQueryable<TEntity> query,
         Expression<Func<TEntity, object>>? orderBy)

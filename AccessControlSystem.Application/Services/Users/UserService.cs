@@ -60,7 +60,7 @@ public class UserService(
         return usersDtos;
     }
 
-    public async override Task<UserDto> Update(UserDto newUserDto)
+    public async override Task<UserDto> UpdateAsync(UserDto newUserDto)
     {
         var existingUser = await _userManager.FindByIdAsync(newUserDto.Id.ToString());
 

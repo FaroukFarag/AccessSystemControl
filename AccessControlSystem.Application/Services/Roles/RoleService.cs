@@ -28,7 +28,7 @@ public class RoleService(
         return result.Succeeded ? roleDto : default!;
     }
 
-    public async override Task<RoleDto> Update(RoleDto newRoleDto)
+    public async override Task<RoleDto> UpdateAsync(RoleDto newRoleDto)
     {
         var role = _mapper.Map<Role>(newRoleDto);
 
