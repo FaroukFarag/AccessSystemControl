@@ -42,29 +42,12 @@ public class SubscriptionService(
         });
         var subscriptionDto = _mapper.Map<SubscriptionDto>(subscription);
 
-        if (!string.IsNullOrEmpty(subscription.ImagePath) && File.Exists(subscription.ImagePath))
-        {
-            var imageBytes = await File.ReadAllBytesAsync(subscription.ImagePath);
-
-            subscriptionDto.ImageEncode = $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
-        }
-
         return subscriptionDto;
     }
 
     public override async Task<IEnumerable<SubscriptionDto>> GetAllAsync()
     {
         var subscriptions = await base.GetAllAsync();
-
-        foreach (var subscription in subscriptions)
-        {
-            if (!string.IsNullOrEmpty(subscription.ImagePath) && File.Exists(subscription.ImagePath))
-            {
-                var imageBytes = await File.ReadAllBytesAsync(subscription.ImagePath);
-
-                subscription.ImageEncode = $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
-            }
-        }
 
         return subscriptions;
     }

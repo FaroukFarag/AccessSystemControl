@@ -8,6 +8,7 @@ using AccessControlSystem.Application.AutoMapper.Subscriptions;
 using AccessControlSystem.Application.AutoMapper.SubscriptionsDevices;
 using AccessControlSystem.Application.AutoMapper.Units;
 using AccessControlSystem.Application.AutoMapper.Users;
+using AccessControlSystem.Application.Configurations;
 using AccessControlSystem.Application.Interfaces.Abstraction;
 using AccessControlSystem.Application.Interfaces.AccessGroupDevices;
 using AccessControlSystem.Application.Interfaces.AccessGroups;
@@ -81,6 +82,8 @@ public static class DependencyContainer
     public static void RegisterConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtTokenSettings>(configuration.GetSection(JwtTokenSettings.SectionName));
+
+        services.Configure<ImageSettings>(configuration.GetSection(ImageSettings.SectionName));
     }
 
     public static void RegisterServices(this IServiceCollection services)

@@ -1,7 +1,7 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>Subscriptions Name</h4>
+    <h4>{{ subscription.customerName }}</h4>
   </div>
   <span>Review village details and information</span>
 </div>
@@ -9,10 +9,10 @@
 <div class="subscription-container mb-5">
   <div class="header">
     <div>
-      <strong>Plan:</strong> {{ subscription.plan }}
+      <strong>Plan:</strong> {{ subscription.subscriptionTypeName }}
     </div>
     <div>
-      <strong>Payment:</strong> ${{ subscription.payment }} <span class="subtext">/ per month</span>
+      <strong>Payment:</strong> ${{ subscription.paymentPerMonth }} <span class="subtext">/ per month</span>
     </div>
     <div>
       <strong>Start:</strong> {{ subscription.startDate }}
@@ -30,85 +30,67 @@
     <div class="usage-card">
       <div>Admins</div>
       <div class="bar">
-        <div class="progress"
-          [style.width.%]="getProgress(subscription.usage.admins.used, subscription.usage.admins.total)"></div>
+        <div class="progress" [style.width.%]="getProgress(subscription.usedAdmins, subscription.adminNumber)"></div>
       </div>
-      <div>{{ subscription.usage.admins.used }} / {{ subscription.usage.admins.total }}</div>
+      <div>{{ subscription.usedAdmins }} / {{ subscription.adminNumber }}</div>
     </div>
 
     <div class="usage-card">
       <div>Devices</div>
       <div class="bar">
-        <div class="progress"
-          [style.width.%]="getProgress(subscription.usage.devices.used, subscription.usage.devices.total)"></div>
+        <div class="progress" [style.width.%]="getProgress(subscription.usedDevices, subscription.deviceNumber)"></div>
       </div>
-      <div>{{ subscription.usage.devices.used }} / {{ subscription.usage.devices.total }}</div>
+      <div>{{ subscription.usedDevices }} / {{ subscription.deviceNumber }}</div>
     </div>
 
     <div class="usage-card">
       <div>Cards</div>
       <div class="bar">
-        <div class="progress"
-          [style.width.%]="getProgress(subscription.usage.cards.used, subscription.usage.cards.total)"></div>
+        <div class="progress" [style.width.%]="getProgress(subscription.usedCards, subscription.cardNumber)"></div>
       </div>
-      <div>{{ subscription.usage.cards.used }} / {{ subscription.usage.cards.total }}</div>
+      <div>{{ subscription.usedCards }} / {{ subscription.cardNumber }}</div>
     </div>
   </div>
 </div>
-
 
 <!--SECTION TWO  SUBSCRIPTION DEVICES-->
 <div class="devices-container">
   <div class="devices-header">
     <div class="title">
-      <strong>Devices</strong> <span class="count">({{ devices.length }})</span>
+      <strong>Devices</strong> <span class="count">({{ subscription.devices.length }})</span>
     </div>
     <div class="actions">
-      <dx-button class="button-info me-1"
-                 text="Add Device"
-                 (onClick)="showAddDevicePopup()">
+      <dx-button class="button-info me-1" text="Add Device" (onClick)="showAddDevicePopup()">
       </dx-button>
       <a href="#" class="view-all">View All</a>
     </div>
   </div>
 
   <div class="devices-slider">
-    <div class="device-card" *ngFor="let device of devices">
+    <div class="device-card" *ngFor="let device of subscription.devices">
       <img [src]="device.image" alt="Device image" class="device-img" />
       <div class="device-name">{{ device.name }}</div>
-      <div class="device-status active">{{ device.status }}</div>
+      <div class="device-status active">{{ device.active ? 'Active' : 'Inactive' }}</div>
 
       <div class="device-info">
         <label><input type="checkbox" disabled /> Status:</label>
         <label>
           <input type="checkbox" disabled />
-          Mac Address: <span class="mac">{{ device.mac }}</span>
+          Mac Address: <span class="mac">{{ device.macAddress }}</span>
         </label>
-        <label><input type="checkbox" disabled /> Device type: {{ device.type }}</label>
+        <label><input type="checkbox" disabled /> Device type: {{ device.deviceTypeName }}</label>
       </div>
     </div>
   </div>
-
 </div>
 
-
-
 <!--ADD DEVICE POPUP-->
-<dx-popup [width]="600"
-          [height]="450"
-          [showTitle]="true"
-          title="Add New Device"
-          [dragEnabled]="true"
-          [hideOnOutsideClick]="true"
-          [showCloseButton]="true"
-          [(visible)]="popupVisible">
-  <dx-form [formData]="deviceData"
-           [colCount]="1"
-           [labelLocation]="'top'">
+<dx-popup [width]="600" [height]="450" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+  <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
 
 
-    <dxi-item dataField="selectedDevices" editorType="dxTagBox"
-              [editorOptions]="{
+    <dxi-item dataField="selectedDevices" editorType="dxTagBox" [editorOptions]="{
             dataSource: devicesList,
             placeholder: 'Select devices',
             valueExpr: 'id',

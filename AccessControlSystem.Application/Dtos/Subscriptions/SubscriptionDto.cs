@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Application.Common.Utilities;
 using AccessControlSystem.Application.Dtos.Abstraction;
+using AccessControlSystem.Application.Dtos.Devices;
 using AccessControlSystem.Domain.Enums.Subscriptions;
 
 namespace AccessControlSystem.Application.Dtos.Subscriptions;
@@ -20,4 +21,6 @@ public class SubscriptionDto : BaseImageModelDto<int>
     public DateOnly EndDate { get; set; }
     public string? Note { get; set; }
     public string RenewalInfo => RenewalCalculator.GetRenewalInfo(EndDate);
+
+    public IEnumerable<DeviceDto> Devices { get; set; } = default!;
 }

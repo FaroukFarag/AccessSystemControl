@@ -1,4 +1,5 @@
 ﻿using AccessControlSystem.Application.Dtos.Units;
+using AccessControlSystem.Application.Resolvers;
 using AccessControlSystem.Domain.Models.Units;
 using AutoMapper;
 
@@ -8,6 +9,9 @@ public class UnitProfile : Profile
 {
     public UnitProfile()
     {
-        CreateMap<Unit, UnitDto>().ReverseMap();
+        CreateMap<Unit, UnitDto>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<ImageUrlResolver>())
+            .ReverseMap();
     }
 }

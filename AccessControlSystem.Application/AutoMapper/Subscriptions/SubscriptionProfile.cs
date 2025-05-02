@@ -1,4 +1,5 @@
 ﻿using AccessControlSystem.Application.Dtos.Subscriptions;
+using AccessControlSystem.Application.Resolvers;
 using AccessControlSystem.Domain.Models.Subscriptions;
 using AutoMapper;
 
@@ -11,12 +12,16 @@ public class SubscriptionProfile : Profile
         CreateMap<Subscription, SubscriptionDto>()
             .ForMember(des => des.SubscriptionTypeName, opt => opt
                 .MapFrom(src => src.SubscriptionType.ToString()))
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<ImageUrlResolver>())
             .ForMember(des => des.UsedAdmins, opt => opt
                 .MapFrom(src => src.Users.Count()))
             .ForMember(des => des.UsedDevices, opt => opt
                 .MapFrom(src => src.SubscriptionsDevices.Count()))
             .ForMember(des => des.UsedCards, opt => opt
-                .MapFrom(src => src.Cards.Count()));
+                .MapFrom(src => src.Cards.Count()))
+            .ForMember(des => des.Devices, opt => opt
+                .MapFrom(src => src.SubscriptionsDevices.Select(sd => sd.Device)));
 
         CreateMap<SubscriptionDto, Subscription>();
     }

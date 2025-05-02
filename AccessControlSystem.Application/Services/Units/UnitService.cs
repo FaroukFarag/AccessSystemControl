@@ -32,29 +32,12 @@ IUnitOfWork unitOfWork,
     {
         var unit = await base.GetAsync(id);
 
-        if (!string.IsNullOrEmpty(unit.ImagePath) && File.Exists(unit.ImagePath))
-        {
-            var imageBytes = await File.ReadAllBytesAsync(unit.ImagePath);
-
-            unit.ImageEncode = $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
-        }
-
         return unit;
     }
 
     public override async Task<IEnumerable<UnitDto>> GetAllAsync()
     {
         var units = await base.GetAllAsync();
-
-        foreach (var unit in units)
-        {
-            if (!string.IsNullOrEmpty(unit.ImagePath) && File.Exists(unit.ImagePath))
-            {
-                var imageBytes = await File.ReadAllBytesAsync(unit.ImagePath);
-
-                unit.ImageEncode = $"data:image/jpeg;base64,{Convert.ToBase64String(imageBytes)}";
-            }
-        }
 
         return units;
     }

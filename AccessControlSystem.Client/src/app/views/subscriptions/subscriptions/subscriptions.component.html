@@ -13,7 +13,7 @@
 </div>
 
 <!-- ADD Subscription POPUP-->
-<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add ew Device" [dragEnabled]="true"
+<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add New Subscription" [dragEnabled]="true"
   [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form #subscriptionFormRef [formData]="subscriptionData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
@@ -86,7 +86,7 @@
 <div class="row">
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of subscriptions">
     <div class="card mb-2">
-      <img [src]="sub.imageEncode" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(sub.id)">
+      <img [src]="sub.imagePath" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(sub.id)">
       <div class="village-name" (click)="navigateToDetailsPage(sub.id)">{{sub.name}}</div>
       <div class="top-right-text">{{sub.renewalInfo}}</div>
     </div>
