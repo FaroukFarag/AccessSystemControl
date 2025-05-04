@@ -112,6 +112,7 @@ export class DeviceDetailsComponent {
   ];
   deviceDetails: any = null; 
   deviceId: string = '';
+  
   constructor(private route: ActivatedRoute, private deviceService: DeviceService) { }
  
 

@@ -39,33 +39,14 @@ import { DeviceService } from '../../../services/devices/device.service';
 export class SubscriptionDetailsComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   popupVisible: boolean = false;
-  // subscription = {
-  //   subscriptionTypeName: 'Standard',
-  //   paymentPerMonth: 240,
-  //   startDate: '31-03-2024',
-  //   endDate: '31-03-2026',
-  //   usedAdmins: 3,
-  //   adminNumber: 5,
-  //   usedDevices: 12,
-  //   deviceNumber: 20,
-  //   usedCards: 2,
-  //   cardNumber: 3,
-  //   devices: Array.from({ length: 12 }).map((_, i) => ({
-  //     name: `Device ${i + 1}`,
-  //     active: 'Active',
-  //     macAddress: `50:80:D0:63:XX:${(i + 10).toString(16).toUpperCase()}`,
-  //     deviceTypeName: 'Type name',
-  //     image: '/assets/images/device.png'
-  //   }))
-  // };
   subscription: any;
   imageValidationError: string = '';
   deviceListEditorOptions: any
-
   deviceData = {
     selectedDevices: [] as number[],  
   };
   devicesList: any;
+
   constructor(
     private route: ActivatedRoute,
     private subscriptionsService: SubscriptionService,
@@ -96,6 +77,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   getAllDevices() {
     this.deviceService.getAll('Devices/GetAll').subscribe((data: any) => {
+      debugger
       this.devicesList = data;
       console.log("DEVICCES", this.devicesList);
 

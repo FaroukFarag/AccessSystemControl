@@ -143,7 +143,7 @@
 <div class="row m-auto">
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
     <div class="card-header">
-      <img [src]=" '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
+      <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
       <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
       <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
     </div>

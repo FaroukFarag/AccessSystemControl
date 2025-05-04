@@ -7,24 +7,24 @@
 </div>
 
 <div class="device-data">
-  <div class="img"><img [src]="deviceDetails.image || '/assets/images/device.png'" alt="Device Image"/></div>
+  <div class="img"><img [src]="deviceDetails?.imagePath || '/assets/images/device.png'" alt="Device Image"/></div>
   <div class="device-info">
-    <div class="device-name">{{ deviceDetails.name || 'Device Name' }}</div>
+    <div class="device-name">{{ deviceDetails?.name || 'Device Name' }}</div>
 
     <div class="info">
       <img class="icon " src="/assets/icons/status.svg" />
-      <span class="info-name">Stsus:</span>
-      <span class="info-value active"> {{ deviceDetails.status || 'Active' }}</span>
+      <span class="info-name">Status:</span>
+      <span class="info-value active"> {{ deviceDetails?.active ? 'Active' : 'Inactive' }}</span>
     </div>
     <div class="info">
       <img class="icon" src="/assets/icons/device.svg" />
       <span class="info-name">Device type:</span>
-      <span class="info-value">{{ deviceDetails.type || 'Type Name' }}</span>
+      <span class="info-value">{{ deviceDetails?.deviceTypeName || 'Type Name' }}</span>
     </div>
     <div class="info">
       <img class="icon " src="/assets/icons/mac-address.svg" />
       <span class="info-name">Mac Address:</span>
-      <span class="info-value">{{ deviceDetails.macAddress || 'mac Address' }}</span>
+      <span class="info-value">{{ deviceDetails?.macAddress || 'mac Address' }}</span>
     </div>
   </div>
   
