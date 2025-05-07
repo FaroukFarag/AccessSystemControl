@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Users;
+using AccessControlSystem.Domain.Enums.Roles;
 using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.WebApi.Controllers.Abstraction;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,10 @@ public class UsersController(IUserService userService)
     : BaseController<IUserService, User, UserDto, int>(userService)
 {
     private readonly IUserService _userService = userService;
+
+    [HttpGet("GetAllOwners")]
+    public async Task<IActionResult> GetAllOwners()
+        => Ok(await _userService.GetAllUsersByRoleAsync((int)RoleNames.Owner));
 
     [HttpPost("Login")]
     [AllowAnonymous]

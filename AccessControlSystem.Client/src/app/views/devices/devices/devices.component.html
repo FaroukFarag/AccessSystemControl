@@ -10,15 +10,11 @@
 <!-- GOUP DEVICES IF OWNER-->
 <!--PAGE HEADER IF Owner-->
 <div class="page-header">
-  <dx-button class="button-info me-1"
-             text="Group devices"
-             >
+  <dx-button class="button-info me-1" text="Group devices">
   </dx-button>
 
-  <dx-drop-down-button text="Sort by"
-                       [dropDownOptions]="{ width: 180 }"
-                       [items]="sortBy"
-                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+    (onItemClick)="onItemClick($event)"></dx-drop-down-button>
 
 </div>
 
@@ -33,8 +29,8 @@
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
     <div class="card-header">
       <img [src]=" '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />-->
-      <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
-      <!--<span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+<!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
+<!--<span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/status.svg" /></div>
@@ -63,44 +59,27 @@
 
 <!--PAGE HEADER IF ADMIN-->
 <div class="page-header">
-  <dx-button class="button-info me-1"
-             text="Add Device"
-             (onClick)="showAddDevicePopup()">
+  <dx-button class="button-info me-1" text="Add Device" (onClick)="showAddDevicePopup()">
   </dx-button>
 
 
-  <dx-drop-down-button text="Sort by"
-                       [dropDownOptions]="{ width: 180 }"
-                       [items]="sortBy"
-                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+    (onItemClick)="onItemClick($event)"></dx-drop-down-button>
 
 </div>
 
 
 <!-- ADD DEVICE POPUP-->
-<dx-popup [width]="600"
-          [height]="420"
-          [showTitle]="true"
-          title="Add New Device"
-          [dragEnabled]="true"
-          [hideOnOutsideClick]="true"
-          [showCloseButton]="true"
-          [(visible)]="popupVisible">
-  <dx-form [formData]="deviceData"
-           [colCount]="1"
-           [labelLocation]="'top'">
+<dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+  <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'"
-                          [labelText]="''"
-                          accept="image/*"
-                          uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
-        <img *ngIf="deviceData.deviceImageUrl"
-             [src]="deviceData.deviceImageUrl"
-             alt="Device Preview"
-             class="thumbnail" />
+        <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
+          class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}
         </div>
@@ -115,11 +94,13 @@
     <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'Device MAC address' }">
       <dxi-validation-rule type="required" message="Device MAC address is required">
       </dxi-validation-rule>
+      <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
+        message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+      </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="deviceType" editorType="dxSelectBox"
-              [editorOptions]="{
+    <dxi-item dataField="deviceType" editorType="dxSelectBox" [editorOptions]="{
          dataSource: deviceTypes,
          placeholder: 'Device type',
          valueExpr: 'id',
@@ -129,7 +110,7 @@
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
-   
+
 
   </dx-form>
   <dxi-item itemType="button">
@@ -141,7 +122,8 @@
 
 <!--ALL DEVICES-->
 <div class="row m-auto">
-  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
+    *ngFor="let device of devicesList">
     <div class="card-header">
       <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
       <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
@@ -162,7 +144,7 @@
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
       <div class="info"> Device type: </div>
-      <div class="info-value"> {{device.deviceType}}</div>
+      <div class="info-value"> {{device.deviceTypeName}}</div>
     </div>
   </div>
 </div>

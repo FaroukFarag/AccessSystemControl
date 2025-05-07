@@ -6,6 +6,7 @@ namespace AccessControlSystem.Application.Interfaces.Users;
 
 public interface IUserService : IBaseService<User, UserDto, int>
 {
+    Task<IEnumerable<UserDto>> GetAllUsersByRoleAsync(int roleId);
     Task<LoggedInDto> LoginAsync(LoginDto model, bool isCashier);
     Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
     Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);

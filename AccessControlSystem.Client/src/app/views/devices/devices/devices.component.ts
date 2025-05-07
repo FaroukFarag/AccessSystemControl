@@ -52,6 +52,7 @@ export class DevicesComponent {
     deviceType: '',
     macAddress: ''
   };
+  macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any
  
   deviceTypes = [
@@ -77,16 +78,16 @@ export class DevicesComponent {
       'id': '6',
       'name': 'Wireless Door Locks'
     },
-  ]
+  ];
+
   constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer) {
 
     this.deviceTypeEditorOptions = {
       dataSource: this.deviceTypes,
-      valueExpr: 'name',
+      valueExpr: 'id',
       displayExpr: 'name',
       searchEnabled: true,
       showClearButton: true,
-      value: 'Type 1',
       placeholder: 'Device type'
     };
   }
@@ -113,8 +114,6 @@ export class DevicesComponent {
       macAddress: ''
     };
   }
-
-
 
   navigateToDetailsPage(deviceId: string) {
     this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });

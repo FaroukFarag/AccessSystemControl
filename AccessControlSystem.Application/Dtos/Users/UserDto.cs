@@ -8,4 +8,5 @@ public class UserDto : BaseModelDto<int>
     public string Email { get; set; } = default!;
     public string? Password { get; set; }
     public string PhoneNumber { get; set; } = default!;
+    public string RoleId { get; set; }
 }

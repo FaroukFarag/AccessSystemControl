@@ -38,6 +38,7 @@ import { DeviceService } from '../../../services/devices/device.service';
 })
 export class SubscriptionDetailsComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
+  id!: number;
   popupVisible: boolean = false;
   subscription: any;
   imageValidationError: string = '';
@@ -64,9 +65,9 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
  
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id')!;
+    this.id = +this.route.snapshot.paramMap.get('id')!;
 
-    this.subscriptionsService.getById('Subscriptions/Get', id).subscribe(data => {
+    this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe(data => {
       this.subscription = data;
     })
   }
@@ -76,10 +77,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   getAllDevices() {
-    this.deviceService.getAll('Devices/GetAll').subscribe((data: any) => {
-      debugger
+    this.deviceService.getAll(`Devices/GetAvailableDevicesForSubscription?subscriptionId=${this.id}`).subscribe((data: any) => {
       this.devicesList = data;
-      console.log("DEVICCES", this.devicesList);
 
     })
   }
@@ -104,20 +103,19 @@ export class SubscriptionDetailsComponent implements OnInit {
       return;
     }
 
-    const subscriptionId = +this.route.snapshot.paramMap.get('id')!;
-
     const selectedDevices = this.deviceData.selectedDevices;
     if (!selectedDevices || selectedDevices.length === 0) {
       notify('Please select at least one device.', 'warning', 1500);
       return;
     }
-debugger
-    const sd = selectedDevices.map(deviceId => {
-      return { subscriptionId, deviceId }
+
+    const subscriptionsDevices = selectedDevices.map(deviceId => {
+      return { subscriptionId: this.id, deviceId }
     });
 
-    this.deviceService.create('SubscriptionsDevices/CreateRange', sd as any).subscribe({
+    this.deviceService.create('SubscriptionsDevices/CreateRange', subscriptionsDevices as any).subscribe({
       next: () => {
+        this.getAllDevices();
         notify(`Devices linked successfully`, 'success', 1500);
       },
       error: (err) => {

@@ -13,6 +13,7 @@ public class DeviceDtoValidator : AbstractValidator<DeviceDto>
 
         RuleFor(d => d.MacAddress)
             .NotEmpty()
-            .MaximumLength(50);
+            .MaximumLength(50)
+            .Matches(@"^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$|^([0-9A-Fa-f]{4}\.){2}([0-9A-Fa-f]{4})$");
     }
 }

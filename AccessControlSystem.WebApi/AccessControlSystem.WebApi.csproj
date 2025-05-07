@@ -8,6 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="images\devices\217d989f-1816-4582-b2ff-e194973fd401.png" />
+    <Content Include="images\devices\3e63d206-6cf8-47b0-92ba-b60f04326b8f.png" />
+    <Content Include="images\devices\7e2338c0-43cb-4f0b-b4bb-dd386db885fb.png" />
+    <Content Include="images\devices\9a478d02-acd3-4565-a45a-df32d79d97c6.png" />
+    <Content Include="images\subscriptions\167cbd7f-bc53-4ede-84d0-4ae681ab50c2.png" />
+    <Content Include="images\subscriptions\30f1fc01-cba8-412c-8556-a639c264971e.png" />
+    <Content Include="images\subscriptions\488a4f92-8768-4287-be0f-5a5358de68d8.jpg" />
+    <Content Include="images\subscriptions\504f60b0-ba91-453f-9c30-fec15d49ffa2.png" />
+    <Content Include="images\subscriptions\62108bd8-b96c-48b5-9163-7b1dd9df2745.jpg" />
+    <Content Include="images\subscriptions\6b0f5898-e20e-4e7d-b19e-57566642ab93.jpg" />
+    <Content Include="images\subscriptions\7470b6e2-cd9b-45c2-9541-e801d2649ef5.jpg" />
+    <Content Include="images\subscriptions\a5e7bd0f-5f14-424d-ac30-f4778ac2e6cd.png" />
+    <Content Include="images\subscriptions\b26c6bbb-61ba-40f9-96f8-ba65691f090b.jpg" />
+    <Content Include="images\subscriptions\cce26206-5a79-40e5-b141-84b6a21f11f1.png" />
+    <Content Include="images\subscriptions\ddc44237-e92e-4cda-a779-4d91d4df802b.jpg" />
+    <Content Include="images\subscriptions\f0664a7f-47d8-4a2d-a5de-a6e540dbf57d.jpg" />
+    <Content Include="images\subscriptions\f553c27f-3959-440d-acb3-929049000d6e.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
@@ -20,26 +40,6 @@
     <ProjectReference Include="..\AccessControlSystem.Application\AccessControlSystem.Application.csproj" />
     <ProjectReference Include="..\AccessControlSystem.Infrastructure.Data\AccessControlSystem.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\AccessControlSystem.Infrastructure.IoC\AccessControlSystem.Infrastructure.IoC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\images\devices\217d989f-1816-4582-b2ff-e194973fd401.png" />
-    <None Include="wwwroot\images\devices\3e63d206-6cf8-47b0-92ba-b60f04326b8f.png" />
-    <None Include="wwwroot\images\devices\7e2338c0-43cb-4f0b-b4bb-dd386db885fb.png" />
-    <None Include="wwwroot\images\devices\9a478d02-acd3-4565-a45a-df32d79d97c6.png" />
-    <None Include="wwwroot\images\subscriptions\167cbd7f-bc53-4ede-84d0-4ae681ab50c2.png" />
-    <None Include="wwwroot\images\subscriptions\30f1fc01-cba8-412c-8556-a639c264971e.png" />
-    <None Include="wwwroot\images\subscriptions\488a4f92-8768-4287-be0f-5a5358de68d8.jpg" />
-    <None Include="wwwroot\images\subscriptions\504f60b0-ba91-453f-9c30-fec15d49ffa2.png" />
-    <None Include="wwwroot\images\subscriptions\62108bd8-b96c-48b5-9163-7b1dd9df2745.jpg" />
-    <None Include="wwwroot\images\subscriptions\6b0f5898-e20e-4e7d-b19e-57566642ab93.jpg" />
-    <None Include="wwwroot\images\subscriptions\7470b6e2-cd9b-45c2-9541-e801d2649ef5.jpg" />
-    <None Include="wwwroot\images\subscriptions\a5e7bd0f-5f14-424d-ac30-f4778ac2e6cd.png" />
-    <None Include="wwwroot\images\subscriptions\b26c6bbb-61ba-40f9-96f8-ba65691f090b.jpg" />
-    <None Include="wwwroot\images\subscriptions\cce26206-5a79-40e5-b141-84b6a21f11f1.png" />
-    <None Include="wwwroot\images\subscriptions\ddc44237-e92e-4cda-a779-4d91d4df802b.jpg" />
-    <None Include="wwwroot\images\subscriptions\f0664a7f-47d8-4a2d-a5de-a6e540dbf57d.jpg" />
-    <None Include="wwwroot\images\subscriptions\f553c27f-3959-440d-acb3-929049000d6e.png" />
   </ItemGroup>
 
 </Project>

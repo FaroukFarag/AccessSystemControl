@@ -3,9 +3,9 @@ using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Common.Tokens.Interfaces;
-using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
+using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Shared;
 using AccessControlSystem.Domain.Models.Users;
 using AutoMapper;
@@ -19,7 +19,7 @@ public class UserService(
     IMapper mapper,
     SignInManager<User> signInManager,
     UserManager<User> userManager,
-    IRoleRepository roleRepository,
+    RoleManager<Role> roleManager,
     ITokensService tokensService) :
     BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
 {
@@ -28,7 +28,7 @@ public class UserService(
     private readonly IMapper _mapper = mapper;
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly UserManager<User> _userManager = userManager;
-    private readonly IRoleRepository _roleRepository = roleRepository;
+    private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly ITokensService _tokensService = tokensService;
 
     public async override Task<UserDto> CreateAsync(UserDto userDto)
@@ -38,6 +38,12 @@ public class UserService(
         var userResult = await _userManager.CreateAsync(user, userDto.Password!);
 
         if (!userResult.Succeeded)
+            return default!;
+
+        var role = await _roleManager.FindByIdAsync(userDto.RoleId);
+        var roleResult = await _userManager.AddToRoleAsync(user, role!.Name!);
+
+        if (!roleResult.Succeeded)
             return default!;
 
         return userDto;
@@ -58,6 +64,15 @@ public class UserService(
         var usersDtos = _mapper.Map<IReadOnlyList<UserDto>>(users);
 
         return usersDtos;
+    }
+
+    public async Task<IEnumerable<UserDto>> GetAllUsersByRoleAsync(int roleId)
+    {
+        var role = await _roleManager.FindByIdAsync(roleId.ToString());
+        var usersInRole = await _userManager.GetUsersInRoleAsync(role!.Name!);
+        var userDtos = _mapper.Map<IReadOnlyList<UserDto>>(usersInRole);
+
+        return userDtos;
     }
 
     public async override Task<UserDto> UpdateAsync(UserDto newUserDto)

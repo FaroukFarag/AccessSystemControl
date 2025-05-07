@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Domain.Models.AccessGroupDevices;
 using AccessControlSystem.Domain.Models.AccessGroups;
+using AccessControlSystem.Domain.Models.Cards;
 using AccessControlSystem.Domain.Models.Devices;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Subscriptions;
@@ -8,6 +9,7 @@ using AccessControlSystem.Domain.Models.Units;
 using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.AccessGroupDevices;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.AccessGroups;
+using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Cards;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Devices;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Roles;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Subscriptions;
@@ -27,6 +29,7 @@ public class AccessControlDbContext(DbContextOptions options) : IdentityDbContex
     public DbSet<SubscriptionDevice> SubscriptionsDevices { get; set; }
     public DbSet<AccessGroup> AccessGroups { get; set; }
     public DbSet<AccessGroupDevice> AccessGroupDevices { get; set; }
+    public DbSet<Card> Cards { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,5 +43,6 @@ public class AccessControlDbContext(DbContextOptions options) : IdentityDbContex
         modelBuilder.ApplyConfiguration(new AccessGroupConfigurations());
         modelBuilder.ApplyConfiguration(new AccessGroupDeviceConfigurations());
         modelBuilder.ApplyConfiguration(new SubscriptionDeviceConfigurations());
+        modelBuilder.ApplyConfiguration(new CardConfigurations());
     }
 }

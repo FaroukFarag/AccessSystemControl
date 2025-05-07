@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import {
@@ -10,11 +10,13 @@ import {
   DxTextAreaModule,
   DxDateBoxModule,
   DxFormModule,
+  DxFormComponent,
 } from 'devextreme-angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
+import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 
 import notify from 'devextreme/ui/notify';
+import { UserService } from '../../../services/users/user.service';
+import { User } from '../../../models/users/user';
 @Component({
   selector: 'app-owners',
   standalone: true,
@@ -31,11 +33,20 @@ import notify from 'devextreme/ui/notify';
   templateUrl: './owners.component.html',
   styleUrl: './owners.component.scss'
 })
-export class OwnersComponent {
+export class OwnersComponent implements OnInit {
+  @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   sortBy = ['Recent', 'date'];
-  constructor(private router: Router) { }
-
-  subscriptions: any = [
+  popupVisible: boolean = false;
+  ownerData: User = {
+    id: 0,
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    roleId: '3',
+    password: '',
+    confirmPassword: ''
+  };
+  owners: any = [
     {
       'id': '1',
       'name': 'Village Name',
@@ -169,10 +180,60 @@ export class OwnersComponent {
     },
   ]
 
+  constructor(private router: Router, private userService: UserService) { }
+
+  ngOnInit(): void {
+    this.getAllOwners();
+  }
+
+  getAllOwners() {
+    this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
+      this.owners = data;
+    })
+  }
+
+  passwordComparison = () => {
+    return this.ownerData.password;
+  };
+
+  showAddOwnerPopup() {
+    this.popupVisible = true;
+    this.ownerData = {
+      id: 0,
+      userName: '',
+      email: '',
+      phoneNumber: '',
+      roleId: '3',
+      password: '',
+      confirmPassword: ''
+    };
+  }
+
+  submitOwner() {
+    const result = this.dxForm.instance.validate();
+
+    if (!result.isValid) {
+      notify('Please fill in all required fields.', 'warning', 1500);
+      return;
+    }
+
+    this.userService.create('Users/Create', this.ownerData).subscribe({
+      next: (response) => {
+        notify('Device created successfully', 'success', 1500);
+        this.popupVisible = false;
+        this.getAllOwners(); 
+      },
+      error: (err) => {
+        notify('Error creating device', 'error', 2000);
+        console.error(err);
+      }
+    });
+  }
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
+
   navigateToDetailsPage() {
     this.router.navigate(['/owner-details']);
   }

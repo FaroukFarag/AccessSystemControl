@@ -6,35 +6,75 @@
   <span>Review all Owners details and information</span>
 </div>
 <div class="page-header">
-  <dx-drop-down-button text="Sort by"
-                       [dropDownOptions]="{ width: 180 }"
-                       [items]="sortBy"
-                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+    (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-button class="button-info me-1" text="Add Owner" (onClick)="showAddOwnerPopup()">
+  </dx-button>
 </div>
 
+<dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Owner" [dragEnabled]="true"
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+  <dx-form [formData]="ownerData" [colCount]="1" [labelLocation]="'top'">
+    <dxi-item dataField="userName" [editorOptions]="{ placeholder: 'Username' }">
+      <dxi-validation-rule type="required" message="Username is required"></dxi-validation-rule>
+      <dxi-validation-rule type="pattern" pattern="^[a-zA-Z0-9_]{3,20}$"
+        message="Username must be 3-20 chars (letters, numbers, underscore)">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="Email" [editorOptions]="{ placeholder: 'Email' }">
+      <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>
+      <dxi-validation-rule type="pattern" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        message="Please enter a valid email address">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="phoneNumber" [editorOptions]="{ placeholder: 'Phone Number' }">
+      <dxi-validation-rule type="required" message="Phone number is required"></dxi-validation-rule>
+      <dxi-validation-rule type="pattern" pattern="^[0-9]{10,15}$" message="Phone number must be 10-15 digits">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="password" [editorOptions]="{ placeholder: 'Password', mode: 'password' }">
+      <dxi-validation-rule type="required" message="Password is required"></dxi-validation-rule>
+      <dxi-validation-rule type="pattern" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
+        message="Password must be 8+ chars with uppercase, lowercase, number, and special char">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+    <dxi-item dataField="confirmPassword" [editorOptions]="{ placeholder: 'Confirm Password', mode: 'password' }"
+      [validationRules]="[
+        { type: 'required', message: 'Please confirm your password' },
+        { type: 'compare', comparisonTarget: passwordComparison, message: 'Passwords do not match' }
+    ]">
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add Owner" type="success" (onClick)="submitOwner()"></dx-button>
+  </dxi-item>
+</dx-popup>
 
 <div class="row">
-  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of subscriptions">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let owner of owners">
     <div class="card mb-2">
       <img src="/assets/images/beach.jpg" alt="Card Image" class="card-image" (click)="navigateToDetailsPage()">
-      <div class="village-name" (click)="navigateToDetailsPage()">{{sub.name}}</div>
-      <div class="top-right-text">Renewal in 2 months</div>
-
-
+      <div class="village-name" (click)="navigateToDetailsPage()">{{owner.name}}</div>
     </div>
 
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
-      <div class="info"> Subscription: </div>
-      <div class="info-value"> {{sub.subscription }}</div>
+      <div class="info">Username: </div>
+      <div class="info-value"> {{owner.userName }}</div>
     </div>
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/device.svg" /></div>
-      <div class="info"> Devices: </div>
-      <div class="info-value">{{sub.dvices}}</div>
+      <div class="info">Phone: </div>
+      <div class="info-value">{{owner.phoneNumber}}</div>
     </div>
 
   </div>
 </div>
-
-

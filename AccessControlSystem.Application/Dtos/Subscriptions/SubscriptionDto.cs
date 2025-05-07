@@ -22,5 +22,5 @@ public class SubscriptionDto : BaseImageModelDto<int>
     public string? Note { get; set; }
     public string RenewalInfo => RenewalCalculator.GetRenewalInfo(EndDate);
 
-    public IEnumerable<DeviceDto> Devices { get; set; } = default!;
+    public IEnumerable<DeviceDto>? Devices { get; set; }
 }

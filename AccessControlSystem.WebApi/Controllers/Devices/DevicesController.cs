@@ -11,10 +11,18 @@ namespace AccessControlSystem.WebApi.Controllers.Devices;
 public class DevicesController(IDeviceService service) :
     BaseController<IDeviceService, Device, DeviceDto, int>(service)
 {
+    private readonly IDeviceService _service = service;
+
     [HttpPost("Create")]
     public override Task<IActionResult> Create([FromForm] DeviceDto dto)
     {
         return base.Create(dto);
+    }
+
+    [HttpGet("GetAvailableDevicesForSubscription")]
+    public async Task<IActionResult> GetAvailableDevicesForSubscription(int subscriptionId)
+    {
+        return Ok(await _service.GetAvailableDevicesForSubscription(subscriptionId));
     }
 
     [HttpPut("Update")]

@@ -45,13 +45,15 @@ export class SubscriptionsComponent {
   subscriptionData = {
     subscriptionImageFile: null,
     subscriptionImageUrl: '',
-    CustomerName: '',
-    SubscriptionType: '',
-    DeviceNumber: '',
-    PaymentPerMonth: '',
-    StartDate: new Date(),
-    EndDate: new Date(),
-    Note: ''
+    customerName: '',
+    subscriptionType: '',
+    adminNumber: '',
+    deviceNumber: '',
+    cardNumber: '',
+    paymentPerMonth: '',
+    startDate: new Date(),
+    endDate: new Date(),
+    note: ''
   };
   subscriptionTypeEditorOptions: any
   subscriptionTypes = [
@@ -98,13 +100,15 @@ export class SubscriptionsComponent {
     this.subscriptionData = {
       subscriptionImageFile: null,
       subscriptionImageUrl: '',
-      CustomerName: '',
-      SubscriptionType: '',
-      DeviceNumber: '',
-      PaymentPerMonth: '',
-      StartDate: new Date(),
-      EndDate: new Date(),
-      Note: ''
+      customerName: '',
+      subscriptionType: '',
+      adminNumber: '',
+      deviceNumber: '',
+      cardNumber: '',
+      paymentPerMonth: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      note: ''
     };
     this.imageValidationError = '';
     this.popupVisible = true;
@@ -148,8 +152,8 @@ export class SubscriptionsComponent {
       return;
     }
 
-    const start = new Date(this.subscriptionData.StartDate);
-    const end = new Date(this.subscriptionData.EndDate);
+    const start = new Date(this.subscriptionData.startDate);
+    const end = new Date(this.subscriptionData.endDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       notify('Invalid start or end date', 'error', 2000);
@@ -163,18 +167,20 @@ export class SubscriptionsComponent {
     console.log('End Date:', endFormatted);
 
 
-    const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
+    const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.subscriptionType));
     const subscriptionTypeName = selectedType ? selectedType.name : '';
 
     const formData = new FormData();
 
-    formData.append('CustomerName', this.subscriptionData.CustomerName);
-    formData.append('SubscriptionTypeName', Number(this.subscriptionData.SubscriptionType).toString());
-    formData.append('DeviceNumber', Number(this.subscriptionData.DeviceNumber).toString());
-    formData.append('PaymentPerMonth', Number(this.subscriptionData.PaymentPerMonth).toString());
+    formData.append('CustomerName', this.subscriptionData.customerName);
+    formData.append('SubscriptionType', Number(this.subscriptionData.subscriptionType).toString());
+    formData.append('AdminNumber', Number(this.subscriptionData.adminNumber).toString());
+    formData.append('DeviceNumber', Number(this.subscriptionData.deviceNumber).toString());
+    formData.append('CardNumber', Number(this.subscriptionData.cardNumber).toString());
+    formData.append('PaymentPerMonth', Number(this.subscriptionData.paymentPerMonth).toString());
     formData.append('StartDate', startFormatted);
     formData.append('EndDate', endFormatted);
-    formData.append('Note', this.subscriptionData.Note || '');
+    formData.append('Note', this.subscriptionData.note || '');
     formData.append('ImagePath', '');
     formData.append('ImageEncode', this.subscriptionData.subscriptionImageUrl || '');
     formData.append('ImageFile', this.subscriptionData.subscriptionImageFile || '');

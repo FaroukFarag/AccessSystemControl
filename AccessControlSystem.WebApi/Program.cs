@@ -1,6 +1,7 @@
 using AccessControlSystem.Domain.Constants;
 using AccessControlSystem.Infrastructure.IoC.DependencyContainer;
 using AccessControlSystem.WebApi.Middlewares.Exceptions;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,7 +57,12 @@ builder.Services.RegisterMiddlewares();
 
 var app = builder.Build();
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/images"
+});
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
