@@ -47,6 +47,7 @@ builder.Services.RegisterConfiguration(builder.Configuration);
 builder.Services.RegisterServices();
 builder.Services.RegisterRepositories();
 builder.Services.RegisterSpecifications();
+builder.Services.RegisterStrategies();
 builder.Services.RegisterUnitOfWork();
 builder.Services.RegisterAutoMapper();
 builder.Services.RegisterValidators();

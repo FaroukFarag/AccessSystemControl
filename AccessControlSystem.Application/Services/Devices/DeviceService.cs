@@ -58,6 +58,17 @@ public class DeviceService(
         return _mapper.Map<IReadOnlyList<DeviceDto>>(availableDevices);
     }
 
+    public async Task<IEnumerable<DeviceDto>> GetAvailableDevicesForAccessGroup(int accessGroupId)
+    {
+        var availableDevices = await _repository.GetAllAsync(
+        new BaseSpecification<Device>
+        {
+            Criteria = d => !d.AccessGroupDevices.Any(agd => agd.AccessGroupId == accessGroupId)
+        });
+
+        return _mapper.Map<IReadOnlyList<DeviceDto>>(availableDevices);
+    }
+
     public override async Task<DeviceDto> UpdateAsync(DeviceDto newDeviceDto)
     {
         var device = await GetAsync(newDeviceDto.Id);

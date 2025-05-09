@@ -8,6 +8,10 @@ public class AccessGroupProfile : Profile
 {
     public AccessGroupProfile()
     {
-        CreateMap<AccessGroup, AccessGroupDto>().ReverseMap();
+        CreateMap<AccessGroup, AccessGroupDto>()
+            .ForMember(des => des.Devices, opt => opt
+                .MapFrom(src => src.AccessGroupDevices.Select(agd => agd.Device)));
+
+        CreateMap<AccessGroupDto, AccessGroup>();
     }
 }

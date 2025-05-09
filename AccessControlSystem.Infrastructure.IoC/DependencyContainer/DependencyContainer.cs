@@ -58,6 +58,7 @@ using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Users;
+using AccessControlSystem.Domain.Services.Subscriptions;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Data.Context;
 using AccessControlSystem.Infrastructure.Data.Repositories.Abstraction;
@@ -134,6 +135,11 @@ public static class DependencyContainer
     {
         services.AddScoped(typeof(IBaseSpecification<>), typeof(BaseSpecification<>))
             .AddScoped(typeof(ISpecificationCombiner<>), typeof(SpecificationCombiner<>));
+    }
+
+    public static void RegisterStrategies(this IServiceCollection services)
+    {
+        services.AddSingleton<SubscriptionValidationStrategyFactory>();
     }
 
     public static void RegisterUnitOfWork(this IServiceCollection services)
