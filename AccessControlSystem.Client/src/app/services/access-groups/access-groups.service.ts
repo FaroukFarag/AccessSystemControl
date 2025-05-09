@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '../shared/base-service.service';
-import { AccessGroups } from '../../models/access-groups/access-groups';
+import { AccessGroup } from '../../models/access-group/access-group';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccessGroupservice extends BaseService<AccessGroups>{
+export class AccessGroupservice extends BaseService<AccessGroup>{
   constructor() { 
     super();
   }
