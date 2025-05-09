@@ -25,6 +25,12 @@ public class DevicesController(IDeviceService service) :
         return Ok(await _service.GetAvailableDevicesForSubscription(subscriptionId));
     }
 
+    [HttpGet("GetAvailableDevicesForAccessGroup")]
+    public async Task<IActionResult> GetAvailableDevicesForAccessGroup(int accessGroupId)
+    {
+        return Ok(await _service.GetAvailableDevicesForAccessGroup(accessGroupId));
+    }
+
     [HttpPut("Update")]
     public override Task<IActionResult> Update([FromForm] DeviceDto dto)
     {
