@@ -19,6 +19,10 @@ public class UsersController(IUserService userService)
     public async Task<IActionResult> GetAllOwners()
         => Ok(await _userService.GetAllUsersByRoleAsync((int)RoleNames.Owner));
 
+    [HttpGet("GetAllSubscriptionAdmins")]
+    public async Task<IActionResult> GetAllSubscriptionAdmins()
+        => Ok(await _userService.GetAllUsersByRoleAsync((int)RoleNames.SubscriptionAdmin));
+
     [HttpPost("Login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login(LoginDto loginDto)
