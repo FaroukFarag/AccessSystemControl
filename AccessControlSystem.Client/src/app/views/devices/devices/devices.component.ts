@@ -41,7 +41,9 @@ import { DxFormComponent } from 'devextreme-angular';
 })
 export class DevicesComponent {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
+  selectedDeviceIds: string[] = [];
   popupVisible: boolean = false;
+  groupDevice_popupVisible: boolean = false;
   sortBy = ['Recent', 'date'];
   devicesList: any;
   imageValidationError: string = '';
@@ -51,6 +53,10 @@ export class DevicesComponent {
     deviceName: '',
     deviceType: '',
     macAddress: ''
+  };
+  groupDeviceseData = {
+   
+    
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any
@@ -173,6 +179,36 @@ export class DevicesComponent {
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);
+  }
+  openGroupDEvicesPopup() {
+    this.groupDevice_popupVisible = true;
+    this.selectedDeviceIds = [];
+  }
+
+  toggleDeviceSelection(deviceId: string) {
+    const index = this.selectedDeviceIds.indexOf(deviceId);
+    if (index > -1) {
+      this.selectedDeviceIds.splice(index, 1);
+    } else {
+      this.selectedDeviceIds.push(deviceId);
+    }
+  }
+
+
+
+  submitSelectedDevices() {
+    if (this.selectedDeviceIds.length === 0) {
+      notify('No devices selected', 'warning', 1500);
+      return;
+    }
+
+    console.log('Selected Device IDs:', this.selectedDeviceIds);
+
+
+    notify(`${this.selectedDeviceIds.length} devices submitted successfully`, 'success', 2000);
+
+    this.groupDevice_popupVisible = false;
+    this.selectedDeviceIds = [];
   }
 
 }
