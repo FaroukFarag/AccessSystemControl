@@ -18,28 +18,7 @@ import notify from 'devextreme/ui/notify';
 export class DashboardComponent {
   sortBy = ['Recent', 'date'];
 
-  devicesData = [
-    {
-      subscriptionName: 'Device name',
-      startDate: 'Sep 04, 2024',
-      endDate: 'Sep 05, 2025',
-      timeRemaining: '1 year and 2 months'
-    },
-    {
-      subscriptionName: 'Device name',
-      startDate: 'Sep 04, 2024',
-      endDate: 'Sep 05, 2025',
-      timeRemaining: '2 months'
-    },
-    {
-      subscriptionName: 'Device name',
-      startDate: 'Sep 04, 2024',
-      endDate: 'Sep 05, 2025',
-      timeRemaining: '4 months'
-    }
-  ];
-
-  salesData = [
+    salesData = [
     { month: 'Jan', sales: 10000 },
     { month: 'Feb', sales: 12000 },
     { month: 'Mar', sales: 15000 },

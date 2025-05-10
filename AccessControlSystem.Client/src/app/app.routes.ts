@@ -8,6 +8,8 @@ import { OwnerDetailsComponent } from './views/owners/owner-details/owner-detail
 import { OwnersComponent } from './views/owners/owners/owners.component';
 import { UnitsComponent } from './views/units/units/units.component';
 import { LoginComponent } from './views/login/login.component';
+import { AccessGroupsComponent } from './views/access-groups/access-groups.component';
+import { CardsComponent } from './views/cards/cards.component';
 
 export const routes: Routes = [
   {
@@ -49,6 +51,13 @@ export const routes: Routes = [
   {
     path: 'unit-details',
     component: UnitsComponent
+  },
+  {
+    path: 'access groups',
+    component: AccessGroupsComponent
+  }, {
+    path: 'cards',
+    component: CardsComponent
   },
   {
     path: 'login',
