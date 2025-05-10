@@ -30,14 +30,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Property<int>("DeviceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UnitId")
-                        .HasColumnType("int");
-
                     b.HasKey("AccessGroupId", "DeviceId");
 
                     b.HasIndex("DeviceId");
-
-                    b.HasIndex("UnitId");
 
                     b.ToTable("AccessGroupDevices");
                 });
@@ -55,7 +50,12 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("UnitId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("AccessGroups");
                 });
@@ -241,14 +241,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SubscriptionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Units");
                 });
@@ -307,6 +302,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("UnitId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -322,6 +320,8 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("SubscriptionId");
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -443,13 +443,16 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AccessControlSystem.Domain.Models.Units.Unit", null)
-                        .WithMany("AccessGroupDevices")
-                        .HasForeignKey("UnitId");
-
                     b.Navigation("AccessGroup");
 
                     b.Navigation("Device");
+                });
+
+            modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroups.AccessGroup", b =>
+                {
+                    b.HasOne("AccessControlSystem.Domain.Models.Units.Unit", null)
+                        .WithMany("AccessGroups")
+                        .HasForeignKey("UnitId");
                 });
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Cards.Card", b =>
@@ -486,15 +489,7 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AccessControlSystem.Domain.Models.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Subscription");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Users.User", b =>
@@ -503,6 +498,10 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .WithMany("Users")
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("AccessControlSystem.Domain.Models.Units.Unit", null)
+                        .WithMany("Owners")
+                        .HasForeignKey("UnitId");
 
                     b.Navigation("Subscription");
                 });
@@ -581,7 +580,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Units.Unit", b =>
                 {
-                    b.Navigation("AccessGroupDevices");
+                    b.Navigation("AccessGroups");
+
+                    b.Navigation("Owners");
                 });
 #pragma warning restore 612, 618
         }

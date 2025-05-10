@@ -8,9 +8,8 @@ public class UnitDto : BaseImageModelDto<int>
     public int Number { get; set; }
     public decimal Area { get; set; }
     public int CardNumber { get; set; }
-
-    public int UserId { get; set; }
     public int SubscriptionId { get; set; }
 
+    public IEnumerable<int> Owners { get; set; } = default!;
     public IEnumerable<int> AccessGroupDevices { get; set; } = default!;
 }
