@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Application.Dtos.Subscriptions;
 using AccessControlSystem.Application.Resolvers;
+using AccessControlSystem.Domain.Enums.Roles;
 using AccessControlSystem.Domain.Models.Subscriptions;
 using AutoMapper;
 
@@ -15,7 +16,8 @@ public class SubscriptionProfile : Profile
             .ForMember(des => des.ImagePath, opt => opt
                 .MapFrom<ImageUrlResolver>())
             .ForMember(des => des.UsedAdmins, opt => opt
-                .MapFrom(src => src.Users.Count()))
+                .MapFrom(src => src.Users.Count(u => u.UserRoles
+                    .Any(ur => ur.RoleId == (int)RoleNames.Admin))))
             .ForMember(des => des.UsedDevices, opt => opt
                 .MapFrom(src => src.SubscriptionsDevices.Count()))
             .ForMember(des => des.UsedCards, opt => opt

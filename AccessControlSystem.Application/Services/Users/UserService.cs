@@ -106,9 +106,13 @@ public class UserService(
         if (user == null)
             return default!;
 
+        var roles = await _userManager.GetRolesAsync(user);
+        var role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()!);
+        var roleId = role?.Id;
+
         return new LoggedInDto
         {
-            UserId = user.Id,
+            RoleId = roleId,
             Token = await GetToken(user)
         };
     }

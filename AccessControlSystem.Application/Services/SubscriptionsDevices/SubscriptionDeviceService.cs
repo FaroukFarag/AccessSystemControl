@@ -29,7 +29,7 @@ public class SubscriptionDeviceService(
 
     public async override Task<bool> CreateRangeAsync(IEnumerable<SubscriptionDeviceDto> subscriptionsDevicesDtos)
     {
-        if (subscriptionsDevicesDtos == null || subscriptionsDevicesDtos.Count() == 0)
+        if (subscriptionsDevicesDtos == null || !subscriptionsDevicesDtos.Any())
             return false;
 
         var subscriptionDto = await _subscriptionService
