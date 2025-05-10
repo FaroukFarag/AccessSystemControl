@@ -84,11 +84,32 @@ dx-form {
   border-radius: 8px !important;
   height: 45px !important;
 }
+::ng-deep .dx-item-content.dx-box-item-content.dx-box-flex.dx-box.dx-widget.dx-collection {
+  display: flex !important;
+  flex-direction: column !important;
+}
+::ng-deep .dx-datagrid-edit-form-item.dx-last-row.dx-field-item.dx-col-0.dx-field-item-optional.dx-flex-layout.dx-label-h-align {
+  display: flex!important;
+  flex-direction: column!important;
+  width: 100%!important;
+}
+::ng-deep .dx-datagrid-edit-form-item.dx-first-row.dx-last-col.dx-last-row.dx-field-item.dx-col-1.dx-field-item-optional.dx-flex-layout.dx-label-h-align {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+}
+::ng-deep .dx-layout-manager .dx-field-item:not(.dx-last-col) {
+  padding-inline-end: 0px !important;
+}
+::ng-deep dx-layout-manager .dx-field-item:not(.dx-first-col) {
+  padding-inline-start: 0px !important;
+}
 
 
+::ng-deep .dx-layout-manager .dx-field-item:not(.dx-first-col) {
+  padding-inline-start: 0px !important;
+}
 /***************/
-
-
 .list-length {
   color: #A3A3A3;
   font-size: 20px;

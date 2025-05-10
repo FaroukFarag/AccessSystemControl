@@ -10,7 +10,7 @@ import { UnitsComponent } from './views/units/units/units.component';
 import { LoginComponent } from './views/login/login.component';
 import { AccessGroupsComponent } from './views/access-groups/access-groups.component';
 import { CardsComponent } from './views/cards/cards.component';
-
+import { AccessGroupDevicesComponent } from './views/access-group-devices/access-group-devices.component'
 export const routes: Routes = [
   {
     path: 'dashboard',
@@ -63,14 +63,17 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
- 
+  { 
+    path: 'access-groups-devices/:id',
+    component: AccessGroupDevicesComponent 
+  }
   //{
   //  path: 'dashboard',
   //  redirectTo: '/dashboard',
   //  pathMatch: 'full'
   //},
-  //{
-  //  path: '**',
-  //  redirectTo: '/dashboard'
-  //}
+  {
+    path: '**',
+    redirectTo: '/dashboard'
+  }
 ];

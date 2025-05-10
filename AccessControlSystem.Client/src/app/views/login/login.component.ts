@@ -21,12 +21,11 @@ export class LoginComponent {
     const loginData = {
       userName: this.email,  
       password: this.password,
-      startDateTime: new Date().toISOString()
     };
 
     console.log('Sending login data:', loginData);
 
-    this.http.post('/api/Users/Login', loginData)
+    this.http.post('http://localhost:5273/api/Users/Login', loginData)
       .subscribe({
         next: (response) => {
           console.log('Login successful:', response);

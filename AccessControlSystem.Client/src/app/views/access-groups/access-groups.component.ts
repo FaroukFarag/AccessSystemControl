@@ -68,4 +68,19 @@ export class AccessGroupsComponent {
       return;
     }
   }
+
+
+  goToAccessGroupDevices(accessGroup: any) {
+    console.log('Navigating to group:', accessGroup);
+    const accessGroupId = accessGroup?.id;
+
+    if (!accessGroupId) {
+      console.error('Missing access group ID!');
+      return;
+    }
+
+    this.router.navigate(['/access-groups-devices', accessGroupId]);
+  }
+
+
 }

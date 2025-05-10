@@ -23,17 +23,16 @@
                  [allowAdding]="true"
                  [allowDeleting]="true"
                  [useIcons]="true">
-      <dxo-popup [width]="600" [height]="420" [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true">
+      <dxo-popup [width]="600" [height]="420" [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true" title="Add New Access Group"   [showTitle]="true">
 
       </dxo-popup>
 
       <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
-
-          <dxi-item dataField="name" caption="Access Group Name">
-            <dxi-validation-rule type="required" message="Access Group Name is required">
-            </dxi-validation-rule>
-          </dxi-item>
-          <dxi-item dataField="selectedDevices" editorType="dxTagBox" [editorOptions]="{
+        <dxi-item dataField="name" caption="Access Group Name">
+          <dxi-validation-rule type="required" message="Access Group Name is required">
+          </dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="selectedDevices" editorType="dxTagBox" [editorOptions]="{
       dataSource: devicesList,
       placeholder: 'Select devices',
       valueExpr: 'id',
@@ -42,22 +41,28 @@
       showSelectionControls: true,
       searchEnabled: true
     }">
-         <dxi-validation-rule type="required" message="At least one device is required"></dxi-validation-rule>
-         <dxo-label text="Devices" [visible]="true"></dxo-label>
-       </dxi-item>
-           Device Template for showing image + name 
-          <div *dxTemplate="let data of 'deviceTemplate'">
-      <div class="device-item">
-        <img [src]="data.imagePath" alt="Device image" width="30" height="30" style="margin-right: 8px;" />
-        <span>{{data.name}}</span>
-      </div>
-    </div>
+          <dxi-validation-rule type="required" message="At least one device is required"></dxi-validation-rule>
+          <dxo-label text="Devices" [visible]="true"></dxo-label>
+        </dxi-item>
+        <!--Device Template for showing image + name-->
+        <!--<div *dxTemplate="let data of 'deviceTemplate'">
+          <div class="device-item">
+            <img [src]="data.imagePath" alt="Device image" width="30" height="30" style="margin-right: 8px;" />
+            <span>{{data.name}}</span>
+          </div>
+        </div>-->
       </dx-form>
     </dxo-editing>
     <dxi-item itemType="button">
       <dx-button text="Add Device" type="success" (onClick)="submitDevice()"></dx-button>
     </dxi-item>
-    <dxi-column dataField="name" caption="Access Group Name"></dxi-column>
+    <dxi-column dataField="name" caption="Access Group Name" cellTemplate="GroupNameTemplate"></dxi-column>
     <dxi-column dataField="devicesNumber" caption="Devices Number"></dxi-column>
+
+
+    <div *dxTemplate="let data of 'GroupNameTemplate'">
+      <span (click)="goToAccessGroupDevices(data.data)">{{data.data.name}}</span>
+      
+    </div>
   </dx-data-grid>
 </div>
