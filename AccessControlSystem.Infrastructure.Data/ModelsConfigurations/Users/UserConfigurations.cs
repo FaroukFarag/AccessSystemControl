@@ -8,5 +8,8 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasOne(u => u.Subscription)
+            .WithMany(s => s.Users)
+            .HasForeignKey(u => u.SubscriptionId);
     }
 }

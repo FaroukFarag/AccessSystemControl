@@ -11,5 +11,14 @@ public class SubscriptionConfigurations : IEntityTypeConfiguration<Subscription>
         builder.Property(s => s.CustomerName)
             .HasMaxLength(50)
             .IsRequired();
+
+        builder.Property(s => s.PaymentPerMonth)
+            .HasPrecision(18, 6)
+            .IsRequired();
+
+        builder.HasMany(s => s.Users)
+            .WithOne(u => u.Subscription)
+            .HasForeignKey(u => u.SubscriptionId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
