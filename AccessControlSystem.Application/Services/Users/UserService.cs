@@ -40,7 +40,7 @@ public class UserService(
         if (!userResult.Succeeded)
             return default!;
 
-        var role = await _roleManager.FindByIdAsync(userDto.RoleId);
+        var role = await _roleManager.FindByIdAsync(userDto.RoleId.ToString());
         var roleResult = await _userManager.AddToRoleAsync(user, role!.Name!);
 
         if (!roleResult.Succeeded)
