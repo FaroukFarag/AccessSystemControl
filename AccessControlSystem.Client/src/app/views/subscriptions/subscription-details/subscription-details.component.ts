@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   DxPopupModule,
@@ -51,7 +51,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private subscriptionsService: SubscriptionService,
-    private deviceService: DeviceService,) {
+    private deviceService: DeviceService,
+    private router: Router,) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -129,5 +130,8 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);
+  }
+  navigateToDetailsPage(deviceId: string) {
+    this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
   }
 }

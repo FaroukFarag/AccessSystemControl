@@ -1,5 +1,5 @@
 
-<div class="flex-container" >
+<div class="flex-container" *ngIf="canAccessMainLayout">
 
   <dx-drawer [openedStateMode]="selectedOpenMode"
              [position]="selectedPosition"
@@ -8,7 +8,7 @@
              [(opened)]="isDrawerOpen"
              [height]="'100%'"
              [width]="'100%'"
-             [closeOnOutsideClick]="true"
+             [closeOnOutsideClick]="false"
              >
     <div *dxTemplate="let data of 'template'" style="width: 200px">
       <div class="logo-container" style="text-align: center; margin-bottom: 20px;">
@@ -38,9 +38,7 @@
 
       <section>
         <article class="app-layout--main-article"  [ngClass]="{'expanded': isDrawerOpen, 'collapsed': !isDrawerOpen}">
-          <app-content>
-
-          </app-content>
+          <app-root></app-root>
         </article>
       </section>
 
