@@ -70,7 +70,25 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe(data => {
       this.subscription = data;
-    })
+      this.calculateTotalPayment();
+
+    });
+  }
+
+ 
+
+
+
+  totalPayment: number = 0;
+
+  calculateTotalPayment() {
+    const payment = Number(this.subscription?.paymentPerMonth);
+    const months = Number(this.subscription?.monthNumber);
+    if (!isNaN(payment) && !isNaN(months)) {
+      this.totalPayment = payment * months;
+    } else {
+      this.totalPayment = 0;
+    }
   }
 
   getProgress(used: number, total: number): number {

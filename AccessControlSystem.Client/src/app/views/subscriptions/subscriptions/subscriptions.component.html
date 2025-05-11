@@ -19,9 +19,9 @@
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
         <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
-          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
         <img *ngIf="subscriptionData.SubscriptionImageUrl" [src]="subscriptionData.SubscriptionImageUrl"
-          alt="Device Preview" class="thumbnail" />
+             alt="Device Preview" class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}
         </div>
@@ -63,12 +63,23 @@
     </dxi-item>
     <dxi-item dataField="StartDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'Start Date' }">
       <dxi-validation-rule type="required" message="Start Date is required"></dxi-validation-rule>
+      <dxi-validation-rule type="custom"
+                           [validationCallback]="validateStartDate"
+                           message="Start date must be start from today or letter">
+      </dxi-validation-rule> 
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="EndDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'End Date' }">
+    <dxi-item dataField="MonthNumber"
+              editorType="dxNumberBox"
+              [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
+      <dxi-validation-rule type="required" message="Month number is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <!--<dxi-item dataField="EndDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'End Date' }">
       <dxi-validation-rule type="required" message="End Date is required"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
+    </dxi-item>-->
     <dxi-item dataField="Note" editorType="dxTextArea" [editorOptions]="{
       placeholder: 'Note',
       height: '200px',
@@ -89,6 +100,11 @@
       <img [src]="sub.imagePath" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(sub.id)">
       <div class="village-name" (click)="navigateToDetailsPage(sub.id)">{{sub.name}}</div>
       <div class="top-right-text">{{sub.renewalInfo}}</div>
+    </div>
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/subscriptions.svg" /></div>
+      <div class="info"> Name: </div>
+      <div class="info-value"> {{sub.customerName }}</div>
     </div>
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>

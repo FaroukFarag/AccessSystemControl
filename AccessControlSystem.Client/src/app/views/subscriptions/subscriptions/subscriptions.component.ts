@@ -16,6 +16,7 @@ import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angula
 import notify from 'devextreme/ui/notify';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DxNumberBoxModule } from 'devextreme-angular';
 
 @Component({
   selector: 'app-subscriptions',
@@ -42,19 +43,31 @@ export class SubscriptionsComponent {
   sortBy = ['Recent', 'date'];
   subscriptions: any;
   imageValidationError: string = '';
+  MonthNumber: number = 1;
+
   subscriptionData = {
     SubscriptionImageFile: null,
     SubscriptionImageUrl: '',
     CustomerName: '',
     SubscriptionType: '',
+    SubscriptionTypeName: '',
     AdminNumber: '',
     DeviceNumber: '',
     CardNumber: '',
+    MonthNumber: '',
+    UsedAdmins: 0,
+    UsedDevices: 0,
+    UsedCards: 0,
     PaymentPerMonth: '',
     StartDate: new Date(),
     EndDate: new Date(),
-    Note: ''
+    Note: '',
+    RenewalInfo: '',
+    Devices: [],
+    ImagePath: '',
+    Id: 0
   };
+
   subscriptionTypeEditorOptions: any
   subscriptionTypes = [
     {
@@ -102,14 +115,25 @@ export class SubscriptionsComponent {
       SubscriptionImageUrl: '',
       CustomerName: '',
       SubscriptionType: '',
+      SubscriptionTypeName: '',
       AdminNumber: '',
       DeviceNumber: '',
       CardNumber: '',
+      MonthNumber: '',
+      UsedAdmins: 0,
+      UsedDevices: 0,
+      UsedCards: 0,
       PaymentPerMonth: '',
       StartDate: new Date(),
       EndDate: new Date(),
-      Note: ''
+      Note: '',
+      RenewalInfo: '',
+      Devices: [],
+      ImagePath: '',
+      Id: 0
     };
+
+
     this.imageValidationError = '';
     this.popupVisible = true;
   }
@@ -168,37 +192,55 @@ export class SubscriptionsComponent {
 
 
     const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
+    this.subscriptionData.SubscriptionTypeName = selectedType?.name || '';
     debugger
-
     const formData = new FormData();
 
     formData.append('CustomerName', this.subscriptionData.CustomerName);
     formData.append('SubscriptionType', Number(this.subscriptionData.SubscriptionType).toString());
+    formData.append('SubscriptionTypeName', this.subscriptionData.SubscriptionTypeName);
     formData.append('AdminNumber', Number(this.subscriptionData.AdminNumber).toString());
     formData.append('DeviceNumber', Number(this.subscriptionData.DeviceNumber).toString());
     formData.append('CardNumber', Number(this.subscriptionData.CardNumber).toString());
+    formData.append('MonthNumber', Number(this.subscriptionData.MonthNumber || 0).toString());
+    formData.append('UsedAdmins', this.subscriptionData.UsedAdmins.toString());
+    formData.append('UsedDevices', this.subscriptionData.UsedDevices.toString());
+    formData.append('UsedCards', this.subscriptionData.UsedCards.toString());
     formData.append('PaymentPerMonth', Number(this.subscriptionData.PaymentPerMonth).toString());
     formData.append('StartDate', startFormatted);
     formData.append('EndDate', endFormatted);
     formData.append('Note', this.subscriptionData.Note || '');
+    formData.append('RenewalInfo', this.subscriptionData.RenewalInfo || '');
+    formData.append('Devices', JSON.stringify(this.subscriptionData.Devices || []));
     formData.append('ImagePath', '');
-    formData.append('ImageFile', this.subscriptionData.SubscriptionImageFile || '');
+    formData.append('ImageFile', this.subscriptionData.SubscriptionImageFile);
+    formData.append('Id', this.subscriptionData.Id.toString());
+
 
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
       next: (response) => {
-        notify('Device created successfully', 'success', 1500);
+        notify('Subscription created successfully', 'success', 1500);
         this.popupVisible = false;
         this.getAllSubscriptions();
       },
       error: (err) => {
-        console.error('Error creating device', err);
-
         if (err && err.error && err.error.errors) {
-          console.error('Validation Errors:', err.error.errors);
         }
 
-        notify('Error creating device', 'error', 2000);
+        notify('Error creating Subscription', 'error', 2000);
       }
     });
   }
+  validateStartDate = (e: any): boolean => {
+    console.log("E", e.value);
+    if (!e.value) return false;
+
+    const selectedDate = new Date(e.value);
+    const today = new Date();
+    selectedDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return selectedDate >= today;
+  }
+
 }
