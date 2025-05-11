@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; 
+import { Router } from '@angular/router';
+import { LoginService } from '../../services/login/login.service';
 
 @Component({
   selector: 'app-login',
@@ -15,26 +17,21 @@ export class LoginComponent {
   password: string = '';
   rememberMe: boolean = false;
 
-  constructor(private http: HttpClient) { } 
-
+  constructor(private http: HttpClient, private router: Router, private loginService: LoginService,) { } 
   onSubmit() {
     const loginData = {
-      userName: this.email,  
+      userName: this.email,
       password: this.password,
-      startDateTime: new Date().toISOString()
     };
 
-    console.log('Sending login data:', loginData);
-
-    this.http.post('/api/Users/Login', loginData)
-      .subscribe({
-        next: (response) => {
-          console.log('Login successful:', response);
-          // You can redirect to dashboard, store token, etc. here
-        },
-        error: (error) => {
-          console.error('Login failed:', error);
-        }
-      });
+    this.loginService.login(loginData).subscribe(response => {
+      if (response) {
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('userRole', response.role);
+        this.router.navigate(['/dashboard']);
+      } else {
+        console.error('Login failed: No response');
+      }
+    });
   }
 }

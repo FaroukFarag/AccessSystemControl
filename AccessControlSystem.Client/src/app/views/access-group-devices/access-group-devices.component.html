@@ -1,0 +1,84 @@
+<!-- GOUP DEVICES IF OWNER-->
+<!--PAGE HEADER IF Owner-->
+<div class="page-header">
+  <dx-button class="button-info me-1" text="Assign devices" (onClick)="openGroupDevicesPopup()">
+  </dx-button>
+</div>
+
+<!------ GROUPED DEVICES VIEW ------>
+<div class="row m-auto bg-white px-2 py-3 mb-5 group-devices">
+  <div class="group-device-header">
+    <h5 class="mb-3 group-name">Group name <span class="devices-number">(2)</span></h5>
+  </div>
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
+    <div class="card-header">
+      <img [src]=" '/assets/images/device.png'" alt="Device Image"/>
+      <span class="device-name" >{{device.name}}</span>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/status.svg" /></div>
+      <div class="info"> Status: </div>
+      <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+        {{ device.active ? 'Active' : 'Not Active' }}
+      </div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+      <div class="info"> Mac Address: </div>
+      <div class="info-value ">{{device.macAddress}}</div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+      <div class="info"> Device type: </div>
+      <div class="info-value"> {{device.deviceType}}</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Assign GROUP DEVICES POPUP-->
+<dx-popup [width]="popupWidth"   [height]="popupHeight" [showTitle]="true" title="Add New Group devices" [dragEnabled]="true"
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
+  <div class="row m-auto">
+    <!-- 🔹 No Devices Message -->
+    <div *ngIf="devicesList?.length === 0" class="text-center w-100 py-5">
+      <h5 class="text-muted">There's no more available Devices for this Group.</h5>
+    </div>
+    <ng-container *ngIf="devicesList?.length > 0">
+      <div *ngFor="let device of devicesList"
+           [ngClass]="{'selected-card': selectedDeviceIds.includes(device.id)}"
+           (click)="toggleDeviceSelection(device.id)" class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card">
+        <div class="card-header">
+          <img [src]="device.imagePath" alt="Device Image" />
+          <span class="device-name">{{device.name}}</span>
+        </div>
+        <div class="device-info">
+          <div class="icon"><img src="/assets/icons/status.svg" /></div>
+          <div class="info"> Status: </div>
+          <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+            {{ device.active ? 'Active' : 'Not Active' }}
+          </div>
+        </div>
+        <div class="device-info">
+          <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+          <div class="info"> Mac Address: </div>
+          <div class="info-value ">{{device.macAddress}}</div>
+        </div>
+        <div class="device-info">
+          <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+          <div class="info"> Device type: </div>
+          <div class="info-value"> {{device.deviceTypeName}}</div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="text-center mt-4"  *ngIf="devicesList?.length > 0">
+      <dx-button text="Submit Selected Devices"
+                 type="success"
+                 (onClick)="submitSelectedDevices()"
+                 [disabled]="selectedDeviceIds.length === 0">
+      </dx-button>
+    </div>
+  </div>
+</dx-popup>

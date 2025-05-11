@@ -9,17 +9,17 @@
 
 <!-- GOUP DEVICES IF OWNER-->
 <!--PAGE HEADER IF Owner-->
-<div class="page-header">
+<!--<div class="page-header">
   <dx-button class="button-info me-1" text="Group devices"  (onClick)="openGroupDEvicesPopup()">
   </dx-button>
 
   <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
                        (onItemClick)="onItemClick($event)"></dx-drop-down-button>
 
-</div>
+</div>-->
 
 <!-- GROUPED DEVICES VIEW -->
-<div class="row m-auto bg-white px-2 py-3 mb-5 group-devices">
+<!--<div class="row m-auto bg-white px-2 py-3 mb-5 group-devices">
   <div class="group-device-header">
     <h5 class="mb-3 group-name">Group name <span class="devices-number">(2)</span></h5>
     <dx-button class="button-info me-1 mb-2"
@@ -28,9 +28,9 @@
   </div>
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
     <div class="card-header">
-      <img [src]=" '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
+      <img [src]=" '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />-->
       <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />-->
-      <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+      <!--<span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/status.svg" /></div>
@@ -50,21 +50,21 @@
       <div class="info-value"> {{device.deviceType}}</div>
     </div>
   </div>
-</div>
+</div>-->
 
 
 <!----GROUP DEVICE POPUP-->
 <!-- ADD GROUP DEVICES POPUP-->
-<dx-popup [width]="950" [height]="660" [showTitle]="true" title="Add New Group devices" [dragEnabled]="true"
+<!--<dx-popup [width]="950" [height]="660" [showTitle]="true" title="Add New Group devices" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
   <div class="row m-auto">
     <ng-container *ngFor="let device of devicesList">
       <div [ngClass]="{'selected-card': selectedDeviceIds.includes(device.id)}"
            (click)="toggleDeviceSelection(device.id)" class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card">
         <div class="card-header">
-          <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
+          <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />-->
           <!--<img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage()" />-->
-          <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+          <!--<span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
         </div>
         <div class="device-info">
           <div class="icon"><img src="/assets/icons/status.svg" /></div>
@@ -93,7 +93,7 @@
       </dx-button>
     </div>
   </div>
-</dx-popup>
+</dx-popup>-->
 <!----------------------->
 <!--PAGE HEADER IF ADMIN-->
 <div class="page-header">
