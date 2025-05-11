@@ -19,12 +19,6 @@ public class DevicesController(IDeviceService service) :
         return base.Create(dto);
     }
 
-    [HttpGet("GetAvailableDevicesForSubscription")]
-    public async Task<IActionResult> GetAvailableDevicesForSubscription(int subscriptionId)
-    {
-        return Ok(await _service.GetAvailableDevicesForSubscription(subscriptionId));
-    }
-
     [HttpGet("GetAvailableDevicesForAccessGroup")]
     public async Task<IActionResult> GetAvailableDevicesForAccessGroup(int accessGroupId)
     {

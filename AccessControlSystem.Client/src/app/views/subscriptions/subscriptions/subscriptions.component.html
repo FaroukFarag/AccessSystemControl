@@ -20,7 +20,7 @@
       <div class="image-upload-wrapper">
         <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
-        <img *ngIf="subscriptionData.subscriptionImageUrl" [src]="subscriptionData.subscriptionImageUrl"
+        <img *ngIf="subscriptionData.SubscriptionImageUrl" [src]="subscriptionData.SubscriptionImageUrl"
           alt="Device Preview" class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}

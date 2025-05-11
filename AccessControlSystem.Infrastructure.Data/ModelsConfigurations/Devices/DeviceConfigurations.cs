@@ -15,5 +15,9 @@ public class DeviceConfigurations : IEntityTypeConfiguration<Device>
         builder.Property(d => d.MacAddress)
             .HasMaxLength(50)
             .IsRequired();
+
+        builder.HasOne(d => d.Subscription)
+            .WithMany(s => s.Devices)
+            .HasForeignKey(d => d.SubscriptionId);
     }
 }

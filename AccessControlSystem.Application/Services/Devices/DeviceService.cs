@@ -47,17 +47,6 @@ public class DeviceService(
         return devices;
     }
 
-    public async Task<IEnumerable<DeviceDto>> GetAvailableDevicesForSubscription(int subscriptionId)
-    {
-        var availableDevices = await _repository.GetAllAsync(
-            new BaseSpecification<Device>
-            {
-                Criteria = d => !d.SubscriptionsDevices.Any(sd => sd.SubscriptionId == subscriptionId)
-            });
-
-        return _mapper.Map<IReadOnlyList<DeviceDto>>(availableDevices);
-    }
-
     public async Task<IEnumerable<DeviceDto>> GetAvailableDevicesForAccessGroup(int accessGroupId)
     {
         var availableDevices = await _repository.GetAllAsync(

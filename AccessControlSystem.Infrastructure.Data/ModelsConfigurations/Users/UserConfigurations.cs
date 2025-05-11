@@ -15,5 +15,9 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.HasOne(u => u.Subscription)
             .WithMany(s => s.Users)
             .HasForeignKey(u => u.SubscriptionId);
+
+        builder.HasMany(u => u.UserRoles)
+              .WithOne()
+              .HasForeignKey(ur => ur.UserId);
     }
 }

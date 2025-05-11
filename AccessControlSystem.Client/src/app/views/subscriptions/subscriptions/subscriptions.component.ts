@@ -43,17 +43,17 @@ export class SubscriptionsComponent {
   subscriptions: any;
   imageValidationError: string = '';
   subscriptionData = {
-    subscriptionImageFile: null,
-    subscriptionImageUrl: '',
-    customerName: '',
-    subscriptionType: '',
-    adminNumber: '',
-    deviceNumber: '',
-    cardNumber: '',
-    paymentPerMonth: '',
-    startDate: new Date(),
-    endDate: new Date(),
-    note: ''
+    SubscriptionImageFile: null,
+    SubscriptionImageUrl: '',
+    CustomerName: '',
+    SubscriptionType: '',
+    AdminNumber: '',
+    DeviceNumber: '',
+    CardNumber: '',
+    PaymentPerMonth: '',
+    StartDate: new Date(),
+    EndDate: new Date(),
+    Note: ''
   };
   subscriptionTypeEditorOptions: any
   subscriptionTypes = [
@@ -98,17 +98,17 @@ export class SubscriptionsComponent {
 
   showAddDevicePopup() {
     this.subscriptionData = {
-      subscriptionImageFile: null,
-      subscriptionImageUrl: '',
-      customerName: '',
-      subscriptionType: '',
-      adminNumber: '',
-      deviceNumber: '',
-      cardNumber: '',
-      paymentPerMonth: '',
-      startDate: new Date(),
-      endDate: new Date(),
-      note: ''
+      SubscriptionImageFile: null,
+      SubscriptionImageUrl: '',
+      CustomerName: '',
+      SubscriptionType: '',
+      AdminNumber: '',
+      DeviceNumber: '',
+      CardNumber: '',
+      PaymentPerMonth: '',
+      StartDate: new Date(),
+      EndDate: new Date(),
+      Note: ''
     };
     this.imageValidationError = '';
     this.popupVisible = true;
@@ -129,18 +129,18 @@ export class SubscriptionsComponent {
   onImageChange(e: any) {
     const file = e.value[0];
     if (file) {
-      this.subscriptionData.subscriptionImageFile = file;
+      this.subscriptionData.SubscriptionImageFile = file;
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.subscriptionData.subscriptionImageUrl = reader.result as string;
+        this.subscriptionData.SubscriptionImageUrl = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
   }
 
   submitSubscription() {
-    if (!this.subscriptionData.subscriptionImageFile) {
+    if (!this.subscriptionData.SubscriptionImageFile) {
       this.imageValidationError = 'Image is required';
       return;
     }
@@ -152,8 +152,8 @@ export class SubscriptionsComponent {
       return;
     }
 
-    const start = new Date(this.subscriptionData.startDate);
-    const end = new Date(this.subscriptionData.endDate);
+    const start = new Date(this.subscriptionData.StartDate);
+    const end = new Date(this.subscriptionData.EndDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
       notify('Invalid start or end date', 'error', 2000);
@@ -167,23 +167,22 @@ export class SubscriptionsComponent {
     console.log('End Date:', endFormatted);
 
 
-    const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.subscriptionType));
-    const subscriptionTypeName = selectedType ? selectedType.name : '';
+    const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
+    debugger
 
     const formData = new FormData();
 
-    formData.append('CustomerName', this.subscriptionData.customerName);
-    formData.append('SubscriptionType', Number(this.subscriptionData.subscriptionType).toString());
-    formData.append('AdminNumber', Number(this.subscriptionData.adminNumber).toString());
-    formData.append('DeviceNumber', Number(this.subscriptionData.deviceNumber).toString());
-    formData.append('CardNumber', Number(this.subscriptionData.cardNumber).toString());
-    formData.append('PaymentPerMonth', Number(this.subscriptionData.paymentPerMonth).toString());
+    formData.append('CustomerName', this.subscriptionData.CustomerName);
+    formData.append('SubscriptionType', Number(this.subscriptionData.SubscriptionType).toString());
+    formData.append('AdminNumber', Number(this.subscriptionData.AdminNumber).toString());
+    formData.append('DeviceNumber', Number(this.subscriptionData.DeviceNumber).toString());
+    formData.append('CardNumber', Number(this.subscriptionData.CardNumber).toString());
+    formData.append('PaymentPerMonth', Number(this.subscriptionData.PaymentPerMonth).toString());
     formData.append('StartDate', startFormatted);
     formData.append('EndDate', endFormatted);
-    formData.append('Note', this.subscriptionData.note || '');
+    formData.append('Note', this.subscriptionData.Note || '');
     formData.append('ImagePath', '');
-    formData.append('ImageEncode', this.subscriptionData.subscriptionImageUrl || '');
-    formData.append('ImageFile', this.subscriptionData.subscriptionImageFile || '');
+    formData.append('ImageFile', this.subscriptionData.SubscriptionImageFile || '');
 
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
       next: (response) => {

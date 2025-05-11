@@ -6,7 +6,6 @@ using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Subscriptions;
-using AccessControlSystem.Domain.Models.SubscriptionsDevices;
 using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
@@ -38,12 +37,11 @@ public class SubscriptionService(
         {
             Includes = [
                 s => s.Users,
-                s => s.SubscriptionsDevices,
+                s => s.Devices,
                 s => s.Cards
             ],
             IncludesThen = [
-                (s => s.Users, u => (u as User)!.UserRoles),
-                (s => s.SubscriptionsDevices, sd => (sd as SubscriptionDevice)!.Device)
+                (s => s.Users, u => (u as User)!.UserRoles)
             ]
         });
         var subscriptionDto = _mapper.Map<SubscriptionDto>(subscription);

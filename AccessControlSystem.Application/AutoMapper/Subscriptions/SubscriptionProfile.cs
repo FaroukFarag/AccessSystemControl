@@ -19,11 +19,9 @@ public class SubscriptionProfile : Profile
                 .MapFrom(src => src.Users.Count(u => u.UserRoles
                     .Any(ur => ur.RoleId == (int)RoleNames.Admin))))
             .ForMember(des => des.UsedDevices, opt => opt
-                .MapFrom(src => src.SubscriptionsDevices.Count()))
+                .MapFrom(src => src.Devices.Count()))
             .ForMember(des => des.UsedCards, opt => opt
-                .MapFrom(src => src.Cards.Count()))
-            .ForMember(des => des.Devices, opt => opt
-                .MapFrom(src => src.SubscriptionsDevices.Select(sd => sd.Device)));
+                .MapFrom(src => src.Cards.Count()));
 
         CreateMap<SubscriptionDto, Subscription>();
     }

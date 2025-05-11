@@ -17,15 +17,19 @@ public class SubscriptionDtoValidator : AbstractValidator<SubscriptionDto>
             .NotEmpty()
             .MaximumLength(50);
 
+        RuleFor(s => s.AdminNumber)
+            .Must((dto, adminNumber) => ValidateNumberAgainstSubscriptionType(dto.SubscriptionType, adminNumber))
+            .WithMessage("Device number is not valid for the selected subscription type");
+
         RuleFor(s => s.DeviceNumber)
-            .Must((dto, deviceNumber) => ValidateDeviceNumberAgainstSubscriptionType(dto.SubscriptionType, deviceNumber))
+            .Must((dto, deviceNumber) => ValidateNumberAgainstSubscriptionType(dto.SubscriptionType, deviceNumber))
             .WithMessage("Device number is not valid for the selected subscription type");
     }
 
-    private bool ValidateDeviceNumberAgainstSubscriptionType(SubscriptionType type, int deviceNumber)
+    private bool ValidateNumberAgainstSubscriptionType(SubscriptionType type, int number)
     {
         var strategy = _strategyFactory.GetStrategy(type);
 
-        return strategy.IsValid(deviceNumber);
+        return strategy.IsValid(number);
     }
 }
