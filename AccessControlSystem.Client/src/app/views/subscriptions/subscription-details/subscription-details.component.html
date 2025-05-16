@@ -92,8 +92,6 @@
 <dx-popup [width]="600" [height]="450" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
   [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
-
-
     <dxi-item dataField="selectedDevices" editorType="dxTagBox" [editorOptions]="{
       dataSource: devicesList,
       placeholder: 'Select devices',

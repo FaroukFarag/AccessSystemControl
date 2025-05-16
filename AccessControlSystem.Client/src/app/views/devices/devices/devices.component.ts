@@ -18,6 +18,7 @@ import { DeviceService } from '../../../services/devices/device.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import notify from 'devextreme/ui/notify';
 import { DxFormComponent } from 'devextreme-angular';
+import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 
 
 @Component({
@@ -52,15 +53,16 @@ export class DevicesComponent {
     deviceImageUrl: '',
     deviceName: '',
     deviceType: '',
-    macAddress: ''
+    macAddress: '',
+    selectedSubscriptions: [] 
   };
   groupDeviceseData = {
    
     
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-  deviceTypeEditorOptions: any
- 
+  deviceTypeEditorOptions: any;
+  subscriptionList: any;
   deviceTypes = [
     {
       'id': '1',
@@ -86,7 +88,7 @@ export class DevicesComponent {
     },
   ];
 
-  constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer) {
+  constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer, private subscriptionsService: SubscriptionService,) {
 
     this.deviceTypeEditorOptions = {
       dataSource: this.deviceTypes,
@@ -109,15 +111,22 @@ export class DevicesComponent {
 
     })
   }
-
+  getAllSubscriptions() {
+    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
+      this.subscriptionList = data;
+      console.log("subscriptionssList", this.subscriptionList);
+    })
+  }
   showAddDevicePopup() {
     this.popupVisible = true;
+    this.getAllSubscriptions();
     this.deviceData = {
       deviceImageFile: null,
       deviceImageUrl: '',
       deviceName: '',
       deviceType: '',
-      macAddress: ''
+      macAddress: '',
+      selectedSubscriptions: [] 
     };
   }
 
@@ -163,7 +172,7 @@ export class DevicesComponent {
     formData.append('DeviceType', '1'); 
     formData.append('MacAddress', this.deviceData.macAddress);
     formData.append('Active', 'true');
-
+    formData.append('SubscriptionIds', JSON.stringify(this.deviceData.selectedSubscriptions));
     this.deviceService.create('Devices/Create', formData as any).subscribe({
       next: (response) => {
         notify('Device created successfully', 'success', 1500);
