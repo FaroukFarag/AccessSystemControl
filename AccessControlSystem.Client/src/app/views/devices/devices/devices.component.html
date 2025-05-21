@@ -148,17 +148,18 @@
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="selectedDevices" editorType="dxTagBox" [editorOptions]="{
-                  dataSource: subscriptionList,
-                  placeholder: 'Select Sebscription',
-                  valueExpr: 'id',
-                  displayExpr: 'customerName',
-                  itemTemplate: 'subscriptionTemplate',
-                  showSelectionControls: true,
-                  searchEnabled: true
-                           }">
-      <dxi-validation-rule type="required" message="At least one subscription is required"></dxi-validation-rule>
-      <dxo-label text="Subscriptions" [visible]="true"></dxo-label>
+    <dxi-item dataField="selectedSubscriptions" editorType="dxTagBox"
+    [editorOptions]="{
+    dataSource: subscriptionList,
+    placeholder: 'Select Subscription',
+    valueExpr: 'id',
+    displayExpr: 'customerName',
+    itemTemplate: 'subscriptionTemplate',
+    showSelectionControls: true,
+    searchEnabled: true
+    }">
+    <dxi-validation-rule type="required" message="At least one subscription is required"></dxi-validation-rule>
+    <dxo-label text="Subscriptions" [visible]="true"></dxo-label>
     </dxi-item>
 
     <!-- Subscription Template for showing image + name -->
