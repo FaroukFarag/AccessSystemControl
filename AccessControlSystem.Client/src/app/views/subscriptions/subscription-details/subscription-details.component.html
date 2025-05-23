@@ -1,6 +1,6 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
-    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" tabindex="0" role="button" />
     <h4>{{ subscription?.customerName }}</h4>
   </div>
   <span>Review village details and information</span>
@@ -15,7 +15,7 @@
       <strong>Payment:</strong> ${{ subscription?.paymentPerMonth }} <span class="subtext">/ per month</span>
     </div>
     <div>
-      <strong>Total Payment:</strong> ${{ totalPayment }} 
+      <strong>Total Payment:</strong> ${{ totalPayment }}
     </div>
     <div>
       <strong>Start:</strong> {{ subscription?.startDate }}
@@ -64,7 +64,7 @@
       <strong>Devices</strong> <span class="count">({{ subscription?.devices?.length }})</span>
     </div>
     <div class="actions">
-      <dx-button class="button-info me-1" text="Add Device" (onClick)="showAddDevicePopup()">
+      <dx-button class="button-info me-1" text="Create new Device" (onClick)="showAddDevicePopup()">
       </dx-button>
       <a href="#" class="view-all">View All</a>
     </div>
@@ -85,33 +85,68 @@
         <label><input type="checkbox" disabled /> Device type: {{ device.deviceTypeName }}</label>
       </div>
     </div>
+
+    <div *ngIf="subscription?.devices?.length === 0" class="empty-state">
+      No devices found for this subscription.
+    </div>
+
   </div>
 </div>
 
+
+
+
+
 <!--ADD DEVICE POPUP-->
-<dx-popup [width]="600" [height]="450" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
-  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+<dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
-    <dxi-item dataField="selectedDevices" editorType="dxTagBox" [editorOptions]="{
-      dataSource: devicesList,
-      placeholder: 'Select devices',
-      valueExpr: 'id',
-      displayExpr: 'name',
-      itemTemplate: 'deviceTemplate',
-      showSelectionControls: true,
-      searchEnabled: true
-    }">
-      <dxi-validation-rule type="required" message="At least one device is required"></dxi-validation-rule>
-      <dxo-label text="Devices" [visible]="true"></dxo-label>
+    <dxi-item itemType="simple">
+      <div class="image-upload-wrapper">
+        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+
+        <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
+             class="thumbnail" />
+        <div *ngIf="imageValidationError" class="validation-message">
+          {{ imageValidationError }}
+        </div>
+      </div>
     </dxi-item>
 
-    <!-- Device Template for showing image + name -->
-    <div *dxTemplate="let data of 'deviceTemplate'">
+    <dxi-item dataField="deviceName" [editorOptions]="{ placeholder: 'Device name' }">
+      <dxi-validation-rule type="required" message="Device name is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'Device MAC address' }">
+      <dxi-validation-rule type="required" message="Device MAC address is required">
+      </dxi-validation-rule>
+      <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
+                           message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="deviceType" editorType="dxSelectBox" [editorOptions]="{
+         dataSource: deviceTypes,
+         placeholder: 'Device type',
+         valueExpr: 'id',
+         displayExpr: 'name'
+       }">
+      <dxi-validation-rule type="required" message="Device type is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+
+    <!-- Subscription Template for showing image + name -->
+    <div *dxTemplate="let data of 'subscriptionTemplate'">
       <div class="device-item">
         <img [src]="data.imagePath" alt="Device image" width="30" height="30" style="margin-right: 8px;" />
-        <span>{{data.name}}</span>
+        <span>{{data.customerName}}</span>
       </div>
     </div>
+
 
   </dx-form>
   <dxi-item itemType="button">
@@ -119,3 +154,4 @@
   </dxi-item>
 
 </dx-popup>
+
