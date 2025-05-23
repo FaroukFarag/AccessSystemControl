@@ -18,6 +18,7 @@ import { DeviceService } from '../../../services/devices/device.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import notify from 'devextreme/ui/notify';
 import { DxFormComponent } from 'devextreme-angular';
+import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 
 
 @Component({
@@ -52,15 +53,16 @@ export class DevicesComponent {
     deviceImageUrl: '',
     deviceName: '',
     deviceType: '',
-    macAddress: ''
+    macAddress: '',
+    selectedSubscriptions: [] 
   };
   groupDeviceseData = {
    
     
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-  deviceTypeEditorOptions: any
- 
+  deviceTypeEditorOptions: any;
+  subscriptionList: any;
   deviceTypes = [
     {
       'id': '1',
@@ -86,7 +88,7 @@ export class DevicesComponent {
     },
   ];
 
-  constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer) {
+  constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer, private subscriptionsService: SubscriptionService,) {
 
     this.deviceTypeEditorOptions = {
       dataSource: this.deviceTypes,
@@ -109,15 +111,22 @@ export class DevicesComponent {
 
     })
   }
-
+  getAllSubscriptions() {
+    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
+      this.subscriptionList = data;
+      console.log("subscriptionssList", this.subscriptionList);
+    })
+  }
   showAddDevicePopup() {
     this.popupVisible = true;
+    this.getAllSubscriptions();
     this.deviceData = {
       deviceImageFile: null,
       deviceImageUrl: '',
       deviceName: '',
       deviceType: '',
-      macAddress: ''
+      macAddress: '',
+      selectedSubscriptions: [] 
     };
   }
 
@@ -142,40 +151,45 @@ export class DevicesComponent {
       reader.readAsDataURL(file);
     }
   }
-
-  submitDevice() {
-    this.imageValidationError = '';
-    if (!this.deviceData.deviceImageFile) {
-      this.imageValidationError = 'Image is required';
-    }
-
-    const result = this.dxForm.instance.validate();
-    if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('ImageFile', this.deviceData.deviceImageFile || '');
-    formData.append('ImageEncode', this.deviceData.deviceImageUrl || '');
-    formData.append('Name', this.deviceData.deviceName);
-    formData.append('DeviceTypeName', this.deviceData.deviceType);
-    formData.append('DeviceType', '1'); 
-    formData.append('MacAddress', this.deviceData.macAddress);
-    formData.append('Active', 'true');
-
-    this.deviceService.create('Devices/Create', formData as any).subscribe({
-      next: (response) => {
-        notify('Device created successfully', 'success', 1500);
-        this.popupVisible = false;
-        this.getAllDevices(); 
-      },
-      error: (err) => {
-        notify('Error creating device', 'error', 2000);
-        console.error(err);
-      }
-    });
+submitDevice() {
+  this.imageValidationError = '';
+  if (!this.deviceData.deviceImageFile) {
+    this.imageValidationError = 'Image is required';
   }
+
+  const result = this.dxForm.instance.validate();
+  if (!result.isValid || !this.deviceData.selectedSubscriptions.length) {
+    notify('Please fill in all required fields.', 'warning', 1500);
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('ImageFile', this.deviceData.deviceImageFile || '');
+  formData.append('ImagePath', this.deviceData.deviceImageUrl || '');
+  formData.append('Name', this.deviceData.deviceName);
+  formData.append('DeviceTypeName', this.deviceTypes.find(dt => dt.id === this.deviceData.deviceType)?.name || '');
+  formData.append('DeviceType', this.deviceData.deviceType); 
+  formData.append('MacAddress', this.deviceData.macAddress);
+  formData.append('Active', 'true');
+  const subscriptionId = Number(this.deviceData.selectedSubscriptions[0]);
+  if (!subscriptionId) {
+    notify('Please select a valid subscription', 'error', 2000);
+    return;
+  }
+  formData.append('SubscriptionId', subscriptionId.toString());
+  this.deviceService.create('Devices/Create', formData as any).subscribe({
+    next: (response) => {
+      notify('Device created successfully', 'success', 1500);
+      this.popupVisible = false;
+      this.getAllDevices();
+    },
+    error: (err) => {
+      notify('Error creating device', 'error', 2000);
+      console.error(err);
+    }
+  });
+}
+
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);

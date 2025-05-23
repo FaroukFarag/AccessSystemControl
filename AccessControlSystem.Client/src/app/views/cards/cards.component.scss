@@ -1,0 +1,70 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.user-card {
+  width: 200px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.user-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.status {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.status.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+/*
+.status.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+*/
+.page-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 14px
+}
+
+::ng-deep .dx-button-mode-contained {
+  background-color: #007BE2 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding-top: 2px;
+  padding-right: 16px;
+  padding-bottom: 2px;
+  padding-left: 16px;
+  gap: 16px;
+}

@@ -70,15 +70,36 @@ export class AppLayoutComponent implements OnInit {
     //},
   ];
 
-  ngOnInit() {
-    const role = localStorage.getItem('userRole');
+  private getNavigationByRole(role: string): any[] {
+    const allTabs = [
+      { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' },
+      { id: 2, text: 'Subscriptions', icon: '/assets/icons/subscriptions.svg' },
+      { id: 3, text: 'Devices', icon: '/assets/icons/device.svg' },
+      { id: 4, text: 'Owners', icon: '/assets/icons/owners.svg' },
+      { id: 5, text: 'Admins', icon: '/assets/icons/owners.svg' },
+      { id: 6, text: 'Units', icon: '/assets/icons/units.svg' },
+      { id: 7, text: 'Access groups', icon: '/assets/icons/access.svg' },
+      { id: 8, text: 'Cards', icon: '/assets/icons/card-owner.svg' },
+    ];
 
     if (role === '1') {
-      this.navigation = this.navigation.slice(0, 3);
+      return allTabs.filter(tab => tab.id === 1 || tab.id === 2 || tab.id === 3);
+    } else if (role === '2') {
+      return allTabs.filter(tab => tab.id === 1 || tab.id === 2 || tab.id === 3 || tab.id === 6 || tab.id === 4 || tab.id === 7);
     }
-    const token = localStorage.getItem('authToken');
-    this.canAccessMainLayout = !!token;
+    else {
+      return allTabs.filter(tab => tab.id === 1 || tab.id === 3 );
+    }
   }
+
+  ngOnInit() {
+    const role = localStorage.getItem('userRole') || '';
+    const token = localStorage.getItem('authToken');
+
+    this.canAccessMainLayout = !!token;
+    this.navigation = this.getNavigationByRole(role);
+  }
+
   navigateTo(route: string) {
     this.router.navigate([route]);
   }

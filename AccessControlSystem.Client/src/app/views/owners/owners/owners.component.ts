@@ -17,6 +17,7 @@ import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angula
 import notify from 'devextreme/ui/notify';
 import { UserService } from '../../../services/users/user.service';
 import { User } from '../../../models/users/user';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-owners',
   standalone: true,
@@ -46,146 +47,18 @@ export class OwnersComponent implements OnInit {
     password: '',
     confirmPassword: ''
   };
-  owners: any = [
-    {
-      'id': '1',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '2',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "15"
-    }, {
-      'id': '3',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '4',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "24"
-    }, {
-      'id': '5',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '6',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '7',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '8',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '9',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '10',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '11',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '12',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '13',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '14',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '15',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '16',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '17',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '18',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '19',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '20',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '21',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '22',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '23',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '24',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '25',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '26',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    },
-  ]
+  owners: any;
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router,
+    private userService: UserService,
+    private location: Location) { }
 
   ngOnInit(): void {
     this.getAllOwners();
   }
-
+  backClicked() {
+    this.location.back();
+  }
   getAllOwners() {
     this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
       this.owners = data;
@@ -234,7 +107,11 @@ export class OwnersComponent implements OnInit {
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
 
-  navigateToDetailsPage() {
-    this.router.navigate(['/owner-details']);
+  //navigateToDetailsPage() {
+  //  this.router.navigate(['/owner-details']);
+  //}
+
+  navigateToDetailsPage(ownerId: string) {
+    this.router.navigate(['/owner-details'], { queryParams: { id: ownerId } });
   }
 }

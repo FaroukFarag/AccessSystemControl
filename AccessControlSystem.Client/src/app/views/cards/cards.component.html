@@ -1,1 +1,30 @@
-<p>cards works!</p>
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>Cards</h4>
+  </div>
+  <span>Review all Cards details and information</span>
+</div>
+<div class="page-header">
+
+  <dx-button class="button-info me-1" text="Add New Card" (onClick)="showAddCardsPopup()">
+  </dx-button>
+</div>
+
+
+<div class="card-container">
+  <div class="user-card" *ngFor="let user of cardsList">
+    <img class="avatar" src="/assets/images/avatar.jpg" alt="User Avatar">
+    <div class="user-info">
+      <h3>{{ user.name }}</h3>
+      <p class="status" [ngClass]="user.active ? 'active' : 'inactive'">
+        {{ user.active ? 'Active' : 'Not Active' }}
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="cardsList && cardsList.length === 0" class="no-data">
+  No Cards available.
+</div>

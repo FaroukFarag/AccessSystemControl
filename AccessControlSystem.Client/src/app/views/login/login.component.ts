@@ -27,7 +27,7 @@ export class LoginComponent {
     this.loginService.login(loginData).subscribe(response => {
       if (response) {
         localStorage.setItem('authToken', response.token);
-        localStorage.setItem('userRole', response.role);
+        localStorage.setItem('userRole', response.roleId);
         this.router.navigate(['/dashboard']);
       } else {
         console.error('Login failed: No response');
