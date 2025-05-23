@@ -66,6 +66,11 @@ using AccessControlSystem.Infrastructure.Data.Repositories.Subscriptions;
 using AccessControlSystem.Infrastructure.Data.Repositories.Units;
 using AccessControlSystem.Infrastructure.Data.Repositories.Users;
 using AccessControlSystem.Infrastructure.Data.UnitOfWork;
+using AccessControlSystem.Infrastructure.Http.Clients.Airfob;
+using AccessControlSystem.Infrastructure.Http.Configurations;
+using AccessControlSystem.Infrastructure.Http.Handlers.Airfob;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob;
+using AccessControlSystem.Infrastructure.Http.Services.Airfob;
 using AccessControlSystem.WebApi.Middlewares.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -74,6 +79,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace AccessControlSystem.Infrastructure.IoC.DependencyContainer;
@@ -85,6 +91,8 @@ public static class DependencyContainer
         services.Configure<JwtTokenSettings>(configuration.GetSection(JwtTokenSettings.SectionName));
 
         services.Configure<ImageSettings>(configuration.GetSection(ImageSettings.SectionName));
+
+        services.Configure<AirfobSettings>(configuration.GetSection("AirfobSettings"));
     }
 
     public static void RegisterServices(this IServiceCollection services)
@@ -224,5 +232,23 @@ public static class DependencyContainer
     public static void RegisterMiddlewares(this IServiceCollection services)
     {
         services.AddTransient<ExceptionHandlingMiddleware>();
+    }
+
+    public static IServiceCollection AddHttpServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IAirfobAuthService, AirfobAuthService>();
+        services.AddScoped<IAirfobService, AirfobService>();
+
+        services.AddTransient<AirfobAuthHandler>();
+
+        services.AddHttpClient<AirfobClient>(client =>
+        {
+            client.BaseAddress = new Uri(configuration["AirfobSettings:BaseUrl"]!);
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+        })
+        .AddHttpMessageHandler<AirfobAuthHandler>();
+
+        return services;
     }
 }

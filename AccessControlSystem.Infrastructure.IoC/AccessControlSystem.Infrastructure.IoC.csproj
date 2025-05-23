@@ -17,6 +17,7 @@
     <ProjectReference Include="..\AccessControlSystem.Application\AccessControlSystem.Application.csproj" />
     <ProjectReference Include="..\AccessControlSystem.Common\AccessControlSystem.Common.csproj" />
     <ProjectReference Include="..\AccessControlSystem.Infrastructure.Data\AccessControlSystem.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\AccessControlSystem.Infrastructure.Http\AccessControlSystem.Infrastructure.Http.csproj" />
     <ProjectReference Include="..\AccessControlSystem.Reports\AccessControlSystem.Reporting.csproj" />
   </ItemGroup>
 

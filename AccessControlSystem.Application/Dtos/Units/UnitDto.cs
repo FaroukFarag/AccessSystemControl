@@ -10,6 +10,6 @@ public class UnitDto : BaseImageModelDto<int>
     public int CardNumber { get; set; }
     public int SubscriptionId { get; set; }
 
-    public IEnumerable<int> Owners { get; set; } = default!;
-    public IEnumerable<int> AccessGroupDevices { get; set; } = default!;
+    public IEnumerable<int>? Owners { get; set; }
+    public IEnumerable<int>? AccessGroupDevices { get; set; }
 }

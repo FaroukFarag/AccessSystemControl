@@ -113,6 +113,7 @@ public class UserService(
         return new LoggedInDto
         {
             RoleId = roleId,
+            SubscriptionId = user.SubscriptionId,
             Token = await GetToken(user)
         };
     }

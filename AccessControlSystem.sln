@@ -31,6 +31,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reporting", "Reporting", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccessControlSystem.Reporting", "AccessControlSystem.Reports\AccessControlSystem.Reporting.csproj", "{D9328664-FB95-4AAA-A741-5274B939A9DB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.Http", "Infrastructure.Http", "{54AD69D3-DD05-4627-9D02-DB11C329C9D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessControlSystem.Infrastructure.Http", "AccessControlSystem.Infrastructure.Http\AccessControlSystem.Infrastructure.Http.csproj", "{465B5C24-B812-4CC5-8904-B596753E3A81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,10 @@ Global
 		{D9328664-FB95-4AAA-A741-5274B939A9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9328664-FB95-4AAA-A741-5274B939A9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9328664-FB95-4AAA-A741-5274B939A9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{465B5C24-B812-4CC5-8904-B596753E3A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{465B5C24-B812-4CC5-8904-B596753E3A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{465B5C24-B812-4CC5-8904-B596753E3A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{465B5C24-B812-4CC5-8904-B596753E3A81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +85,7 @@ Global
 		{ADF3B5FD-1CAD-455A-B094-B866B05BB50F} = {3722F4F5-846A-4F43-A38A-029EC4D01981}
 		{AC5D9064-F30C-4F20-846F-AEC4E0AF120E} = {AC59D3E3-74D9-450C-8D7E-56F2B6843119}
 		{D9328664-FB95-4AAA-A741-5274B939A9DB} = {2522B316-50AA-4E50-81EC-ED201B99322A}
+		{465B5C24-B812-4CC5-8904-B596753E3A81} = {54AD69D3-DD05-4627-9D02-DB11C329C9D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AA8B989-5067-43D9-BB7A-74B159E1ACE4}
