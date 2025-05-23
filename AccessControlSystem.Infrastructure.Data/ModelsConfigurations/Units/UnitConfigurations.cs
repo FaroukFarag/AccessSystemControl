@@ -12,8 +12,12 @@ public class UnitConfigurations : IEntityTypeConfiguration<Unit>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.Property(s => s.Area)
+        builder.Property(u => u.Area)
             .HasPrecision(18, 6)
             .IsRequired();
+
+        builder.HasOne(u => u.Owner)
+            .WithMany(o => o.Units)
+            .HasForeignKey(o => o.OwnerId);
     }
 }

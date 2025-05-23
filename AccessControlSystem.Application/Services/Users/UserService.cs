@@ -5,9 +5,11 @@ using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
+using AccessControlSystem.Domain.Models.AccessGroups;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Shared;
 using AccessControlSystem.Domain.Models.Users;
+using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 
@@ -24,7 +26,6 @@ public class UserService(
     BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly UserManager<User> _userManager = userManager;
@@ -70,8 +71,18 @@ public class UserService(
     {
         var role = await _roleManager.FindByIdAsync(roleId.ToString());
         var usersInRole = await _userManager.GetUsersInRoleAsync(role!.Name!);
-        var userDtos = _mapper.Map<IReadOnlyList<UserDto>>(usersInRole);
+        var userIds = usersInRole.Select(u => u.Id).ToList();
+        var usersWithIncludes = await _userRepository.GetAllAsync(
+            new BaseSpecification<User>
+            {
+                Criteria = u => userIds.Contains(u.Id),
+                Includes = [u => u.Units!, u => u.AccessGroups!],
+                IncludesThen = [
+                    (u => u.AccessGroups!, ag => (ag as AccessGroup)!.AccessGroupDevices)
+                ]
+            });
 
+        var userDtos = _mapper.Map<IReadOnlyList<UserDto>>(usersWithIncludes);
         return userDtos;
     }
 

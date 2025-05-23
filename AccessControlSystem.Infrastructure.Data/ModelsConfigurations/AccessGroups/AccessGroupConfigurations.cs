@@ -11,5 +11,13 @@ public class AccessGroupConfigurations : IEntityTypeConfiguration<AccessGroup>
         builder.Property(ag => ag.Name)
             .IsRequired()
             .HasMaxLength(50);
+
+        builder.HasOne(ag => ag.Owner)
+            .WithMany(o => o.AccessGroups)
+            .HasForeignKey(o => o.OwnerId);
+
+        builder.HasMany(ag => ag.AccessGroupDevices)
+            .WithOne(agd => agd.AccessGroup)
+            .HasForeignKey(agd => agd.AccessGroupId);
     }
 }

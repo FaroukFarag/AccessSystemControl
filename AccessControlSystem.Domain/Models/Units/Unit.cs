@@ -12,8 +12,9 @@ public class Unit : BaseImageModel<int>
     public decimal Area { get; set; }
     public int CardNumber { get; set; }
     public int SubscriptionId { get; set; }
+    public int? OwnerId { get; set; }
 
     public Subscription Subscription { get; set; } = default!;
-    public IEnumerable<User> Owners { get; set; } = default!;
+    public User? Owner { get; set; }
     public IEnumerable<AccessGroup> AccessGroups { get; set; } = default!;
 }

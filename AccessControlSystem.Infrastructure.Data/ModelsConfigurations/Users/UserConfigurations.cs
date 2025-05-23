@@ -19,5 +19,13 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.HasMany(u => u.UserRoles)
               .WithOne()
               .HasForeignKey(ur => ur.UserId);
+
+        builder.HasMany(o => o.Units)
+            .WithOne(u => u.Owner)
+            .HasForeignKey(u => u.OwnerId);
+
+        builder.HasMany(u => u.AccessGroups)
+            .WithOne(ag => ag.Owner)
+            .HasForeignKey(u => u.OwnerId);
     }
 }
