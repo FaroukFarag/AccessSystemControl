@@ -133,39 +133,6 @@ export class SubscriptionDetailsComponent implements OnInit {
     })
   }
 
-
-
-  //submitDevice() {
-  //  const result = this.dxForm.instance.validate();
-  //  if (!result.isValid) {
-  //    notify('Please fill in all required fields.', 'warning', 1500);
-  //    return;
-  //  }
-
-  //  const selectedDevices = this.deviceData.selectedDevices;
-  //  if (!selectedDevices || selectedDevices.length === 0) {
-  //    notify('Please select at least one device.', 'warning', 1500);
-  //    return;
-  //  }
-
-  //  const subscriptionsDevices = selectedDevices.map(deviceId => {
-  //    return { subscriptionId: this.id, deviceId }
-  //  });
-
-  //  this.deviceService.create('SubscriptionsDevices/CreateRange', subscriptionsDevices as any).subscribe({
-  //    next: () => {
-  //      this.getAllDevices();
-  //      notify(`Devices linked successfully`, 'success', 1500);
-  //    },
-  //    error: (err) => {
-  //      notify('Error linking devices', 'error', 2000);
-  //      console.error(err);
-  //    }
-  //  });
-
-  //  this.popupVisible = false;
-  //}
-
   showAddDevicePopup() {
     this.popupVisible = true;
     this.deviceData = {

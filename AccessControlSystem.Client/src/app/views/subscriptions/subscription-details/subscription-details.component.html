@@ -66,7 +66,7 @@
     <div class="actions">
       <dx-button class="button-info me-1" text="Create new Device" (onClick)="showAddDevicePopup()">
       </dx-button>
-      <a href="#" class="view-all">View All</a>
+      <!--<a href="#" class="view-all">View All</a>-->S
     </div>
   </div>
 
@@ -77,12 +77,21 @@
       <div class="device-status active">{{ device.active ? 'Active' : 'Inactive' }}</div>
 
       <div class="device-info">
-        <label><input type="checkbox" disabled /> Status:</label>
-        <label>
-          <input type="checkbox" disabled />
-          Mac Address: <span class="mac">{{ device.macAddress }}</span>
-        </label>
-        <label><input type="checkbox" disabled /> Device type: {{ device.deviceTypeName }}</label>
+        <div class="info">
+          <img class="icon" src="/assets/icons/status.svg" />
+          <span class="key me-2">  Status:</span>
+          <span class="device-status active ">{{ device.active ? 'Active' : 'Inactive' }}</span>
+        </div>
+        <div class="info">
+          <img class="icon" src="/assets/icons/mac-address.svg" />
+          <span class="key">Mac Address:</span>
+          <span class="value"> {{ device.macAddress }}</span>
+        </div>
+        <div class="info">
+          <img class="icon" src="/assets/icons/device-type.svg" />
+          <span class="key">Device type:</span>
+          <span class="value">  {{ device.deviceTypeName }}</span>
+        </div>
       </div>
     </div>
 
@@ -154,4 +163,8 @@
   </dxi-item>
 
 </dx-popup>
+
+
+
+
 

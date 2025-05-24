@@ -85,7 +85,7 @@ export class AppLayoutComponent implements OnInit {
     if (role === '1') {
       return allTabs.filter(tab => tab.id === 1 || tab.id === 2 || tab.id === 3);
     } else if (role === '2') {
-      return allTabs.filter(tab => tab.id === 1 || tab.id === 2 || tab.id === 3 || tab.id === 6 || tab.id === 4 || tab.id === 7);
+      return allTabs.filter(tab => tab.id === 1 || tab.id === 2 || tab.id === 3 || tab.id === 6 || tab.id === 7 || tab.id === 4 );
     }
     else {
       return allTabs.filter(tab => tab.id === 1 || tab.id === 3 );
