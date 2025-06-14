@@ -20,11 +20,11 @@ export class DeviceDetailsComponent {
 
       "Time": "12:00 PM",
 
-      "Date": new Date(2023, 9, 1), // Example date (October 1, 2023)
+      "Date": new Date(2023, 9, 1), 
 
       "DeviceMacAddress": "00:1A:2B:3C:4D:5E",
 
-      "image": "path/to/image1.png" // Path to the image
+      "image": "path/to/image1.png" 
 
     },
 

@@ -49,4 +49,7 @@ export class BaseService<T> {
   deleteRange(endpoint: string, entities: T[] | null): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${endpoint}`, { body: entities });
   }
+
+  
+
 }

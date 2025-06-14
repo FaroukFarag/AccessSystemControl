@@ -42,22 +42,8 @@ export class UnitsComponent {
   sortBy = ['Recent', 'date'];
   unitsList: any;
   imageValidationError: string = '';
-  UnitsData = {
-    unitImageFile: null,
-    unitImageUrl: '',
-    Name: '',
-    Number: '',
-    Area: '',
-    CardNumber: '',
-    AccessGroupDevices: [],
-    ImageEncode: '',
-    ImageFile: null,
-    ImagePath: '',
-    Id: '0',
-    UserId: '1',
-    SubscriptionId: '1'
-   
-  };
+  subscriptionId: any;
+  UnitsData: any;
   deviceTypeEditorOptions: any
   subscriptionTypes = [
     {
@@ -99,155 +85,12 @@ export class UnitsComponent {
 
   }
 
-  units: any = [
-    {
-      'id': '1',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '2',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "15"
-    }, {
-      'id': '3',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '4',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "24"
-    }, {
-      'id': '5',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '6',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '7',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '8',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '9',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '10',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '11',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '12',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '13',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '14',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '15',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '16',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '17',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '18',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '19',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '20',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '21',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '22',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '23',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '24',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '25',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    }, {
-      'id': '26',
-      'name': 'Village Name',
-      'subscription': 'Standard',
-      'dvices': "20"
-    },
-  ]
-
+ 
 
 
   ngOnInit() {
-    this.getAllSubscriptions();
-  }
+    this.subscriptionId = localStorage.getItem('subscriptionId');
 
-  getAllSubscriptions() {
-    this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
-      this.unitsList = data;
-      console.log("UnitsList", this.unitsList);
-
-    })
-  }
-
-  showAddDevicePopup() {
     this.UnitsData = {
       unitImageFile: null,
       unitImageUrl: '',
@@ -261,7 +104,35 @@ export class UnitsComponent {
       ImagePath: '',
       Id: '0',
       UserId: '1',
-      SubscriptionId: '1'
+      SubscriptionId: this.subscriptionId,
+    };
+
+    this.getAllSubscriptions();
+  }
+
+  getAllSubscriptions() {
+    this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
+      this.unitsList = data;
+
+    })
+  }
+
+  showAddDevicePopup() {
+    this.subscriptionId = localStorage.getItem('subscriptionId');
+    this.UnitsData = {
+      unitImageFile: null,
+      unitImageUrl: '',
+      Name: '',
+      Number: '',
+      Area: '',
+      CardNumber: '',
+      AccessGroupDevices: [],
+      ImageEncode: '',
+      ImageFile: null,
+      ImagePath: '',
+      Id: '0',
+      UserId: '1',
+      SubscriptionId: this.subscriptionId
     };
     this.imageValidationError = '';
     this.popupVisible = true;
@@ -269,8 +140,10 @@ export class UnitsComponent {
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
-  navigateToDetailsPage() {
-    this.router.navigate(['/unit-details']);
+  navigateToDetailsPage(unitId: number) {
+   // this.router.navigate(['/unit-details', { id: unitId }]);
+    this.router.navigate(['/unit-details'], { queryParams: { id: unitId } });
+
   }
 
 
@@ -294,55 +167,54 @@ export class UnitsComponent {
     }
   }
 
-
   submitInits() {
-    if (!this.UnitsData.unitImageFile) {
-      this.imageValidationError = 'Image is required';
-      return;
-    }
-
-    const result = this.dxForm.instance.validate();
-    if (!result.isValid) {
+    // Validate required fields
+    if (!this.UnitsData.Name || !this.UnitsData.Number || !this.UnitsData.Area || !this.UnitsData.CardNumber || !this.UnitsData.SubscriptionId) {
       notify('Please fill in all required fields.', 'warning', 1500);
       return;
     }
 
     const formData = new FormData();
-    formData.append('ImageFile', this.UnitsData.unitImageFile || '');
-    formData.append('ImageEncode', this.UnitsData.unitImageUrl || '');
-    formData.append('Name', this.UnitsData.Name);
-    formData.append('Number', this.UnitsData.Number);
-    formData.append('Area', this.UnitsData.Area);
-    formData.append('CardNumber', this.UnitsData.CardNumber);
+    formData.append('name', this.UnitsData.Name);
+    formData.append('number', this.UnitsData.Number.toString());
+    formData.append('area', this.UnitsData.Area.toString());
+    formData.append('cardNumber', this.UnitsData.CardNumber.toString());
+    formData.append('subscriptionId', this.UnitsData.SubscriptionId.toString()); 
 
-    formData.append('UserId', this.UnitsData.UserId);
-    formData.append('SubscriptionId', this.UnitsData.SubscriptionId);
+    // Check if an image file is selected
+    if (this.UnitsData.unitImageFile) {
+      formData.append('imageFile', this.UnitsData.unitImageFile);
+    }
 
-    const devices = Array.isArray(this.UnitsData.AccessGroupDevices)
-      ? this.UnitsData.AccessGroupDevices
-      : [];
+    
+    if (this.UnitsData.unitImageUrl) {
+      formData.append('imagePath', this.UnitsData.unitImageUrl);
+    }
 
-    devices.forEach((deviceId: number, index: number) => {
-      formData.append(`AccessGroupDevices[${index}]`, deviceId.toString());
+    
+    console.log('Data being sent to the API:', {
+      name: this.UnitsData.Name,
+      number: this.UnitsData.Number,
+      area: this.UnitsData.Area,
+      cardNumber: this.UnitsData.CardNumber,
+      subscriptionId: this.UnitsData.SubscriptionId,
+      imagePath: this.UnitsData.unitImageUrl,
+      imageFile: this.UnitsData.unitImageFile ? this.UnitsData.unitImageFile.name : null
     });
 
-    formData.append('ImagePath', this.UnitsData.ImagePath);
-    formData.append('ImageEncode', this.UnitsData.ImageEncode);
-    formData.append('Id', this.UnitsData.Id);
-    formData.append('ImageFile', this.UnitsData.unitImageFile);
-
+   
     this.unitsService.create('Units/Create', formData as any).subscribe({
       next: (response) => {
-        notify('Device created successfully', 'success', 1500);
+        notify('Unit created successfully', 'success', 1500);
         this.popupVisible = false;
         this.getAllSubscriptions();
       },
       error: (err) => {
-        notify('Error creating device', 'error', 2000);
-        console.error(err);
+        notify('Error creating Unit: ' + (err?.error?.details || err.message), 'error', 2000);
       }
     });
   }
+
 
 
 }
