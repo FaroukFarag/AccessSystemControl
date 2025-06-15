@@ -92,7 +92,7 @@ export class DevicesComponent {
   ];
   userRole: any;
   groupName: string = '';
-
+  accessGroups:any;
   constructor(private router: Router,
     private deviceService: DeviceService,
     private sanitizer: DomSanitizer,
@@ -112,6 +112,7 @@ export class DevicesComponent {
   ngOnInit() {
     this.getAllDevices();
     this.userRole = localStorage.getItem('userRole');
+    this.getAllAccessGroups();
 
   }
 
@@ -220,47 +221,56 @@ export class DevicesComponent {
     }
   }
 
-
   submitSelectedDevices() {
-    if (!this.groupName.trim()) {
-      notify('Group name is required.', 'warning', 1500);
+    if (!this.groupName.trim() || this.selectedDeviceIds.length === 0) {
+      notify('Please enter a group name and select at least one device.', 'warning', 2000);
       return;
     }
 
-    const selectedDevices = this.devicesList
-      .filter((device: any) => this.selectedDeviceIds.includes(device.id))
-      .map((device: any) => ({
-        id: device.id || 0,
-        name: device.name,
-        macAddress: device.macAddress,
-        deviceType: Number(device.deviceType),
-        deviceTypeName: device.deviceTypeName || device.deviceType,
-        active: device.active === true,
-        subscriptionId: device.subscriptionId || 0,
-        imagePath: device.imagePath || '',
-        imageFile: null  
-      }));
-
     const payload = {
-      id: 0,
-      name: this.groupName,
-      devices: selectedDevices
+      Name: this.groupName,            
+      DeviceIds: this.selectedDeviceIds  
     };
 
-    console.log('📦 JSON Payload to backend:', payload);
-
-    this.accessGroupService.create('AccessGroups/Create', payload).subscribe({
+    this.accessGroupService.create('AccessGroups/Create', payload as any).subscribe({
       next: () => {
-        notify('Access group created successfully', 'success', 1500);
+        notify('Device group created successfully', 'success', 1500);
         this.groupDevice_popupVisible = false;
-        this.getAllDevices();
+        this.groupName = '';
+        this.selectedDeviceIds = [];
+        this.getAllDevices(); 
       },
       error: (err) => {
-        notify('Error creating access group', 'error', 2000);
+        notify('Failed to create device group', 'error', 2000);
         console.error(err);
       }
     });
   }
 
 
+
+  getAllAccessGroups() {
+    this.accessGroupService.getAll('AccessGroups/GetAll').subscribe({
+      next: (groups) => {
+        this.accessGroups = groups;
+        console.log("Access Groups", this.accessGroups);
+      },
+      error: (err) => {
+        notify('Failed to load access groups', 'error', 2000);
+        console.error(err);
+      }
+    });
+  }
+
+
+
+  navigateToGroup(groupId: number) {
+    // Example: navigate to group details page
+    this.router.navigate(['/access-groups-devices'], { queryParams: { id: groupId } });
+
+  }
+
+
 }
+
+

@@ -32,7 +32,7 @@ export const routes: Routes = [
       { path: 'access groups', component: AccessGroupsComponent },
       { path: 'cards', component: CardsComponent },
       { path: 'admins', component: AdminsComponent },
-      { path: 'access-groups-devices/:id', component: AccessGroupDevicesComponent },
+      { path: 'access-groups-devices', component: AccessGroupDevicesComponent },
     ]
   },
   {
