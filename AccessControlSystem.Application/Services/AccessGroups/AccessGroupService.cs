@@ -24,7 +24,7 @@ public class AccessGroupService(
     {
         var accessGroup = await _repository.GetAsync(id, new BaseSpecification<AccessGroup>
         {
-            Includes = [ag => ag.AccessGroupDevices],
+            Includes = [ag => ag.Owner!, ag => ag.AccessGroupDevices],
             IncludesThen = [
                 (ag => ag.AccessGroupDevices, sd => (sd as AccessGroupDevice)!.Device)
             ]
