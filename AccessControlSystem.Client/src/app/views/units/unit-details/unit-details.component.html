@@ -6,13 +6,72 @@
   <span>Review Unit details and information</span>
 </div>
 
-<div class="page-header" *ngIf="userRole == 2">
-  <dx-button class="button-info me-1" text="Group devices" (onClick)="openAssignToOwnerPopup()">
+<div class="page-header">
+  <dx-button class="button-info me-1" text="Assign Owners" (onClick)="openAssignToOwnerPopup()">
   </dx-button>
 
-
-
 </div>
+<!-- Assign owners POPUP-->
+<!--<dx-popup [width]="600"
+          [height]="550"
+          [showTitle]="true"
+          title="Assign owner"
+          [dragEnabled]="true"
+          [hideOnOutsideClick]="false"
+          [showCloseButton]="true"
+          [(visible)]="popupVisible">
+  <dx-form #subscriptionFormRef [formData]="UnitsData"
+           [colCount]="1"
+           [labelLocation]="'top'">
+    <dxi-item itemType="simple">
+      <div class="image-upload-wrapper">
+        <dx-file-uploader [selectButtonText]="'Choose File'"
+                          [labelText]="''"
+                          accept="image/*"
+                          uploadMode="useForm"
+                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+
+        <img *ngIf="UnitsData.unitImageUrl"
+             [src]="UnitsData.unitImageUrl"
+             alt="Device Preview"
+             class="thumbnail" />
+        <div *ngIf="imageValidationError" class="validation-message">
+          {{ imageValidationError }}
+        </div>
+      </div>
+    </dxi-item>
+
+    <dxi-item dataField="Name" [editorOptions]="{ placeholder: 'Unit name' }">
+      <dxi-validation-rule type="required" message="Unit name is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="Number" [editorOptions]="{ placeholder: 'Unit number' }">
+      <dxi-validation-rule type="required" message="Unit number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="Area" editorType="dxTextBox"
+              [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
+      <dxi-validation-rule type="required" message="Area is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>>
+
+    <dxi-item dataField="CardNumber" editorType="dxNumberBox"
+              [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
+      <dxi-validation-rule type="required" message="Cards number is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add new Unit" type="success" (onClick)="submitInits()"></dx-button>
+  </dxi-item>
+
+</dx-popup>-->
+
 <div class="unit-details">
 
   <!-- Top Section -->
