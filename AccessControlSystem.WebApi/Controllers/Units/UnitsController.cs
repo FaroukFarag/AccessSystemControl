@@ -11,4 +11,11 @@ namespace AccessControlSystem.WebApi.Controllers.Units;
 public class UnitsController(IUnitService service) :
     BaseController<IUnitService, Unit, UnitDto, int>(service)
 {
+    private readonly IUnitService _service = service;
+
+    [HttpPut("AssignOwnerToUnit")]
+    public virtual async Task<IActionResult> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
+    {
+        return Ok(await _service.AssignOwnerToUnit(assignOwnerToUnitDto));
+    }
 }

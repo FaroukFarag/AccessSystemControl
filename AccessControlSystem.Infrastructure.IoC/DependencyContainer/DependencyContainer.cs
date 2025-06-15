@@ -70,6 +70,10 @@ using AccessControlSystem.Infrastructure.Http.Clients.Airfob;
 using AccessControlSystem.Infrastructure.Http.Configurations;
 using AccessControlSystem.Infrastructure.Http.Handlers.Airfob;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.AccessLevels;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.FloorLevels;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Schedules;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Users;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob;
 using AccessControlSystem.WebApi.Middlewares.Exceptions;
 using FluentValidation;
@@ -234,12 +238,19 @@ public static class DependencyContainer
         services.AddTransient<ExceptionHandlingMiddleware>();
     }
 
-    public static IServiceCollection AddHttpServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterHttpServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IAirfobAuthService, AirfobAuthService>();
-        services.AddScoped<IAirfobService, AirfobService>();
+        services.AddScoped<IAirfobService, AirfobService>()
+            .AddScoped<IAirfobScheduleService, AirfobService>()
+            .AddScoped<IAirfobFloorLevelService, AirfobService>()
+            .AddScoped<IAirfobAccessLevelService, AirfobService>()
+            .AddScoped<IAirfobUserService, AirfobService>();
 
-        services.AddTransient<AirfobAuthHandler>();
+
+        services.AddHttpClient<AirfobAuthHandler>(client =>
+        {
+            client.BaseAddress = new Uri(configuration["AirfobSettings:BaseUrl"]!);
+        });
 
         services.AddHttpClient<AirfobClient>(client =>
         {

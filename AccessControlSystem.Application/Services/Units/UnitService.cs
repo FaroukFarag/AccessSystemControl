@@ -12,7 +12,7 @@ namespace AccessControlSystem.Application.Services.Units;
 
 public class UnitService(
     IUnitRepository repository,
-IUnitOfWork unitOfWork,
+    IUnitOfWork unitOfWork,
     IMapper mapper,
     IImageService imageService) :
     BaseService<Unit, UnitDto, int>(repository, unitOfWork, mapper),
@@ -61,5 +61,14 @@ IUnitOfWork unitOfWork,
         _imageService.DeleteImageAsync(unit.ImagePath!);
 
         return await base.DeleteAsync(id);
+    }
+
+    public async Task<UnitDto> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
+    {
+        var unit = await GetAsync(assignOwnerToUnitDto.UnitId);
+
+        unit.OwnerId = assignOwnerToUnitDto.OwnerId;
+
+        return await base.UpdateAsync(unit);
     }
 }
