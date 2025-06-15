@@ -29,34 +29,13 @@
 
 
 
-  <!--Devices Section -->
 
-  <div class="device-section mt-4">
-    <div class="grid-header">
-      <h5>Devices</h5>
-      <div class="grid-header-btns">
-        <button type="button" class="btn view-all me-2">View All</button>
-      </div>
-    </div>
-    <dx-data-grid id="gridContainer"
-                  [dataSource]="devices"
-                  [remoteOperations]="false"
-                  [allowColumnReordering]="true"
-                  [rowAlternationEnabled]="false"
-                  [showBorders]="false"
-                  [width]="'100%'">
-      <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
-      <dxi-column dataField="start" caption="Start Date"></dxi-column>
-      <dxi-column dataField="end" caption="End Date"></dxi-column>
-      <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
-    </dx-data-grid>
-  </div>
 
 
 
   <!--Subscriptions Section -->
 
-  <div class="subscriptions-container mt-4">
+  <div class="subscriptions-container mt-4" *ngIf="userRole == 1">
     <div class="grid-header">
       <h2>Subscriptions <span>(17)</span></h2>
       <div class="grid-header-btns">
@@ -81,4 +60,83 @@
       </div>
     </div>
   </div>
+
+
+  <!--Units Section -->
+  <div class="subscriptions-container mt-4" *ngIf="userRole == 2">
+    <div class="grid-header">
+      <h2>Units <span>({{unitsList.length}})</span></h2>
+      <div class="grid-header-btns">
+        <dx-drop-down-button text="Sort by"
+                             [dropDownOptions]="{ width: 180 }"
+                             [items]="sortBy"
+                             (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+        <button type="button" class="btn view-all me-2">View All</button>
+      </div>
+    </div>
+
+    <div class="subscriptions-scroll">
+      <div class="subscription-card card-2" *ngFor="let unit of unitsList">
+        <img class="image-2" [src]="unit.imagePath" />
+
+        <div class="card-details">
+          <div class="renewal-badge"> {{ unit.owner || 'unAssigned Owner'}}</div>
+          <p><strong>Subscription:</strong> {{ unit.name }}</p>
+          <p><strong>Devices:</strong> {{ unit.name }} Device</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!--Owner Section-->
+<div class="subscriptions-container mt-4" *ngIf="userRole == 2">
+  <div class="grid-header">
+    <h2>Owners <span>({{ownersList.length}})</span></h2>
+    <div class="grid-header-btns">
+      <dx-drop-down-button text="Sort by"
+                           [dropDownOptions]="{ width: 180 }"
+                           [items]="sortBy"
+                           (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+      <button type="button" class="btn view-all me-2">View All</button>
+    </div>
+  </div>
+
+  <div class="subscriptions-scroll">
+    <div class="subscription-card card-2" *ngFor="let owner of ownersList">
+      <img class="image-2" src="/assets/images/avatar.jpg" width="60%" />
+
+      <div class="card-details">
+        <div class="renewal-badge"> {{owner.userName}}</div>
+        <p><strong>Subscription:</strong> {{owner.subscription || 'not found' }}</p>
+        <p><strong>Devices:</strong> {{owner.accessGroups	|| 'not found' }} Device</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Devices Traffic Section -->
+
+<div class="device-section mt-4">
+  <div class="grid-header">
+    <h5>Devices</h5>
+    <div class="grid-header-btns">
+      <button type="button" class="btn view-all me-2">View All</button>
+    </div>
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="devices"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
+    <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
+    <dxi-column dataField="start" caption="Start Date"></dxi-column>
+    <dxi-column dataField="end" caption="End Date"></dxi-column>
+    <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
+  </dx-data-grid>
+</div>
+

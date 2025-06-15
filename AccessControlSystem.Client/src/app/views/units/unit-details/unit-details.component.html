@@ -12,65 +12,46 @@
 
 </div>
 <!-- Assign owners POPUP-->
-<!--<dx-popup [width]="600"
-          [height]="550"
+<dx-popup [width]="600"
+          [height]="270"
           [showTitle]="true"
           title="Assign owner"
           [dragEnabled]="true"
           [hideOnOutsideClick]="false"
           [showCloseButton]="true"
-          [(visible)]="popupVisible">
-  <dx-form #subscriptionFormRef [formData]="UnitsData"
+          [(visible)]=" assignToOwner_popupVisible">
+  <dx-form #subscriptionFormRef [formData]="formModel"
            [colCount]="1"
            [labelLocation]="'top'">
-    <dxi-item itemType="simple">
-      <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'"
-                          [labelText]="''"
-                          accept="image/*"
-                          uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
-        <img *ngIf="UnitsData.unitImageUrl"
-             [src]="UnitsData.unitImageUrl"
-             alt="Device Preview"
-             class="thumbnail" />
-        <div *ngIf="imageValidationError" class="validation-message">
-          {{ imageValidationError }}
-        </div>
+    <dxi-item dataField="ownerId" editorType="dxSelectBox"
+              [editorOptions]="{
+            dataSource: ownersList,
+            placeholder: 'Select Owner',
+            valueExpr: 'id',
+            displayExpr: 'ownerName',
+            itemTemplate: 'ownerTemplate',
+            searchEnabled: true
+          }">
+      <dxi-validation-rule type="required" message="Owner is required"></dxi-validation-rule>
+      <dxo-label text="Owner" [visible]="true"></dxo-label>
+    </dxi-item>
+
+    <!-- Owner Template -->
+    <div *dxTemplate="let data of 'ownerTemplate'">
+      <div class="device-item">
+        <span>{{data.userName}}</span>
       </div>
-    </dxi-item>
-
-    <dxi-item dataField="Name" [editorOptions]="{ placeholder: 'Unit name' }">
-      <dxi-validation-rule type="required" message="Unit name is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="Number" [editorOptions]="{ placeholder: 'Unit number' }">
-      <dxi-validation-rule type="required" message="Unit number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="Area" editorType="dxTextBox"
-              [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
-      <dxi-validation-rule type="required" message="Area is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>>
-
-    <dxi-item dataField="CardNumber" editorType="dxNumberBox"
-              [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
-      <dxi-validation-rule type="required" message="Cards number is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"></dxo-label>
-    </dxi-item>
+    </div>
 
 
 
   </dx-form>
   <dxi-item itemType="button">
-    <dx-button text="Add new Unit" type="success" (onClick)="submitInits()"></dx-button>
+    <dx-button text="Assign Owner"  (onClick)="submitInits()"></dx-button>
   </dxi-item>
 
-</dx-popup>-->
+</dx-popup>-
 
 <div class="unit-details">
 

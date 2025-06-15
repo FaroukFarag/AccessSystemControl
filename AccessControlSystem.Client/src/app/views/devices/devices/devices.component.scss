@@ -271,13 +271,13 @@ dx-form{
 .group-card {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.1);
+  border: 1px solid #ccc;
   transition: all 0.3s ease;
   //border: 1px solid #d6f0ff;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 20px rgba(0, 123, 255, 0.2);
+    border: 1px solid #ccc;
   }
 
   .group-name {
@@ -291,9 +291,25 @@ dx-form{
     font-size: 0.95rem;
   }
 
+  .btns-row {
+    display: flex;
+flex-direction:column;
+  }
+
   .view-btn {
     border-color: #007bff !important;
     color: #007bff !important;
+    font-weight: 500;
+    margin-bottom:8px;
+    border-radius:8px;
+
+    &:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+  }
+
+  .view-btn-2 {
+    color: #fff !important;
     font-weight: 500;
 
     &:hover {

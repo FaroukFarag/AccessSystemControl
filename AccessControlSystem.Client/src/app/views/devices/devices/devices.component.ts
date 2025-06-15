@@ -228,8 +228,8 @@ export class DevicesComponent {
     }
 
     const payload = {
-      Name: this.groupName,            
-      DeviceIds: this.selectedDeviceIds  
+      Name: this.groupName,
+      DeviceIds: this.selectedDeviceIds
     };
 
     this.accessGroupService.create('AccessGroups/Create', payload as any).subscribe({

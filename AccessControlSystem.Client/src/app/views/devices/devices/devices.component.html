@@ -22,9 +22,9 @@
   <div class="group-device-header">
     <h3>Access Groups ({{ accessGroups.length }})</h3>
 
-    <dx-button class="button-info me-1 mb-4"
+    <!--<dx-button class="button-info me-1 mb-4"
                text="Assigned owners">
-    </dx-button>
+    </dx-button>-->
   </div>
 
   <div class="row access-group-cards">
@@ -35,12 +35,21 @@
           <img src="/assets/images/device.png" alt="Group Icon" width="10%" >
         </div>
         <p class="device-count mb-3">{{ group.devices?.length || 0 }} Device{{ group.devices?.length === 1 ? '' : 's' }}</p>
-        <dx-button text="View Devices"
-                   stylingMode="outlined"
-                   type="default"
-                   class="view-btn"
-                  (onClick)="navigateToGroup(group.id)">
-        </dx-button>
+
+        <div class="btns-row">
+          <dx-button text="Devices"
+                     stylingMode="outlined"
+                     type="default"
+                     class="view-btn"
+                     (onClick)="navigateToGroup(group.id)">
+          </dx-button>
+          <dx-button text="Assigned owners"
+                     stylingMode="contained"
+                     type="default"
+                     class="view-btn-2"
+                     (onClick)="navigateToGroup(group.id)">
+          </dx-button>
+        </div>
       </div>
     </div>
   </div>
