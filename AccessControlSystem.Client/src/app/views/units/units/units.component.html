@@ -56,16 +56,11 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="Area" editorType="dxSelectBox"
-              [editorOptions]="{
-            dataSource: areasList,
-            placeholder: 'Select Area',
-            valueExpr: 'id',
-            displayExpr: 'name'
-          }">
+    <dxi-item dataField="Area" editorType="dxTextBox"
+              [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
       <dxi-validation-rule type="required" message="Area is required"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
+    </dxi-item>>
 
     <dxi-item dataField="CardNumber" editorType="dxNumberBox" 
               [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
@@ -74,7 +69,7 @@
     </dxi-item>
 
 
-    <dxi-item dataField="AccessGroupDevices" editorType="dxTagBox"
+    <!--<dxi-item dataField="AccessGroupDevices" editorType="dxTagBox"
               [editorOptions]="{
             dataSource: availableDevices,
             displayExpr: 'name',
@@ -84,7 +79,7 @@
           }">
       <dxi-validation-rule type="required" message="Please select at least one device."></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
+    </dxi-item>-->
 
   </dx-form>
   <dxi-item itemType="button">
@@ -96,21 +91,21 @@
 
 <!--All Units-->
 <div class="row">
-  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of units">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let unit of unitsList">
     <div class="card mb-2">
-      <img src="/assets/images/beach.jpg" alt="Card Image" class="card-image" (click)="navigateToDetailsPage()">
-      <div class="village-name" (click)="navigateToDetailsPage()">Unit name</div>
+      <img  [src]="unit.imagePath" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(unit.id)">
+      <div class="village-name" (click)="navigateToDetailsPage(unit.id)">{{ unit.name }}</div>
     </div>
 
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
       <div class="info"> Subscription: </div>
-      <div class="info-value"> {{sub.subscription }}</div>
+      <div class="info-value"> {{ unit.subscriptionId }}</div>
     </div>
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/device.svg" /></div>
       <div class="info"> Devices: </div>
-      <div class="info-value">{{sub.dvices}}</div>
+      <div class="info-value">{{ unit.number }}</div>
     </div>
 
   </div>

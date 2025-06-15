@@ -19,12 +19,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 import notify from 'devextreme/ui/notify';
 import { DxFormComponent } from 'devextreme-angular';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
-
+import { FormsModule } from '@angular/forms';
+import { AccessGroupService } from '../../../services/access-groups/access-group.service';
+import { AccessGroup } from '../../../models/access-group/access-group'
 
 @Component({
   selector: 'app-devices',
   standalone: true,
   imports: [CommonModule,
+    FormsModule,
     DxPopupModule,
     DxButtonModule,
     DxTemplateModule,
@@ -35,10 +38,10 @@ import { SubscriptionService } from '../../../services/subscriptions/subscriptio
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
-    ],
+  ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DevicesComponent {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
@@ -54,11 +57,11 @@ export class DevicesComponent {
     deviceName: '',
     deviceType: '',
     macAddress: '',
-    selectedSubscriptions: [] 
+    selectedSubscriptions: []
   };
   groupDeviceseData = {
-   
-    
+
+
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any;
@@ -79,16 +82,22 @@ export class DevicesComponent {
     {
       'id': '4',
       'name': 'Airfob Patch'
-    },  {
+    }, {
       'id': '5',
       'name': 'Suprema X-Station 2'
-    },  {
+    }, {
       'id': '6',
       'name': 'Wireless Door Locks'
     },
   ];
+  userRole: any;
+  groupName: string = '';
 
-  constructor(private router: Router, private deviceService: DeviceService, private sanitizer: DomSanitizer, private subscriptionsService: SubscriptionService,) {
+  constructor(private router: Router,
+    private deviceService: DeviceService,
+    private sanitizer: DomSanitizer,
+    private subscriptionsService: SubscriptionService,
+    private accessGroupService: AccessGroupService,) {
 
     this.deviceTypeEditorOptions = {
       dataSource: this.deviceTypes,
@@ -102,6 +111,8 @@ export class DevicesComponent {
 
   ngOnInit() {
     this.getAllDevices();
+    this.userRole = localStorage.getItem('userRole');
+
   }
 
   getAllDevices() {
@@ -126,7 +137,7 @@ export class DevicesComponent {
       deviceName: '',
       deviceType: '',
       macAddress: '',
-      selectedSubscriptions: [] 
+      selectedSubscriptions: []
     };
   }
 
@@ -151,47 +162,48 @@ export class DevicesComponent {
       reader.readAsDataURL(file);
     }
   }
-submitDevice() {
-  this.imageValidationError = '';
-  if (!this.deviceData.deviceImageFile) {
-    this.imageValidationError = 'Image is required';
-  }
-
-  const result = this.dxForm.instance.validate();
-  if (!result.isValid || !this.deviceData.selectedSubscriptions.length) {
-    notify('Please fill in all required fields.', 'warning', 1500);
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('ImageFile', this.deviceData.deviceImageFile || '');
-  formData.append('ImagePath', this.deviceData.deviceImageUrl || '');
-  formData.append('Name', this.deviceData.deviceName);
-  formData.append('DeviceTypeName', this.deviceTypes.find(dt => dt.id === this.deviceData.deviceType)?.name || '');
-  formData.append('DeviceType', this.deviceData.deviceType); 
-  formData.append('MacAddress', this.deviceData.macAddress);
-  formData.append('Active', 'true');
-  const subscriptionId = Number(this.deviceData.selectedSubscriptions[0]);
-  if (!subscriptionId) {
-    notify('Please select a valid subscription', 'error', 2000);
-    return;
-  }
-  formData.append('SubscriptionId', subscriptionId.toString());
-  this.deviceService.create('Devices/Create', formData as any).subscribe({
-    next: (response) => {
-      notify('Device created successfully', 'success', 1500);
-      this.popupVisible = false;
-      this.getAllDevices();
-    },
-    error: (err) => {
-      notify('Error creating device', 'error', 2000);
-      console.error(err);
+  submitDevice() {
+    this.imageValidationError = '';
+    if (!this.deviceData.deviceImageFile) {
+      this.imageValidationError = 'Image is required';
     }
-  });
-}
+
+    const result = this.dxForm.instance.validate();
+    if (!result.isValid || !this.deviceData.selectedSubscriptions.length) {
+      notify('Please fill in all required fields.', 'warning', 1500);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('ImageFile', this.deviceData.deviceImageFile || '');
+    formData.append('ImagePath', this.deviceData.deviceImageUrl || '');
+    formData.append('Name', this.deviceData.deviceName);
+    formData.append('DeviceTypeName', this.deviceTypes.find(dt => dt.id === this.deviceData.deviceType)?.name || '');
+    formData.append('DeviceType', this.deviceData.deviceType);
+    formData.append('MacAddress', this.deviceData.macAddress);
+    formData.append('Active', 'true');
+    const subscriptionId = Number(this.deviceData.selectedSubscriptions[0]);
+    if (!subscriptionId) {
+      notify('Please select a valid subscription', 'error', 2000);
+      return;
+    }
+    formData.append('SubscriptionId', subscriptionId.toString());
+    this.deviceService.create('Devices/Create', formData as any).subscribe({
+      next: (response) => {
+        notify('Device created successfully', 'success', 1500);
+        this.popupVisible = false;
+        this.getAllDevices();
+      },
+      error: (err) => {
+        notify('Error creating device', 'error', 2000);
+        console.error(err);
+      }
+    });
+  }
 
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
   openGroupDEvicesPopup() {
@@ -209,20 +221,46 @@ submitDevice() {
   }
 
 
-
   submitSelectedDevices() {
-    if (this.selectedDeviceIds.length === 0) {
-      notify('No devices selected', 'warning', 1500);
+    if (!this.groupName.trim()) {
+      notify('Group name is required.', 'warning', 1500);
       return;
     }
 
-    console.log('Selected Device IDs:', this.selectedDeviceIds);
+    const selectedDevices = this.devicesList
+      .filter((device: any) => this.selectedDeviceIds.includes(device.id))
+      .map((device: any) => ({
+        id: device.id || 0,
+        name: device.name,
+        macAddress: device.macAddress,
+        deviceType: Number(device.deviceType),
+        deviceTypeName: device.deviceTypeName || device.deviceType,
+        active: device.active === true,
+        subscriptionId: device.subscriptionId || 0,
+        imagePath: device.imagePath || '',
+        imageFile: null  
+      }));
 
+    const payload = {
+      id: 0,
+      name: this.groupName,
+      devices: selectedDevices
+    };
 
-    notify(`${this.selectedDeviceIds.length} devices submitted successfully`, 'success', 2000);
+    console.log('📦 JSON Payload to backend:', payload);
 
-    this.groupDevice_popupVisible = false;
-    this.selectedDeviceIds = [];
+    this.accessGroupService.create('AccessGroups/Create', payload).subscribe({
+      next: () => {
+        notify('Access group created successfully', 'success', 1500);
+        this.groupDevice_popupVisible = false;
+        this.getAllDevices();
+      },
+      error: (err) => {
+        notify('Error creating access group', 'error', 2000);
+        console.error(err);
+      }
+    });
   }
+
 
 }

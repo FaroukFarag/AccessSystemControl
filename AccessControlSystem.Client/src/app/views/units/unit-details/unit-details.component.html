@@ -1,1 +1,35 @@
-<p>unit-details works!</p>
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>{{ unitDetails?.name || 'Unite Name' }}</h4>
+  </div>
+  <span>Review Unit details and information</span>
+</div>
+
+<div class="page-header" *ngIf="userRole == 2">
+  <dx-button class="button-info me-1" text="Group devices" (onClick)="openAssignToOwnerPopup()">
+  </dx-button>
+
+
+
+</div>
+<div class="unit-details">
+
+  <!-- Top Section -->
+  <div class="top-section">
+    <!-- Left: Unit Info -->
+    <div class="unit-info">
+      <img class="unit-img" [src]="unitDetails.imagePath" alt="Unit" />
+      <div class="unit-meta ms-2">
+        <h3 class="unit-name">{{ unitDetails.name}}</h3>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">{{unitDetails.owner  || 'un Assigned'}}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unitDetails.cardNumber }}</span></div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>
+

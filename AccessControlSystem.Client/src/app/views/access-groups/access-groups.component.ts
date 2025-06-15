@@ -6,8 +6,8 @@ import {
   DxFormModule,
   DxTemplateModule,
   DxPopupModule,
- } from 'devextreme-angular';
-import { AccessGroupservice } from '../../services/access-groups/access-groups.service';
+} from 'devextreme-angular';
+import { AccessGroupService } from '../../services/access-groups/access-group.service';
 import { DxFormComponent } from 'devextreme-angular';
 import notify from 'devextreme/ui/notify';
 import { DeviceService } from '../../services/devices/device.service';
@@ -32,7 +32,7 @@ export class AccessGroupsComponent {
   deviceData = {
     selectedDevices: [] as number[],
   };
-  constructor(private router: Router, private accessGroupsService: AccessGroupservice, private deviceService: DeviceService) {
+  constructor(private router: Router, private accessGroupsService: AccessGroupService, private deviceService: DeviceService) {
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
       valueExpr: 'name',

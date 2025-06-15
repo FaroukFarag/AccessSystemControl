@@ -13,6 +13,7 @@ import { AccessGroupsComponent } from './views/access-groups/access-groups.compo
 import { CardsComponent } from './views/cards/cards.component';
 import { AccessGroupDevicesComponent } from './views/access-group-devices/access-group-devices.component';
 import { AdminsComponent } from './views/admins/admins.component';
+import { UnitDetailsComponent } from './views/units/unit-details/unit-details.component';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,7 @@ export const routes: Routes = [
       { path: 'owners', component: OwnersComponent },
       { path: 'owner-details', component: OwnerDetailsComponent },
       { path: 'units', component: UnitsComponent },
-      { path: 'unit-details', component: UnitsComponent },
+      { path: 'unit-details', component: UnitDetailsComponent },
       { path: 'access groups', component: AccessGroupsComponent },
       { path: 'cards', component: CardsComponent },
       { path: 'admins', component: AdminsComponent },
