@@ -28,89 +28,40 @@ import { DeviceService } from '../../services/devices/device.service';
   templateUrl: './access-group-devices.component.html',
   styleUrls: ['./access-group-devices.component.scss']
 })
-export class AccessGroupDevicesComponent implements OnInit {
-  devices: any[] = [];
-  availableDevicesList: any[] = [];
-  accessGroupId!: string;
-  @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
-  selectedDeviceIds: string[] = [];
-  popupVisible: boolean = false;
-  groupDevice_popupVisible: boolean = false;
-  sortBy = ['Recent', 'date'];
-  devicesList: any;
-  imageValidationError: string = '';
-  deviceData = {
-    deviceImageFile: null,
-    deviceImageUrl: '',
-    deviceName: '',
-    deviceType: '',
-    macAddress: ''
-  };
-  groupDeviceseData = {
+export class AccessGroupDevicesComponent  {
+  groupId!: number;
+  accessGroup: any = null;
 
-
-  };
   constructor(
-    private route: ActivatedRoute,
     private http: HttpClient,
-    private deviceService: DeviceService
-  ) { }
+    private route: ActivatedRoute,
+    private deviceService: DeviceService,
+) { }
 
-  ngOnInit() {
-    this.accessGroupId = this.route.snapshot.paramMap.get('id')!;
-  }
+  ngOnInit(): void {
+   
 
-  submitSelectedDevices() {
-    if (this.selectedDeviceIds.length === 0) {
-      notify('No devices selected', 'warning', 1500);
-      return;
-    }
-    const payload = this.selectedDeviceIds.map(deviceId => ({
-      accessGroupId: this.accessGroupId,
-      deviceId: deviceId
-    }));
-    this.deviceService.create('http://localhost:5273/api/AccessGroupsDevices/CreateRange', payload as any)
-      .subscribe({
-        next: () => {
-          notify(`${this.selectedDeviceIds.length} devices assigned successfully`, 'success', 2000);
-          this.groupDevice_popupVisible = false;
-          this.selectedDeviceIds = [];
-        },
-        error: (error) => {
-          console.error('API error:', error);
-          notify('Error assigning devices', 'error', 2000);
-        }
-      });
+     this.route.queryParams.subscribe(params => {
+       this.groupId = params['id'];
+       if (this.groupId) {
+         this.getAccessGroupDetails(this.groupId);      }
+    });
 
   }
 
+  getAccessGroupDetails(id: number): void {
+    const params = { id }; 
 
-  openGroupDevicesPopup() {
-    this.groupDevice_popupVisible = true;
-    this.getAllDevices();
-    this.selectedDeviceIds = [];
-  }
-
-  getAllDevices() {
-    this.deviceService.getAll(`Devices/GetAvailableDevicesForAccessGroup?accessGroupId=${this.accessGroupId}`).subscribe((data: any) => {
-      this.devicesList = data;
-    })
-  }
-
-  toggleDeviceSelection(deviceId: string) {
-    const index = this.selectedDeviceIds.indexOf(deviceId);
-    if (index > -1) {
-      this.selectedDeviceIds.splice(index, 1);
-    } else {
-      this.selectedDeviceIds.push(deviceId);
-    }
-  }
-
-  get popupHeight(): number {
-    return this.devicesList?.length === 0 ? 220 : 450;
-  }
-  get popupWidth(): number {
-    return this.devicesList?.length === 0 ? 500 : 950;
+    this.http.get('https://localhost:7096/api/AccessGroups/Get', { params }).subscribe({
+      next: (data: any) => {
+        this.accessGroup = data;
+        console.log('Access group details:', this.accessGroup);
+      },
+      error: (err) => {
+        notify('Error fetching access group details', 'error', 2000);
+        console.error('Error fetching access group details:', err);
+      }
+    });
   }
 
 }

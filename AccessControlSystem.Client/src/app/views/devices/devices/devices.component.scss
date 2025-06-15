@@ -265,3 +265,39 @@ dx-form{
   background-color: #e6f0ff; /* Light blue background */
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
 }
+
+
+/**/
+.group-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.1);
+  transition: all 0.3s ease;
+  //border: 1px solid #d6f0ff;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 123, 255, 0.2);
+  }
+
+  .group-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #007bff;
+  }
+
+  .device-count {
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  .view-btn {
+    border-color: #007bff !important;
+    color: #007bff !important;
+    font-weight: 500;
+
+    &:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+  }
+}
