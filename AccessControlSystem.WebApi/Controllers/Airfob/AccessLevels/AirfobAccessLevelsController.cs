@@ -8,7 +8,7 @@ namespace AccessControlSystem.WebApi.Controllers.Airfob.AccessLevels;
 [ApiController]
 public class AirfobAccessLevelsController(IAirfobAccessLevelService service) : ControllerBase
 {
-    IAirfobAccessLevelService _service = service;
+    private readonly IAirfobAccessLevelService _service = service;
 
     [HttpPost("Create")]
     public virtual async Task<IActionResult> Create(CreateAccessLevelsRequest request)

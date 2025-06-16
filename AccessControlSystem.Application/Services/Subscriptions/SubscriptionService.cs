@@ -26,7 +26,7 @@ public class SubscriptionService(
     public override async Task<SubscriptionDto> CreateAsync(SubscriptionDto subscriptionDto)
     {
         subscriptionDto.ImagePath = await _imageService
-            .SaveImageAsync(subscriptionDto.ImageFile, SubscriptionConstants.SubFolder);
+            .SaveImageAsync(subscriptionDto.ImageFile!, SubscriptionConstants.SubFolder);
 
         return await base.CreateAsync(subscriptionDto);
     }
@@ -63,7 +63,7 @@ public class SubscriptionService(
         _imageService.DeleteImageAsync(subscription.ImagePath!);
 
         newSubscriptionDto.ImagePath = await _imageService
-            .SaveImageAsync(newSubscriptionDto.ImageFile, SubscriptionConstants.SubFolder);
+            .SaveImageAsync(newSubscriptionDto.ImageFile!, SubscriptionConstants.SubFolder);
 
         return await base.UpdateAsync(newSubscriptionDto);
     }

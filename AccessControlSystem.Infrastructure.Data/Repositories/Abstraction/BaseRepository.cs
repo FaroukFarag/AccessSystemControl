@@ -39,13 +39,13 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         if (id is ITuple)
         {
             var predicate = CompositeKeyHelper.BuildCompositeKeyPredicate<TEntity, TPrimaryKey>(id);
-            return await query.FirstOrDefaultAsync(predicate)
+            return await query.AsNoTracking().FirstOrDefaultAsync(predicate)
                 ?? throw new ArgumentException($"Entity with id {id} not found.");
         }
 
         else
         {
-            return await query.FirstOrDefaultAsync(e => EF.Property<TPrimaryKey>(e, "Id")!.Equals(id))
+            return await query.AsNoTracking().FirstOrDefaultAsync(e => EF.Property<TPrimaryKey>(e, "Id")!.Equals(id))
                 ?? throw new ArgumentException($"Entity with id {id} not found.");
         }
     }
@@ -54,7 +54,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
     {
         var query = ApplySpecification(spec);
 
-        return await query.ToListAsync();
+        return await query.AsNoTracking().ToListAsync();
     }
 
     public virtual async Task<IEnumerable<TEntity>> GetAllPaginatedAsync(
@@ -67,6 +67,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return await query
             .Skip((paginatedModel.PageNumber - 1) * paginatedModel.PageSize)
             .Take(paginatedModel.PageSize)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -81,7 +82,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         var combinedSpec = _specificationCombiner.Combine(spec, predicate);
         var query = ApplySpecification(combinedSpec);
 
-        return await query.ToListAsync();
+        return await query.AsNoTracking().ToListAsync();
     }
 
     public virtual TEntity Update(TEntity newEntity)

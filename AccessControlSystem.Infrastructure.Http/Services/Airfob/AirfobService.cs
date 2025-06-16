@@ -92,4 +92,14 @@ public class AirfobService(AirfobClient client) : IAirfobService
     {
         return await _client.PostAsync<AssignUserGroupMembersRequest, IEnumerable<AssignUserGroupMemberResponse>>("v1/users/groups/members", request);
     }
+
+    public async Task<GetCardTemplatesResponse> GetCardTemplatesAsync()
+    {
+        return await _client.GetAsync<GetCardTemplatesResponse>("v1/sites/card_templates");
+    }
+
+    public async Task<IEnumerable<CreateCardTemplateResponse>> CreateCardTemplatesAsync(CreateCardTemplatesRequest request)
+    {
+        return await _client.PostAsync<CreateCardTemplatesRequest, IEnumerable<CreateCardTemplateResponse>>("v1/sites/card_templates", request);
+    }
 }

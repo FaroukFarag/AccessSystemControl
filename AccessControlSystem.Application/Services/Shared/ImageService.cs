@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
+namespace AccessControlSystem.Application.Services.Shared;
+
 public class ImageService(ILogger<ImageService> logger) : IImageService
 {
     private readonly ILogger<ImageService> _logger = logger;
     private const string BaseImagePath = "images";
 
-    public async Task<string> SaveImageAsync(IFormFile imageFile, string subFolder)
+    public async Task<string> SaveImageAsync(IFormFile? imageFile, string subFolder)
     {
         if (imageFile == null || imageFile.Length == 0)
         {

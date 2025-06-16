@@ -25,6 +25,7 @@ using AccessControlSystem.Application.Services.AccessGroups;
 using AccessControlSystem.Application.Services.Cards;
 using AccessControlSystem.Application.Services.Devices;
 using AccessControlSystem.Application.Services.Roles;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Application.Services.Subscriptions;
 using AccessControlSystem.Application.Services.Units;
 using AccessControlSystem.Application.Services.Users;
@@ -73,6 +74,7 @@ using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.AccessLevels;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.FloorLevels;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Schedules;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Sites;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Users;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob;
 using AccessControlSystem.WebApi.Middlewares.Exceptions;
@@ -241,6 +243,7 @@ public static class DependencyContainer
     public static IServiceCollection RegisterHttpServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAirfobService, AirfobService>()
+            .AddScoped<IAirfobSiteService, AirfobService>()
             .AddScoped<IAirfobScheduleService, AirfobService>()
             .AddScoped<IAirfobFloorLevelService, AirfobService>()
             .AddScoped<IAirfobAccessLevelService, AirfobService>()

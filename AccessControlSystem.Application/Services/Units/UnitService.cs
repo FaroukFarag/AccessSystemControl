@@ -23,7 +23,7 @@ public class UnitService(
     public override async Task<UnitDto> CreateAsync(UnitDto unitDto)
     {
         unitDto.ImagePath = await _imageService
-            .SaveImageAsync(unitDto.ImageFile, SubscriptionConstants.SubFolder);
+            .SaveImageAsync(unitDto.ImageFile!, SubscriptionConstants.SubFolder);
 
         return await base.CreateAsync(unitDto);
     }
@@ -49,7 +49,7 @@ public class UnitService(
         _imageService.DeleteImageAsync(unit.ImagePath!);
 
         newUnitDto.ImagePath = await _imageService
-            .SaveImageAsync(newUnitDto.ImageFile, SubscriptionConstants.SubFolder);
+            .SaveImageAsync(newUnitDto.ImageFile!, SubscriptionConstants.SubFolder);
 
         return await base.UpdateAsync(newUnitDto);
     }

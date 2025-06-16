@@ -28,7 +28,7 @@ public class DeviceService(
     public override async Task<DeviceDto> CreateAsync(DeviceDto deviceDto)
     {
         deviceDto.ImagePath = await _imageService
-            .SaveImageAsync(deviceDto.ImageFile, DeviceConstants.SubFolder);
+            .SaveImageAsync(deviceDto.ImageFile!, DeviceConstants.SubFolder);
 
         return await base.CreateAsync(deviceDto);
     }
@@ -65,7 +65,7 @@ public class DeviceService(
         _imageService.DeleteImageAsync(device.ImagePath!);
 
         newDeviceDto.ImagePath = await _imageService
-            .SaveImageAsync(newDeviceDto.ImageFile, DeviceConstants.SubFolder);
+            .SaveImageAsync(newDeviceDto.ImageFile!, DeviceConstants.SubFolder);
 
         return await base.UpdateAsync(newDeviceDto);
     }
