@@ -80,3 +80,56 @@
   justify-content: flex-end;
   margin-bottom: 14px
 }
+
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-normal.dx-button-has-text.dx-fileuploader-button {
+  padding: 8px 0px !important;
+  width: 93px !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+}
+
+::ng-deep .dx-popup-wrapper > .dx-overlay-content {
+  background: #FAFAFA !important;
+}
+
+
+
+
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
+  width: 100% !important;
+}
+
+
+dx-form {
+  margin-bottom: 24px !important;
+}
+
+::ng-deep .dx-texteditor.dx-editor-outlined {
+  border-radius: 8px !important;
+  height: 45px !important;
+}
+
+.validation-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+::ng-deep .dx-button-mode-contained {
+  background-color: #007BE2 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding-top: 2px;
+  padding-right: 16px;
+  padding-bottom: 2px;
+  padding-left: 16px;
+  gap: 16px;
+}
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
+  width: 100% !important;
+}
+
+/*----END POPUP STYLES------*/

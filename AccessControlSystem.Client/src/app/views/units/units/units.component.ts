@@ -107,10 +107,10 @@ export class UnitsComponent {
       SubscriptionId: this.subscriptionId,
     };
 
-    this.getAllSubscriptions();
+    this.getAllUnits();
   }
 
-  getAllSubscriptions() {
+  getAllUnits() {
     this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
       this.unitsList = data;
 
@@ -207,7 +207,7 @@ export class UnitsComponent {
       next: (response) => {
         notify('Unit created successfully', 'success', 1500);
         this.popupVisible = false;
-        this.getAllSubscriptions();
+        this.getAllUnits();
       },
       error: (err) => {
         notify('Error creating Unit: ' + (err?.error?.details || err.message), 'error', 2000);

@@ -4,6 +4,8 @@ import { DxDataGridModule, DxButtonModule, DxChartModule, DxSelectBoxModule } fr
 import { CommonModule } from '@angular/common'
 import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 import notify from 'devextreme/ui/notify';
+import { UnitService } from '../../services/units/unit.service';
+import { UserService } from '../../services/users/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -117,7 +119,30 @@ export class DashboardComponent {
     },
   ];
 
+  ownersList: any;
+  unitsList: any;
+  userRole: any;
+  constructor(private unitsService: UnitService, private userService: UserService) { }
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     notify(e.itemData.name || e.itemData, 'success', 600);
+  }
+
+  ngOnInit() {
+    this.userRole = localStorage.getItem('userRole');
+
+    this.getAllOwners();
+    this.getAllUnits();
+  }
+  getAllOwners() {
+    this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
+      this.ownersList = data;
+      console.log("subscriptionssList", this.ownersList);
+    })
+  }
+  getAllUnits() {
+    this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
+      this.unitsList = data;
+
+    })
   }
 }
