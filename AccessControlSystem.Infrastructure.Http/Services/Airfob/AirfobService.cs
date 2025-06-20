@@ -102,4 +102,24 @@ public class AirfobService(AirfobClient client) : IAirfobService
     {
         return await _client.PostAsync<CreateCardTemplatesRequest, IEnumerable<CreateCardTemplateResponse>>("v1/sites/card_templates", request);
     }
+
+    public async Task<IEnumerable<GetRfCardResponse>> GetRfCardsAsync(int siteId)
+    {
+        return await _client.GetAsync<IEnumerable<GetRfCardResponse>>($"v1/sites/{siteId}/rfcards");
+    }
+
+    public async Task<IEnumerable<GetMessageTemplateResponse>> GetMessageTemplatesAsync(int siteId)
+    {
+        return await _client.GetAsync<IEnumerable<GetMessageTemplateResponse>>($"v1/sites/{siteId}/message_templates");
+    }
+
+    public async Task<IEnumerable<AssignRfCardResponse>> AssignRfCardsAsync(AssignRfCardsRequest request)
+    {
+        return await _client.PostAsync<AssignRfCardsRequest, IEnumerable<AssignRfCardResponse>>($"v1/sites/{request.SiteId}/rfcards", request);
+    }
+
+    public async Task<IEnumerable<CreateMessageTemplateResponse>> CreateMessageTemplatesAsync(CreateMessageTemplatesRequest request)
+    {
+        return await _client.PostAsync<CreateMessageTemplatesRequest, IEnumerable<CreateMessageTemplateResponse>>($"v1/sites/{request.SiteId}/message_templates", request);
+    }
 }

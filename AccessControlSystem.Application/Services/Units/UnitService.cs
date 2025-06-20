@@ -6,6 +6,7 @@ using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Units;
+using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
 
 namespace AccessControlSystem.Application.Services.Units;
@@ -18,6 +19,8 @@ public class UnitService(
     BaseService<Unit, UnitDto, int>(repository, unitOfWork, mapper),
     IUnitService
 {
+    private readonly IUnitRepository _repository = repository;
+    private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
 
     public override async Task<UnitDto> CreateAsync(UnitDto unitDto)
@@ -30,16 +33,12 @@ public class UnitService(
 
     public override async Task<UnitDto> GetAsync(int id)
     {
-        var unit = await base.GetAsync(id);
+        var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>
+        {
+            Includes = [u => u.Owner!]
+        });
 
-        return unit;
-    }
-
-    public override async Task<IEnumerable<UnitDto>> GetAllAsync()
-    {
-        var units = await base.GetAllAsync();
-
-        return units;
+        return _mapper.Map<UnitDto>(unit);
     }
 
     public override async Task<UnitDto> UpdateAsync(UnitDto newUnitDto)

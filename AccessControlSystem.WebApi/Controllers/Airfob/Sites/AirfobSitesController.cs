@@ -22,6 +22,18 @@ public class AirfobSitesController(IAirfobSiteService service) : ControllerBase
         return Ok(await _service.CreateCardTemplatesAsync(request));
     }
 
+    [HttpPost("AssignRfCards")]
+    public virtual async Task<IActionResult> AssignRfCards(AssignRfCardsRequest request)
+    {
+        return Ok(await _service.AssignRfCardsAsync(request));
+    }
+
+    [HttpPost("CreateMessageTemplates")]
+    public virtual async Task<IActionResult> CreateMessageTemplates(CreateMessageTemplatesRequest request)
+    {
+        return Ok(await _service.CreateMessageTemplatesAsync(request));
+    }
+
     [HttpGet("GetAll")]
     public virtual async Task<IActionResult> GetAll()
     {
@@ -38,5 +50,17 @@ public class AirfobSitesController(IAirfobSiteService service) : ControllerBase
     public virtual async Task<IActionResult> GetCardTemplates()
     {
         return Ok(await _service.GetCardTemplatesAsync());
+    }
+
+    [HttpGet("GetRfCards")]
+    public virtual async Task<IActionResult> GetRfCards(int siteId)
+    {
+        return Ok(await _service.GetRfCardsAsync(siteId));
+    }
+
+    [HttpGet("GetMessageTemplates")]
+    public virtual async Task<IActionResult> GetMessageTemplates(int siteId)
+    {
+        return Ok(await _service.GetMessageTemplatesAsync(siteId));
     }
 }
