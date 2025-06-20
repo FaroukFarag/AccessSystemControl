@@ -29,8 +29,22 @@ public class AccessGroupService(
                 (ag => ag.AccessGroupDevices, sd => (sd as AccessGroupDevice)!.Device)
             ]
         });
-        var subscriptionDto = _mapper.Map<AccessGroupDto>(accessGroup);
+        var accessGroupDto = _mapper.Map<AccessGroupDto>(accessGroup);
 
-        return subscriptionDto;
+        return accessGroupDto;
+    }
+
+    public async override Task<IEnumerable<AccessGroupDto>> GetAllAsync()
+    {
+        var accessGroups = await _repository.GetAllAsync(new BaseSpecification<AccessGroup>
+        {
+            Includes = [ag => ag.AccessGroupDevices],
+            IncludesThen = [
+                (ag => ag.AccessGroupDevices, sd => (sd as AccessGroupDevice)!.Device)
+            ]
+        });
+        var accessGroupDtos = _mapper.Map<IReadOnlyList<AccessGroupDto>>(accessGroups);
+
+        return accessGroupDtos;
     }
 }

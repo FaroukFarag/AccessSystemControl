@@ -1,4 +1,5 @@
 ﻿using AccessControlSystem.Application.Dtos.AccessGroups;
+using AccessControlSystem.Domain.Models.AccessGroupDevices;
 using AccessControlSystem.Domain.Models.AccessGroups;
 using AutoMapper;
 
@@ -12,6 +13,14 @@ public class AccessGroupProfile : Profile
             .ForMember(des => des.Devices, opt => opt
                 .MapFrom(src => src.AccessGroupDevices.Select(agd => agd.Device)));
 
-        CreateMap<AccessGroupDto, AccessGroup>();
+        CreateMap<AccessGroupDto, AccessGroup>()
+            .ForMember(des => des.AccessGroupDevices, opt => opt
+                .MapFrom(src => src.Devices!
+                    .Select(agd => new AccessGroupDevice
+                    {
+                        DeviceId = agd.Id
+                    })
+                )
+            );
     }
 }
