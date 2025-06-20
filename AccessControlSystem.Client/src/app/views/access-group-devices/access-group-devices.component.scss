@@ -7,7 +7,7 @@
 }
 
 .device-card {
-  width: 22%;
+  width: 24%;
   border-radius: 12px;
   border-width: 1px;
   border: 1px solid #E1E1E1;
@@ -53,13 +53,14 @@
   vertical-align: middle;
   color: #A3A3A3;
   line-height: 2rem;
+  width: 33%;
 }
 
 .info-value {
   font-family: Myriad Pro;
   font-weight: 400;
   font-size: 14px;
-  line-height: 100%;
+  line-height: 1.5;
   letter-spacing: 0%;
   vertical-align: middle;
 }
@@ -278,4 +279,56 @@ dx-form {
   border: 2px solid #007bff; /* Blue border */
   background-color: #e6f0ff; /* Light blue background */
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+}
+
+
+/**/
+.group-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease;
+  //border: 1px solid #d6f0ff;
+
+  &:hover {
+    transform: translateY(-5px);
+    border: 1px solid #ccc;
+  }
+
+  .group-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #007bff;
+  }
+
+  .device-count {
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  .btns-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .view-btn {
+    border-color: #007bff !important;
+    color: #007bff !important;
+    font-weight: 500;
+    margin-bottom: 8px;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+  }
+
+  .view-btn-2 {
+    color: #fff !important;
+    font-weight: 500;
+
+    &:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+  }
 }

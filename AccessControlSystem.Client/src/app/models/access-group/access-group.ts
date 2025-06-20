@@ -1,7 +1,7 @@
 
 import { Device } from '../devices/device';
 export interface AccessGroup {
-  groupName: string;
-  deviceIds: string[];
+  name: string;
+  devices: string[];
 }
 

@@ -20,7 +20,7 @@
  <!--GROUPED DEVICES VIEW--> 
 <div class="row m-auto bg-white px-2 py-3 mb-5 group-devices" *ngIf="userRole == 2">
   <div class="group-device-header">
-    <h3>Access Groups ({{ accessGroups.length }})</h3>
+    <h3 class="mb-3">Access Groups ({{ accessGroups.length }})</h3>
 
     <!--<dx-button class="button-info me-1 mb-4"
                text="Assigned owners">
@@ -92,8 +92,8 @@
   </div>
   <div class="row m-auto">
     <ng-container *ngFor="let device of devicesList">
-      <div [ngClass]="{'selected-card': selectedDeviceIds.includes(device.id)}"
-           (click)="toggleDeviceSelection(device.id)" class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card">
+      <div [ngClass]="{'selected-card': selectedDevices.includes(device)}"
+           (click)="toggleDeviceSelection(device)" class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card">
         <div class="card-header">
           <img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image"/>
           <span class="device-name">{{device.name}}</span>
@@ -121,7 +121,7 @@
       <dx-button text="Submit Selected Devices"
                  type="success"
                  (onClick)="submitSelectedDevices()"
-                 [disabled]="selectedDeviceIds.length === 0">
+                 [disabled]="selectedDevices.length === 0">
       </dx-button>
     </div>
   </div>
@@ -143,7 +143,7 @@
 
 
 <!-- ADD DEVICE POPUP-->
-<dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
+<dx-popup [width]="600" [height]="500" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">

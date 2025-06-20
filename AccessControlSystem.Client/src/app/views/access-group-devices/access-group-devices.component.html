@@ -1,1 +1,35 @@
-<h4>Access Group Devices here!</h4>
+<div class="breadcrumb mb-5">
+  <div class="page-title">
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <h4>{{accessGroup.name}} <span class="devices-number">(2)</span></h4>
+  </div>
+  <span>Review all devices details and information</span>
+</div>
+
+<!--ALL DEVICES-->
+<div class="row m-auto">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
+       *ngFor="let device of devices">
+    <div class="card-header">
+      <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
+      <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/status.svg" /></div>
+      <div class="info"> Status: </div>
+      <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+        {{ device.active ? 'Active' : 'Not Active' }}
+      </div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+      <div class="info"> Mac Address: </div>
+      <div class="info-value ">{{device.macAddress}}</div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+      <div class="info"> Device type: </div>
+      <div class="info-value"> {{device.deviceTypeName}}</div>
+    </div>
+  </div>
+</div>
