@@ -7,7 +7,7 @@
 </div>
 
 <div class="page-header">
-  <dx-button class="button-info me-1" text="Assign Owners" (onClick)="openAssignToOwnerPopup()">
+  <dx-button  class="button-info me-1" text="Assign to Owner" (onClick)="openAssignToOwnerPopup()">
   </dx-button>
 
 </div>
@@ -48,7 +48,7 @@
 
   </dx-form>
   <dxi-item itemType="button">
-    <dx-button text="Assign Owner"  (onClick)="submitInits()"></dx-button>
+    <dx-button text="Assign to Owner" (onClick)="submitInits()"></dx-button>
   </dxi-item>
 
 </dx-popup>-
@@ -62,7 +62,7 @@
       <img class="unit-img" [src]="unitDetails.imagePath" alt="Unit" />
       <div class="unit-meta ms-2">
         <h3 class="unit-name">{{ unitDetails.name}}</h3>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">{{unitDetails.owner  || 'un Assigned'}}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">{{unitDetails.owner?.userName  || 'un Assigned'}}</span></div>
         <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unitDetails.cardNumber }}</span></div>
       </div>
     </div>

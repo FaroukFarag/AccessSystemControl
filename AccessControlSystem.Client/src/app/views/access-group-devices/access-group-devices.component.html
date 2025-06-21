@@ -7,7 +7,7 @@
 </div>
 
 <!--ALL DEVICES-->
-<div class="row m-auto">
+<div class="row m-auto bg-white p-4">
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
        *ngFor="let device of devices">
     <div class="card-header">
@@ -32,4 +32,49 @@
       <div class="info-value"> {{device.deviceTypeName}}</div>
     </div>
   </div>
+</div>
+
+
+
+<div class="device-trafic-section mt-4 bg-white p-4">
+  <div class="grid-header">
+    <h5>Device traffic</h5>
+    <div class="grid-header-btns">
+      <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />Report</button>
+    </div>
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="dataSource"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
+    <!--<dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [visible]="true"
+               [showPageSizeSelector]="true"
+               [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
+    <dxo-search-panel [visible]="true"
+                      [highlightCaseSensitive]="true"></dxo-search-panel>
+
+
+    <dxi-column dataField="Traffic type"
+                caption="TRAFFIC TYPE"
+                dataType="string"
+                alignment="left"></dxi-column>
+    <dxi-column caption="TIME"
+                dataField="Time"
+                dataType="string"
+                format="time"
+                alignment="left"></dxi-column>
+    <dxi-column dataField="DATE" dataType="date"></dxi-column>
+    <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+
+    <dxi-column dataField="image" caption="IMAGE" cellTemplate="imageCellTemplate"></dxi-column>
+
+    <div *dxTemplate="let d of 'imageCellTemplate'">
+      <img />
+    </div>
+  </dx-data-grid>
 </div>

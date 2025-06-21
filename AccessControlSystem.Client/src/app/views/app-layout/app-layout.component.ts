@@ -35,8 +35,8 @@ export class AppLayoutComponent implements OnInit {
     { id: 4, text: 'Owners', icon: '/assets/icons/owners.svg' },
     { id: 7, text: 'Admins', icon: '/assets/icons/owners.svg' },
     { id: 5, text: 'Units', icon: '/assets/icons/units.svg' },
-    { id: 6, text: 'Access groups', icon: '/assets/icons/access.svg' },
-    { id: 7, text: 'Cards', icon: '/assets/icons/card-owner.svg' },
+  //  { id: 6, text: 'Access groups', icon: '/assets/icons/access.svg' },
+    { id: 7, text: 'cards', icon: '/assets/icons/card-owner.svg' },
   ];
 
   constructor(private router: Router) { }

@@ -270,16 +270,6 @@ dx-form {
   padding: 10px;
 }
 
-.device-card:hover {
-  border-color: #888;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-}
-
-.selected-card {
-  border: 2px solid #007bff; /* Blue border */
-  background-color: #e6f0ff; /* Light blue background */
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
-}
 
 
 /**/
@@ -331,4 +321,86 @@ dx-form {
       background-color: rgba(0, 123, 255, 0.05);
     }
   }
+}
+
+
+
+
+/**DATAGRID*/
+
+::ng-deep .dx-datagrid-header-panel {
+  border-bottom: none !important;
+}
+
+::ng-deep .dx-datagrid-headers {
+  border-bottom: none !important;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row {
+  border-bottom: 1px solid #E1E1E1 !important;
+}
+
+::ng-deep .dx-datagrid-pager {
+  border-top: none !important;
+}
+
+::ng-deep .dx-datagrid .dx-column-lines > td {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+
+::ng-deep .dx-toolbar .dx-toolbar-items-container {
+  height: 36px;
+  overflow: visible;
+}
+
+::ng-deep .dx-datagrid-header-panel .dx-toolbar-items-container {
+  position: relative;
+  //overflow: hidden;
+  width: 60% !important;
+  height: 100%;
+  position: relative;
+  bottom: 40px;
+}
+
+::ng-deep .dx-datagrid-search-panel.dx-show-invalid-badge.dx-textbox.dx-texteditor.dx-editor-outlined.dx-searchbox.dx-show-clear-button.dx-texteditor-empty.dx-widget {
+  width: 308px !important;
+  border: none;
+  background: #fafafa;
+  border-radius: 16px;
+  height: 42px;
+}
+
+::ng-deep .dx-searchbox .dx-icon-search::before {
+  color: #007BE2 !important;
+}
+
+td {
+  padding: 12px 0px;
+}
+
+.grid-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  //top: 10px;
+
+  h5 {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 140%;
+    letter-spacing: 0px;
+    vertical-align: middle;
+    color: #101010;
+  }
+
+  .grid-header-btns {
+    z-index: 999999;
+  }
+}
+
+.btn-outline-info {
+  color: #414141;
 }

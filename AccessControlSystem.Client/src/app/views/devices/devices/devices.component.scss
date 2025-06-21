@@ -261,8 +261,8 @@ dx-form{
 }
 
 .selected-card {
-  border: 2px solid #007bff; /* Blue border */
-  background-color: #e6f0ff; /* Light blue background */
+  border: 2px solid #007bff; 
+  background-color: #e6f0ff; 
   box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
 }
 
@@ -273,12 +273,7 @@ dx-form{
   border-radius: 16px;
   border: 1px solid #ccc;
   transition: all 0.3s ease;
-  //border: 1px solid #d6f0ff;
-
-  &:hover {
-    transform: translateY(-5px);
-    border: 1px solid #ccc;
-  }
+  
 
   .group-name {
     font-size: 1.1rem;
