@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using AccessControlSystem.Common.Extensions;
+using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
+using System.Linq.Expressions;
 
 namespace AccessControlSystem.Domain.Specifications.Absraction;
 
@@ -6,7 +8,7 @@ public class BaseSpecification<TEntity> : IBaseSpecification<TEntity>
 {
     public Expression<Func<TEntity, bool>>? Criteria { get; set; }
     public List<Expression<Func<TEntity, object>>> Includes { get; set; } = [];
-    public List<(Expression<Func<TEntity, IEnumerable<object>>> Path, Expression<Func<object, object>> ThenInclude)> IncludesThen { get; set; } = [];
+    public List<IncludeChain<TEntity>> IncludeChains { get; set; } = [];
     public Expression<Func<TEntity, object>>? OrderBy { get; set; }
     public Expression<Func<TEntity, object>>? OrderByDescending { get; set; }
 
@@ -20,14 +22,9 @@ public class BaseSpecification<TEntity> : IBaseSpecification<TEntity>
         Includes.Add(includeExpression);
     }
 
-    protected void AddIncludeThen<TProperty, TThenProperty>(
-        Expression<Func<TEntity, IEnumerable<TProperty>>> path,
-        Expression<Func<TProperty, TThenProperty>> thenInclude)
-        where TProperty : class
-        where TThenProperty : class
+    public void AddIncludeChain(IncludeChain<TEntity> includeChain)
     {
-        IncludesThen.Add((path as Expression<Func<TEntity, IEnumerable<object>>>,
-                           thenInclude as Expression<Func<object, object>>)!);
+        IncludeChains.Add(includeChain);
     }
 
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
@@ -38,5 +35,39 @@ public class BaseSpecification<TEntity> : IBaseSpecification<TEntity>
     protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescendingExpression)
     {
         OrderByDescending = orderByDescendingExpression;
+    }
+}
+
+public static class IncludeChainExtensions
+{
+    public static IncludeChain<TEntity> CreateIncludeChain<TEntity, TProperty>(
+        this BaseSpecification<TEntity> spec,
+        Expression<Func<TEntity, TProperty>> initialInclude)
+    {
+        var chain = new IncludeChain<TEntity>
+        {
+            InitialInclude = initialInclude as Expression<Func<TEntity, object>> ??
+                           Expression.Lambda<Func<TEntity, object>>(
+                               Expression.Convert(initialInclude.Body, typeof(object)),
+                               initialInclude.Parameters)
+        };
+
+        spec.AddIncludeChain(chain);
+
+        return chain;
+    }
+
+    public static IncludeChain<TEntity> ThenInclude<TEntity, TProperty>(
+        this IncludeChain<TEntity> chain,
+        Expression<Func<object, TProperty>> thenInclude)
+    {
+        var convertedExpression = thenInclude as Expression<Func<object, object>> ??
+            Expression.Lambda<Func<object, object>>(
+                Expression.Convert(thenInclude.Body, typeof(object)),
+                thenInclude.Parameters);
+
+        chain.ThenIncludes.Add(convertedExpression);
+
+        return chain;
     }
 }

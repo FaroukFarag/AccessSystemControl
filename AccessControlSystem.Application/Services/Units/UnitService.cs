@@ -2,9 +2,12 @@
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Units;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
+using AccessControlSystem.Domain.Models.AccessGroupDevices;
+using AccessControlSystem.Domain.Models.AccessGroups;
 using AccessControlSystem.Domain.Models.Units;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
@@ -35,7 +38,17 @@ public class UnitService(
     {
         var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>
         {
-            Includes = [u => u.Owner!]
+            Includes = [u => u.Subscription, u => u.Owner!, u => u.AccessGroups],
+            IncludeChains = [
+                new IncludeChain<Unit>
+                {
+                    InitialInclude = u => u.AccessGroups!,
+                    ThenIncludes = [
+                        ag => (ag as AccessGroup)!.AccessGroupDevices,
+                        agd => (agd as AccessGroupDevice)!.Device
+                    ]
+                }
+            ]
         });
 
         return _mapper.Map<UnitDto>(unit);

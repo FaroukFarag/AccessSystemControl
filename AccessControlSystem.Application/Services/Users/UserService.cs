@@ -2,6 +2,7 @@
 using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
@@ -76,9 +77,13 @@ public class UserService(
             new BaseSpecification<User>
             {
                 Criteria = u => userIds.Contains(u.Id),
-                Includes = [u => u.Units!, u => u.AccessGroups!],
-                IncludesThen = [
-                    (u => u.AccessGroups!, ag => (ag as AccessGroup)!.AccessGroupDevices)
+                Includes = [u => u.Units!],
+                IncludeChains = [
+                    new IncludeChain<User>
+                    {
+                        InitialInclude = u => u.AccessGroups!,
+                        ThenIncludes = [ag => (ag as AccessGroup)!.AccessGroupDevices]
+                    }
                 ]
             });
 

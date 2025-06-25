@@ -10,6 +10,8 @@ public class UnitProfile : Profile
     public UnitProfile()
     {
         CreateMap<Unit, UnitDto>()
+            .ForMember(des => des.SubscriptionCustomerName, opt => opt
+                .MapFrom(src => src.Subscription.CustomerName))
             .ForMember(des => des.ImagePath, opt => opt
                 .MapFrom<ImageUrlResolver>())
             .ReverseMap();

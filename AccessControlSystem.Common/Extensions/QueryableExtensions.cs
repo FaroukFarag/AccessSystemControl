@@ -3,6 +3,18 @@ using System.Linq.Expressions;
 
 namespace AccessControlSystem.Common.Extensions;
 
+public class IncludeChain<TEntity>
+{
+    public Expression<Func<TEntity, object>> InitialInclude { get; set; } = default!;
+    public List<Expression<Func<object, object>>> ThenIncludes { get; set; } = [];
+
+    public IncludeChain<TEntity> ThenInclude(Expression<Func<object, object>> thenInclude)
+    {
+        ThenIncludes.Add(thenInclude);
+        return this;
+    }
+}
+
 public static class QueryableExtensions
 {
     public static IQueryable<TEntity> ApplyCriteria<TEntity>(
@@ -24,17 +36,24 @@ public static class QueryableExtensions
         return includes.Aggregate(query, (current, include) => current.Include(include));
     }
 
-    public static IQueryable<TEntity> ApplyIncludesThen<TEntity>(
+    public static IQueryable<TEntity> ApplyIncludeChains<TEntity>(
         this IQueryable<TEntity> query,
-        List<(Expression<Func<TEntity, IEnumerable<object>>> Path, Expression<Func<object, object>> ThenInclude)>? includesThen)
+        List<IncludeChain<TEntity>>? includeChains)
         where TEntity : class
     {
-        if (includesThen == null || includesThen.Count == 0)
+        if (includeChains == null || includeChains.Count == 0)
             return query;
 
-        foreach (var (path, thenInclude) in includesThen)
+        foreach (var chain in includeChains)
         {
-            query = query.Include(path).ThenInclude(thenInclude);
+            var includableQuery = query.Include(chain.InitialInclude);
+
+            foreach (var thenInclude in chain.ThenIncludes)
+            {
+                includableQuery = includableQuery.ThenInclude(thenInclude);
+            }
+
+            query = includableQuery;
         }
 
         return query;

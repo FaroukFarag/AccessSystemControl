@@ -2,6 +2,7 @@
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
@@ -36,12 +37,15 @@ public class SubscriptionService(
         var subscription = await _repository.GetAsync(id, new BaseSpecification<Subscription>
         {
             Includes = [
-                s => s.Users,
                 s => s.Devices,
                 s => s.Cards
             ],
-            IncludesThen = [
-                (s => s.Users, u => (u as User)!.UserRoles)
+            IncludeChains = [
+                new IncludeChain<Subscription>
+                {
+                    InitialInclude = s => s.Users,
+                    ThenIncludes = [u => (u as User)!.UserRoles]
+                }
             ]
         });
         var subscriptionDto = _mapper.Map<SubscriptionDto>(subscription);

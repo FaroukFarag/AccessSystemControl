@@ -165,7 +165,7 @@ public class BaseRepository<TEntity, TPrimaryKey>(
         return query
             .ApplyCriteria(spec.Criteria)
             .ApplyIncludes(spec.Includes)
-            .ApplyIncludesThen(spec.IncludesThen)
+            .ApplyIncludeChains(spec.IncludeChains)
             .ApplyOrderBy(spec.OrderBy)
             .ApplyOrderByDescending(spec.OrderByDescending);
     }

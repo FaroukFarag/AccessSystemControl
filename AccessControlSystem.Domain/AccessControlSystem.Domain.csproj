@@ -14,4 +14,8 @@
     <Folder Include="Extensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AccessControlSystem.Common\AccessControlSystem.Common.csproj" />
+  </ItemGroup>
+
 </Project>

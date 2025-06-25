@@ -1,10 +1,13 @@
-﻿using System.Linq.Expressions;
+﻿using AccessControlSystem.Common.Extensions;
+using System.Linq.Expressions;
+
+namespace AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
 
 public interface IBaseSpecification<TEntity>
 {
     Expression<Func<TEntity, bool>>? Criteria { get; }
     List<Expression<Func<TEntity, object>>> Includes { get; }
-    List<(Expression<Func<TEntity, IEnumerable<object>>> Path, Expression<Func<object, object>> ThenInclude)> IncludesThen { get; }
+    List<IncludeChain<TEntity>> IncludeChains { get; }
     Expression<Func<TEntity, object>>? OrderBy { get; }
     Expression<Func<TEntity, object>>? OrderByDescending { get; }
 }

@@ -1,6 +1,7 @@
 ﻿using AccessControlSystem.Application.Dtos.AccessGroups;
 using AccessControlSystem.Application.Interfaces.AccessGroups;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroups;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.AccessGroupDevices;
@@ -24,9 +25,12 @@ public class AccessGroupService(
     {
         var accessGroup = await _repository.GetAsync(id, new BaseSpecification<AccessGroup>
         {
-            Includes = [ag => ag.Owner!, ag => ag.AccessGroupDevices],
-            IncludesThen = [
-                (ag => ag.AccessGroupDevices, sd => (sd as AccessGroupDevice)!.Device)
+            IncludeChains = [
+                new IncludeChain<AccessGroup>
+                {
+                    InitialInclude = ag => ag.AccessGroupDevices,
+                    ThenIncludes = [agd => (agd as AccessGroupDevice)!.Device]
+                }
             ]
         });
         var accessGroupDto = _mapper.Map<AccessGroupDto>(accessGroup);
@@ -38,9 +42,12 @@ public class AccessGroupService(
     {
         var accessGroups = await _repository.GetAllAsync(new BaseSpecification<AccessGroup>
         {
-            Includes = [ag => ag.AccessGroupDevices],
-            IncludesThen = [
-                (ag => ag.AccessGroupDevices, sd => (sd as AccessGroupDevice)!.Device)
+            IncludeChains = [
+                new IncludeChain<AccessGroup>
+                {
+                    InitialInclude = ag => ag.AccessGroupDevices,
+                    ThenIncludes = [agd => (agd as AccessGroupDevice)!.Device]
+                }
             ]
         });
         var accessGroupDtos = _mapper.Map<IReadOnlyList<AccessGroupDto>>(accessGroups);
