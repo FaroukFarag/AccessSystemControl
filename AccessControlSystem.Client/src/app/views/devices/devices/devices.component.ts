@@ -45,7 +45,7 @@ import { AccessGroup } from '../../../models/access-group/access-group'
 })
 export class DevicesComponent {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
-  selectedDeviceIds: string[] = [];
+  selectedDevices: any = [];
   popupVisible: boolean = false;
   groupDevice_popupVisible: boolean = false;
   sortBy = ['Recent', 'date'];
@@ -209,27 +209,28 @@ export class DevicesComponent {
   }
   openGroupDEvicesPopup() {
     this.groupDevice_popupVisible = true;
-    this.selectedDeviceIds = [];
+    this.selectedDevices = [];
   }
 
-  toggleDeviceSelection(deviceId: string) {
-    const index = this.selectedDeviceIds.indexOf(deviceId);
+  toggleDeviceSelection(device: any) {
+    const index = this.selectedDevices.indexOf(device);
     if (index > -1) {
-      this.selectedDeviceIds.splice(index, 1);
+      this.selectedDevices.splice(index, 1);
     } else {
-      this.selectedDeviceIds.push(deviceId);
+      this.selectedDevices.push(device);
     }
+    console.log('Selected Device IDs:', this.selectedDevices);
   }
 
   submitSelectedDevices() {
-    if (!this.groupName.trim() || this.selectedDeviceIds.length === 0) {
+    if (!this.groupName.trim() || this.selectedDevices.length === 0) {
       notify('Please enter a group name and select at least one device.', 'warning', 2000);
       return;
     }
 
     const payload = {
-      Name: this.groupName,
-      DeviceIds: this.selectedDeviceIds
+      name: this.groupName,
+      devices: this.selectedDevices
     };
 
     this.accessGroupService.create('AccessGroups/Create', payload as any).subscribe({
@@ -237,7 +238,9 @@ export class DevicesComponent {
         notify('Device group created successfully', 'success', 1500);
         this.groupDevice_popupVisible = false;
         this.groupName = '';
-        this.selectedDeviceIds = [];
+        this.selectedDevices = [];
+        console.log('Selected Device IDs 2:', this.selectedDevices);
+
         this.getAllDevices(); 
       },
       error: (err) => {
@@ -246,6 +249,15 @@ export class DevicesComponent {
       }
     });
   }
+
+
+
+
+
+
+
+
+
 
 
 
