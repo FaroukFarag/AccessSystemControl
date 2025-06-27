@@ -15,5 +15,7 @@ public class UnitProfile : Profile
             .ForMember(des => des.ImagePath, opt => opt
                 .MapFrom<ImageUrlResolver>())
             .ReverseMap();
+
+        CreateMap<UnitDto, Unit>();
     }
 }
