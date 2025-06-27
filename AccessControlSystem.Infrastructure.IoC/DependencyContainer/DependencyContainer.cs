@@ -6,8 +6,10 @@ using AccessControlSystem.Application.AutoMapper.Devices;
 using AccessControlSystem.Application.AutoMapper.Roles;
 using AccessControlSystem.Application.AutoMapper.Shared;
 using AccessControlSystem.Application.AutoMapper.Subscriptions;
+using AccessControlSystem.Application.AutoMapper.UnitAccessGroups;
 using AccessControlSystem.Application.AutoMapper.Units;
 using AccessControlSystem.Application.AutoMapper.Users;
+using AccessControlSystem.Application.AutoMapper.Visitors;
 using AccessControlSystem.Application.Configurations;
 using AccessControlSystem.Application.Interfaces.Abstraction;
 using AccessControlSystem.Application.Interfaces.AccessGroupDevices;
@@ -17,8 +19,10 @@ using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Roles;
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
+using AccessControlSystem.Application.Interfaces.UnitAccessGroups;
 using AccessControlSystem.Application.Interfaces.Units;
 using AccessControlSystem.Application.Interfaces.Users;
+using AccessControlSystem.Application.Interfaces.Visitors;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Application.Services.AccessGroupDevices;
 using AccessControlSystem.Application.Services.AccessGroups;
@@ -27,20 +31,25 @@ using AccessControlSystem.Application.Services.Devices;
 using AccessControlSystem.Application.Services.Roles;
 using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Application.Services.Subscriptions;
+using AccessControlSystem.Application.Services.UnitAccessGroups;
 using AccessControlSystem.Application.Services.Units;
 using AccessControlSystem.Application.Services.Users;
+using AccessControlSystem.Application.Services.Visitors;
 using AccessControlSystem.Application.Validators.AccessGroupDevices;
 using AccessControlSystem.Application.Validators.AccessGroups;
 using AccessControlSystem.Application.Validators.Cards;
 using AccessControlSystem.Application.Validators.Devices;
 using AccessControlSystem.Application.Validators.Roles;
 using AccessControlSystem.Application.Validators.Subscriptions;
+using AccessControlSystem.Application.Validators.UnitAccessGroups;
 using AccessControlSystem.Application.Validators.Units;
 using AccessControlSystem.Application.Validators.Users;
+using AccessControlSystem.Application.Validators.Visitors;
 using AccessControlSystem.Common.Tokens.Configurations;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Common.Tokens.Services;
 using AccessControlSystem.Domain.Constants;
+using AccessControlSystem.Domain.Interfaces.Repositories;
 using AccessControlSystem.Domain.Interfaces.Repositories.Abstraction;
 using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroupDevices;
 using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroups;
@@ -48,6 +57,7 @@ using AccessControlSystem.Domain.Interfaces.Repositories.Cards;
 using AccessControlSystem.Domain.Interfaces.Repositories.Devices;
 using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
+using AccessControlSystem.Domain.Interfaces.Repositories.UnitAccessGroups;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
@@ -64,8 +74,10 @@ using AccessControlSystem.Infrastructure.Data.Repositories.Cards;
 using AccessControlSystem.Infrastructure.Data.Repositories.Devices;
 using AccessControlSystem.Infrastructure.Data.Repositories.Roles;
 using AccessControlSystem.Infrastructure.Data.Repositories.Subscriptions;
+using AccessControlSystem.Infrastructure.Data.Repositories.UnitAccessGroups;
 using AccessControlSystem.Infrastructure.Data.Repositories.Units;
 using AccessControlSystem.Infrastructure.Data.Repositories.Users;
+using AccessControlSystem.Infrastructure.Data.Repositories.Visitors;
 using AccessControlSystem.Infrastructure.Data.UnitOfWork;
 using AccessControlSystem.Infrastructure.Http.Clients.Airfob;
 using AccessControlSystem.Infrastructure.Http.Configurations;
@@ -113,7 +125,9 @@ public static class DependencyContainer
             .AddScoped<IAccessGroupService, AccessGroupService>()
             .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>()
             .AddScoped<IImageService, ImageService>()
-            .AddScoped<ICardService, CardService>();
+            .AddScoped<ICardService, CardService>()
+            .AddScoped<IUnitAccessGroupService, UnitAccessGroupService>()
+            .AddScoped<IVisitorService, VisitorService>();
     }
 
     public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -134,7 +148,9 @@ public static class DependencyContainer
             .AddScoped<IUnitRepository, UnitRepository>()
             .AddScoped<IAccessGroupRepository, AccessGroupRepository>()
             .AddScoped<IAccessGroupDeviceRepository, AccessGroupDeviceRepository>()
-            .AddScoped<ICardRepository, CardRepository>();
+            .AddScoped<ICardRepository, CardRepository>()
+            .AddScoped<IUnitAccessGroupRepository, UnitAccessGroupRepository>()
+            .AddScoped<IVisitorRepository, VisitorRepository>();
     }
 
     public static void RegisterSpecifications(this IServiceCollection services)
@@ -165,6 +181,8 @@ public static class DependencyContainer
         services.AddAutoMapper(typeof(AccessGroupProfile).Assembly);
         services.AddAutoMapper(typeof(AccessGroupDeviceProfile).Assembly);
         services.AddAutoMapper(typeof(CardProfile).Assembly);
+        services.AddAutoMapper(typeof(UnitAccessGroupProfile).Assembly);
+        services.AddAutoMapper(typeof(VisitorProfile).Assembly);
     }
 
     public static void RegisterValidators(this IServiceCollection services)
@@ -180,6 +198,8 @@ public static class DependencyContainer
         services.AddValidatorsFromAssemblyContaining<AccessGroupDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<AccessGroupDeviceDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<CardDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<UnitAccessGroupDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<VisitorDtoValidator>();
     }
 
     public static void RegisterIdentity(this IServiceCollection services)

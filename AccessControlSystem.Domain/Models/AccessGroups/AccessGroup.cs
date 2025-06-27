@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Domain.Models.Abstraction;
 using AccessControlSystem.Domain.Models.AccessGroupDevices;
+using AccessControlSystem.Domain.Models.UnitAccessGroups;
 using AccessControlSystem.Domain.Models.Users;
 
 namespace AccessControlSystem.Domain.Models.AccessGroups;
@@ -11,4 +12,5 @@ public class AccessGroup : BaseModel<int>
 
     public User? Owner { get; set; }
     public IEnumerable<AccessGroupDevice> AccessGroupDevices { get; set; } = default!;
+    public IEnumerable<UnitAccessGroup> UnitAccessGroups { get; set; } = default!;
 }

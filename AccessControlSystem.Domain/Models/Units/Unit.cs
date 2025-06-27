@@ -1,7 +1,8 @@
 ﻿using AccessControlSystem.Domain.Models.Abstraction;
-using AccessControlSystem.Domain.Models.AccessGroups;
 using AccessControlSystem.Domain.Models.Subscriptions;
+using AccessControlSystem.Domain.Models.UnitAccessGroups;
 using AccessControlSystem.Domain.Models.Users;
+using AccessControlSystem.Domain.Models.Visitors;
 
 namespace AccessControlSystem.Domain.Models.Units;
 
@@ -16,5 +17,6 @@ public class Unit : BaseImageModel<int>
 
     public Subscription Subscription { get; set; } = default!;
     public User? Owner { get; set; }
-    public IEnumerable<AccessGroup> AccessGroups { get; set; } = default!;
+    public IEnumerable<UnitAccessGroup> UnitAccessGroups { get; set; } = default!;
+    public IEnumerable<Visitor> Visitors { get; set; } = default!;
 }

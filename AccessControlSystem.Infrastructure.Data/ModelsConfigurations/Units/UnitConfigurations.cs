@@ -19,5 +19,9 @@ public class UnitConfigurations : IEntityTypeConfiguration<Unit>
         builder.HasOne(u => u.Owner)
             .WithMany(o => o.Units)
             .HasForeignKey(o => o.OwnerId);
+
+        builder.HasMany(u => u.Visitors)
+            .WithOne(v => v.Unit)
+            .HasForeignKey(u => u.UnitId);
     }
 }

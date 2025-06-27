@@ -38,11 +38,11 @@ public class UnitService(
     {
         var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>
         {
-            Includes = [u => u.Subscription, u => u.Owner!, u => u.AccessGroups],
+            Includes = [u => u.Subscription, u => u.Owner!, u => u.UnitAccessGroups],
             IncludeChains = [
                 new IncludeChain<Unit>
                 {
-                    InitialInclude = u => u.AccessGroups!,
+                    InitialInclude = u => u.UnitAccessGroups!,
                     ThenIncludes = [
                         ag => (ag as AccessGroup)!.AccessGroupDevices,
                         agd => (agd as AccessGroupDevice)!.Device
