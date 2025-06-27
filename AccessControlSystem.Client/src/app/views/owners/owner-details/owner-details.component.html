@@ -83,13 +83,37 @@
 
 </div>
 
+<!--UNITS SECTION-->
+<!--All Units-->
+<div class="row">
+  <h2>Units <span>({{ownerDetails.units.length}})</span></h2>
+
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let unit of ownerDetails.units">
+
+    <div class="card mb-2">
+      <img [src]="unit.imagePath" alt="Card Image" class="card-image" (click)="navigateToUnitDetailsPage(unit.id)">
+      <div class="village-name" (click)="navigateToUnitDetailsPage(unit.id)">{{ unit.name }}</div>
+    </div>
+
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
+      <div class="info"> Subscription: </div>
+      <div class="info-value"> {{ unit.subscriptionId }}</div>
+    </div>
+    <div class="card-info">
+      <div class="icon"><img src="/assets/icons/device.svg" /></div>
+      <div class="info"> Devices: </div>
+      <div class="info-value">{{ unit.number }}</div>
+    </div>
+
+  </div>
+</div>
 
 
 
 
 
-
-<div class="device-section">
+<!--<div class="device-section">
   <div class="group-header">
     <h3>Devices group name <span class="count">(5)</span></h3>
     <div class="group-actions">
@@ -142,4 +166,4 @@
       </div>
     </ng-container>
   </div>
-</div>
+</div>-->
