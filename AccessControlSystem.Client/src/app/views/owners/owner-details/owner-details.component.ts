@@ -60,7 +60,7 @@ export class OwnerDetailsComponent {
   }
 
   getOwnerDetails(id: string) {
-    this.userService.getById('Users/Get', id).subscribe({
+    this.userService.getById('Users/GetOwnerDetails', id).subscribe({
       next: (data: any) => {
         this.ownerDetails = data;
         console.log('Owner Details:', this.ownerDetails);

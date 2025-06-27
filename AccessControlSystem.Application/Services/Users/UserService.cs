@@ -68,6 +68,31 @@ public class UserService(
         return usersDtos;
     }
 
+    public async Task<UserDto> GetUserByRoleAsync(int userId, int roleId)
+    {
+        var role = await _roleManager.FindByIdAsync(roleId.ToString());
+        var usersInRole = await _userManager.GetUsersInRoleAsync(role!.Name!);
+        var roleUserId = usersInRole.FirstOrDefault(u => u.Id == userId)!.Id;
+
+        var userWithIncludes = await _userRepository.GetAsync(
+            roleUserId,
+            new BaseSpecification<User>
+            {
+                Includes = [u => u.Units!],
+                IncludeChains = [
+                    new IncludeChain<User>
+                    {
+                        InitialInclude = u => u.AccessGroups!,
+                        ThenIncludes = [ag => (ag as AccessGroup)!.AccessGroupDevices]
+                    }
+                ]
+            });
+
+        var userDto = _mapper.Map<UserDto>(userWithIncludes);
+
+        return userDto;
+    }
+
     public async Task<IEnumerable<UserDto>> GetAllUsersByRoleAsync(int roleId)
     {
         var role = await _roleManager.FindByIdAsync(roleId.ToString());
@@ -115,7 +140,7 @@ public class UserService(
         return newUserDto;
     }
 
-    public async Task<LoggedInDto> LoginAsync(LoginDto model, bool isCashier)
+    public async Task<LoggedInDto> LoginAsync(LoginDto model)
     {
         var user = await AuthenticateUserAsync(model);
 

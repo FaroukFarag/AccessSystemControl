@@ -154,8 +154,8 @@ export class AccessGroupDevicesComponent  {
 
   getAccessGroupDetails(id: number): void {
     const params = { id };
-
-    this.http.get('https://localhost:7096/api/AccessGroups/Get', { params }).subscribe({
+debugger
+    this.http.get('http://localhost:5273/api/AccessGroups/Get', { params }).subscribe({
       next: (data: any) => {
         this.accessGroup = data;
         console.log('Access group details:', this.accessGroup);

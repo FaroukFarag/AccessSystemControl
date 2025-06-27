@@ -1,5 +1,4 @@
 ﻿using AccessControlSystem.Application.Dtos.Units;
-using AccessControlSystem.Application.Resolvers;
 using AccessControlSystem.Domain.Models.Units;
 using AutoMapper;
 
@@ -12,8 +11,6 @@ public class UnitProfile : Profile
         CreateMap<Unit, UnitDto>()
             .ForMember(des => des.SubscriptionCustomerName, opt => opt
                 .MapFrom(src => src.Subscription.CustomerName))
-            .ForMember(des => des.ImagePath, opt => opt
-                .MapFrom<ImageUrlResolver>())
             .ReverseMap();
 
         CreateMap<UnitDto, Unit>();

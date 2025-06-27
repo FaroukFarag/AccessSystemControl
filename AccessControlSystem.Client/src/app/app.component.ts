@@ -1,12 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
-import { AppLayoutComponent } from './views/app-layout/app-layout.component';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
-    AppLayoutComponent
+    RouterOutlet
   ],
   
   templateUrl: './app.component.html',

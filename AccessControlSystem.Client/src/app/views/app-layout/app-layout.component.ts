@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentComponent } from './content/content.component';
 import { Router } from '@angular/router';
 import { DxDrawerModule, DxDrawerTypes } from 'devextreme-angular/ui/drawer';
 import { DxListModule, DxToolbarModule } from 'devextreme-angular';
@@ -10,7 +9,6 @@ import { AppComponent } from './../../app.component';
   standalone: true,
   imports: [
     DxDrawerModule,
-    ContentComponent,
     DxToolbarModule,
     DxListModule,
     CommonModule,
@@ -35,7 +33,7 @@ export class AppLayoutComponent implements OnInit {
     { id: 4, text: 'Owners', icon: '/assets/icons/owners.svg' },
     { id: 7, text: 'Admins', icon: '/assets/icons/owners.svg' },
     { id: 5, text: 'Units', icon: '/assets/icons/units.svg' },
-  //  { id: 6, text: 'Access groups', icon: '/assets/icons/access.svg' },
+    //  { id: 6, text: 'Access groups', icon: '/assets/icons/access.svg' },
     { id: 7, text: 'cards', icon: '/assets/icons/card-owner.svg' },
   ];
 
@@ -49,16 +47,16 @@ export class AppLayoutComponent implements OnInit {
       onClick: () => this.isDrawerOpen = !this.isDrawerOpen,
     },
   },
-    {
-      widget: 'dxButton',
-      location: 'after',
-      options: {
-        icon: 'runner',
-        text: 'Logout',
-        stylingMode: 'text',
-        onClick: () => this.logout(),
-      }
+  {
+    widget: 'dxButton',
+    location: 'after',
+    options: {
+      icon: 'runner',
+      text: 'Logout',
+      stylingMode: 'text',
+      onClick: () => this.logout(),
     }
+  }
     //{
     //  widget: 'dxButton',
     //  location: 'after',
@@ -85,10 +83,10 @@ export class AppLayoutComponent implements OnInit {
     if (role === '1') {
       return allTabs.filter(tab => tab.id === 1 || tab.id === 2 || tab.id === 3);
     } else if (role === '2') {
-      return allTabs.filter(tab => tab.id === 1 || tab.id === 3 || tab.id === 6 || tab.id === 7 || tab.id === 4 );
+      return allTabs.filter(tab => tab.id === 1 || tab.id === 3 || tab.id === 6 || tab.id === 7 || tab.id === 4);
     }
     else {
-      return allTabs.filter(tab => tab.id === 1 || tab.id === 3 );
+      return allTabs.filter(tab => tab.id === 1 || tab.id === 3);
     }
   }
 
@@ -97,6 +95,10 @@ export class AppLayoutComponent implements OnInit {
     const token = localStorage.getItem('authToken');
 
     this.canAccessMainLayout = !!token;
+
+    if (!this.canAccessMainLayout)
+      this.router.navigate(['login']);
+
     this.navigation = this.getNavigationByRole(role);
   }
 
