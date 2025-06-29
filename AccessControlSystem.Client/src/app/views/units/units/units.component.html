@@ -25,7 +25,7 @@
           [hideOnOutsideClick]="false"
           [showCloseButton]="true"
           [(visible)]="popupVisible">
-  <dx-form #subscriptionFormRef [formData]="UnitsData"
+  <dx-form #subscriptionFormRef [formData]="unitsData"
            [colCount]="1"
            [labelLocation]="'top'">
     <dxi-item itemType="simple">
@@ -36,8 +36,8 @@
                           uploadMode="useForm"
                           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
-        <img *ngIf="UnitsData.unitImageUrl"
-             [src]="UnitsData.unitImageUrl"
+        <img *ngIf="unitsData.unitImageUrl"
+             [src]="unitsData.unitImageUrl"
              alt="Device Preview"
              class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
