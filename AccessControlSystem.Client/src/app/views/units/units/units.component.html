@@ -62,24 +62,26 @@
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>>
 
-    <dxi-item dataField="CardNumber" editorType="dxNumberBox" 
+    <dxi-item dataField="CardNumber" editorType="dxNumberBox"
               [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
       <dxi-validation-rule type="required" message="Cards number is required"></dxi-validation-rule>
       <dxo-label [visible]="false"></dxo-label>
     </dxi-item>
 
-
-    <!--<dxi-item dataField="AccessGroupDevices" editorType="dxTagBox"
+    <dxi-item dataField="AccessGroupDevices" editorType="dxTagBox"
               [editorOptions]="{
-            dataSource: availableDevices,
-            displayExpr: 'name',
-            valueExpr: 'id',
-            placeholder: 'Select Devices',
-            showClearButton: true
-          }">
-      <dxi-validation-rule type="required" message="Please select at least one device."></dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>-->
+ dataSource: accessGroups,
+ placeholder: 'Select Access Group',
+  displayExpr: 'name',
+ valueExpr: 'id',
+ showSelectionControls: true,
+ searchEnabled: true
+ }">
+      <dxi-validation-rule type="required" message="At least one Access Group is required"></dxi-validation-rule>
+      <dxo-label text="Access Group" [visible]="true"></dxo-label>
+    </dxi-item>
+
+  
 
   </dx-form>
   <dxi-item itemType="button">

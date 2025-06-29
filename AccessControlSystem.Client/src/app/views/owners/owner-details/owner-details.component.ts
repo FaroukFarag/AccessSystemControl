@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Input, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/users/user.service';
 import notify from 'devextreme/ui/notify';
 
@@ -47,6 +47,7 @@ export class OwnerDetailsComponent {
   constructor(private location: Location,
     private route: ActivatedRoute,
     private userService: UserService,
+    private router: Router,
 ) {
 
   }
@@ -81,5 +82,9 @@ export class OwnerDetailsComponent {
   }
   backClicked() {
     this.location.back();
+  }
+  navigateToUnitDetailsPage(unitId: number) {
+    this.router.navigate(['/unit-details'], { queryParams: { id: unitId } });
+
   }
 }
