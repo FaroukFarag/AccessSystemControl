@@ -16,6 +16,10 @@ public class AccessGroupConfigurations : IEntityTypeConfiguration<AccessGroup>
             .WithMany(o => o.AccessGroups)
             .HasForeignKey(o => o.OwnerId);
 
+        builder.HasOne(ag => ag.Unit)
+            .WithMany(u => u.AccessGroups)
+            .HasForeignKey(ag => ag.UnitId);
+
         builder.HasMany(ag => ag.AccessGroupDevices)
             .WithOne(agd => agd.AccessGroup)
             .HasForeignKey(agd => agd.AccessGroupId);

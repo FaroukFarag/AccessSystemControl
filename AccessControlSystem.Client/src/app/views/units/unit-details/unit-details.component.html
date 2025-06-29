@@ -59,11 +59,11 @@
   <div class="top-section">
     <!-- Left: Unit Info -->
     <div class="unit-info">
-      <img class="unit-img" [src]="unitDetails.imagePath" alt="Unit" />
+      <img class="unit-img" [src]="unitDetails?.imagePath" alt="Unit" />
       <div class="unit-meta ms-2">
-        <h3 class="unit-name">{{ unitDetails.name}}</h3>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">{{unitDetails.owner?.userName  || 'un Assigned'}}</span></div>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unitDetails.cardNumber }}</span></div>
+        <h3 class="unit-name">{{ unitDetails?.name}}</h3>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">{{unitDetails?.owner?.userName  || 'un Assigned'}}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unitDetails?.cardNumber }}</span></div>
       </div>
     </div>
 

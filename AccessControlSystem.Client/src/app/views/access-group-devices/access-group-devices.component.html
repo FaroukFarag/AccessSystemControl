@@ -1,7 +1,7 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>{{accessGroup.name}} <span class="devices-number">(2)</span></h4>
+    <h4>{{accessGroup?.name}} <span class="devices-number">(2)</span></h4>
   </div>
   <span>Review all devices details and information</span>
 </div>
@@ -9,27 +9,27 @@
 <!--ALL DEVICES-->
 <div class="row m-auto bg-white p-4">
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
-       *ngFor="let device of devices">
+    *ngFor="let device of accessGroup?.devices">
     <div class="card-header">
-      <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
-      <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+      <img [src]="device?.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device?.id)" />
+      <span class="device-name" (click)="navigateToDetailsPage(device?.id)">{{device?.name}}</span>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/status.svg" /></div>
       <div class="info"> Status: </div>
-      <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
-        {{ device.active ? 'Active' : 'Not Active' }}
+      <div class="info-value" [ngClass]="device?.active ? 'active' : 'inactive'">
+        {{ device?.active ? 'Active' : 'Not Active' }}
       </div>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
       <div class="info"> Mac Address: </div>
-      <div class="info-value ">{{device.macAddress}}</div>
+      <div class="info-value ">{{device?.macAddress}}</div>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
       <div class="info"> Device type: </div>
-      <div class="info-value"> {{device.deviceTypeName}}</div>
+      <div class="info-value"> {{device?.deviceTypeName}}</div>
     </div>
   </div>
 </div>
@@ -41,33 +41,21 @@
     <h5>Device traffic</h5>
     <div class="grid-header-btns">
       <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
-      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />Report</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg"
+          class="me-1" />Report</button>
     </div>
   </div>
-  <dx-data-grid id="gridContainer"
-                [dataSource]="dataSource"
-                [remoteOperations]="false"
-                [allowColumnReordering]="true"
-                [rowAlternationEnabled]="false"
-                [showBorders]="false"
-                [width]="'100%'">
+  <dx-data-grid id="gridContainer" [dataSource]="dataSource" [remoteOperations]="false" [allowColumnReordering]="true"
+    [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
     <!--<dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager [visible]="true"
                [showPageSizeSelector]="true"
                [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
-    <dxo-search-panel [visible]="true"
-                      [highlightCaseSensitive]="true"></dxo-search-panel>
+    <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
 
 
-    <dxi-column dataField="Traffic type"
-                caption="TRAFFIC TYPE"
-                dataType="string"
-                alignment="left"></dxi-column>
-    <dxi-column caption="TIME"
-                dataField="Time"
-                dataType="string"
-                format="time"
-                alignment="left"></dxi-column>
+    <dxi-column dataField="Traffic type" caption="TRAFFIC TYPE" dataType="string" alignment="left"></dxi-column>
+    <dxi-column caption="TIME" dataField="Time" dataType="string" format="time" alignment="left"></dxi-column>
     <dxi-column dataField="DATE" dataType="date"></dxi-column>
     <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
 

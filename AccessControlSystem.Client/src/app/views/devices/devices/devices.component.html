@@ -9,18 +9,18 @@
 <!----------------------- If userRolr == 2  SubscriptionAdmin------------------------------------------>
 <!-- GOUP DEVICES IF OWNER-->
 <div class="page-header" *ngIf="userRole == 2">
-  <dx-button class="button-info me-1" text="Group devices"  (onClick)="openGroupDEvicesPopup()">
+  <dx-button class="button-info me-1" text="Group devices" (onClick)="openGroupDEvicesPopup()">
   </dx-button>
 
   <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
-                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+    (onItemClick)="onItemClick($event)"></dx-drop-down-button>
 
 </div>
 
- <!--GROUPED DEVICES VIEW--> 
+<!--GROUPED DEVICES VIEW-->
 <div class="row m-auto bg-white px-2 py-3 mb-5 group-devices" *ngIf="userRole == 2">
   <div class="group-device-header">
-    <h3 class="mb-3">Access Groups ({{ accessGroups.length }})</h3>
+    <h3 class="mb-3">Access Groups ({{ accessGroups?.length }})</h3>
 
     <!--<dx-button class="button-info me-1 mb-4"
                text="Assigned owners">
@@ -32,29 +32,22 @@
       <div class="group-card p-4">
         <div class="group-header d-flex align-items-center justify-content-between mb-2">
           <h5 class="group-name mb-0">{{ group.name }}</h5>
-          <img src="/assets/images/device.png" alt="Group Icon" width="10%" >
+          <img src="/assets/images/device.png" alt="Group Icon" width="10%">
         </div>
-        <p class="device-count mb-3">{{ group.devices?.length || 0 }} Device{{ group.devices?.length === 1 ? '' : 's' }}</p>
+        <p class="device-count mb-3">{{ group.devices?.length || 0 }} Device{{ group.devices?.length === 1 ? '' : 's' }}
+        </p>
 
         <div class="btns-row">
-          <dx-button text="Devices"
-                     stylingMode="outlined"
-                     type="default"
-                     class="view-btn"
-                     (onClick)="navigateToGroup(group.id)">
+          <dx-button text="Devices" stylingMode="outlined" type="default" class="view-btn"
+            (onClick)="navigateToGroup(group.id)">
           </dx-button>
-          <dx-button text="Assigned owners"
-                     stylingMode="contained"
-                     type="default"
-                     class="view-btn-2"
-                     (onClick)="navigateToGroup(group.id)">
+          <dx-button text="Assigned owners" stylingMode="contained" type="default" class="view-btn-2"
+            (onClick)="navigateToGroup(group.id)">
           </dx-button>
         </div>
       </div>
     </div>
   </div>
-
-
 
   <!--<div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
     <div class="card-header">
@@ -81,21 +74,20 @@
   </div>-->
 </div>
 
-
 <!----GROUP DEVICE POPUP-->
 <!-- ADD GROUP DEVICES POPUP-->
 <dx-popup [width]="950" [height]="660" [showTitle]="true" title="Add New Group devices" [dragEnabled]="true"
-          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
   <div class="form-group w-100 mb-3 px-2">
     <label for="groupName">Group Name</label>
     <input type="text" class="form-control" [(ngModel)]="groupName" placeholder="Enter Group Name" />
   </div>
   <div class="row m-auto">
     <ng-container *ngFor="let device of devicesList">
-      <div [ngClass]="{'selected-card': selectedDevices.includes(device)}"
-           (click)="toggleDeviceSelection(device)" class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card">
+      <div [ngClass]="{'selected-card': selectedDevices.includes(device)}" (click)="toggleDeviceSelection(device)"
+        class="col-lg-3 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card">
         <div class="card-header">
-          <img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image"/>
+          <img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" />
           <span class="device-name">{{device.name}}</span>
         </div>
         <div class="device-info">
@@ -118,16 +110,12 @@
       </div>
     </ng-container>
     <div class="text-center mt-4">
-      <dx-button text="Submit Selected Devices"
-                 type="success"
-                 (onClick)="submitSelectedDevices()"
-                 [disabled]="selectedDevices.length === 0">
+      <dx-button text="Submit Selected Devices" type="success" (onClick)="submitSelectedDevices()"
+        [disabled]="selectedDevices.length === 0">
       </dx-button>
     </div>
   </div>
 </dx-popup>
-
-
 
 <!------------------------If userRole == 1   Admin--------------->
 <!--PAGE HEADER IF ADMIN-->
@@ -135,24 +123,22 @@
   <dx-button class="button-info me-1" text="Add Device" (onClick)="showAddDevicePopup()">
   </dx-button>
 
-
   <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
-                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-
+    (onItemClick)="onItemClick($event)">
+  </dx-drop-down-button>
 </div>
-
 
 <!-- ADD DEVICE POPUP-->
 <dx-popup [width]="600" [height]="500" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
-          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
         <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
         <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
-             class="thumbnail" />
+          class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}
         </div>
@@ -168,7 +154,7 @@
       <dxi-validation-rule type="required" message="Device MAC address is required">
       </dxi-validation-rule>
       <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
-                           message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+        message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
@@ -183,8 +169,7 @@
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="selectedSubscriptions" editorType="dxTagBox"
-    [editorOptions]="{
+    <dxi-item dataField="selectedSubscriptions" editorType="dxTagBox" [editorOptions]="{
     dataSource: subscriptionList,
     placeholder: 'Select Subscription',
     valueExpr: 'id',
@@ -193,8 +178,8 @@
     showSelectionControls: true,
     searchEnabled: true
     }">
-    <dxi-validation-rule type="required" message="At least one subscription is required"></dxi-validation-rule>
-    <dxo-label text="Subscriptions" [visible]="true"></dxo-label>
+      <dxi-validation-rule type="required" message="At least one subscription is required"></dxi-validation-rule>
+      <dxo-label text="Subscriptions" [visible]="true"></dxo-label>
     </dxi-item>
 
     <!-- Subscription Template for showing image + name -->
@@ -205,7 +190,6 @@
       </div>
     </div>
 
-
   </dx-form>
   <dxi-item itemType="button">
     <dx-button text="Add Device" type="success" (onClick)="submitDevice()"></dx-button>
@@ -213,11 +197,10 @@
 
 </dx-popup>
 
-
 <!--ALL DEVICES-->
 <div class="row m-auto">
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
-       *ngFor="let device of devicesList">
+    *ngFor="let device of devicesList">
     <div class="card-header">
       <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
       <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>

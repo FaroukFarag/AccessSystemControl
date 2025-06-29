@@ -4,7 +4,6 @@ using AccessControlSystem.Domain.Models.Cards;
 using AccessControlSystem.Domain.Models.Devices;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Subscriptions;
-using AccessControlSystem.Domain.Models.UnitAccessGroups;
 using AccessControlSystem.Domain.Models.Units;
 using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Domain.Models.Visitors;
@@ -14,7 +13,6 @@ using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Cards;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Devices;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Roles;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Subscriptions;
-using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.UnitAccessGroups;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Units;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Users;
 using AccessControlSystem.Infrastructure.Data.ModelsConfigurations.Visitors;
@@ -31,7 +29,6 @@ public class AccessControlDbContext(DbContextOptions options) : IdentityDbContex
     public DbSet<AccessGroup> AccessGroups { get; set; }
     public DbSet<AccessGroupDevice> AccessGroupDevices { get; set; }
     public DbSet<Card> Cards { get; set; }
-    public DbSet<UnitAccessGroup> UnitAccessGroups { get; set; }
     public DbSet<Visitor> Visitors { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,7 +43,6 @@ public class AccessControlDbContext(DbContextOptions options) : IdentityDbContex
         modelBuilder.ApplyConfiguration(new AccessGroupConfigurations());
         modelBuilder.ApplyConfiguration(new AccessGroupDeviceConfigurations());
         modelBuilder.ApplyConfiguration(new CardConfigurations());
-        modelBuilder.ApplyConfiguration(new UnitAccessGroupConfigurations());
         modelBuilder.ApplyConfiguration(new VisitorConfigurations());
     }
 }

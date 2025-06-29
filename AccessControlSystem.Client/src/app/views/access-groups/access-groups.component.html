@@ -6,25 +6,14 @@
   <span>Review all Access groups details and information</span>
 </div>
 
-
-
 <div class="grid-section mt-4 bg-white">
 
-  <dx-data-grid id="gridContainer"
-                [dataSource]="accessGroupsList"
-                [remoteOperations]="false"
-                [allowColumnReordering]="true"
-                [rowAlternationEnabled]="false"
-                [showBorders]="false"
-                [width]="'100%'">
+  <dx-data-grid id="gridContainer" [dataSource]="accessGroupsList" [remoteOperations]="false"
+    [allowColumnReordering]="true" [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
     <dxo-paging [enabled]="true"></dxo-paging>
-    <dxo-editing mode="popup"
-                 [allowUpdating]="true"
-                 [allowAdding]="true"
-                 [allowDeleting]="true"
-                 [useIcons]="true">
-      <dxo-popup [width]="600" [height]="420" [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true" title="Add New Access Group"   [showTitle]="true">
-
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true" [useIcons]="true">
+      <dxo-popup [width]="600" [height]="420" [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true"
+        title="Add New Access Group" [showTitle]="true">
       </dxo-popup>
 
       <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
@@ -62,7 +51,7 @@
 
     <div *dxTemplate="let data of 'GroupNameTemplate'">
       <span (click)="goToAccessGroupDevices(data.data)">{{data.data.name}}</span>
-      
+
     </div>
   </dx-data-grid>
 </div>
