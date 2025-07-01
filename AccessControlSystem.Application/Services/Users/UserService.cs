@@ -1,4 +1,5 @@
 ﻿using AccessControlSystem.Application.Dtos.Shared;
+using AccessControlSystem.Application.Dtos.Units;
 using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
@@ -147,15 +148,23 @@ public class UserService(
         if (user == null)
             return default!;
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var userWithUnits = await _userRepository.GetAsync(
+            user.Id,
+            new BaseSpecification<User>
+            {
+                Includes = [u => u.Units!]
+            });
+
+        var roles = await _userManager.GetRolesAsync(userWithUnits);
         var role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()!);
         var roleId = role?.Id;
 
         return new LoggedInDto
         {
             RoleId = roleId,
-            SubscriptionId = user.SubscriptionId,
-            Token = await GetToken(user)
+            SubscriptionId = userWithUnits.SubscriptionId,
+            Units = _mapper.Map<IReadOnlyList<UnitDto>>(userWithUnits.Units),
+            Token = await GetToken(userWithUnits)
         };
     }
 
