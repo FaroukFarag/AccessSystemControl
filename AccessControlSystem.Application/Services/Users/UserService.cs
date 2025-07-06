@@ -161,6 +161,7 @@ public class UserService(
 
         return new LoggedInDto
         {
+            UserId = userWithUnits.Id,
             RoleId = roleId,
             SubscriptionId = userWithUnits.SubscriptionId,
             Units = _mapper.Map<IReadOnlyList<UnitDto>>(userWithUnits.Units),
@@ -218,6 +219,7 @@ public class UserService(
 
         return (await _userManager.FindByNameAsync(model.UserName))!;
     }
+
     private async Task<string> GetToken(User user)
     {
         var claims = new List<TokenClaim>
