@@ -36,6 +36,13 @@ public class UnitService(
 
     public override async Task<UnitDto> GetAsync(int id)
     {
+        var unit = await _repository.GetAsync(id);
+
+        return _mapper.Map<UnitDto>(unit);
+    }
+
+    public async Task<UnitDto> GetWithIncludesAsync(int id)
+    {
         var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>
         {
             Includes = [u => u.Subscription, u => u.Owner!],

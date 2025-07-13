@@ -7,4 +7,6 @@ namespace AccessControlSystem.Application.Interfaces.Units;
 public interface IUnitService : IBaseService<Unit, UnitDto, int>
 {
     Task<UnitDto> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto);
+
+    Task<UnitDto> GetWithIncludesAsync(int id);
 }
