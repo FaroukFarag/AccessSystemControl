@@ -135,13 +135,13 @@ export class DashboardComponent {
   }
   getAllOwners() {
     this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
-      this.ownersList = data;
+      this.ownersList = data.resultData;
       console.log("subscriptionssList", this.ownersList);
     })
   }
   getAllUnits() {
     this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
-      this.unitsList = data;
+      this.unitsList = data.resultData;
 
     })
   }

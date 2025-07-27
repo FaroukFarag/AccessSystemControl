@@ -99,8 +99,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
 
-    this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe(data => {
-      this.subscription = data;
+    this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe((data: any) => {
+      this.subscription = data.resultData;
       this.calculateTotalPayment();
 
     });
@@ -128,7 +128,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   getAllDevices() {
     this.deviceService.getAll(`Devices/GetAvailableDevicesForSubscription?subscriptionId=${this.id}`).subscribe((data: any) => {
-      this.devicesList = data;
+      this.devicesList = data.resultData;
 
     })
   }

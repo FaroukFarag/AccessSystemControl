@@ -61,7 +61,7 @@ export class OwnersComponent implements OnInit {
   }
   getAllOwners() {
     this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
-      this.owners = data;
+      this.owners = data.resultData;
     })
   }
 

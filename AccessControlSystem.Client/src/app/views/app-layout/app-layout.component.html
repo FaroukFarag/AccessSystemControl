@@ -21,7 +21,7 @@
                [hoverStateEnabled]="true"
                [activeStateEnabled]="true"
                [focusStateEnabled]="true"
-               (onItemClick)="navigateTo($event.itemData.text.toLowerCase())">
+               (onItemClick)="navigateTo($event.itemData.route)">
         <div *dxTemplate="let item of navigation">
           <div class="item-content">
 

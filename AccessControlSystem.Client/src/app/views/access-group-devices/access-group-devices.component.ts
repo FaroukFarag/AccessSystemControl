@@ -153,7 +153,7 @@ export class AccessGroupDevicesComponent {
 
     this.http.get('http://localhost:5273/api/AccessGroups/Get', { params }).subscribe({
       next: (data: any) => {
-        this.accessGroup = data;
+        this.accessGroup = data.resultData;
       },
       error: (err) => {
         notify('Error fetching access group details', 'error', 2000);

@@ -12,6 +12,7 @@ public class AirfobAuthHandler(HttpClient client, IOptions<AirfobSettings> setti
 {
     private readonly HttpClient _client = client ?? throw new ArgumentNullException(nameof(client));
     private readonly AirfobSettings _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
+    private readonly SemaphoreSlim _tokenSemaphore = new(1, 1);
     private string _accessToken = string.Empty;
     private DateTime _tokenExpiry = DateTime.MinValue;
 
@@ -32,9 +33,24 @@ public class AirfobAuthHandler(HttpClient client, IOptions<AirfobSettings> setti
             return _accessToken;
         }
 
-        await RefreshTokenAsync(cancellationToken);
+        await _tokenSemaphore.WaitAsync(cancellationToken);
 
-        return _accessToken;
+        try
+        {
+            if (!string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _tokenExpiry)
+            {
+                return _accessToken;
+            }
+
+            await RefreshTokenAsync(cancellationToken);
+
+            return _accessToken;
+        }
+
+        finally
+        {
+            _tokenSemaphore.Release();
+        }
     }
 
     private async Task RefreshTokenAsync(CancellationToken cancellationToken)

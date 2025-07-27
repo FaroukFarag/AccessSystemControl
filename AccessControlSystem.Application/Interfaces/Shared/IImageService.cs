@@ -5,5 +5,5 @@ namespace AccessControlSystem.Application.Interfaces.Shared;
 public interface IImageService
 {
     Task<string> SaveImageAsync(IFormFile? imageFile, string subFolder);
-    void DeleteImageAsync(string imagePath);
+    void DeleteImage(string imagePath);
 }

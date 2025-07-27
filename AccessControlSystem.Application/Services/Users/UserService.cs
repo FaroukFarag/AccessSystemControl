@@ -3,6 +3,7 @@ using AccessControlSystem.Application.Dtos.Units;
 using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
@@ -24,8 +25,7 @@ public class UserService(
     SignInManager<User> signInManager,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
-    ITokensService tokensService) :
-    BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
+    ITokensService tokensService) : BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -33,180 +33,222 @@ public class UserService(
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly ITokensService _tokensService = tokensService;
-
-    public async override Task<UserDto> CreateAsync(UserDto userDto)
+    private static readonly BaseSpecification<User> UserWithUnitsSpec = new()
     {
-        var user = _mapper.Map<User>(userDto);
-
-        var userResult = await _userManager.CreateAsync(user, userDto.Password!);
-
-        if (!userResult.Succeeded)
-            return default!;
-
-        var role = await _roleManager.FindByIdAsync(userDto.RoleId.ToString());
-        var roleResult = await _userManager.AddToRoleAsync(user, role!.Name!);
-
-        if (!roleResult.Succeeded)
-            return default!;
-
-        return userDto;
-    }
-
-    public async override Task<IEnumerable<UserDto>> GetAllAsync()
+        Includes = [u => u.Units!]
+    };
+    private static readonly BaseSpecification<User> UserWithAccessGroupsSpec = new()
     {
-        var users = await _userRepository.GetAllAsync();
-        var usersDtos = _mapper.Map<IReadOnlyList<UserDto>>(users);
-
-        return usersDtos;
-    }
-
-    public async override Task<IEnumerable<UserDto>> GetAllPaginatedAsync(PaginatedModelDto paginatedModelDto)
-    {
-        var paginatedModel = _mapper.Map<PaginatedModel>(paginatedModelDto);
-        var users = await _userRepository.GetAllPaginatedAsync(paginatedModel: paginatedModel);
-        var usersDtos = _mapper.Map<IReadOnlyList<UserDto>>(users);
-
-        return usersDtos;
-    }
-
-    public async Task<UserDto> GetUserByRoleAsync(int userId, int roleId)
-    {
-        var role = await _roleManager.FindByIdAsync(roleId.ToString());
-        var usersInRole = await _userManager.GetUsersInRoleAsync(role!.Name!);
-        var roleUserId = usersInRole.FirstOrDefault(u => u.Id == userId)!.Id;
-
-        var userWithIncludes = await _userRepository.GetAsync(
-            roleUserId,
-            new BaseSpecification<User>
+        Includes = [u => u.Units!],
+        IncludeChains =
+        [
+            new IncludeChain<User>
             {
-                Includes = [u => u.Units!],
-                IncludeChains = [
-                    new IncludeChain<User>
-                    {
-                        InitialInclude = u => u.AccessGroups!,
-                        ThenIncludes = [ag => (ag as AccessGroup)!.AccessGroupDevices]
-                    }
-                ]
-            });
+                InitialInclude = u => u.AccessGroups!,
+                ThenIncludes = [ag => (ag as AccessGroup)!.AccessGroupDevices]
+            }
+        ]
+    };
 
-        var userDto = _mapper.Map<UserDto>(userWithIncludes);
-
-        return userDto;
-    }
-
-    public async Task<IEnumerable<UserDto>> GetAllUsersByRoleAsync(int roleId)
+    public override async Task<ResultDto<UserDto>> CreateAsync(UserDto userDto)
     {
-        var role = await _roleManager.FindByIdAsync(roleId.ToString());
-        var usersInRole = await _userManager.GetUsersInRoleAsync(role!.Name!);
-        var userIds = usersInRole.Select(u => u.Id).ToList();
-        var usersWithIncludes = await _userRepository.GetAllAsync(
-            new BaseSpecification<User>
+        return await ExecuteServiceCallAsync(
+            operationName: "Create User",
+            action: async () =>
             {
-                Criteria = u => userIds.Contains(u.Id),
-                Includes = [u => u.Units!],
-                IncludeChains = [
-                    new IncludeChain<User>
-                    {
-                        InitialInclude = u => u.AccessGroups!,
-                        ThenIncludes = [ag => (ag as AccessGroup)!.AccessGroupDevices]
-                    }
-                ]
+                var user = _mapper.Map<User>(userDto);
+                var createResult = await _userManager.CreateAsync(user, userDto.Password!);
+
+                if (!createResult.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"User creation failed: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
+                }
+
+                var role = await _roleManager.FindByIdAsync(userDto.RoleId.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var roleResult = await _userManager.AddToRoleAsync(user, role.Name!);
+
+                if (!roleResult.Succeeded)
+                {
+                    await _userManager.DeleteAsync(user);
+
+                    throw new InvalidOperationException(
+                        $"Role assignment failed: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
+                }
+
+                return userDto;
             });
-
-        var userDtos = _mapper.Map<IReadOnlyList<UserDto>>(usersWithIncludes);
-        return userDtos;
     }
 
-    public async override Task<UserDto> UpdateAsync(UserDto newUserDto)
+    public override async Task<ResultDto<IEnumerable<UserDto>>> GetAllAsync()
     {
-        var existingUser = await _userManager.FindByIdAsync(newUserDto.Id.ToString());
-
-        if (existingUser == null)
-        {
-            return default!;
-        }
-
-        _mapper.Map(newUserDto, existingUser);
-
-        if (string.IsNullOrEmpty(existingUser.SecurityStamp))
-        {
-            existingUser.SecurityStamp = Guid.NewGuid().ToString();
-        }
-
-        var result = await _userManager.UpdateAsync(existingUser);
-
-        if (!result.Succeeded)
-            return default!;
-
-        return newUserDto;
-    }
-
-    public async Task<LoggedInDto> LoginAsync(LoginDto model)
-    {
-        var user = await AuthenticateUserAsync(model);
-
-        if (user == null)
-            return default!;
-
-        var userWithUnits = await _userRepository.GetAsync(
-            user.Id,
-            new BaseSpecification<User>
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Users",
+            action: async () =>
             {
-                Includes = [u => u.Units!]
+                var users = await _userRepository.GetAllAsync();
+
+                return _mapper.Map<IEnumerable<UserDto>>(users);
             });
-
-        var roles = await _userManager.GetRolesAsync(userWithUnits);
-        var role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()!);
-        var roleId = role?.Id;
-
-        return new LoggedInDto
-        {
-            UserId = userWithUnits.Id,
-            RoleId = roleId,
-            SubscriptionId = userWithUnits.SubscriptionId,
-            Units = _mapper.Map<IReadOnlyList<UnitDto>>(userWithUnits.Units),
-            Token = await GetToken(userWithUnits)
-        };
     }
 
-    public async Task<bool> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    public override async Task<ResultDto<IEnumerable<UserDto>>> GetAllPaginatedAsync(PaginatedModelDto paginatedModelDto)
     {
-        var user = await _userManager.FindByNameAsync(resetPasswordDto.UserName);
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Paginated Users",
+            action: async () =>
+            {
+                var paginatedModel = _mapper.Map<PaginatedModel>(paginatedModelDto);
+                var users = await _userRepository.GetAllPaginatedAsync(paginatedModel);
 
-        if (user == null)
-            return false;
-
-        var userUpdated = await _userManager.UpdateAsync(user);
-
-        if (!userUpdated.Succeeded)
-            return false!;
-
-        var result = await _userManager.ChangePasswordAsync(
-            user,
-            resetPasswordDto.OldPassword,
-            resetPasswordDto.NewPassword);
-
-        return result.Succeeded;
+                return _mapper.Map<IEnumerable<UserDto>>(users);
+            });
     }
 
-    public async Task<bool> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+    public async Task<ResultDto<UserDto>> GetUserByRoleAsync(int userId, int roleId)
     {
-        var user = await _userManager.FindByNameAsync(forgotPasswordDto.UserName);
+        return await ExecuteServiceCallAsync(
+            operationName: "Get User by Role",
+            action: async () =>
+            {
+                var role = await _roleManager.FindByIdAsync(roleId.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                var user = usersInRole.FirstOrDefault(u => u.Id == userId)
+                    ?? throw new InvalidOperationException("User not found in specified role");
+                var userWithIncludes = await _userRepository.GetAsync(user.Id, UserWithAccessGroupsSpec);
 
-        if (user == null)
-            return false;
-
-        var removePasswordResult = await _userManager.RemovePasswordAsync(user);
-
-        if (!removePasswordResult.Succeeded)
-            return false;
-
-        var addPasswordResult = await _userManager.AddPasswordAsync(user, forgotPasswordDto.NewPassword);
-
-        return addPasswordResult.Succeeded;
+                return _mapper.Map<UserDto>(userWithIncludes);
+            });
     }
 
-    private async Task<User> AuthenticateUserAsync(LoginDto model)
+    public async Task<ResultDto<IEnumerable<UserDto>>> GetAllUsersByRoleAsync(int roleId)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Users by Role",
+            action: async () =>
+            {
+                var role = await _roleManager.FindByIdAsync(roleId.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                var userIds = usersInRole.Select(u => u.Id).ToList();
+                var spec = new BaseSpecification<User>
+                {
+                    Criteria = u => userIds.Contains(u.Id),
+                    Includes = UserWithAccessGroupsSpec.Includes,
+                    IncludeChains = UserWithAccessGroupsSpec.IncludeChains
+                };
+                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+
+                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+            });
+    }
+
+    public override async Task<ResultDto<UserDto>> UpdateAsync(UserDto newUserDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Update User",
+            action: async () =>
+            {
+                var existingUser = await _userManager.FindByIdAsync(newUserDto.Id.ToString())
+                    ?? throw new InvalidOperationException("User not found");
+
+                _mapper.Map(newUserDto, existingUser);
+
+                if (string.IsNullOrEmpty(existingUser.SecurityStamp))
+                {
+                    existingUser.SecurityStamp = Guid.NewGuid().ToString();
+                }
+
+                var result = await _userManager.UpdateAsync(existingUser);
+
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"User update failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                }
+
+                return newUserDto;
+            });
+    }
+
+    public async Task<ResultDto<LoggedInDto>> LoginAsync(LoginDto model)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "User Login",
+            action: async () =>
+            {
+                var user = await AuthenticateUserAsync(model)
+                    ?? throw new InvalidOperationException("Authentication failed");
+                var userWithUnits = await _userRepository.GetAsync(user.Id, UserWithUnitsSpec);
+                var roles = await _userManager.GetRolesAsync(userWithUnits);
+                var role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()!)
+                    ?? throw new InvalidOperationException("Role not found");
+
+                return new LoggedInDto
+                {
+                    UserId = userWithUnits.Id,
+                    RoleId = role.Id,
+                    SubscriptionId = userWithUnits.SubscriptionId,
+                    Units = _mapper.Map<IReadOnlyList<UnitDto>>(userWithUnits.Units),
+                    Token = await GetToken(userWithUnits)
+                };
+            });
+    }
+
+    public async Task<ResultDto<bool>> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Reset Password",
+            action: async () =>
+            {
+                var user = await _userManager.FindByNameAsync(resetPasswordDto.UserName)
+                    ?? throw new InvalidOperationException("User not found");
+                var result = await _userManager.ChangePasswordAsync(
+                    user,
+                    resetPasswordDto.OldPassword,
+                    resetPasswordDto.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"Password reset failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                }
+
+                return true;
+            });
+    }
+
+    public async Task<ResultDto<bool>> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Forgot Password",
+            action: async () =>
+            {
+                var user = await _userManager.FindByNameAsync(forgotPasswordDto.UserName)
+                    ?? throw new InvalidOperationException("User not found");
+                var removeResult = await _userManager.RemovePasswordAsync(user);
+
+                if (!removeResult.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"Password removal failed: {string.Join(", ", removeResult.Errors.Select(e => e.Description))}");
+                }
+
+                var addResult = await _userManager.AddPasswordAsync(user, forgotPasswordDto.NewPassword);
+
+                if (!addResult.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"Password set failed: {string.Join(", ", addResult.Errors.Select(e => e.Description))}");
+                }
+
+                return true;
+            });
+    }
+
+    private async Task<User?> AuthenticateUserAsync(LoginDto model)
     {
         var result = await _signInManager.PasswordSignInAsync(
             model.UserName,
@@ -214,10 +256,7 @@ public class UserService(
             isPersistent: false,
             lockoutOnFailure: false);
 
-        if (!result.Succeeded)
-            return null!;
-
-        return (await _userManager.FindByNameAsync(model.UserName))!;
+        return result.Succeeded ? await _userManager.FindByNameAsync(model.UserName) : null;
     }
 
     private async Task<string> GetToken(User user)
@@ -225,10 +264,11 @@ public class UserService(
         var claims = new List<TokenClaim>
         {
             new("userId", user.Id.ToString()),
-            new("userName", user.UserName!),
-            new("email", user.Email!)
+            new("userName", user.UserName ?? string.Empty),
+            new("email", user.Email ?? string.Empty)
         };
 
-        return await _tokensService.GenerateToken(claims);
+        return await _tokensService.GenerateToken(claims)
+            ?? throw new InvalidOperationException("Token generation failed");
     }
 }

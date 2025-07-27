@@ -6,40 +6,22 @@
   <span>Review all Units details and information</span>
 </div>
 <div class="page-header">
-  <dx-drop-down-button text="Sort by"
-                       [dropDownOptions]="{ width: 180 }"
-                       [items]="sortBy"
-                       (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-  <dx-button class="button-info me-1"
-             text="Add new unit"
-             (onClick)="showAddDevicePopup()">
+  <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+    (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+  <dx-button class="button-info me-1" text="Add new unit" (onClick)="showAddDevicePopup()">
   </dx-button>
 </div>
 
 <!-- ADD UNIT POPUP-->
-<dx-popup [width]="600"
-          [height]="550"
-          [showTitle]="true"
-          title="Add ew Device"
-          [dragEnabled]="true"
-          [hideOnOutsideClick]="false"
-          [showCloseButton]="true"
-          [(visible)]="popupVisible">
-  <dx-form #subscriptionFormRef [formData]="unitsData"
-           [colCount]="1"
-           [labelLocation]="'top'">
+<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add ew Device" [dragEnabled]="true"
+  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
+  <dx-form #subscriptionFormRef [formData]="unitsData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'"
-                          [labelText]="''"
-                          accept="image/*"
-                          uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
-        <img *ngIf="unitsData.unitImageUrl"
-             [src]="unitsData.unitImageUrl"
-             alt="Device Preview"
-             class="thumbnail" />
+        <img *ngIf="unitsData.unitImageUrl" [src]="unitsData.unitImageUrl" alt="Device Preview" class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}
         </div>
@@ -56,32 +38,30 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="Area" editorType="dxTextBox"
-              [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
+    <dxi-item dataField="Area" editorType="dxTextBox" [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
       <dxi-validation-rule type="required" message="Area is required"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>>
 
     <dxi-item dataField="CardNumber" editorType="dxNumberBox"
-              [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
+      [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
       <dxi-validation-rule type="required" message="Cards number is required"></dxi-validation-rule>
       <dxo-label [visible]="false"></dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="AccessGroupDevices" editorType="dxTagBox"
-              [editorOptions]="{
- dataSource: accessGroups,
- placeholder: 'Select Access Group',
-  displayExpr: 'name',
- valueExpr: 'id',
- showSelectionControls: true,
- searchEnabled: true
- }">
+    <dxi-item dataField="AccessGroupDevices" editorType="dxTagBox" [editorOptions]="{
+      dataSource: accessGroups,
+      placeholder: 'Select Access Group',
+        displayExpr: 'name',
+      valueExpr: 'id',
+      showSelectionControls: true,
+      searchEnabled: true
+      }">
       <dxi-validation-rule type="required" message="At least one Access Group is required"></dxi-validation-rule>
       <dxo-label text="Access Group" [visible]="true"></dxo-label>
     </dxi-item>
 
-  
+
 
   </dx-form>
   <dxi-item itemType="button">
@@ -95,7 +75,7 @@
 <div class="row">
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let unit of unitsList">
     <div class="card mb-2">
-      <img  [src]="unit.imagePath" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(unit.id)">
+      <img [src]="unit.imagePath" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(unit.id)">
       <div class="village-name" (click)="navigateToDetailsPage(unit.id)">{{ unit.name }}</div>
     </div>
 
@@ -112,5 +92,3 @@
 
   </div>
 </div>
-
-

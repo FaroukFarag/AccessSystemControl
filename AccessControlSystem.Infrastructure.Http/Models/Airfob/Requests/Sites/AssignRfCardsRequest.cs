@@ -3,5 +3,5 @@
 public class AssignRfCardsRequest
 {
     public int SiteId { get; set; }
-    public List<AssignRfCardRequest> Cards { get; set; } = default!;
+    public IEnumerable<AssignRfCardRequest> Cards { get; set; } = default!;
 }

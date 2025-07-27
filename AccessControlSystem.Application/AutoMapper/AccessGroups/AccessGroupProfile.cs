@@ -1,6 +1,7 @@
 ﻿using AccessControlSystem.Application.Dtos.AccessGroups;
 using AccessControlSystem.Domain.Models.AccessGroupDevices;
 using AccessControlSystem.Domain.Models.AccessGroups;
+using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.AccessLevels;
 using AutoMapper;
 
 namespace AccessControlSystem.Application.AutoMapper.AccessGroups;
@@ -22,5 +23,7 @@ public class AccessGroupProfile : Profile
                     })
                 )
             );
+
+        CreateMap<AccessGroupDto, CreateAccessLevelRequest>();
     }
 }

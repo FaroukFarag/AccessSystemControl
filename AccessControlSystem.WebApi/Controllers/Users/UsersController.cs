@@ -37,7 +37,7 @@ public class UsersController(IUserService userService)
     {
         var result = await _userService.ResetPasswordAsync(resetPasswordDto);
 
-        return HandleResult(result, "Password reset successfully.", "Failed to reset password. User not found or invalid request.");
+        return HandleResult(result.Succeeded, "Password reset successfully.", "Failed to reset password. User not found or invalid request.");
     }
 
     [HttpPost("ForgotPassword")]
@@ -45,7 +45,7 @@ public class UsersController(IUserService userService)
     {
         var result = await _userService.ForgotPasswordAsync(request);
 
-        return HandleResult(result, "Password reset successfully.", "Failed to reset password. User not found or invalid request.");
+        return HandleResult(result.Succeeded, "Password reset successfully.", "Failed to reset password. User not found or invalid request.");
     }
 
     private async Task<IActionResult> HandleLoginAsync(LoginDto loginDto)

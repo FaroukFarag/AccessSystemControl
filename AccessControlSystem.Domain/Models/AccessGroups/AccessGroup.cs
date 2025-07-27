@@ -8,6 +8,7 @@ namespace AccessControlSystem.Domain.Models.AccessGroups;
 public class AccessGroup : BaseModel<int>
 {
     public string Name { get; set; } = default!;
+    public int? AirfobAccessLevelId { get; set; }
     public int? OwnerId { get; set; }
     public int? UnitId { get; set; }
 

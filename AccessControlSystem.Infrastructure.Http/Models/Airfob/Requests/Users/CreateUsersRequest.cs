@@ -2,5 +2,5 @@
 
 public class CreateUsersRequest
 {
-    public List<CreateUserRequest> Users { get; set; } = default!;
+    public IEnumerable<CreateUserRequest> Users { get; set; } = default!;
 }

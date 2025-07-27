@@ -1,13 +1,15 @@
 ﻿using AccessControlSystem.Application.Dtos.Devices;
 using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Shared;
-using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Constants.Devices;
 using AccessControlSystem.Domain.Interfaces.Repositories.Devices;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Devices;
 using AccessControlSystem.Domain.Specifications.Absraction;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Devices;
+using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.Devices;
 using AutoMapper;
 
 namespace AccessControlSystem.Application.Services.Devices;
@@ -16,66 +18,88 @@ public class DeviceService(
     IDeviceRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    ISubscriptionService subscriptionService,
-    IImageService imageService) :
-    BaseService<Device, DeviceDto, int>(repository, unitOfWork, mapper), IDeviceService
+    IImageService imageService,
+    IAirfobDeviceService airfobDeviceService) : BaseService<Device, DeviceDto, int>(repository, unitOfWork, mapper), IDeviceService
 {
     private readonly IDeviceRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
-    private readonly ISubscriptionService _subscriptionService = subscriptionService;
     private readonly IImageService _imageService = imageService;
+    private readonly IAirfobDeviceService _airfobDeviceService = airfobDeviceService;
 
-    public override async Task<DeviceDto> CreateAsync(DeviceDto deviceDto)
+    public override async Task<ResultDto<DeviceDto>> CreateAsync(DeviceDto deviceDto)
     {
-        deviceDto.ImagePath = await _imageService
-            .SaveImageAsync(deviceDto.ImageFile!, DeviceConstants.SubFolder);
+        return await ExecuteServiceCallAsync(
+            operationName: "Create Device",
+            action: async () =>
+            {
+                deviceDto.ImagePath = await _imageService.SaveImageAsync(
+                    deviceDto.ImageFile!,
+                    DeviceConstants.SubFolder);
 
-        return await base.CreateAsync(deviceDto);
+                var airfobRequest = new CreateDevicesRequest
+                {
+                    Devices = [_mapper.Map<CreateDeviceRequest>(deviceDto)]
+                };
+
+                var airfobResponse = await _airfobDeviceService.CreateDevicesAsync(airfobRequest);
+
+                if (!airfobResponse.Succeeded)
+                {
+                    _imageService.DeleteImage(deviceDto.ImagePath);
+
+                    throw new InvalidOperationException("Failed to create device");
+                }
+
+                return (await base.CreateAsync(deviceDto)).ResultData;
+            });
     }
 
-    public override async Task<DeviceDto> GetAsync(int id)
+    public async Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroup(int accessGroupId)
     {
-        var device = await base.GetAsync(id);
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Available Devices for Access Group",
+            action: async () =>
+            {
+                var spec = new BaseSpecification<Device>
+                {
+                    Criteria = d => !d.AccessGroupDevices.Any(agd => agd.AccessGroupId == accessGroupId)
+                };
 
-        return device;
+                var devices = await _repository.GetAllAsync(spec);
+
+                return _mapper.Map<IEnumerable<DeviceDto>>(devices);
+            });
     }
 
-    public override async Task<IEnumerable<DeviceDto>> GetAllAsync()
+    public override async Task<ResultDto<DeviceDto>> UpdateAsync(DeviceDto newDeviceDto)
     {
-        var devices = await base.GetAllAsync();
+        return await ExecuteServiceCallAsync(
+            operationName: "Update Device",
+            action: async () =>
+            {
+                var existingDevice = await base.GetAsync(newDeviceDto.Id);
 
-        return devices;
+                _imageService.DeleteImage(existingDevice.ResultData?.ImagePath!);
+
+                newDeviceDto.ImagePath = await _imageService.SaveImageAsync(
+                    newDeviceDto.ImageFile!,
+                    DeviceConstants.SubFolder);
+
+                return (await base.UpdateAsync(newDeviceDto)).ResultData;
+            });
     }
 
-    public async Task<IEnumerable<DeviceDto>> GetAvailableDevicesForAccessGroup(int accessGroupId)
+    public override async Task<ResultDto<DeviceDto>> DeleteAsync(int id)
     {
-        var availableDevices = await _repository.GetAllAsync(
-        new BaseSpecification<Device>
-        {
-            Criteria = d => !d.AccessGroupDevices.Any(agd => agd.AccessGroupId == accessGroupId)
-        });
+        return await ExecuteServiceCallAsync(
+            operationName: "Delete Device",
+            action: async () =>
+            {
+                var device = await base.GetAsync(id);
 
-        return _mapper.Map<IReadOnlyList<DeviceDto>>(availableDevices);
-    }
+                _imageService.DeleteImage(device.ResultData?.ImagePath!);
 
-    public override async Task<DeviceDto> UpdateAsync(DeviceDto newDeviceDto)
-    {
-        var device = await GetAsync(newDeviceDto.Id);
-
-        _imageService.DeleteImageAsync(device.ImagePath!);
-
-        newDeviceDto.ImagePath = await _imageService
-            .SaveImageAsync(newDeviceDto.ImageFile!, DeviceConstants.SubFolder);
-
-        return await base.UpdateAsync(newDeviceDto);
-    }
-
-    public override async Task<DeviceDto> DeleteAsync(int id)
-    {
-        var device = await GetAsync(id);
-
-        _imageService.DeleteImageAsync(device.ImagePath!);
-
-        return await base.DeleteAsync(id);
+                return (await base.DeleteAsync(id)).ResultData;
+            });
     }
 }

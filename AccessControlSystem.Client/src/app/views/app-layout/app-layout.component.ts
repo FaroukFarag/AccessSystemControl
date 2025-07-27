@@ -70,14 +70,14 @@ export class AppLayoutComponent implements OnInit {
 
   private getNavigationByRole(role: string): any[] {
     const allTabs = [
-      { id: 1, text: 'Dashboard', icon: '/assets/icons/dashboard.svg' },
-      { id: 2, text: 'Subscriptions', icon: '/assets/icons/subscriptions.svg' },
-      { id: 3, text: 'Devices', icon: '/assets/icons/device.svg' },
-      { id: 4, text: 'Owners', icon: '/assets/icons/owners.svg' },
-      { id: 5, text: 'Admins', icon: '/assets/icons/owners.svg' },
-      { id: 6, text: 'Units', icon: '/assets/icons/units.svg' },
-      { id: 7, text: 'Access groups', icon: '/assets/icons/access.svg' },
-      { id: 8, text: 'Cards', icon: '/assets/icons/card-owner.svg' },
+      { id: 1, text: 'Dashboard', route: 'dashboard', icon: '/assets/icons/dashboard.svg' },
+      { id: 2, text: 'Subscriptions', route: 'subscriptions', icon: '/assets/icons/subscriptions.svg' },
+      { id: 3, text: 'Devices', route: 'devices', icon: '/assets/icons/device.svg' },
+      { id: 4, text: 'Owners', route: 'owners', icon: '/assets/icons/owners.svg' },
+      { id: 5, text: 'Admins', route: 'admins', icon: '/assets/icons/owners.svg' },
+      { id: 6, text: 'Units', route: 'units', icon: '/assets/icons/units.svg' },
+      //{ id: 7, text: 'Access Groups', route: 'access-groups', icon: '/assets/icons/access.svg' },
+      { id: 8, text: 'Cards', route: 'cards', icon: '/assets/icons/card-owner.svg' },
     ];
 
     if (role === '1') {

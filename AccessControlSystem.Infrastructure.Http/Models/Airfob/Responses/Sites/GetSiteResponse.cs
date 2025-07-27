@@ -12,7 +12,7 @@ public class GetSiteResponse
     public string Country { get; set; } = default!;
     public string Timezone { get; set; } = default!;
     public string ProviderType { get; set; } = default!;
-    public string Properties { get; set; } = default!;
+    public object Properties { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

@@ -103,7 +103,7 @@ export class SubscriptionsComponent {
 
   getAllSubscriptions() {
     this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptions = data;
+      this.subscriptions = data.resultData;
       console.log("subscriptionssList", this.subscriptions);
 
     })

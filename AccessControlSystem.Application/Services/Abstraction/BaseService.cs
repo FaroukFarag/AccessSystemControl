@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Interfaces.Abstraction;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Interfaces.Repositories.Abstraction;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Shared;
@@ -18,94 +19,138 @@ public class BaseService<TEntity, TEntityDto, TPrimaryKey>(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
 
-    public virtual async Task<TEntityDto> CreateAsync(TEntityDto entityDto)
+    public virtual async Task<ResultDto<TEntityDto>> CreateAsync(TEntityDto entityDto)
     {
-        var entity = _mapper.Map<TEntity>(entityDto);
-
-        await _repository.CreateAsync(entity);
-
-        await _unitOfWork.Complete();
-
-        return _mapper.Map<TEntityDto>(entity);
+        return await ExecuteServiceCallAsync(
+            operationName: $"Create {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entity = _mapper.Map<TEntity>(entityDto);
+                await _repository.CreateAsync(entity);
+                await _unitOfWork.Complete();
+                return _mapper.Map<TEntityDto>(entity);
+            });
     }
 
-    public virtual async Task<bool> CreateRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
+    public virtual async Task<ResultDto<bool>> CreateRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
     {
-        var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
-
-        await _repository.CreateRangeAsync(entities);
-
-        return await _unitOfWork.Complete();
+        return await ExecuteServiceCallAsync(
+            operationName: $"Create multiple {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
+                await _repository.CreateRangeAsync(entities);
+                return await _unitOfWork.Complete();
+            });
     }
 
-    public virtual async Task<TEntityDto> GetAsync(TPrimaryKey id)
+    public virtual async Task<ResultDto<TEntityDto>> GetAsync(TPrimaryKey id)
     {
-        var entity = await _repository.GetAsync(id);
-        var entityDto = _mapper.Map<TEntityDto>(entity);
-
-        return entityDto;
+        return await ExecuteServiceCallAsync(
+            operationName: $"Get {typeof(TEntity).Name} by ID",
+            action: async () =>
+            {
+                var entity = await _repository.GetAsync(id);
+                return _mapper.Map<TEntityDto>(entity);
+            });
     }
 
-    public virtual async Task<IEnumerable<TEntityDto>> GetAllAsync()
+    public virtual async Task<ResultDto<IEnumerable<TEntityDto>>> GetAllAsync()
     {
-        var entities = await _repository.GetAllAsync();
-        var entitiesDtos = _mapper.Map<IReadOnlyList<TEntityDto>>(entities);
-
-        return entitiesDtos;
+        return await ExecuteServiceCallAsync(
+            operationName: $"Get all {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entities = await _repository.GetAllAsync();
+                return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+            });
     }
 
-    public virtual async Task<IEnumerable<TEntityDto>> GetAllPaginatedAsync(PaginatedModelDto paginatedModelDto)
+    public virtual async Task<ResultDto<IEnumerable<TEntityDto>>> GetAllPaginatedAsync(PaginatedModelDto paginatedModelDto)
     {
-        var entities = await _repository.GetAllPaginatedAsync(_mapper.Map<PaginatedModel>(paginatedModelDto));
-        var entitiesDtos = _mapper.Map<IReadOnlyList<TEntityDto>>(entities);
-
-        return entitiesDtos;
+        return await ExecuteServiceCallAsync(
+            operationName: $"Get paginated {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entities = await _repository.GetAllPaginatedAsync(_mapper.Map<PaginatedModel>(paginatedModelDto));
+                return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+            });
     }
 
-    public virtual async Task<IEnumerable<TEntityDto>> GetAllFilteredAsync<TFilterDto>(TFilterDto filterDto)
+    public virtual async Task<ResultDto<IEnumerable<TEntityDto>>> GetAllFilteredAsync<TFilterDto>(TFilterDto filterDto)
     {
-        var entities = await _repository.GetAllFilteredAsync<TFilterDto>(filterDto);
-        var entitiesDtos = _mapper.Map<IReadOnlyList<TEntityDto>>(entities);
-
-        return entitiesDtos;
+        return await ExecuteServiceCallAsync(
+            operationName: $"Get filtered {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entities = await _repository.GetAllFilteredAsync(filterDto);
+                return _mapper.Map<IEnumerable<TEntityDto>>(entities);
+            });
     }
 
-    public virtual async Task<TEntityDto> UpdateAsync(TEntityDto newEntityDto)
+    public virtual async Task<ResultDto<TEntityDto>> UpdateAsync(TEntityDto newEntityDto)
     {
-        var entity = _mapper.Map<TEntity>(newEntityDto);
-
-        _repository.Update(entity);
-
-        await _unitOfWork.Complete();
-
-        return _mapper.Map<TEntityDto>(entity);
+        return await ExecuteServiceCallAsync(
+            operationName: $"Update {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entity = _mapper.Map<TEntity>(newEntityDto);
+                _repository.Update(entity);
+                await _unitOfWork.Complete();
+                return _mapper.Map<TEntityDto>(entity);
+            });
     }
 
-    public virtual async Task<bool> UpdateRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
+    public virtual async Task<ResultDto<bool>> UpdateRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
     {
-        var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
-
-        _repository.UpdateRange(entities);
-
-        return await _unitOfWork.Complete();
+        return await ExecuteServiceCallAsync(
+            operationName: $"Update multiple {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
+                _repository.UpdateRange(entities);
+                return await _unitOfWork.Complete();
+            });
     }
 
-    public virtual async Task<TEntityDto> DeleteAsync(TPrimaryKey id)
+    public virtual async Task<ResultDto<TEntityDto>> DeleteAsync(TPrimaryKey id)
     {
-        var entity = _repository.Delete(id);
-        var entityDto = _mapper.Map<TEntityDto>(entity);
-
-        await _unitOfWork.Complete();
-
-        return entityDto;
+        return await ExecuteServiceCallAsync(
+            operationName: $"Delete {typeof(TEntity).Name} by ID",
+            action: async () =>
+            {
+                var entity = _repository.Delete(id);
+                await _unitOfWork.Complete();
+                return _mapper.Map<TEntityDto>(entity);
+            });
     }
 
-    public async virtual Task<bool> DeleteRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
+    public virtual async Task<ResultDto<bool>> DeleteRangeAsync(IEnumerable<TEntityDto> entitiesDtos)
     {
-        var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
+        return await ExecuteServiceCallAsync(
+            operationName: $"Delete multiple {typeof(TEntity).Name}",
+            action: async () =>
+            {
+                var entities = _mapper.Map<IReadOnlyList<TEntity>>(entitiesDtos);
+                _repository.DeleteRange(entities);
+                return await _unitOfWork.Complete();
+            });
+    }
 
-        _repository.DeleteRange(entities);
+    protected async Task<ResultDto<T>> ExecuteServiceCallAsync<T>(
+        string operationName,
+        Func<Task<T>> action)
+    {
+        try
+        {
+            var result = await action();
 
-        return await _unitOfWork.Complete();
+            return ResultDto<T>.CreateSuccessResult(result);
+        }
+
+        catch (Exception ex)
+        {
+            return ResultDto<T>.CreateFailResult($"{operationName} failed: {ex.Message}");
+        }
     }
 }

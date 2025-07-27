@@ -49,19 +49,19 @@ export class DevicesComponent {
   popupVisible: boolean = false;
   groupDevice_popupVisible: boolean = false;
   sortBy = ['Recent', 'date'];
-  devicesList: any;
+  sites: any[] = [];
+  schedules: any[] = [];
+  devicesList: any[] = [];
   imageValidationError: string = '';
   deviceData = {
     deviceImageFile: null,
     deviceImageUrl: '',
     deviceName: '',
     deviceType: '',
+    serial: '',
+    siteId: null,
     macAddress: '',
     selectedSubscriptions: []
-  };
-  groupDeviceseData = {
-
-
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any;
@@ -92,7 +92,11 @@ export class DevicesComponent {
   ];
   userRole: any;
   groupName: string = '';
-  accessGroups:any;
+  selectedSiteId!: number;
+  selectedScheduleId: string = '';
+  formSubmitted = false;
+  accessGroups: any;
+
   constructor(private router: Router,
     private deviceService: DeviceService,
     private sanitizer: DomSanitizer,
@@ -110,22 +114,44 @@ export class DevicesComponent {
   }
 
   ngOnInit() {
+    this.getAllSites();
+    this.getAllSchedules();
     this.getAllDevices();
-    this.userRole = localStorage.getItem('userRole');
     this.getAllAccessGroups();
 
+    this.userRole = localStorage.getItem('userRole');
+  }
+
+  getAllSites() {
+    this.accessGroupService.getAll('AirfobSites/GetAll').subscribe((data: any) => {
+      if(data.succeeded)
+        this.sites = data.resultData.sites;
+
+      else
+        notify('Error getting sites', 'error', 2000);
+    })
+  }
+
+  getAllSchedules() {
+    this.accessGroupService.getAll('AirfobSchedules/GetAll').subscribe((data: any) => {
+      if (data.succeeded)
+        this.schedules = data.resultData.schedules;
+
+      else
+        notify('Error getting schedules', 'error', 2000);
+    })
   }
 
   getAllDevices() {
     this.deviceService.getAll('Devices/GetAll').subscribe((data: any) => {
-      this.devicesList = data;
+      this.devicesList = data.resultData;
       console.log("DEVICCES", this.devicesList);
 
     })
   }
   getAllSubscriptions() {
     this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptionList = data;
+      this.subscriptionList = data.resultData;
       console.log("subscriptionssList", this.subscriptionList);
     })
   }
@@ -137,6 +163,8 @@ export class DevicesComponent {
       deviceImageUrl: '',
       deviceName: '',
       deviceType: '',
+      serial: '',
+      siteId: null,
       macAddress: '',
       selectedSubscriptions: []
     };
@@ -179,20 +207,25 @@ export class DevicesComponent {
     formData.append('ImageFile', this.deviceData.deviceImageFile || '');
     formData.append('ImagePath', this.deviceData.deviceImageUrl || '');
     formData.append('Name', this.deviceData.deviceName);
-    formData.append('DeviceTypeName', this.deviceTypes.find(dt => dt.id === this.deviceData.deviceType)?.name || '');
     formData.append('DeviceType', this.deviceData.deviceType);
+    formData.append('Serial', this.deviceData.serial);
     formData.append('MacAddress', this.deviceData.macAddress);
     formData.append('Active', 'true');
+
     const subscriptionId = Number(this.deviceData.selectedSubscriptions[0]);
+
     if (!subscriptionId) {
       notify('Please select a valid subscription', 'error', 2000);
       return;
     }
+
     formData.append('SubscriptionId', subscriptionId.toString());
+
     this.deviceService.create('Devices/Create', formData as any).subscribe({
       next: (response) => {
         notify('Device created successfully', 'success', 1500);
         this.popupVisible = false;
+
         this.getAllDevices();
       },
       error: (err) => {
@@ -202,11 +235,10 @@ export class DevicesComponent {
     });
   }
 
-
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-
     notify(e.itemData.name || e.itemData, 'success', 600);
   }
+
   openGroupDEvicesPopup() {
     this.groupDevice_popupVisible = true;
     this.selectedDevices = [];
@@ -214,34 +246,33 @@ export class DevicesComponent {
 
   toggleDeviceSelection(device: any) {
     const index = this.selectedDevices.indexOf(device);
+
     if (index > -1) {
       this.selectedDevices.splice(index, 1);
     } else {
       this.selectedDevices.push(device);
     }
+
     console.log('Selected Device IDs:', this.selectedDevices);
   }
 
-  submitSelectedDevices() {
-    if (!this.groupName.trim() || this.selectedDevices.length === 0) {
-      notify('Please enter a group name and select at least one device.', 'warning', 2000);
-      return;
-    }
-
+  submit() {
     const payload = {
       name: this.groupName,
+      siteId: this.selectedSiteId,
+      scheduleId: this.selectedScheduleId,
       devices: this.selectedDevices
     };
 
     this.accessGroupService.create('AccessGroups/Create', payload as any).subscribe({
       next: () => {
         notify('Device group created successfully', 'success', 1500);
+
         this.groupDevice_popupVisible = false;
         this.groupName = '';
         this.selectedDevices = [];
-        console.log('Selected Device IDs 2:', this.selectedDevices);
 
-        this.getAllDevices(); 
+        this.getAllDevices();
       },
       error: (err) => {
         notify('Failed to create device group', 'error', 2000);
@@ -263,8 +294,8 @@ export class DevicesComponent {
 
   getAllAccessGroups() {
     this.accessGroupService.getAll('AccessGroups/GetAll').subscribe({
-      next: (groups) => {
-        this.accessGroups = groups;
+      next: (data: any) => {
+        this.accessGroups = data.resultData;
         console.log("Access Groups", this.accessGroups);
       },
       error: (err) => {

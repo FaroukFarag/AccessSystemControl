@@ -56,7 +56,7 @@ export class UnitDetailsComponent {
   getUnitDetails(id: string) {
     this.unitsService.getById('Units/Get', id).subscribe({
       next: (data: any) => {
-        this.unitDetails = data;
+        this.unitDetails = data.resultData;
         console.log('Unit Details:', this.unitDetails);
       },
       error: (err) => {
@@ -73,7 +73,7 @@ export class UnitDetailsComponent {
 
   getAllOwners() {
     this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
-      this.ownersList = data;
+      this.ownersList = data.resultData;
       console.log("subscriptionssList", this.ownersList);
     })
   }
