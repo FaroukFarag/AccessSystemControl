@@ -1,0 +1,324 @@
+.unit-dashboard {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .manage-btn {
+      padding: 8px 16px;
+      border: 1px solid #007bff;
+      background: white;
+      color: #007bff;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #f0f8ff;
+      }
+    }
+  }
+
+  .unit-info {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .unit-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .details {
+      h3 {
+        margin: 0 0 10px;
+      }
+    }
+  }
+
+  .device-group {
+    margin-top: 30px;
+
+    .group-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      a {
+        font-size: 14px;
+        text-decoration: underline;
+        color: #007bff;
+        cursor: pointer;
+      }
+    }
+
+    .device-cards {
+      display: flex;
+      gap: 20px;
+
+      .device-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 16px;
+        width: 180px;
+        text-align: center;
+
+        img {
+          width: 40px;
+          margin-bottom: 10px;
+        }
+
+        .status.active {
+          color: green;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+
+/**/
+
+
+.unit-details {
+  padding: 20px;
+  background: #f9f9f9;
+
+  .top-section {
+    display: flex;
+    gap: 20px;
+    //  background: white;
+    border-radius: 10px;
+    padding: 16px;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    .unit-info {
+      display: flex;
+      width: 50%;
+      gap: 16px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e1e1e1;
+      height: 210px;
+      padding: 10px;
+      border-radius: 12px;
+
+
+
+      .unit-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        width: 39%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      .icon-container {
+        width: 12%;
+      }
+
+      .icon {
+        width: 24px;
+        height: 24px;
+      }
+
+
+      .unit-meta {
+        width: 53%;
+
+        .unit-name {
+          color: #007bff;
+          margin-bottom: 20px;
+        }
+
+        .info-line {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin: 0 0 14px 0;
+          color: #555;
+        }
+
+        .info {
+          width: 50%;
+        }
+
+        .value {
+          font-weight: 400;
+          font-size: 18px;
+          color: #101010;
+        }
+      }
+    }
+  }
+}
+
+
+
+.page-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 14px
+}
+
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-normal.dx-button-has-text.dx-fileuploader-button {
+  padding: 8px 0px !important;
+  width: 93px !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+}
+
+::ng-deep .dx-popup-wrapper > .dx-overlay-content {
+  background: #FAFAFA !important;
+}
+
+
+
+
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
+  width: 100% !important;
+}
+
+
+dx-form {
+  margin-bottom: 24px !important;
+}
+
+::ng-deep .dx-texteditor.dx-editor-outlined {
+  border-radius: 8px !important;
+  height: 45px !important;
+}
+
+.validation-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+::ng-deep .dx-button-mode-contained {
+  background-color: #007BE2 !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding-top: 2px;
+  padding-right: 16px;
+  padding-bottom: 2px;
+  padding-left: 16px;
+  gap: 16px;
+}
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
+  width: 100% !important;
+}
+
+/*----END POPUP STYLES------*/
+/***/
+/**DATAGRID*/
+
+::ng-deep .dx-datagrid-header-panel {
+  border-bottom: none !important;
+}
+
+::ng-deep .dx-datagrid-headers {
+  border-bottom: none !important;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row {
+  border-bottom: 1px solid #E1E1E1 !important;
+}
+
+::ng-deep .dx-datagrid-pager {
+  border-top: none !important;
+}
+
+::ng-deep .dx-datagrid .dx-column-lines > td {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+
+::ng-deep .dx-toolbar .dx-toolbar-items-container {
+  height: 36px;
+  overflow: visible;
+}
+
+::ng-deep .dx-datagrid-header-panel .dx-toolbar-items-container {
+  position: relative;
+  //overflow: hidden;
+  width: 60% !important;
+  height: 100%;
+  position: relative;
+  bottom: 40px;
+}
+
+::ng-deep .dx-datagrid-search-panel.dx-show-invalid-badge.dx-textbox.dx-texteditor.dx-editor-outlined.dx-searchbox.dx-show-clear-button.dx-texteditor-empty.dx-widget {
+  width: 308px !important;
+  border: none;
+  background: #fafafa;
+  border-radius: 16px;
+  height: 42px;
+}
+
+::ng-deep .dx-searchbox .dx-icon-search::before {
+  color: #007BE2 !important;
+}
+
+td {
+  padding: 12px 0px;
+}
+
+.grid-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  //top: 10px;
+
+  h5 {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 140%;
+    letter-spacing: 0px;
+    vertical-align: middle;
+    color: #101010;
+  }
+
+  .grid-header-btns {
+    z-index: 999999;
+  }
+}
+
+.btn-outline-info {
+  color: #414141;
+}
+
+
+::ng-deep .dxc.dxc-chart {
+  height: 100px !important;
+}
+
+
+.grid-section {
+  background: #fff;
+  padding: 23px;
+  border-radius: 12px;
+}
+
+.card {
+  border: none;
+}
+
+.view-all {
+  color: #007BE2;
+  text-decoration: underline;
+}
+

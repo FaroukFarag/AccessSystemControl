@@ -28,6 +28,7 @@ export class LoginComponent {
       if (response) {
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('userRole', response.roleId);
+        localStorage.setItem('userId', response.userId);
         localStorage.setItem('subscriptionId', response.subscriptionId);
         this.router.navigate(['/dashboard']);
       } else {

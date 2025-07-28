@@ -312,3 +312,23 @@ flex-direction:column;
     }
   }
 }
+
+
+@media (max-width: 1200px) and (min-width: 800px) {
+  .device-card {
+    width: 35% !important;
+    border-radius: 12px;
+    border-width: 1px;
+    border: 1px solid #E1E1E1;
+    padding: 10px 10px;
+  }
+}
+@media (max-width: 799px) and (min-width: 320px) {
+  .device-card {
+    width: 80% !important;
+    border-radius: 12px;
+    border-width: 1px;
+    border: 1px solid #E1E1E1;
+    padding: 10px 10px;
+  }
+}

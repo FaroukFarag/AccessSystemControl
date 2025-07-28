@@ -1,0 +1,119 @@
+<div class="unit-dashboard">
+  <div class="header">
+    <div>
+      <h2>Owner Name</h2>
+      <p>Review unit details and information</p>
+    </div>
+
+    <div class="page-header">
+      <dx-button class="button-info me-1" text="Manage Vistors" (onClick)="openManageVistorsPopup()">
+      </dx-button>
+
+    </div>
+  </div>
+  <!--Manage Vistors POPUP-->
+  <dx-popup [width]="600"
+            [height]="400"
+            [showTitle]="true"
+            title="Manage Vistors"
+            [dragEnabled]="true"
+            [hideOnOutsideClick]="false"
+            [showCloseButton]="true"
+            [(visible)]="this.manageVistors_popupVisible">
+    <dx-form #subscriptionFormRef
+             [formData]="formModel"
+             [colCount]="1"
+             [labelLocation]="'top'">
+
+      <dxi-item dataField="name" [editorType]="'dxTextBox'" [label]="{ text: 'Visitor Name' }"></dxi-item>
+
+      <dxi-item dataField="visitDate"
+                [editorType]="'dxDateBox'"
+                [editorOptions]="{ type: 'datetime' }"
+                [label]="{ text: 'Visit Date' }"></dxi-item>
+
+    </dx-form>
+
+    <dxi-item itemType="button">
+      <dx-button text="Add Vistor" (onClick)="submitVistor()"></dx-button>
+    </dxi-item>
+
+
+  </dx-popup>-
+
+  <div class="unit-info">
+    <img src="/assets/images/beach.jpg" alt="Unit" class="unit-image" />
+    <div class="details">
+      <h3>Unit name</h3>
+      <p><strong>Owner:</strong> {{ownerDetails.userName}}</p>
+      <p><strong>Subscription:</strong> {{ ownerDetails.subscription }}</p>
+      <p><strong>Devices:</strong> {{ ownerDetails.accessGroups.length }} Device</p>
+    </div>
+  </div>
+
+  <div class="device-group">
+    <div class="group-header">
+      <h4>Devices group name ({{ devices.length }})</h4>
+      <a href="#">View All</a>
+    </div>
+    <div class="device-cards">
+      <div class="device-card" *ngFor="let device of devices">
+        <img src="/assets/images/device.jpg"  alt="Device" />
+        <h5>{{device.name}}</h5>
+        <p>Status: <span class="status active">{{ device.status }}</span></p>
+        <p>Mac Address: {{ device.mac }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Vistor Details Section -->
+
+<div class="grid-section mt-4">
+  <div class="grid-header">
+    <h5>Vistors Details</h5>
+    <!--<div class="grid-header-btns">
+      <button type="button" class="btn view-all me-2">View All</button>
+    </div>-->
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="vistorsDetails"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
+    <dxi-column dataField="name" caption="Vistor Name"></dxi-column>
+    <dxi-column dataField="email" caption="Vistor Email"></dxi-column>
+    <dxi-column dataField="phone" caption="Phone number"></dxi-column>
+    <dxi-column dataField="deviceAccess" caption="Device Access"></dxi-column>
+    <dxi-column dataField="start" caption="From"></dxi-column>
+    <dxi-column dataField="end" caption="To"></dxi-column>
+  </dx-data-grid>
+</div>
+
+<!--Devices Traffic Section -->
+
+<div class="grid-section mt-4">
+  <div class="grid-header">
+    <h5>Devices Traffic</h5>
+    <div class="grid-header-btns">
+      <button type="button" class="btn view-all me-2">View All</button>
+    </div>
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="devicesTraffic"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
+    <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
+    <dxi-column dataField="start" caption="Start Date"></dxi-column>
+    <dxi-column dataField="end" caption="End Date"></dxi-column>
+    <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
+  </dx-data-grid>
+</div>
+

@@ -6,11 +6,13 @@ import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonType
 import notify from 'devextreme/ui/notify';
 import { UnitService } from '../../services/units/unit.service';
 import { UserService } from '../../services/users/user.service';
-
+import { OwnerDashboardComponent } from '../dashboard/owner-dashboard/owner-dashboard.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [DxDataGridModule,
+  imports: [
+    OwnerDashboardComponent,
+    DxDataGridModule,
     DxButtonModule,
     DxChartModule,
     CommonModule, DxDropDownButtonModule],
