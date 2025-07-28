@@ -2,5 +2,5 @@
 
 public class CreateCardTemplatesRequest
 {
-    public List<CreateCardTemplateRequest> Templates { get; set; } = default!;
+    public IEnumerable<CreateCardTemplateRequest> Templates { get; set; } = default!;
 }

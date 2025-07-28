@@ -45,6 +45,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AirfobAccessLevelId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -102,6 +105,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("AirfobDeviceId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DeviceType")
                         .HasColumnType("int");
 
@@ -118,6 +124,10 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Serial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("int");

@@ -1,6 +1,7 @@
 ﻿using AccessControlSystem.Application.Dtos.Roles;
 using AccessControlSystem.Application.Interfaces.Roles;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Roles;
@@ -13,27 +14,46 @@ public class RoleService(
     IRoleRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    RoleManager<Role> roleManager) :
-    BaseService<Role, RoleDto, int>(repository, unitOfWork, mapper), IRoleService
+    RoleManager<Role> roleManager) : BaseService<Role, RoleDto, int>(repository, unitOfWork, mapper), IRoleService
 {
     private readonly IMapper _mapper = mapper;
     private readonly RoleManager<Role> _roleManager = roleManager;
 
-    public async override Task<RoleDto> CreateAsync(RoleDto roleDto)
+    public override async Task<ResultDto<RoleDto>> CreateAsync(RoleDto roleDto)
     {
-        var role = _mapper.Map<Role>(roleDto);
+        return await ExecuteServiceCallAsync(
+            operationName: "Create Role",
+            action: async () =>
+            {
+                var role = _mapper.Map<Role>(roleDto);
+                var result = await _roleManager.CreateAsync(role);
 
-        var result = await _roleManager.CreateAsync(role);
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"Role creation failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                }
 
-        return result.Succeeded ? roleDto : default!;
+                return roleDto;
+            });
     }
 
-    public async override Task<RoleDto> UpdateAsync(RoleDto newRoleDto)
+    public override async Task<ResultDto<RoleDto>> UpdateAsync(RoleDto newRoleDto)
     {
-        var role = _mapper.Map<Role>(newRoleDto);
+        return await ExecuteServiceCallAsync(
+            operationName: "Update Role",
+            action: async () =>
+            {
+                var role = _mapper.Map<Role>(newRoleDto);
+                var result = await _roleManager.UpdateAsync(role);
 
-        var result = await _roleManager.UpdateAsync(role);
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"Role update failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                }
 
-        return result.Succeeded ? newRoleDto : default!;
+                return newRoleDto;
+            });
     }
 }

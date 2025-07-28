@@ -3,11 +3,11 @@
 public class ScheduleDataRequest
 {
     public Dictionary<string, object> Holiday { get; set; } = default!;
-    public List<TimeRangeRequest> Monday { get; set; } = default!;
-    public List<TimeRangeRequest> Tuesday { get; set; } = default!;
-    public List<TimeRangeRequest> Wednesday { get; set; } = default!;
-    public List<TimeRangeRequest> Thursday { get; set; } = default!;
-    public List<TimeRangeRequest> Friday { get; set; } = default!;
-    public List<TimeRangeRequest> Saturday { get; set; } = default!;
-    public List<TimeRangeRequest> Sunday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Monday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Tuesday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Wednesday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Thursday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Friday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Saturday { get; set; } = default!;
+    public IEnumerable<TimeRangeRequest> Sunday { get; set; } = default!;
 }

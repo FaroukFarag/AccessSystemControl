@@ -20,7 +20,7 @@ export class CardsComponent {
   }
   getAllCards() {
     this.cardsService.getAll('Cards/GetAll').subscribe((data: any) => {
-      this.cardsList = data;
+      this.cardsList = data.resultData;
       console.log("cardsList", this.cardsList);
 
     })

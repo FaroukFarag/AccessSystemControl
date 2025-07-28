@@ -1,12 +1,13 @@
 ﻿using AccessControlSystem.Application.Dtos.Units;
 using AccessControlSystem.Application.Interfaces.Abstraction;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Models.Units;
 
 namespace AccessControlSystem.Application.Interfaces.Units;
 
 public interface IUnitService : IBaseService<Unit, UnitDto, int>
 {
-    Task<UnitDto> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto);
+    Task<ResultDto<UnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto);
 
-    Task<UnitDto> GetWithIncludesAsync(int id);
+    Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id);
 }

@@ -4,5 +4,5 @@ public class GetCardTemplatesResponse
 {
     public int Count { get; set; }
 
-    public List<GetCardTemplateResponse> Rows { get; set; } = default!;
+    public IEnumerable<GetCardTemplateResponse> Rows { get; set; } = default!;
 }

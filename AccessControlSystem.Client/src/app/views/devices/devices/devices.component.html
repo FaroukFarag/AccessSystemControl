@@ -76,12 +76,36 @@
 
 <!----GROUP DEVICE POPUP-->
 <!-- ADD GROUP DEVICES POPUP-->
-<dx-popup [width]="950" [height]="660" [showTitle]="true" title="Add New Group devices" [dragEnabled]="true"
-  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
+<dx-popup [width]="950" [height]="660" [showTitle]="true" title="Add New Group" [dragEnabled]="true"
+  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
   <div class="form-group w-100 mb-3 px-2">
     <label for="groupName">Group Name</label>
     <input type="text" class="form-control" [(ngModel)]="groupName" placeholder="Enter Group Name" />
+    <div *ngIf="formSubmitted && !groupName" class="text-danger">
+      Site is required
+    </div>
   </div>
+
+  <div class="form-group w-100 mb-3 px-2">
+    <label for="site">Site</label>
+    <select id="site" class="form-control" [(ngModel)]="selectedSiteId" name="siteId" required>
+      <option *ngFor="let site of sites" [value]="site.id">{{ site.name }}</option>
+    </select>
+    <div *ngIf="formSubmitted && !selectedSiteId" class="text-danger">
+      Site is required
+    </div>
+  </div>
+
+  <div class="form-group w-100 mb-3 px-2">
+    <label for="schedule">Schedule</label>
+    <select id="schedule" class="form-control" [(ngModel)]="selectedScheduleId" name="scheduleId" required>
+      <option *ngFor="let schedule of schedules" [value]="schedule.id">{{ schedule.name }}</option>
+    </select>
+    <div *ngIf="formSubmitted && !selectedScheduleId" class="text-danger">
+      Schedule is required
+    </div>
+  </div>
+
   <div class="row m-auto">
     <ng-container *ngFor="let device of devicesList">
       <div [ngClass]="{'selected-card': selectedDevices.includes(device)}" (click)="toggleDeviceSelection(device)"
@@ -110,8 +134,7 @@
       </div>
     </ng-container>
     <div class="text-center mt-4">
-      <dx-button text="Submit Selected Devices" type="success" (onClick)="submitSelectedDevices()"
-        [disabled]="selectedDevices.length === 0">
+      <dx-button text="Submit" type="success" (onClick)="submit()" [disabled]="selectedDevices.length === 0">
       </dx-button>
     </div>
   </div>
@@ -150,12 +173,30 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
+
+    <dxi-item dataField="serial" [editorOptions]="{ placeholder: 'Serial' }">
+      <dxi-validation-rule type="required" message="Serial is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
     <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'Device MAC address' }">
       <dxi-validation-rule type="required" message="Device MAC address is required">
       </dxi-validation-rule>
       <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
         message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
       </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="siteId" editorType="dxSelectBox" [editorOptions]="{
+          dataSource: sites,
+          placeholder: 'Site',
+          valueExpr: 'id',
+          displayExpr: 'name'
+        }">
+      <dxo-label text="Site"></dxo-label>
+      <dxi-validation-rule type="required" message="Site is required"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
@@ -170,16 +211,16 @@
     </dxi-item>
 
     <dxi-item dataField="selectedSubscriptions" editorType="dxTagBox" [editorOptions]="{
-    dataSource: subscriptionList,
-    placeholder: 'Select Subscription',
-    valueExpr: 'id',
-    displayExpr: 'customerName',
-    itemTemplate: 'subscriptionTemplate',
-    showSelectionControls: true,
-    searchEnabled: true
-    }">
+      dataSource: subscriptionList,
+      placeholder: 'Select Subscription',
+      valueExpr: 'id',
+      displayExpr: 'customerName',
+      itemTemplate: 'subscriptionTemplate',
+      showSelectionControls: true,
+      searchEnabled: true
+      }">
       <dxi-validation-rule type="required" message="At least one subscription is required"></dxi-validation-rule>
-      <dxo-label text="Subscriptions" [visible]="true"></dxo-label>
+      <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
     <!-- Subscription Template for showing image + name -->

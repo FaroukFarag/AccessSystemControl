@@ -116,14 +116,14 @@ export class UnitsComponent {
 
   getAllUnits() {
     this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
-      this.unitsList = data;
+      this.unitsList = data.resultData;
 
     })
   }
 
   getAllAccessGroups() {
     this.unitsService.getAll('AccessGroups/GetAll').subscribe((data: any) => {
-      this.accessGroups = data;
+      this.accessGroups = data.resultData;
 
     })
   }

@@ -2,4 +2,5 @@
 
 public class CreateDevicesRequest
 {
+    public IEnumerable<CreateDeviceRequest> Devices { get; set; } = default!;
 }

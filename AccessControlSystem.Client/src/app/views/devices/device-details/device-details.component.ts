@@ -128,7 +128,7 @@ export class DeviceDetailsComponent {
   getDeviceDetails(id: string) {
     this.deviceService.getById('Devices/Get', id).subscribe({
       next: (data: any) => {
-        this.deviceDetails = data;
+        this.deviceDetails = data.resultData;
         console.log('Device Details:', this.deviceDetails);
       },
       error: (err) => {

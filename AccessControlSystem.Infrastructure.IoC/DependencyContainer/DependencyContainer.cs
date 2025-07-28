@@ -78,11 +78,17 @@ using AccessControlSystem.Infrastructure.Http.Configurations;
 using AccessControlSystem.Infrastructure.Http.Handlers.Airfob;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.AccessLevels;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Devices;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Doors;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.FloorLevels;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Schedules;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Sites;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Users;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob;
+using AccessControlSystem.Infrastructure.Http.Services.Airfob.AccessLevels;
+using AccessControlSystem.Infrastructure.Http.Services.Airfob.Devices;
+using AccessControlSystem.Infrastructure.Http.Services.Airfob.Doors;
+using AccessControlSystem.Infrastructure.Http.Services.Airfob.Users;
 using AccessControlSystem.WebApi.Middlewares.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -256,8 +262,10 @@ public static class DependencyContainer
             .AddScoped<IAirfobSiteService, AirfobService>()
             .AddScoped<IAirfobScheduleService, AirfobService>()
             .AddScoped<IAirfobFloorLevelService, AirfobService>()
-            .AddScoped<IAirfobAccessLevelService, AirfobService>()
-            .AddScoped<IAirfobUserService, AirfobService>();
+            .AddScoped<IAirfobAccessLevelService, AirfobAccessLevelService>()
+            .AddScoped<IAirfobUserService, AirfobUserService>()
+            .AddScoped<IAirfobDeviceService, AirfobDeviceService>()
+            .AddScoped<IAirfobDoorService, AirfobDoorService>();
 
 
         services.AddHttpClient<AirfobAuthHandler>(client =>

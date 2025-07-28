@@ -36,13 +36,13 @@ public class CreateUserRequest
     public int? RfCardId { get; set; }
 
     [JsonPropertyName("access_levels")]
-    public List<UserAccessLevelRequest> AccessLevels { get; set; } = default!;
+    public IEnumerable<UserAccessLevelRequest> AccessLevels { get; set; } = default!;
 
     [JsonPropertyName("floor_levels")]
-    public List<UserFloorLevelRequest> FloorLevels { get; set; } = default!;
+    public IEnumerable<UserFloorLevelRequest> FloorLevels { get; set; } = default!;
 
     [JsonPropertyName("group_ids")]
-    public List<int> GroupIds { get; set; } = default!;
+    public IEnumerable<int> GroupIds { get; set; } = default!;
     public object Properties { get; set; } = default!;
     public string Type { get; set; } = default!;
 

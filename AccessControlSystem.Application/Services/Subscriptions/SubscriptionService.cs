@@ -2,6 +2,7 @@
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
@@ -17,67 +18,95 @@ public class SubscriptionService(
     ISubscriptionRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    IImageService imageService) :
-    BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
+    IImageService imageService) : BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
 {
     private readonly ISubscriptionRepository _repository = repository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
-
-    public override async Task<SubscriptionDto> CreateAsync(SubscriptionDto subscriptionDto)
+    private static readonly BaseSpecification<Subscription> SubscriptionWithIncludesSpec = new()
     {
-        subscriptionDto.ImagePath = await _imageService
-            .SaveImageAsync(subscriptionDto.ImageFile!, SubscriptionConstants.SubFolder);
+        Includes = [s => s.Devices, s => s.Cards],
+        IncludeChains =
+        [
+            new IncludeChain<Subscription>
+            {
+                InitialInclude = s => s.Users,
+                ThenIncludes = [u => (u as User)!.UserRoles]
+            }
+        ]
+    };
 
-        return await base.CreateAsync(subscriptionDto);
+    public override async Task<ResultDto<SubscriptionDto>> CreateAsync(SubscriptionDto subscriptionDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Create Subscription",
+            action: async () =>
+            {
+                subscriptionDto.ImagePath = await _imageService.SaveImageAsync(
+                    subscriptionDto.ImageFile,
+                    SubscriptionConstants.SubFolder) ?? throw new InvalidOperationException("Image upload failed");
+
+                return (await base.CreateAsync(subscriptionDto)).ResultData
+                    ?? throw new InvalidOperationException("Subscription creation failed");
+            });
     }
 
-    public override async Task<SubscriptionDto> GetAsync(int id)
+    public override async Task<ResultDto<SubscriptionDto>> GetAsync(int id)
     {
-        var subscription = await _repository.GetAsync(id, new BaseSpecification<Subscription>
-        {
-            Includes = [
-                s => s.Devices,
-                s => s.Cards
-            ],
-            IncludeChains = [
-                new IncludeChain<Subscription>
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Subscription",
+            action: async () =>
+            {
+                var subscription = await _repository.GetAsync(id, SubscriptionWithIncludesSpec);
+
+                return _mapper.Map<SubscriptionDto>(subscription);
+            });
+    }
+
+    public override async Task<ResultDto<SubscriptionDto>> UpdateAsync(SubscriptionDto newSubscriptionDto)
+    {
+        ArgumentNullException.ThrowIfNull(newSubscriptionDto);
+        ArgumentNullException.ThrowIfNull(newSubscriptionDto.ImageFile);
+
+        return await ExecuteServiceCallAsync(
+            operationName: "Update Subscription",
+            action: async () =>
+            {
+                var existingSubscription = await base.GetAsync(newSubscriptionDto.Id);
+                var existingImagePath = existingSubscription.ResultData?.ImagePath;
+
+                newSubscriptionDto.ImagePath = await _imageService.SaveImageAsync(
+                    newSubscriptionDto.ImageFile,
+                    SubscriptionConstants.SubFolder) ?? throw new InvalidOperationException("Image upload failed");
+
+                var updateResult = await base.UpdateAsync(newSubscriptionDto);
+
+                if (!string.IsNullOrEmpty(existingImagePath))
                 {
-                    InitialInclude = s => s.Users,
-                    ThenIncludes = [u => (u as User)!.UserRoles]
+                    _imageService.DeleteImage(existingImagePath);
                 }
-            ]
-        });
-        var subscriptionDto = _mapper.Map<SubscriptionDto>(subscription);
 
-        return subscriptionDto;
+                return updateResult.ResultData
+                    ?? throw new InvalidOperationException("Subscription update failed");
+            });
     }
 
-    public override async Task<IEnumerable<SubscriptionDto>> GetAllAsync()
+    public override async Task<ResultDto<SubscriptionDto>> DeleteAsync(int id)
     {
-        var subscriptions = await base.GetAllAsync();
+        return await ExecuteServiceCallAsync(
+            operationName: "Delete Subscription",
+            action: async () =>
+            {
+                var subscription = await base.GetAsync(id);
 
-        return subscriptions;
-    }
+                if (subscription.ResultData?.ImagePath is not null)
+                {
+                    _imageService.DeleteImage(subscription.ResultData.ImagePath);
+                }
 
-    public override async Task<SubscriptionDto> UpdateAsync(SubscriptionDto newSubscriptionDto)
-    {
-        var subscription = await GetAsync(newSubscriptionDto.Id);
-
-        _imageService.DeleteImageAsync(subscription.ImagePath!);
-
-        newSubscriptionDto.ImagePath = await _imageService
-            .SaveImageAsync(newSubscriptionDto.ImageFile!, SubscriptionConstants.SubFolder);
-
-        return await base.UpdateAsync(newSubscriptionDto);
-    }
-
-    public override async Task<SubscriptionDto> DeleteAsync(int id)
-    {
-        var subscription = await GetAsync(id);
-
-        _imageService.DeleteImageAsync(subscription.ImagePath!);
-
-        return await base.DeleteAsync(id);
+                return (await base.DeleteAsync(id)).ResultData
+                    ?? throw new InvalidOperationException("Subscription deletion failed");
+            });
     }
 }

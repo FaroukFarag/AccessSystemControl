@@ -8,8 +8,10 @@ namespace AccessControlSystem.Domain.Models.Devices;
 public class Device : BaseImageModel<int>
 {
     public string Name { get; set; } = default!;
+    public string Serial { get; set; } = default!;
     public string MacAddress { get; set; } = default!;
     public DeviceType DeviceType { get; set; }
+    public int? AirfobDeviceId { get; set; }
     public bool Active { get; set; }
     public int SubscriptionId { get; set; }
 
