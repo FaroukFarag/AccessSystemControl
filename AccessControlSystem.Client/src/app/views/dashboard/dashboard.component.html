@@ -43,21 +43,21 @@
         <div class="grid-header-btns">
           <dx-drop-down-button text="Sort by"
                                [dropDownOptions]="{ width: 180 }"
-                               [items]="sortBy"
-                               (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-          <button type="button" class="btn view-all me-2">View All</button>
+                               [items]="subscriptionsSortingList"
+                               (onItemClick)="onItemClick_SubscriptionSorting($event)"></dx-drop-down-button>
+          <button type="button" class="btn view-all me-2" (click)="navigateToSubscriptions()">View All</button>
         </div>
       </div>
 
       <div class="subscriptions-scroll">
         <div class="subscription-card card" *ngFor="let sub of subscriptions">
           <div class="image" [style.backgroundImage]="'url(' + sub.image + ')'">
-            <div class="renewal-badge">Renewal in {{ sub.renewal }}</div>
+            <div class="renewal-badge">Renewal in {{ sub.renewalInfo }}</div>
           </div>
           <div class="card-details">
-            <h3>Village name</h3>
-            <p><strong>Subscription:</strong> {{ sub.type }}</p>
-            <p><strong>Devices:</strong> {{ sub.devices }} Device</p>
+            <h3>{{sub.customerName}}</h3>
+            <p><strong>Subscription:</strong> {{ sub.subscriptionTypeName	 }}</p>
+            <p><strong>Devices:</strong> {{ sub.deviceNumber }} Device</p>
           </div>
         </div>
       </div>
@@ -71,9 +71,9 @@
         <div class="grid-header-btns">
           <dx-drop-down-button text="Sort by"
                                [dropDownOptions]="{ width: 180 }"
-                               [items]="sortBy"
-                               (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-          <button type="button" class="btn view-all me-2">View All</button>
+                               [items]="UnitsSortingList"
+                               (onItemClick)="onItemClick_unitsSorting($event)"></dx-drop-down-button>
+          <button type="button" class="btn view-all me-2" (click)="navigateToUnits()">View All</button>
         </div>
       </div>
 
@@ -98,9 +98,9 @@
       <div class="grid-header-btns">
         <dx-drop-down-button text="Sort by"
                              [dropDownOptions]="{ width: 180 }"
-                             [items]="sortBy"
-                             (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-        <button type="button" class="btn view-all me-2">View All</button>
+                             [items]="OwnersSortingList"
+                             (onItemClick)="onItemClick_OwnerSorting($event)"></dx-drop-down-button>
+        <button type="button" class="btn view-all me-2" (click)="navigateToOwners()">View All</button>
       </div>
     </div>
 
@@ -145,4 +145,4 @@
 </div>
 
 
-<app-owner-dashboard *ngIf="userRole == 3"></app-owner-dashboard>
+<app-owner-dashboard *ngIf="userRole === '3'"></app-owner-dashboard>

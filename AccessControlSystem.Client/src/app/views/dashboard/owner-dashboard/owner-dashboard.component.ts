@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import {
   DxPopupModule,
@@ -12,11 +14,13 @@ import {
 } from 'devextreme-angular';
 import { UserService } from '../../../services/users/user.service';
 import notify from 'devextreme/ui/notify';
+import { AccessGroupService } from '../../../services/access-groups/access-group.service';
 
 @Component({
   selector: 'app-owner-dashboard',
   standalone: true,
-  imports: [DxButtonModule,
+  imports: [CommonModule,
+    DxButtonModule,
     DxTemplateModule,
     DxToolbarModule,
     DxSelectBoxModule,
@@ -122,8 +126,10 @@ export class OwnerDashboardComponent implements OnInit {
   ];
   ownerDetails: any;
   userId: any;
+  accessGroups: any;
   constructor(private http: HttpClient,
     private userService: UserService,
+    private accessGroupService: AccessGroupService,
 ) { }
 
   ngOnInit() {
@@ -170,5 +176,18 @@ export class OwnerDashboardComponent implements OnInit {
       }
     });
 
+  }
+
+  getAllAccessGroups() {
+    this.accessGroupService.getAll('AccessGroups/GetAll').subscribe({
+      next: (data: any) => {
+        this.accessGroups = data.resultData;
+        console.log("Access Groups", this.accessGroups);
+      },
+      error: (err) => {
+        notify('Failed to load access groups', 'error', 2000);
+        console.error(err);
+      }
+    });
   }
 }

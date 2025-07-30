@@ -40,7 +40,13 @@ import { DxNumberBoxModule } from 'devextreme-angular';
 export class SubscriptionsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
-  sortBy = ['Recent', 'date'];
+  sortBy = [
+    { id: 'recent', name: 'Recent (Newest First)', text: 'Recent (Newest First)' },
+    { id: 'oldest', name: 'Oldest First', text: 'Oldest First' },
+    { id: 'customerNameAsc', name: 'Customer Name (A-Z)', text: 'Customer Name (A-Z)' },
+    { id: 'customerNameDesc', name: 'Customer Name (Z-A)', text: 'Customer Name (Z-A)' }
+  ];
+
   subscriptions: any;
   imageValidationError: string = '';
   MonthNumber: number = 1;
@@ -138,9 +144,9 @@ export class SubscriptionsComponent {
     this.popupVisible = true;
   }
 
-  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    notify(e.itemData.name || e.itemData, 'success', 600);
-  }
+  //onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+  //  notify(e.itemData.name || e.itemData, 'success', 600);
+  //}
 
   navigateToDetailsPage(id: number) {
     this.router.navigate(['/subscription-details', id]);
@@ -241,6 +247,30 @@ export class SubscriptionsComponent {
     today.setHours(0, 0, 0, 0);
 
     return selectedDate >= today;
+  }
+
+
+  /*Sorting Function */
+
+  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+    const selected = e.itemData.id;
+
+    switch (selected) {
+      case 'recent':
+        this.subscriptions.sort((a: any, b: any) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+        break;
+      case 'oldest':
+        this.subscriptions.sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+        break;
+      case 'customerNameAsc':
+        this.subscriptions.sort((a: any, b: any) => a.customerName.localeCompare(b.customerName));
+        break;
+      case 'customerNameDesc':
+        this.subscriptions.sort((a: any, b: any) => b.customerName.localeCompare(a.customerName));
+        break;
+    }
+
+    notify(`Sorted by ${e.itemData.name}`, 'success', 600);
   }
 
 }

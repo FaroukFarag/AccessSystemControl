@@ -48,7 +48,15 @@ export class DevicesComponent {
   selectedDevices: any = [];
   popupVisible: boolean = false;
   groupDevice_popupVisible: boolean = false;
-  sortBy = ['Recent', 'date'];
+  sortBy = [
+    { text: 'Name (A-Z)', key: 'nameAsc' },
+    { text: 'Name (Z-A)', key: 'nameDesc' },
+    { text: 'Status (Active First)', key: 'activeFirst' },
+    { text: 'Status (Inactive First)', key: 'inactiveFirst' },
+    { text: 'Most Recent', key: 'recent' },
+    { text: 'Default', key: 'default' }
+  ];
+
   sites: any[] = [];
   schedules: any[] = [];
   devicesList: any[] = [];
@@ -235,9 +243,7 @@ export class DevicesComponent {
     });
   }
 
-  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    notify(e.itemData.name || e.itemData, 'success', 600);
-  }
+
 
   openGroupDEvicesPopup() {
     this.groupDevice_popupVisible = true;
@@ -310,6 +316,39 @@ export class DevicesComponent {
   navigateToGroup(groupId: number) {
     // Example: navigate to group details page
     this.router.navigate(['/access-groups-devices'], { queryParams: { id: groupId } });
+
+  }
+  onItemClick(e: any): void {
+    const key = e.itemData.key;
+
+    switch (key) {
+      case 'nameAsc':
+        this.devicesList.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+
+      case 'nameDesc':
+        this.devicesList.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+
+      case 'activeFirst':
+        this.devicesList.sort((a, b) => (b.active === true ? 1 : 0) - (a.active === true ? 1 : 0));
+        break;
+
+      case 'inactiveFirst':
+        this.devicesList.sort((a, b) => (a.active === true ? 1 : 0) - (b.active === true ? 1 : 0));
+        break;
+
+      case 'recent':
+        // Assuming devices have a `createdAt` or `updatedAt` field
+        this.devicesList.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+
+      default:
+        break;
+    }
+
+    notify(`Sorted by: ${e.itemData.text}`, 'success', 1500);
+
 
   }
 

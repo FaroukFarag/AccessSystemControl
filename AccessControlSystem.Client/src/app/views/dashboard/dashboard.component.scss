@@ -215,6 +215,8 @@ td {
         padding: 4px 8px;
         border-radius: 8px;
         font-size: 12px;
+        max-width:90%;
+        margin:auto
       }
     }
 
@@ -257,4 +259,11 @@ td {
 .owners-section
 {
   width: 88%;
+}
+
+
+/*DropDonws*/
+
+::ng-deep .dx-overlay-content.dx-popup-normal.dx-resizable.dx-popup-flex-height {
+  width: 232px !important;
 }
