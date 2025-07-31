@@ -36,7 +36,13 @@ import { Location } from '@angular/common';
 })
 export class OwnersComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
-  sortBy = ['Recent', 'date'];
+  sortBy = [
+    { text: 'Owner Name (A-Z)', value: 'usernameAsc' },
+    { text: 'Owner Name (Z-A)', value: 'usernameDesc' },
+    { text: 'Phone (Ascending)', value: 'phoneAsc' },
+    { text: 'Phone (Descending)', value: 'phoneDesc' }
+  ];
+
   popupVisible: boolean = false;
   ownerData: User = {
     id: 0,
@@ -103,15 +109,32 @@ export class OwnersComponent implements OnInit {
     });
   }
 
-  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    notify(e.itemData.name || e.itemData, 'success', 600);
-  }
 
-  //navigateToDetailsPage() {
-  //  this.router.navigate(['/owner-details']);
-  //}
 
   navigateToDetailsPage(ownerId: string) {
     this.router.navigate(['/owner-details'], { queryParams: { id: ownerId } });
   }
+
+  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+  const selected = e.itemData.value;
+
+  switch (selected) {
+    case 'usernameAsc':
+      this.owners.sort((a: any, b: any) => a.userName.localeCompare(b.userName));
+      break;
+    case 'usernameDesc':
+      this.owners.sort((a: any, b: any) => b.userName.localeCompare(a.userName));
+      break;
+    case 'phoneAsc':
+      this.owners.sort((a: any, b: any) => a.phoneNumber.localeCompare(b.phoneNumber));
+      break;
+    case 'phoneDesc':
+      this.owners.sort((a: any, b: any) => b.phoneNumber.localeCompare(a.phoneNumber));
+      break;
+  }
+
+  notify(`Sorted by: ${e.itemData.text}`, 'success', 800);
+}
+
+
 }

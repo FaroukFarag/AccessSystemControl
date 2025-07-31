@@ -251,4 +251,28 @@ export class SubscriptionsComponent {
     return selectedDate >= today;
   }
 
+
+  /*Sorting Function */
+
+  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+    const selected = e.itemData.id;
+
+    switch (selected) {
+      case 'recent':
+        this.subscriptions.sort((a: any, b: any) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+        break;
+      case 'oldest':
+        this.subscriptions.sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+        break;
+      case 'customerNameAsc':
+        this.subscriptions.sort((a: any, b: any) => a.customerName.localeCompare(b.customerName));
+        break;
+      case 'customerNameDesc':
+        this.subscriptions.sort((a: any, b: any) => b.customerName.localeCompare(a.customerName));
+        break;
+    }
+
+    notify(`Sorted by ${e.itemData.name}`, 'success', 600);
+  }
+
 }

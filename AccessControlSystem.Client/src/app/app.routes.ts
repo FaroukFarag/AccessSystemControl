@@ -14,6 +14,7 @@ import { CardsComponent } from './views/cards/cards.component';
 import { AccessGroupDevicesComponent } from './views/access-group-devices/access-group-devices.component';
 import { AdminsComponent } from './views/admins/admins.component';
 import { UnitDetailsComponent } from './views/units/unit-details/unit-details.component';
+import { OwnerDashboardComponent } from './views/dashboard/owner-dashboard/owner-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'cards', component: CardsComponent },
       { path: 'admins', component: AdminsComponent },
       { path: 'access-groups-devices', component: AccessGroupDevicesComponent },
+      { path: 'owner-dashboard', component: OwnerDashboardComponent },
     ]
   },
   {

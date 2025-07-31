@@ -6,6 +6,7 @@
     display: flex;
     gap: 20px;
     margin-top: 20px;
+    flex-direction:row;
 
     .card {
       background: #fff;
@@ -33,6 +34,17 @@
 
 
 
+@media (max-width:1200px) {
+  .summary-section {
+    flex-direction: row!important;
+  }
+ .one{
+     width:40%;
+ }
+ .two{
+     width:40%;
+ }
+} 
 
 
 /**DATAGRID*/
@@ -203,6 +215,8 @@ td {
         padding: 4px 8px;
         border-radius: 8px;
         font-size: 12px;
+        max-width:90%;
+        margin:auto
       }
     }
 
@@ -239,4 +253,17 @@ td {
 }
 .card-2 {
   width: 20% !important;
+}
+
+
+.owners-section
+{
+  width: 88%;
+}
+
+
+/*DropDonws*/
+
+::ng-deep .dx-overlay-content.dx-popup-normal.dx-resizable.dx-popup-flex-height {
+  width: 232px !important;
 }

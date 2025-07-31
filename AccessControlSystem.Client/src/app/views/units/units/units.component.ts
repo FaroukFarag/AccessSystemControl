@@ -41,7 +41,14 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
 export class UnitsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
-  sortBy = ['Recent', 'date'];
+  //sortBy = ['Recent', 'date'];
+  sortBy = [
+    { text: 'Name (A-Z)', value: 'nameAsc' },
+    { text: 'Name (Z-A)', value: 'nameDesc' },
+    { text: 'Devices Number (Low to High)', value: 'numberAsc' },
+    { text: 'Devices Number (High to Low)', value: 'numberDesc' }
+  ];
+
   unitsList: any;
   imageValidationError: string = '';
   subscriptionId: any;
@@ -148,10 +155,7 @@ export class UnitsComponent {
     this.imageValidationError = '';
     this.popupVisible = true;
   }
-  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    notify(e.itemData.name || e.itemData, 'success', 600);
-  }
-
+ 
   navigateToDetailsPage(unitId: number) {
     // this.router.navigate(['/unit-details', { id: unitId }]);
     this.router.navigate(['/unit-details'], { queryParams: { id: unitId } });
@@ -232,4 +236,26 @@ export class UnitsComponent {
       }
     });
   }
+
+  /*Sorting Function */
+
+  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
+    const selected = e.itemData.value;
+    switch (selected) {
+      case 'nameAsc':
+        this.unitsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
+        break;
+      case 'nameDesc':
+        this.unitsList.sort((a: any, b: any) => b.name.localeCompare(a.name));
+        break;
+      case 'numberAsc':
+        this.unitsList.sort((a: any, b: any) => a.number - b.number);
+        break;
+      case 'numberDesc':
+        this.unitsList.sort((a: any, b: any) => b.number - a.number);
+        break;
+    }
+    notify(`Sorted by: ${e.itemData.name}`, 'success', 1000);
+  }
+
 }
