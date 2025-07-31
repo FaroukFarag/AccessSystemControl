@@ -66,7 +66,7 @@
     <div class="actions">
       <dx-button class="button-info me-1" text="Create new Device" (onClick)="showAddDevicePopup()">
       </dx-button>
-      <!--<a href="#" class="view-all">View All</a>-->S
+      <!--<a href="#" class="view-all">View All</a>-->
     </div>
   </div>
 
@@ -79,7 +79,7 @@
       <div class="device-info">
         <div class="info">
           <img class="icon" src="/assets/icons/status.svg" />
-          <span class="key me-2">  Status:</span>
+          <span class="key me-2"> Status:</span>
           <span class="device-status active ">{{ device.active ? 'Active' : 'Inactive' }}</span>
         </div>
         <div class="info">
@@ -90,7 +90,7 @@
         <div class="info">
           <img class="icon" src="/assets/icons/device-type.svg" />
           <span class="key">Device type:</span>
-          <span class="value">  {{ device.deviceTypeName }}</span>
+          <span class="value"> {{ device.deviceTypeName }}</span>
         </div>
       </div>
     </div>
@@ -108,15 +108,15 @@
 
 <!--ADD DEVICE POPUP-->
 <dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
-          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
         <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
         <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
-             class="thumbnail" />
+          class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}
         </div>
@@ -128,12 +128,30 @@
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
+
+    <dxi-item dataField="serial" [editorOptions]="{ placeholder: 'Serial' }">
+      <dxi-validation-rule type="required" message="Serial is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
     <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'Device MAC address' }">
       <dxi-validation-rule type="required" message="Device MAC address is required">
       </dxi-validation-rule>
       <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
-                           message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+        message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
       </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="siteId" editorType="dxSelectBox" [editorOptions]="{
+          dataSource: sites,
+          placeholder: 'Site',
+          valueExpr: 'id',
+          displayExpr: 'name'
+        }">
+      <dxo-label text="Site"></dxo-label>
+      <dxi-validation-rule type="required" message="Site is required"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
@@ -163,8 +181,3 @@
   </dxi-item>
 
 </dx-popup>
-
-
-
-
-

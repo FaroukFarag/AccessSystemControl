@@ -15,9 +15,11 @@ public class DeviceProfile : Profile
             .ForMember(des => des.DeviceTypeName, opt => opt
                 .MapFrom(src => EnumHelper.GetDescription(src.DeviceType)))
             .ForMember(des => des.ImagePath, opt => opt
-                .MapFrom<ImageUrlResolver>());
+                .MapFrom<BaseModelImageDtoUrlResolver>());
 
-        CreateMap<DeviceDto, Device>();
+        CreateMap<DeviceDto, Device>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageUrlResolver>());
 
         CreateMap<DeviceDto, CreateDeviceRequest>()
             .ForMember(dest => dest.Model, opt => opt.MapFrom(src => "AE-MU"))

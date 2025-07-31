@@ -9,6 +9,7 @@ using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.AccessGroupDevices;
 using AccessControlSystem.Domain.Models.AccessGroups;
+using AccessControlSystem.Domain.Models.AccessGroupUnits;
 using AccessControlSystem.Domain.Models.Units;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
@@ -33,8 +34,9 @@ public class UnitService(
         [
             new IncludeChain<Unit>
             {
-                InitialInclude = u => u.AccessGroups!,
+                InitialInclude = u => u.AccessGroupUnits!,
                 ThenIncludes = [
+                    agu => (agu as AccessGroupUnit)!.AccessGroup,
                     ag => (ag as AccessGroup)!.AccessGroupDevices,
                     agd => (agd as AccessGroupDevice)!.Device
                 ]
@@ -61,11 +63,13 @@ public class UnitService(
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get Unit",
-            action: async () =>
-            {
-                var unit = await _repository.GetAsync(id);
-                return _mapper.Map<UnitDto>(unit);
-            });
+        action: async () =>
+        {
+
+            var unit = await _repository.GetAsync(id);
+
+            return _mapper.Map<UnitDto>(unit);
+        });
     }
 
     public async Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id)
@@ -74,7 +78,22 @@ public class UnitService(
             operationName: "Get Unit with Includes",
             action: async () =>
             {
-                var unit = await _repository.GetAsync(id, UnitWithIncludesSpec);
+                var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>()
+                {
+                    Includes = [u => u.Owner!],
+                    IncludeChains =
+                    [
+                        new IncludeChain<Unit>
+                        {
+                            InitialInclude = u => u.AccessGroupUnits,
+                            ThenIncludes = [
+                                agu => (agu as AccessGroupUnit)!.AccessGroup,
+                                ag => (ag as AccessGroup)!.AccessGroupDevices,
+                                agd => (agd as AccessGroupDevice)!.Device,
+                            ]
+                        }
+                    ]
+                });
                 return _mapper.Map<UnitDto>(unit);
             });
     }

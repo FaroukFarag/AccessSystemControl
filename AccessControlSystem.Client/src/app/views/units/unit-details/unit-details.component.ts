@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UnitService } from '../../../services/units/unit.service';
 import notify from 'devextreme/ui/notify';
 import {
@@ -12,17 +12,22 @@ import {
   DxFormModule,
 } from 'devextreme-angular';
 import { UserService } from '../../../services/users/user.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-unit-details',
   standalone: true,
-  imports: [DxPopupModule,
+  imports: [
+    CommonModule,
+    FormsModule,
+    DxPopupModule,
     DxButtonModule,
     DxTemplateModule,
     DxToolbarModule,
     DxSelectBoxModule,
     DxTextAreaModule,
-    DxFormModule,],
+    DxFormModule],
   templateUrl: './unit-details.component.html',
   styleUrl: './unit-details.component.scss'
 })
@@ -35,11 +40,27 @@ export class UnitDetailsComponent {
   formModel = {
     ownerId: null
   };
-  constructor(private route: ActivatedRoute, private unitsService: UnitService, private userService: UserService,
-) { }
+  sites: any[] = [];
+  schedules: any[] = [];
+  groupDevice_popupVisible: boolean = false;
+  groupName: string = '';
+  selectedSiteId!: number;
+  selectedScheduleId: string = '';
+  userRole: any;
+  formSubmitted = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private unitsService: UnitService,
+    private userService: UserService,
+  ) { }
   ngOnInit() {
 
+    this.getAllSites();
+    this.getAllSchedules();
 
+    this.userRole = localStorage.getItem('userRole');
 
     this.route.queryParams.subscribe(params => {
       this.unitId = params['id'];
@@ -51,7 +72,25 @@ export class UnitDetailsComponent {
 
   }
 
+  getAllSites() {
+    this.unitsService.getAll('AirfobSites/GetAll').subscribe((data: any) => {
+      if (data.succeeded)
+        this.sites = data.resultData.sites;
 
+      else
+        notify('Error getting sites', 'error', 2000);
+    })
+  }
+
+  getAllSchedules() {
+    this.unitsService.getAll('AirfobSchedules/GetAll').subscribe((data: any) => {
+      if (data.succeeded)
+        this.schedules = data.resultData.schedules;
+
+      else
+        notify('Error getting schedules', 'error', 2000);
+    })
+  }
 
   getUnitDetails(id: string) {
     this.unitsService.getById('Units/Get', id).subscribe({
@@ -102,5 +141,9 @@ export class UnitDetailsComponent {
       }
     });
   }
+  navigateToGroup(groupId: number) {
+    // Example: navigate to group details page
+    this.router.navigate(['/access-groups-devices'], { queryParams: { id: groupId } });
 
+  }
 }

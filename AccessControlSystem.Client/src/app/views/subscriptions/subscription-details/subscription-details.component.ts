@@ -43,7 +43,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   subscription: any;
   imageValidationError: string = '';
   deviceListEditorOptions: any
- 
+
   devicesList: any;
   deviceData = {
     deviceImageFile: null,
@@ -51,8 +51,11 @@ export class SubscriptionDetailsComponent implements OnInit {
     deviceName: '',
     deviceType: '',
     macAddress: '',
+    serial: '',
+    siteId: null
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+  sites: any[] = [];
   deviceTypes = [
     {
       'id': '1',
@@ -95,9 +98,11 @@ export class SubscriptionDetailsComponent implements OnInit {
       placeholder: 'Select Device'
     };
   }
- 
+
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
+
+    this.getAllSites();
 
     this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe((data: any) => {
       this.subscription = data.resultData;
@@ -106,8 +111,16 @@ export class SubscriptionDetailsComponent implements OnInit {
     });
   }
 
- 
 
+  getAllSites() {
+    this.subscriptionsService.getAll('AirfobSites/GetAll').subscribe((data: any) => {
+      if (data.succeeded)
+        this.sites = data.resultData.sites;
+
+      else
+        notify('Error getting sites', 'error', 2000);
+    })
+  }
 
 
   totalPayment: number = 0;
@@ -127,7 +140,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   getAllDevices() {
-    this.deviceService.getAll(`Devices/GetAvailableDevicesForSubscription?subscriptionId=${this.id}`).subscribe((data: any) => {
+    this.deviceService.getAll(`Devices/GetAll`).subscribe((data: any) => {
       this.devicesList = data.resultData;
 
     })
@@ -141,6 +154,8 @@ export class SubscriptionDetailsComponent implements OnInit {
       deviceName: '',
       deviceType: '',
       macAddress: '',
+      serial: '',
+      siteId: null
     };
   }
   sanitizeImage(image: string) {
@@ -178,15 +193,21 @@ export class SubscriptionDetailsComponent implements OnInit {
     formData.append('Name', this.deviceData.deviceName);
     formData.append('MacAddress', this.deviceData.macAddress);
     formData.append('DeviceType', String(this.deviceData.deviceType));
-    formData.append('DeviceTypeName', this.getDeviceTypeNameById(this.deviceData.deviceType));
+    formData.append('Serial', this.deviceData.serial);
+    formData.append('SiteId', this.deviceData.siteId || '0');
     formData.append('Active', 'true');
     formData.append('SubscriptionId', String(this.id));
 
     this.deviceService.create('Devices/Create', formData as any).subscribe({
-      next: () => {
-        notify('Device created successfully', 'success', 1500);
-        this.popupVisible = false;
-        this.getAllDevices(); // Reload list
+      next: (response: any) => {
+        if (response.succeeded) {
+          notify('Device created successfully', 'success', 1500);
+          this.popupVisible = false;
+
+          this.getAllDevices();
+        } else {
+           notify(response.message, 'error', 2000);
+        }
       },
       error: (err) => {
         notify('Error creating device', 'error', 2000);

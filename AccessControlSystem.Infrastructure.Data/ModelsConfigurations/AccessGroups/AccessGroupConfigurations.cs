@@ -12,13 +12,9 @@ public class AccessGroupConfigurations : IEntityTypeConfiguration<AccessGroup>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.HasOne(ag => ag.Owner)
-            .WithMany(o => o.AccessGroups)
-            .HasForeignKey(o => o.OwnerId);
-
-        builder.HasOne(ag => ag.Unit)
-            .WithMany(u => u.AccessGroups)
-            .HasForeignKey(ag => ag.UnitId);
+        builder.HasMany(ag => ag.AccessGroupUnits)
+            .WithOne(agu => agu.AccessGroup)
+            .HasForeignKey(agu => agu.UnitId);
 
         builder.HasMany(ag => ag.AccessGroupDevices)
             .WithOne(agd => agd.AccessGroup)

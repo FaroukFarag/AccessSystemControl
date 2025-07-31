@@ -1,4 +1,6 @@
 ﻿using AccessControlSystem.Application.Dtos.Units;
+using AccessControlSystem.Application.Resolvers;
+using AccessControlSystem.Domain.Models.AccessGroupUnits;
 using AccessControlSystem.Domain.Models.Units;
 using AutoMapper;
 
@@ -11,8 +13,21 @@ public class UnitProfile : Profile
         CreateMap<Unit, UnitDto>()
             .ForMember(des => des.SubscriptionCustomerName, opt => opt
                 .MapFrom(src => src.Subscription.CustomerName))
-            .ReverseMap();
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageDtoUrlResolver>())
+            .ForMember(des => des.AccessGroups, opt => opt
+                .MapFrom(src => src.AccessGroupUnits.Select(agd => agd.AccessGroup)));
 
-        CreateMap<UnitDto, Unit>();
+        CreateMap<UnitDto, Unit>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageUrlResolver>())
+            .ForMember(des => des.AccessGroupUnits, opt => opt
+                .MapFrom(src => src.AccessGroups!
+                    .Select(ag => new AccessGroupUnit
+                    {
+                        AccessGroupId = ag.Id
+                    })
+                )
+            );
     }
 }

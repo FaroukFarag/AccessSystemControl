@@ -21,6 +21,7 @@ public class SubscriptionDto : BaseImageModelDto<int>
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate => StartDate.AddMonths(MonthNumber);
     public string? Note { get; set; }
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
     public string RenewalInfo => RenewalCalculator.GetRenewalInfo(EndDate);
 
     public IEnumerable<DeviceDto>? Devices { get; set; }

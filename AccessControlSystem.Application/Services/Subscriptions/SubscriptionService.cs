@@ -64,11 +64,21 @@ public class SubscriptionService(
             });
     }
 
+    public async Task<ResultDto<IEnumerable<SubscriptionDto>>> GetAllAsync(string orderBy = "Recent")
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Subscription",
+            action: async () =>
+            {
+                var specification = CreateOrderingSpecification(orderBy);
+                var subscriptions = await _repository.GetAllAsync(specification);
+
+                return _mapper.Map<IEnumerable<SubscriptionDto>>(subscriptions);
+            });
+    }
+
     public override async Task<ResultDto<SubscriptionDto>> UpdateAsync(SubscriptionDto newSubscriptionDto)
     {
-        ArgumentNullException.ThrowIfNull(newSubscriptionDto);
-        ArgumentNullException.ThrowIfNull(newSubscriptionDto.ImageFile);
-
         return await ExecuteServiceCallAsync(
             operationName: "Update Subscription",
             action: async () =>
@@ -108,5 +118,26 @@ public class SubscriptionService(
                 return (await base.DeleteAsync(id)).ResultData
                     ?? throw new InvalidOperationException("Subscription deletion failed");
             });
+    }
+
+    private static readonly Dictionary<string, Action<BaseSpecification<Subscription>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["name"] = spec => spec.OrderBy = s => s.CustomerName,
+        ["subscription"] = spec => spec.OrderBy = s => s.SubscriptionType,
+        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
+    };
+
+    private static BaseSpecification<Subscription> CreateOrderingSpecification(string orderBy)
+    {
+        var specification = new BaseSpecification<Subscription>();
+        var orderKey = string.IsNullOrWhiteSpace(orderBy) ? "recent" : orderBy;
+
+        if (OrderingRules.TryGetValue(orderKey, out var applyOrder))
+            applyOrder(specification);
+
+        else
+            specification.OrderByDescending = s => s.CreatedAt;
+
+        return specification;
     }
 }

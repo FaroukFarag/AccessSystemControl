@@ -37,6 +37,21 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.ToTable("AccessGroupDevices");
                 });
 
+            modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroupUnits.AccessGroupUnit", b =>
+                {
+                    b.Property<int>("AccessGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AccessGroupId", "UnitId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("AccessGroupUnits");
+                });
+
             modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroups.AccessGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -53,17 +68,12 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("OwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UnitId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("UnitId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("AccessGroups");
                 });
@@ -182,6 +192,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
 
                     b.Property<int>("CardNumber")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -498,19 +511,30 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Navigation("Device");
                 });
 
-            modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroups.AccessGroup", b =>
+            modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroupUnits.AccessGroupUnit", b =>
                 {
-                    b.HasOne("AccessControlSystem.Domain.Models.Users.User", "Owner")
-                        .WithMany("AccessGroups")
-                        .HasForeignKey("OwnerId");
+                    b.HasOne("AccessControlSystem.Domain.Models.AccessGroups.AccessGroup", "AccessGroup")
+                        .WithMany("AccessGroupUnits")
+                        .HasForeignKey("AccessGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AccessControlSystem.Domain.Models.Units.Unit", "Unit")
-                        .WithMany("AccessGroups")
-                        .HasForeignKey("UnitId");
+                        .WithMany("AccessGroupUnits")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("AccessGroup");
 
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroups.AccessGroup", b =>
+                {
+                    b.HasOne("AccessControlSystem.Domain.Models.Users.User", null)
+                        .WithMany("AccessGroups")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Cards.Card", b =>
@@ -631,6 +655,8 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
             modelBuilder.Entity("AccessControlSystem.Domain.Models.AccessGroups.AccessGroup", b =>
                 {
                     b.Navigation("AccessGroupDevices");
+
+                    b.Navigation("AccessGroupUnits");
                 });
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Devices.Device", b =>
@@ -649,7 +675,7 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Units.Unit", b =>
                 {
-                    b.Navigation("AccessGroups");
+                    b.Navigation("AccessGroupUnits");
 
                     b.Navigation("Visitors");
                 });

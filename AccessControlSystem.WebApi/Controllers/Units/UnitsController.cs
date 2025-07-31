@@ -13,6 +13,16 @@ public class UnitsController(IUnitService service) :
 {
     private readonly IUnitService _service = service;
 
+    public async override Task<IActionResult> Get(int id)
+    {
+        var unitDto = await _service.GetWithIncludesAsync(id);
+
+        if (unitDto == null)
+            return NotFound();
+
+        return Ok(unitDto);
+    }
+
     [HttpPut("AssignOwnerToUnit")]
     public virtual async Task<IActionResult> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
     {

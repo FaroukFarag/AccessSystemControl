@@ -101,7 +101,7 @@ export class UnitsComponent {
       Number: '',
       Area: '',
       CardNumber: '',
-      AccessGroupDevices: [],
+      AccessGroups: [],
       ImageEncode: '',
       ImageFile: null,
       ImagePath: '',
@@ -137,7 +137,7 @@ export class UnitsComponent {
       Number: '',
       Area: '',
       CardNumber: '',
-      AccessGroupDevices: [],
+      AccessGroups: [],
       ImageEncode: '',
       ImageFile: null,
       ImagePath: '',
@@ -175,19 +175,28 @@ export class UnitsComponent {
     }
   }
 
+  getSelectedAccessGroups(selectedAccessGroupIds: number[]): AccessGroup[] {
+    return this.accessGroups.filter(ag => 
+      selectedAccessGroupIds.includes(ag.id)
+    );
+  }
+
   submitInits() {
     // Validate required fields
-    if (!this.unitsData.Name || !this.unitsData.Number || !this.unitsData.Area || !this.unitsData.CardNumber || !this.unitsData.SubscriptionId) {
+    if (!this.unitsData.Name || !this.unitsData.Number || !this.unitsData.Area || !this.unitsData.CardNumber || !this.unitsData.SubscriptionId || !this.unitsData.AccessGroups || !this.unitsData.AccessGroups.length) {
       notify('Please fill in all required fields.', 'warning', 1500);
       return;
     }
 
     const formData = new FormData();
+    const t = this.getSelectedAccessGroups(this.unitsData.AccessGroups);
+
     formData.append('name', this.unitsData.Name);
     formData.append('number', this.unitsData.Number.toString());
     formData.append('area', this.unitsData.Area.toString());
     formData.append('cardNumber', this.unitsData.CardNumber.toString());
     formData.append('subscriptionId', this.unitsData.SubscriptionId.toString());
+    formData.append('AccessGroupsJson', JSON.stringify(t));
 
     // Check if an image file is selected
     if (this.unitsData.unitImageFile) {
@@ -206,6 +215,7 @@ export class UnitsComponent {
       area: this.unitsData.Area,
       cardNumber: this.unitsData.CardNumber,
       subscriptionId: this.unitsData.SubscriptionId,
+      accessGroups: this.unitsData.AccessGroups,
       imagePath: this.unitsData.unitImageUrl,
       imageFile: this.unitsData.unitImageFile ? this.unitsData.unitImageFile.name : null
     });

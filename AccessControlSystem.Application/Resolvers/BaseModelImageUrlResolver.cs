@@ -6,15 +6,15 @@ using Microsoft.Extensions.Options;
 
 namespace AccessControlSystem.Application.Resolvers;
 
-public class ImageUrlResolver(IOptions<ImageSettings> settings) : IValueResolver<BaseImageModel<int>, BaseImageModelDto<int>, string?>
+public class BaseModelImageUrlResolver(IOptions<ImageSettings> settings) : IValueResolver<BaseImageModelDto<int>, BaseImageModel<int>, string>
 {
     private readonly ImageSettings _settings = settings.Value;
 
-    public string? Resolve(BaseImageModel<int> source, BaseImageModelDto<int> destination, string? destMember, ResolutionContext context)
+    public string Resolve(BaseImageModelDto<int> source, BaseImageModel<int> destination, string? destMember, ResolutionContext context)
     {
         if (string.IsNullOrWhiteSpace(source.ImagePath))
             return null;
 
-        return $"{_settings.BaseUrl.TrimEnd('/')}/{source.ImagePath.TrimStart('/')}";
+        return $"{source.ImagePath.Replace($"{_settings.BaseUrl.TrimEnd('/')}/", "").TrimStart('/')}";
     }
 }

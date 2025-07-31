@@ -1,6 +1,7 @@
 ﻿using AccessControlSystem.Application.AutoMapper.Abstraction;
 using AccessControlSystem.Application.AutoMapper.AccessGroupDevices;
 using AccessControlSystem.Application.AutoMapper.AccessGroups;
+using AccessControlSystem.Application.AutoMapper.AccessGroupUnits;
 using AccessControlSystem.Application.AutoMapper.Cards;
 using AccessControlSystem.Application.AutoMapper.Devices;
 using AccessControlSystem.Application.AutoMapper.Roles;
@@ -13,6 +14,7 @@ using AccessControlSystem.Application.Configurations;
 using AccessControlSystem.Application.Interfaces.Abstraction;
 using AccessControlSystem.Application.Interfaces.AccessGroupDevices;
 using AccessControlSystem.Application.Interfaces.AccessGroups;
+using AccessControlSystem.Application.Interfaces.AccessGroupUnits;
 using AccessControlSystem.Application.Interfaces.Cards;
 using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Roles;
@@ -24,6 +26,7 @@ using AccessControlSystem.Application.Interfaces.Visitors;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Application.Services.AccessGroupDevices;
 using AccessControlSystem.Application.Services.AccessGroups;
+using AccessControlSystem.Application.Services.AccessGroupUnits;
 using AccessControlSystem.Application.Services.Cards;
 using AccessControlSystem.Application.Services.Devices;
 using AccessControlSystem.Application.Services.Roles;
@@ -34,6 +37,7 @@ using AccessControlSystem.Application.Services.Users;
 using AccessControlSystem.Application.Services.Visitors;
 using AccessControlSystem.Application.Validators.AccessGroupDevices;
 using AccessControlSystem.Application.Validators.AccessGroups;
+using AccessControlSystem.Application.Validators.AccessGroupUnits;
 using AccessControlSystem.Application.Validators.Cards;
 using AccessControlSystem.Application.Validators.Devices;
 using AccessControlSystem.Application.Validators.Roles;
@@ -49,6 +53,7 @@ using AccessControlSystem.Domain.Interfaces.Repositories;
 using AccessControlSystem.Domain.Interfaces.Repositories.Abstraction;
 using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroupDevices;
 using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroups;
+using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroupUnits;
 using AccessControlSystem.Domain.Interfaces.Repositories.Cards;
 using AccessControlSystem.Domain.Interfaces.Repositories.Devices;
 using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
@@ -65,6 +70,7 @@ using AccessControlSystem.Infrastructure.Data.Context;
 using AccessControlSystem.Infrastructure.Data.Repositories.Abstraction;
 using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroupDevices;
 using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroups;
+using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroupUnits;
 using AccessControlSystem.Infrastructure.Data.Repositories.Cards;
 using AccessControlSystem.Infrastructure.Data.Repositories.Devices;
 using AccessControlSystem.Infrastructure.Data.Repositories.Roles;
@@ -124,6 +130,7 @@ public static class DependencyContainer
             .AddScoped<IUnitService, UnitService>()
             .AddScoped<IAccessGroupService, AccessGroupService>()
             .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>()
+            .AddScoped<IAccessGroupUnitService, AccessGroupUnitService>()
             .AddScoped<IImageService, ImageService>()
             .AddScoped<ICardService, CardService>()
             .AddScoped<IVisitorService, VisitorService>();
@@ -147,6 +154,7 @@ public static class DependencyContainer
             .AddScoped<IUnitRepository, UnitRepository>()
             .AddScoped<IAccessGroupRepository, AccessGroupRepository>()
             .AddScoped<IAccessGroupDeviceRepository, AccessGroupDeviceRepository>()
+            .AddScoped<IAccessGroupUnitRepository, AccessGroupUnitRepository>()
             .AddScoped<ICardRepository, CardRepository>()
             .AddScoped<IVisitorRepository, VisitorRepository>();
     }
@@ -178,6 +186,7 @@ public static class DependencyContainer
         services.AddAutoMapper(typeof(UnitProfile).Assembly);
         services.AddAutoMapper(typeof(AccessGroupProfile).Assembly);
         services.AddAutoMapper(typeof(AccessGroupDeviceProfile).Assembly);
+        services.AddAutoMapper(typeof(AccessGroupUnitProfile).Assembly);
         services.AddAutoMapper(typeof(CardProfile).Assembly);
         services.AddAutoMapper(typeof(VisitorProfile).Assembly);
     }
@@ -194,6 +203,7 @@ public static class DependencyContainer
         services.AddValidatorsFromAssemblyContaining<UnitDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<AccessGroupDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<AccessGroupDeviceDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<AccessGroupUnitDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<CardDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<VisitorDtoValidator>();
     }

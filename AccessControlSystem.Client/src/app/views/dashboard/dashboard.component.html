@@ -65,7 +65,7 @@
   <!--Units Section -->
   <div class="subscriptions-container mt-4" *ngIf="userRole == 2">
     <div class="grid-header">
-      <h2>Units <span>({{unitsList.length}})</span></h2>
+      <h2>Units <span>({{unitsList?.length}})</span></h2>
       <div class="grid-header-btns">
         <dx-drop-down-button text="Sort by"
                              [dropDownOptions]="{ width: 180 }"
@@ -92,7 +92,7 @@
 <!--Owner Section-->
 <div class="subscriptions-container mt-4" *ngIf="userRole == 2">
   <div class="grid-header">
-    <h2>Owners <span>({{ownersList.length}})</span></h2>
+    <h2>Owners <span>({{ownersList?.length}})</span></h2>
     <div class="grid-header-btns">
       <dx-drop-down-button text="Sort by"
                            [dropDownOptions]="{ width: 180 }"

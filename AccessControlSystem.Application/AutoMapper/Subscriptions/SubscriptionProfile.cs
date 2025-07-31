@@ -14,7 +14,7 @@ public class SubscriptionProfile : Profile
             .ForMember(des => des.SubscriptionTypeName, opt => opt
                 .MapFrom(src => src.SubscriptionType.ToString()))
             .ForMember(des => des.ImagePath, opt => opt
-                .MapFrom<ImageUrlResolver>())
+                .MapFrom<BaseModelImageDtoUrlResolver>())
             .ForMember(des => des.UsedAdmins, opt => opt
                 .MapFrom(src => src.Users.Count(u => u.UserRoles
                     .Any(ur => ur.RoleId == (int)RoleNames.Admin))))
@@ -23,6 +23,8 @@ public class SubscriptionProfile : Profile
             .ForMember(des => des.UsedCards, opt => opt
                 .MapFrom(src => src.Cards.Count()));
 
-        CreateMap<SubscriptionDto, Subscription>();
+        CreateMap<SubscriptionDto, Subscription>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageUrlResolver>());
     }
 }

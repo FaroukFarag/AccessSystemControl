@@ -124,7 +124,7 @@ export class DevicesComponent {
 
   getAllSites() {
     this.accessGroupService.getAll('AirfobSites/GetAll').subscribe((data: any) => {
-      if(data.succeeded)
+      if (data.succeeded)
         this.sites = data.resultData.sites;
 
       else
@@ -209,6 +209,7 @@ export class DevicesComponent {
     formData.append('Name', this.deviceData.deviceName);
     formData.append('DeviceType', this.deviceData.deviceType);
     formData.append('Serial', this.deviceData.serial);
+    formData.append('SiteId', this.deviceData.siteId || '0');
     formData.append('MacAddress', this.deviceData.macAddress);
     formData.append('Active', 'true');
 
@@ -222,11 +223,15 @@ export class DevicesComponent {
     formData.append('SubscriptionId', subscriptionId.toString());
 
     this.deviceService.create('Devices/Create', formData as any).subscribe({
-      next: (response) => {
-        notify('Device created successfully', 'success', 1500);
-        this.popupVisible = false;
+      next: (response: any) => {
+        if (response.succeeded) {
+          notify('Device created successfully', 'success', 1500);
+          this.popupVisible = false;
 
-        this.getAllDevices();
+          this.getAllDevices();
+        } else {
+          notify(response.errorMessage, 'error', 2000);
+        }
       },
       error: (err) => {
         notify('Error creating device', 'error', 2000);
@@ -265,14 +270,18 @@ export class DevicesComponent {
     };
 
     this.accessGroupService.create('AccessGroups/Create', payload as any).subscribe({
-      next: () => {
-        notify('Device group created successfully', 'success', 1500);
+      next: (response: any) => {
+        if (response.succeeded) {
+          notify('Device group created successfully', 'success', 1500);
 
-        this.groupDevice_popupVisible = false;
-        this.groupName = '';
-        this.selectedDevices = [];
+          this.groupDevice_popupVisible = false;
+          this.groupName = '';
+          this.selectedDevices = [];
 
-        this.getAllDevices();
+          this.getAllDevices();
+        } else {
+          notify('Failed to create device group', 'error', 2000);
+        }
       },
       error: (err) => {
         notify('Failed to create device group', 'error', 2000);

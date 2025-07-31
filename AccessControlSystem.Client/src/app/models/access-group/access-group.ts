@@ -1,6 +1,6 @@
 
-import { Device } from '../devices/device';
 export interface AccessGroup {
+  id: number;
   name: string;
   siteId: number;
   scheduleId: number;

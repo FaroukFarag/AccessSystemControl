@@ -16,7 +16,6 @@ import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angula
 import notify from 'devextreme/ui/notify';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DxNumberBoxModule } from 'devextreme-angular';
 
 @Component({
   selector: 'app-subscriptions',
@@ -40,7 +39,7 @@ import { DxNumberBoxModule } from 'devextreme-angular';
 export class SubscriptionsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
-  sortBy = ['Recent', 'date'];
+  sortBy = ['Recent', 'Name', 'Subscription'];
   subscriptions: any;
   imageValidationError: string = '';
   MonthNumber: number = 1;
@@ -101,12 +100,19 @@ export class SubscriptionsComponent {
     this.getAllSubscriptions();
   }
 
-  getAllSubscriptions() {
-    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptions = data.resultData;
-      console.log("subscriptionssList", this.subscriptions);
+  getAllSubscriptions(orderBy?: string): void {
+    const baseUrl = 'Subscriptions/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
 
-    })
+    this.subscriptionsService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.subscriptions = data.resultData;
+        console.log("Subscriptions List:", this.subscriptions);
+      },
+      error: (err) => console.error("Failed to load subscriptions:", err)
+    });
   }
 
   showAddDevicePopup() {
@@ -139,7 +145,9 @@ export class SubscriptionsComponent {
   }
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    notify(e.itemData.name || e.itemData, 'success', 600);
+    //notify(e.itemData.name || e.itemData, 'success', 600);
+
+    this.getAllSubscriptions(e.itemData);
   }
 
   navigateToDetailsPage(id: number) {

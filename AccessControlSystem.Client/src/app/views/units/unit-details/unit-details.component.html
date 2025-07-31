@@ -70,6 +70,95 @@
 
   </div>
 
+  <!--GROUPED DEVICES VIEW-->
+<div class="row m-auto bg-white px-2 py-3 mb-5 group-devices" *ngIf="userRole == 2">
+  <div class="group-device-header">
+    <h3 class="mb-3">Access Groups ({{ unitDetails?.accessGroups?.length }})</h3>
+
+    <!--<dx-button class="button-info me-1 mb-4"
+               text="Assigned owners">
+    </dx-button>-->
+  </div>
+
+  <div class="row access-group-cards">
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" *ngFor="let group of unitDetails?.accessGroups">
+      <div class="group-card p-4">
+        <div class="group-header d-flex align-items-center justify-content-between mb-2">
+          <h5 class="group-name mb-0">{{ group.name }}</h5>
+          <img src="/assets/images/device.png" alt="Group Icon" width="10%">
+        </div>
+        <p class="device-count mb-3">{{ group.devices?.length || 0 }} Device{{ group.devices?.length === 1 ? '' : 's' }}
+        </p>
+
+        <div class="btns-row">
+          <dx-button text="Devices" stylingMode="outlined" type="default" class="view-btn"
+            (onClick)="navigateToGroup(group.id)">
+          </dx-button>
+          <dx-button text="Assigned owners" stylingMode="contained" type="default" class="view-btn-2"
+            (onClick)="navigateToGroup(group.id)">
+          </dx-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card" *ngFor="let device of devicesList">
+    <div class="card-header">
+      <img [src]="device.imagePath || '/assets/images/device.png'" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
+      <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/status.svg" /></div>
+      <div class="info"> Status: </div>
+      <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+        {{ device.active ? 'Active' : 'Not Active' }}
+      </div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+      <div class="info"> Mac Address: </div>
+      <div class="info-value ">{{device.macAddress}}</div>
+    </div>
+    <div class="device-info">
+      <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+      <div class="info"> Device type: </div>
+      <div class="info-value"> {{device.deviceType}}</div>
+    </div>
+  </div>-->
+</div>
+
+<!----GROUP DEVICE POPUP-->
+<!-- ADD GROUP DEVICES POPUP-->
+<dx-popup [width]="950" [height]="660" [showTitle]="true" title="Add New Group" [dragEnabled]="true"
+  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="groupDevice_popupVisible">
+  <div class="form-group w-100 mb-3 px-2">
+    <label for="groupName">Group Name</label>
+    <input type="text" class="form-control" [(ngModel)]="groupName" placeholder="Enter Group Name" />
+    <div *ngIf="formSubmitted && !groupName" class="text-danger">
+      Site is required
+    </div>
+  </div>
+
+  <div class="form-group w-100 mb-3 px-2">
+    <label for="site">Site</label>
+    <select id="site" class="form-control" [(ngModel)]="selectedSiteId" name="siteId" required>
+      <option *ngFor="let site of sites" [value]="site.id">{{ site.name }}</option>
+    </select>
+    <div *ngIf="formSubmitted && !selectedSiteId" class="text-danger">
+      Site is required
+    </div>
+  </div>
+
+  <div class="form-group w-100 mb-3 px-2">
+    <label for="schedule">Schedule</label>
+    <select id="schedule" class="form-control" [(ngModel)]="selectedScheduleId" name="scheduleId" required>
+      <option *ngFor="let schedule of schedules" [value]="schedule.id">{{ schedule.name }}</option>
+    </select>
+    <div *ngIf="formSubmitted && !selectedScheduleId" class="text-danger">
+      Schedule is required
+    </div>
+  </div>
+</dx-popup>
 
 </div>
 

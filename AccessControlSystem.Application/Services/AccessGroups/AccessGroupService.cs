@@ -104,9 +104,11 @@ public class AccessGroupService(
 
     private async Task AssignDevicesToAccessLevels(AccessGroupDto accessGroupDto, IEnumerable<CreateAccessLevelResponse> accessLevels)
     {
-        var deviceIds = accessGroupDto.Devices!
-            .Where(d => d.AirfobDeviceId.HasValue)
-            .Select(d => d.AirfobDeviceId!.Value);
+        //var deviceIds = accessGroupDto.Devices!
+        //    .Where(d => d.AirfobDeviceId.HasValue)
+        //    .Select(d => d.AirfobDeviceId!.Value);
+
+        List<int> deviceIds = [];
 
         if (!deviceIds.Any())
         {

@@ -4,11 +4,9 @@ using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Application.Services.Shared;
-using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
-using AccessControlSystem.Domain.Models.AccessGroups;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Shared;
 using AccessControlSystem.Domain.Models.Users;
@@ -36,18 +34,6 @@ public class UserService(
     private static readonly BaseSpecification<User> UserWithUnitsSpec = new()
     {
         Includes = [u => u.Units!]
-    };
-    private static readonly BaseSpecification<User> UserWithAccessGroupsSpec = new()
-    {
-        Includes = [u => u.Units!],
-        IncludeChains =
-        [
-            new IncludeChain<User>
-            {
-                InitialInclude = u => u.AccessGroups!,
-                ThenIncludes = [ag => (ag as AccessGroup)!.AccessGroupDevices]
-            }
-        ]
     };
 
     public override async Task<ResultDto<UserDto>> CreateAsync(UserDto userDto)
@@ -117,7 +103,7 @@ public class UserService(
                 var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
                 var user = usersInRole.FirstOrDefault(u => u.Id == userId)
                     ?? throw new InvalidOperationException("User not found in specified role");
-                var userWithIncludes = await _userRepository.GetAsync(user.Id, UserWithAccessGroupsSpec);
+                var userWithIncludes = await _userRepository.GetAsync(user.Id);
 
                 return _mapper.Map<UserDto>(userWithIncludes);
             });
@@ -133,13 +119,7 @@ public class UserService(
                     ?? throw new InvalidOperationException("Role not found");
                 var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
                 var userIds = usersInRole.Select(u => u.Id).ToList();
-                var spec = new BaseSpecification<User>
-                {
-                    Criteria = u => userIds.Contains(u.Id),
-                    Includes = UserWithAccessGroupsSpec.Includes,
-                    IncludeChains = UserWithAccessGroupsSpec.IncludeChains
-                };
-                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+                var usersWithIncludes = await _userRepository.GetAllAsync();
 
                 return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
             });

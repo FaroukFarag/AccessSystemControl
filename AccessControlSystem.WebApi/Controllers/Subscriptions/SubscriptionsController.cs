@@ -11,6 +11,8 @@ namespace AccessControlSystem.WebApi.Controllers.Subscriptions;
 public class SubscriptionsController(ISubscriptionService service) :
     BaseController<ISubscriptionService, Subscription, SubscriptionDto, int>(service)
 {
+    private readonly ISubscriptionService _service = service;
+
     [HttpPost("Create")]
     public override Task<IActionResult> Create([FromForm] SubscriptionDto dto)
     {
@@ -21,5 +23,11 @@ public class SubscriptionsController(ISubscriptionService service) :
     public override Task<IActionResult> Update([FromForm] SubscriptionDto dto)
     {
         return base.Update(dto);
+    }
+
+    [HttpGet("GetAll/{orderBy}")]
+    public async Task<IActionResult> GetAll(string orderBy)
+    {
+        return Ok(await _service.GetAllAsync(orderBy));
     }
 }
