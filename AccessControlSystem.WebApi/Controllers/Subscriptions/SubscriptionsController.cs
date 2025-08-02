@@ -19,15 +19,21 @@ public class SubscriptionsController(ISubscriptionService service) :
         return base.Create(dto);
     }
 
-    [HttpPut("Update")]
-    public override Task<IActionResult> Update([FromForm] SubscriptionDto dto)
-    {
-        return base.Update(dto);
-    }
-
     [HttpGet("GetAll/{orderBy}")]
     public async Task<IActionResult> GetAll(string orderBy)
     {
         return Ok(await _service.GetAllAsync(orderBy));
+    }
+
+    [HttpGet("GetSubscriptionsCount")]
+    public async Task<IActionResult> GetSubscriptionsCount()
+    {
+        return Ok(await _service.GetSubscriptionsCountAsync());
+    }
+
+    [HttpPut("Update")]
+    public override Task<IActionResult> Update([FromForm] SubscriptionDto dto)
+    {
+        return base.Update(dto);
     }
 }

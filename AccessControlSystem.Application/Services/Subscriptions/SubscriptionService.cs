@@ -77,6 +77,18 @@ public class SubscriptionService(
             });
     }
 
+    public async Task<ResultDto<long>> GetSubscriptionsCountAsync()
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Subscriptions Count",
+            action: async () =>
+            {
+                var subscriptionsCount = await _repository.GetCountAsync();
+
+                return subscriptionsCount;
+            });
+    }
+
     public override async Task<ResultDto<SubscriptionDto>> UpdateAsync(SubscriptionDto newSubscriptionDto)
     {
         return await ExecuteServiceCallAsync(

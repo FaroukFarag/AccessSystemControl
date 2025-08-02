@@ -59,16 +59,19 @@ public class UnitService(
             });
     }
 
-    public override async Task<ResultDto<UnitDto>> GetAsync(int id)
+
+    public override async Task<ResultDto<IEnumerable<UnitDto>>> GetAllAsync()
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get Unit",
         action: async () =>
         {
+            var unit = await _repository.GetAllAsync(new BaseSpecification<Unit>()
+            {
+                Includes = [u => u.Subscription, u => u.Owner!]
+            });
 
-            var unit = await _repository.GetAsync(id);
-
-            return _mapper.Map<UnitDto>(unit);
+            return _mapper.Map<IEnumerable<UnitDto>>(unit);
         });
     }
 

@@ -21,25 +21,31 @@ import { SubscriptionService } from '../../services/subscriptions/subscription.s
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  OwnersSortingList= [
+  subscriptionsCount!: number;
+  devicesCount!: number;
+
+  OwnersSortingList = [
     { text: 'Owner Name (A-Z)', value: 'usernameAsc' },
     { text: 'Owner Name (Z-A)', value: 'usernameDesc' },
     { text: 'Phone (Ascending)', value: 'phoneAsc' },
     { text: 'Phone (Descending)', value: 'phoneDesc' }
   ];
+
   UnitsSortingList = [
     { text: 'Name (A-Z)', value: 'nameAsc' },
     { text: 'Name (Z-A)', value: 'nameDesc' },
     { text: 'Devices Number (Low to High)', value: 'numberAsc' },
     { text: 'Devices Number (High to Low)', value: 'numberDesc' }
   ];
+
   subscriptionsSortingList = [
     { id: 'recent', name: 'Recent (Newest First)', text: 'Recent (Newest First)' },
     { id: 'oldest', name: 'Oldest First', text: 'Oldest First' },
     { id: 'customerNameAsc', name: 'Customer Name (A-Z)', text: 'Customer Name (A-Z)' },
     { id: 'customerNameDesc', name: 'Customer Name (Z-A)', text: 'Customer Name (Z-A)' }
   ];
-    salesData = [
+
+  salesData = [
     { month: 'Jan', sales: 10000 },
     { month: 'Feb', sales: 12000 },
     { month: 'Mar', sales: 15000 },
@@ -54,22 +60,26 @@ export class DashboardComponent {
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
       remaining: '1 year and 2 months'
-    }, {
+    },
+    {
       name: 'Device name',
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
       remaining: '1 year and 2 months'
-    }, {
+    },
+    {
       name: 'Device name',
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
       remaining: '1 year and 2 months'
-    }, {
+    },
+    {
       name: 'Device name',
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
       remaining: '1 year and 2 months'
-    }, {
+    },
+    {
       name: 'Device name',
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
@@ -87,29 +97,53 @@ export class DashboardComponent {
   ownersList: any;
   unitsList: any;
   userRole: any;
-  constructor(private unitsService: UnitService, private userService: UserService, private router: Router, private subscriptionsService: SubscriptionService,
-) { }
-  
+
+  constructor(
+    private unitsService: UnitService,
+    private userService: UserService,
+    private router: Router,
+    private subscriptionsService: SubscriptionService) { }
+
   ngOnInit() {
+    this.getSubscriptionsCount();
+    this.getDevicesCount();
+
     this.userRole = localStorage.getItem('userRole');
+    
     if (this.userRole === '1') {
       this.getAllSubscriptions();
     }
+    
     this.getAllOwners();
     this.getAllUnits();
   }
+
+  getSubscriptionsCount() {
+    this.userService.getAll('Subscriptions/GetSubscriptionsCount').subscribe((data: any) => {
+      this.subscriptionsCount = data.resultData;
+    })
+  }
+
+  getDevicesCount() {
+    this.userService.getAll('Devices/GetDevicesCount').subscribe((data: any) => {
+      this.devicesCount = data.resultData;
+    })
+  }
+
   getAllOwners() {
     this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
       this.ownersList = data.resultData;
       console.log("subscriptionssList", this.ownersList);
     })
   }
+
   getAllUnits() {
     this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
       this.unitsList = data.resultData;
 
     })
   }
+
   getAllSubscriptions() {
     this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
       this.subscriptions = data.resultData;
@@ -117,18 +151,18 @@ export class DashboardComponent {
 
     })
   }
+
   navigateToUnits() {
     this.router.navigate(['/units']);
   }
+
   navigateToOwners() {
     this.router.navigate(['/owners']);
   }
+
   navigateToSubscriptions() {
     this.router.navigate(['/subscriptions']);
   }
-
-
-
 
   /*Sorting Functions*/
 
@@ -152,6 +186,7 @@ export class DashboardComponent {
 
     notify(`Sorted by: ${e.itemData.text}`, 'success', 800);
   }
+
   onItemClick_unitsSorting(e: DxDropDownButtonTypes.ItemClickEvent): void {
     const selected = e.itemData.value;
     switch (selected) {

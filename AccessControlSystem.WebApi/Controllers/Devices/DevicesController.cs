@@ -22,7 +22,13 @@ public class DevicesController(IDeviceService service) :
     [HttpGet("GetAvailableDevicesForAccessGroup")]
     public async Task<IActionResult> GetAvailableDevicesForAccessGroup(int accessGroupId)
     {
-        return Ok(await _service.GetAvailableDevicesForAccessGroup(accessGroupId));
+        return Ok(await _service.GetAvailableDevicesForAccessGroupAsync(accessGroupId));
+    }
+
+    [HttpGet("GetDevicesCount")]
+    public async Task<IActionResult> GetDevicesCountAsync()
+    {
+        return Ok(await _service.GetDevicesCountAsync());
     }
 
     [HttpPut("Update")]

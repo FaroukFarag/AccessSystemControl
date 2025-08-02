@@ -13,6 +13,7 @@ using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace AccessControlSystem.Application.Services.Users;
 
@@ -245,8 +246,16 @@ public class UserService(
         {
             new("userId", user.Id.ToString()),
             new("userName", user.UserName ?? string.Empty),
-            new("email", user.Email ?? string.Empty)
+            new("email", user.Email ?? string.Empty),
+            new("subscriptionId", user.SubscriptionId.ToString() ?? "0")
         };
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        foreach (var role in userRoles)
+        {
+            claims.Add(new TokenClaim(ClaimTypes.Role, role));
+        }
 
         return await _tokensService.GenerateToken(claims)
             ?? throw new InvalidOperationException("Token generation failed");

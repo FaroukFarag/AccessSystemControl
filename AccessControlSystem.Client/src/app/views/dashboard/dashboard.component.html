@@ -10,15 +10,15 @@
       </div>
 
       <div class="summary-section">
-        <div class="card one">
+        <div class="col-3 card one">
           <h3>Subscriptions</h3>
-          <p class="main">17</p>
-          <p class="sub">Last Month: 14</p>
+          <p class="main">{{subscriptionsCount}}</p>
+          <!-- <p class="sub">Last Month: 14</p> -->
         </div>
-        <div class="card two">
+        <div class="col-3 card two">
           <h3>Devices</h3>
-          <p class="main">120</p>
-          <p class="sub">Last Month: 39</p>
+          <p class="main">{{devicesCount}}</p>
+          <!-- <p class="sub">Last Month: 39</p> -->
         </div>
         <div class="card chart-card 3">
           <h3>Total sales</h3>
@@ -29,22 +29,14 @@
       </div>
     </div>
 
-
-
-
-
-
-
     <!--Subscriptions Section -->
 
     <div class="subscriptions-container mt-4" *ngIf="userRole == 1">
       <div class="grid-header">
-        <h2>Subscriptions <span>(17)</span></h2>
+        <h2>Subscriptions <span>({{subscriptionsCount}})</span></h2>
         <div class="grid-header-btns">
-          <dx-drop-down-button text="Sort by"
-                               [dropDownOptions]="{ width: 180 }"
-                               [items]="subscriptionsSortingList"
-                               (onItemClick)="onItemClick_SubscriptionSorting($event)"></dx-drop-down-button>
+          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="subscriptionsSortingList"
+            (onItemClick)="onItemClick_SubscriptionSorting($event)"></dx-drop-down-button>
           <button type="button" class="btn view-all me-2" (click)="navigateToSubscriptions()">View All</button>
         </div>
       </div>
@@ -56,7 +48,7 @@
           </div>
           <div class="card-details">
             <h3>{{sub.customerName}}</h3>
-            <p><strong>Subscription:</strong> {{ sub.subscriptionTypeName	 }}</p>
+            <p><strong>Subscription:</strong> {{ sub.subscriptionTypeName }}</p>
             <p><strong>Devices:</strong> {{ sub.deviceNumber }} Device</p>
           </div>
         </div>
@@ -67,12 +59,10 @@
     <!--Units Section -->
     <div class="subscriptions-container mt-4" *ngIf="userRole == 2">
       <div class="grid-header">
-        <h2>Units <span>({{unitsList.length}})</span></h2>
+        <h2>Units <span>({{unitsList?.length}})</span></h2>
         <div class="grid-header-btns">
-          <dx-drop-down-button text="Sort by"
-                               [dropDownOptions]="{ width: 180 }"
-                               [items]="UnitsSortingList"
-                               (onItemClick)="onItemClick_unitsSorting($event)"></dx-drop-down-button>
+          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="UnitsSortingList"
+            (onItemClick)="onItemClick_unitsSorting($event)"></dx-drop-down-button>
           <button type="button" class="btn view-all me-2" (click)="navigateToUnits()">View All</button>
         </div>
       </div>
@@ -82,7 +72,7 @@
           <img class="image-2" [src]="unit.imagePath" />
 
           <div class="card-details">
-            <div class="renewal-badge"> {{ unit.owner || 'unAssigned Owner'}}</div>
+            <div class="renewal-badge"> {{ unit.owner?.userName || 'unAssigned Owner'}}</div>
             <p><strong>Subscription:</strong> {{ unit.name }}</p>
             <p><strong>Devices:</strong> {{ unit.name }} Device</p>
           </div>
@@ -91,18 +81,15 @@
     </div>
   </div>
 
-<!--Owner Section-->
-<div class="subscriptions-container mt-4" *ngIf="userRole == 2">
-  <div class="grid-header">
-    <h2>Owners <span>({{ownersList.length}})</span></h2>
-    <div class="grid-header-btns">
-      <dx-drop-down-button text="Sort by"
-                           [dropDownOptions]="{ width: 180 }"
-                           [items]="sortBy"
-                           (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-      <button type="button" class="btn view-all me-2">View All</button>
+  <!--Owner Section-->
+  <div class="subscriptions-container mt-4" *ngIf="userRole == 2">
+    <div class="grid-header">
+      <h2>Owners <span>({{ownersList?.length}})</span></h2>
+      <div class="grid-header-btns">
+        <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }"></dx-drop-down-button>
+        <button type="button" class="btn view-all me-2">View All</button>
+      </div>
     </div>
-  </div>
 
     <div class="subscriptions-scroll">
       <div class="subscription-card card-2" *ngFor="let owner of ownersList">
@@ -111,7 +98,7 @@
         <div class="card-details">
           <div class="renewal-badge"> {{owner.userName}}</div>
           <p><strong>Subscription:</strong> {{owner.subscription || 'not found' }}</p>
-          <p><strong>Devices:</strong> {{owner.accessGroups	|| 'not found' }} Device</p>
+          <p><strong>Devices:</strong> {{owner.accessGroups || 'not found' }} Device</p>
         </div>
       </div>
     </div>
@@ -128,13 +115,8 @@
         <button type="button" class="btn view-all me-2">View All</button>
       </div>
     </div>
-    <dx-data-grid id="gridContainer"
-                  [dataSource]="devices"
-                  [remoteOperations]="false"
-                  [allowColumnReordering]="true"
-                  [rowAlternationEnabled]="false"
-                  [showBorders]="false"
-                  [width]="'100%'">
+    <dx-data-grid id="gridContainer" [dataSource]="devices" [remoteOperations]="false" [allowColumnReordering]="true"
+      [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
       <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
       <dxi-column dataField="start" caption="Start Date"></dxi-column>
       <dxi-column dataField="end" caption="End Date"></dxi-column>

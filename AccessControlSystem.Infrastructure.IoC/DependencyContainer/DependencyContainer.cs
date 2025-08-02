@@ -60,6 +60,7 @@ using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
+using AccessControlSystem.Domain.Interfaces.Services.Users;
 using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Roles;
@@ -133,7 +134,8 @@ public static class DependencyContainer
             .AddScoped<IAccessGroupUnitService, AccessGroupUnitService>()
             .AddScoped<IImageService, ImageService>()
             .AddScoped<ICardService, CardService>()
-            .AddScoped<IVisitorService, VisitorService>();
+            .AddScoped<IVisitorService, VisitorService>()
+            .AddScoped<IUserContextService, UserContextService>();
     }
 
     public static void RegisterDbContext(this IServiceCollection services, IConfiguration configuration)

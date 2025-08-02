@@ -1,10 +1,11 @@
-﻿using AccessControlSystem.Domain.Models.Abstraction;
+﻿using AccessControlSystem.Common.Interfaces.Subscriptions;
+using AccessControlSystem.Domain.Models.Abstraction;
 using AccessControlSystem.Domain.Models.Subscriptions;
 using AccessControlSystem.Domain.Models.Units;
 
 namespace AccessControlSystem.Domain.Models.Visitors;
 
-public class Visitor : BaseModel<int>
+public class Visitor : BaseModel<int>, ISubscriptionEntity
 {
     public string Name { get; set; } = default!;
     public string Email { get; set; } = default!;

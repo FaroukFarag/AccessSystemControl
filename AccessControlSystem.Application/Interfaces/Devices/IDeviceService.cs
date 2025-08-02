@@ -7,5 +7,6 @@ namespace AccessControlSystem.Application.Interfaces.Devices;
 
 public interface IDeviceService : IBaseService<Device, DeviceDto, int>
 {
-    Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroup(int accessGroupId);
+    Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroupAsync(int accessGroupId);
+    Task<ResultDto<long>> GetDevicesCountAsync();
 }

@@ -54,7 +54,7 @@ public class DeviceService(
             });
     }
 
-    public async Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroup(int accessGroupId)
+    public async Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroupAsync(int accessGroupId)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get Available Devices for Access Group",
@@ -68,6 +68,18 @@ public class DeviceService(
                 var devices = await _repository.GetAllAsync(spec);
 
                 return _mapper.Map<IEnumerable<DeviceDto>>(devices);
+            });
+    }
+
+    public async Task<ResultDto<long>> GetDevicesCountAsync()
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Devices Count",
+            action: async () =>
+            {
+                var devicesCount = await _repository.GetCountAsync();
+
+                return devicesCount;
             });
     }
 
