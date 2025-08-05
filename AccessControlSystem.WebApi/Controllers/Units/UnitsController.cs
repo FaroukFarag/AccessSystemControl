@@ -23,6 +23,12 @@ public class UnitsController(IUnitService service) :
         return Ok(unitDto);
     }
 
+    [HttpGet("GetAll/{orderBy}")]
+    public async Task<IActionResult> GetAll(string orderBy)
+    {
+        return Ok(await _service.GetAllAsync(orderBy));
+    }
+
     [HttpPut("AssignOwnerToUnit")]
     public virtual async Task<IActionResult> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
     {

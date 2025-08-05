@@ -1,8 +1,8 @@
 ﻿using AccessControlSystem.Application.Dtos.Devices;
+using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Services.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Constants.Devices;
 using AccessControlSystem.Domain.Interfaces.Repositories.Devices;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
@@ -19,12 +19,19 @@ public class DeviceService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IImageService imageService,
-    IAirfobDeviceService airfobDeviceService) : BaseService<Device, DeviceDto, int>(repository, unitOfWork, mapper), IDeviceService
+    IAirfobDeviceService airfobDeviceService,
+    IOrderingService<Device> orderingService) : BaseService<Device, DeviceDto, int>(repository, unitOfWork, mapper), IDeviceService
 {
     private readonly IDeviceRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
     private readonly IAirfobDeviceService _airfobDeviceService = airfobDeviceService;
+    private readonly IOrderingService<Device> _orderingService = orderingService;
+    private static readonly Dictionary<string, Action<BaseSpecification<Device>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["name"] = spec => spec.OrderBy = s => s.Name,
+        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
+    };
 
     public override async Task<ResultDto<DeviceDto>> CreateAsync(DeviceDto deviceDto)
     {
@@ -51,6 +58,22 @@ public class DeviceService(
                 }
 
                 return (await base.CreateAsync(deviceDto)).ResultData;
+            });
+    }
+
+    public async Task<ResultDto<IEnumerable<DeviceDto>>> GetAllAsync(string orderBy = "Recent")
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Devices",
+            action: async () =>
+            {
+                var specification = new BaseSpecification<Device>();
+
+                _orderingService.ApplyOrdering(specification, OrderingRules, orderBy);
+
+                var devices = await _repository.GetAllAsync(specification);
+
+                return _mapper.Map<IEnumerable<DeviceDto>>(devices);
             });
     }
 

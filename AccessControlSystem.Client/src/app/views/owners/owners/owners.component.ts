@@ -36,12 +36,7 @@ import { Location } from '@angular/common';
 })
 export class OwnersComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
-  sortBy = [
-    { text: 'Owner Name (A-Z)', value: 'usernameAsc' },
-    { text: 'Owner Name (Z-A)', value: 'usernameDesc' },
-    { text: 'Phone (Ascending)', value: 'phoneAsc' },
-    { text: 'Phone (Descending)', value: 'phoneDesc' }
-  ];
+  sortBy = ['Recent', 'Name'];
 
   popupVisible: boolean = false;
   ownerData: User = {
@@ -65,10 +60,19 @@ export class OwnersComponent implements OnInit {
   backClicked() {
     this.location.back();
   }
-  getAllOwners() {
-    this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
-      this.owners = data.resultData;
-    })
+
+  getAllOwners(orderBy?: string): void {
+    const baseUrl = 'Users/GetAllOwners';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
+
+    this.userService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.owners = data.resultData;
+      },
+      error: (err) => console.error("Failed to load owners:", err)
+    });
   }
 
   passwordComparison = () => {
@@ -100,7 +104,7 @@ export class OwnersComponent implements OnInit {
       next: (response) => {
         notify('Device created successfully', 'success', 1500);
         this.popupVisible = false;
-        this.getAllOwners(); 
+        this.getAllOwners();
       },
       error: (err) => {
         notify('Error creating device', 'error', 2000);
@@ -116,25 +120,8 @@ export class OwnersComponent implements OnInit {
   }
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-  const selected = e.itemData.value;
-
-  switch (selected) {
-    case 'usernameAsc':
-      this.owners.sort((a: any, b: any) => a.userName.localeCompare(b.userName));
-      break;
-    case 'usernameDesc':
-      this.owners.sort((a: any, b: any) => b.userName.localeCompare(a.userName));
-      break;
-    case 'phoneAsc':
-      this.owners.sort((a: any, b: any) => a.phoneNumber.localeCompare(b.phoneNumber));
-      break;
-    case 'phoneDesc':
-      this.owners.sort((a: any, b: any) => b.phoneNumber.localeCompare(a.phoneNumber));
-      break;
+    this.getAllOwners(e.itemData);
   }
-
-  notify(`Sorted by: ${e.itemData.text}`, 'success', 800);
-}
 
 
 }

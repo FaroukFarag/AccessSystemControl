@@ -1,7 +1,8 @@
 ﻿using AccessControlSystem.Application.Dtos.AccessGroups;
+using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Interfaces.AccessGroups;
+using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Services.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Interfaces.Repositories.AccessGroups;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
@@ -22,7 +23,8 @@ public class AccessGroupService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAirfobAccessLevelService airfobAccessLevelService,
-    IAirfobDeviceService airfobDeviceService) :
+    IAirfobDeviceService airfobDeviceService,
+    IOrderingService<AccessGroup> orderingService) :
     BaseService<AccessGroup, AccessGroupDto, int>(repository, unitOfWork, mapper),
     IAccessGroupService
 {
@@ -30,6 +32,7 @@ public class AccessGroupService(
     private readonly IMapper _mapper = mapper;
     private readonly IAirfobAccessLevelService _airfobAccessLevelService = airfobAccessLevelService;
     private readonly IAirfobDeviceService _airfobDeviceService = airfobDeviceService;
+    private readonly IOrderingService<AccessGroup> _orderingService = orderingService;
     private static readonly BaseSpecification<AccessGroup> AccessGroupWithDevicesSpec = new()
     {
         IncludeChains =
@@ -40,6 +43,11 @@ public class AccessGroupService(
                 ThenIncludes = [agd => (agd as AccessGroupDevice)!.Device]
             }
         ]
+    };
+    private static readonly Dictionary<string, Action<BaseSpecification<AccessGroup>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["name"] = spec => spec.OrderBy = s => s.Name,
+        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
     };
 
     public override async Task<ResultDto<AccessGroupDto>> CreateAsync(AccessGroupDto accessGroupDto)
@@ -82,6 +90,20 @@ public class AccessGroupService(
                 var entities = await _repository.GetAllAsync(AccessGroupWithDevicesSpec);
 
                 return _mapper.Map<IEnumerable<AccessGroupDto>>(entities);
+            });
+    }
+
+    public async Task<ResultDto<IEnumerable<AccessGroupDto>>> GetAllAsync(string orderBy = "Recent")
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Access Groups",
+            action: async () =>
+            {
+                _orderingService.ApplyOrdering(AccessGroupWithDevicesSpec, OrderingRules, orderBy);
+
+                var accessGroups = await _repository.GetAllAsync(AccessGroupWithDevicesSpec);
+
+                return _mapper.Map<IEnumerable<AccessGroupDto>>(accessGroups);
             });
     }
 

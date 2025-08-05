@@ -19,6 +19,12 @@ public class DevicesController(IDeviceService service) :
         return base.Create(dto);
     }
 
+    [HttpGet("GetAll/{orderBy}")]
+    public async Task<IActionResult> GetAll(string orderBy)
+    {
+        return Ok(await _service.GetAllAsync(orderBy));
+    }
+
     [HttpGet("GetAvailableDevicesForAccessGroup")]
     public async Task<IActionResult> GetAvailableDevicesForAccessGroup(int accessGroupId)
     {

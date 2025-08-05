@@ -23,28 +23,9 @@ import { SubscriptionService } from '../../services/subscriptions/subscription.s
 export class DashboardComponent {
   subscriptionsCount!: number;
   devicesCount!: number;
-
-  OwnersSortingList = [
-    { text: 'Owner Name (A-Z)', value: 'usernameAsc' },
-    { text: 'Owner Name (Z-A)', value: 'usernameDesc' },
-    { text: 'Phone (Ascending)', value: 'phoneAsc' },
-    { text: 'Phone (Descending)', value: 'phoneDesc' }
-  ];
-
-  UnitsSortingList = [
-    { text: 'Name (A-Z)', value: 'nameAsc' },
-    { text: 'Name (Z-A)', value: 'nameDesc' },
-    { text: 'Devices Number (Low to High)', value: 'numberAsc' },
-    { text: 'Devices Number (High to Low)', value: 'numberDesc' }
-  ];
-
-  subscriptionsSortingList = [
-    { id: 'recent', name: 'Recent (Newest First)', text: 'Recent (Newest First)' },
-    { id: 'oldest', name: 'Oldest First', text: 'Oldest First' },
-    { id: 'customerNameAsc', name: 'Customer Name (A-Z)', text: 'Customer Name (A-Z)' },
-    { id: 'customerNameDesc', name: 'Customer Name (Z-A)', text: 'Customer Name (Z-A)' }
-  ];
-
+  ownersSortingList = ['Recent', 'Name'];
+  unitsSortingList = ['Recent', 'Name'];
+  subscriptionsSortingList = ['Recent', 'Name', 'Subscription'];
   salesData = [
     { month: 'Jan', sales: 10000 },
     { month: 'Feb', sales: 12000 },
@@ -130,26 +111,47 @@ export class DashboardComponent {
     })
   }
 
-  getAllOwners() {
-    this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
-      this.ownersList = data.resultData;
-      console.log("subscriptionssList", this.ownersList);
-    })
+  getAllOwners(orderBy?: string): void {
+    const baseUrl = 'Users/GetAllOwners';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
+
+    this.userService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.ownersList = data.resultData;
+      },
+      error: (err) => console.error("Failed to load owners:", err)
+    });
   }
 
-  getAllUnits() {
-    this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
-      this.unitsList = data.resultData;
+  getAllUnits(orderBy?: string): void {
+    const baseUrl = 'Units/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
 
-    })
+    this.userService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.unitsList = data.resultData;
+      },
+      error: (err) => console.error("Failed to load units:", err)
+    });
   }
 
-  getAllSubscriptions() {
-    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptions = data.resultData;
-      console.log("subscriptionssList", this.subscriptions);
+  getAllSubscriptions(orderBy?: string): void {
+    const baseUrl = 'Subscriptions/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
 
-    })
+    this.subscriptionsService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.subscriptions = data.resultData;
+        console.log("Subscriptions List:", this.subscriptions);
+      },
+      error: (err) => console.error("Failed to load subscriptions:", err)
+    });
   }
 
   navigateToUnits() {
@@ -167,64 +169,15 @@ export class DashboardComponent {
   /*Sorting Functions*/
 
   onItemClick_OwnerSorting(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    const selected = e.itemData.value;
-
-    switch (selected) {
-      case 'usernameAsc':
-        this.ownersList.sort((a: any, b: any) => a.userName.localeCompare(b.userName));
-        break;
-      case 'usernameDesc':
-        this.ownersList.sort((a: any, b: any) => b.userName.localeCompare(a.userName));
-        break;
-      case 'phoneAsc':
-        this.ownersList.sort((a: any, b: any) => a.phoneNumber.localeCompare(b.phoneNumber));
-        break;
-      case 'phoneDesc':
-        this.ownersList.sort((a: any, b: any) => b.phoneNumber.localeCompare(a.phoneNumber));
-        break;
-    }
-
-    notify(`Sorted by: ${e.itemData.text}`, 'success', 800);
+    this.getAllOwners(e.itemData);
   }
 
   onItemClick_unitsSorting(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    const selected = e.itemData.value;
-    switch (selected) {
-      case 'nameAsc':
-        this.unitsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
-        break;
-      case 'nameDesc':
-        this.unitsList.sort((a: any, b: any) => b.name.localeCompare(a.name));
-        break;
-      case 'numberAsc':
-        this.unitsList.sort((a: any, b: any) => a.number - b.number);
-        break;
-      case 'numberDesc':
-        this.unitsList.sort((a: any, b: any) => b.number - a.number);
-        break;
-    }
-    notify(`Sorted by: ${e.itemData.name}`, 'success', 1000);
+    this.getAllUnits(e.itemData);
   }
 
   onItemClick_SubscriptionSorting(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    const selected = e.itemData.id;
-
-    switch (selected) {
-      case 'recent':
-        this.subscriptions.sort((a: any, b: any) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-        break;
-      case 'oldest':
-        this.subscriptions.sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-        break;
-      case 'customerNameAsc':
-        this.subscriptions.sort((a: any, b: any) => a.customerName.localeCompare(b.customerName));
-        break;
-      case 'customerNameDesc':
-        this.subscriptions.sort((a: any, b: any) => b.customerName.localeCompare(a.customerName));
-        break;
-    }
-
-    notify(`Sorted by ${e.itemData.name}`, 'success', 600);
+    this.getAllSubscriptions(e.itemData);
   }
 
 }

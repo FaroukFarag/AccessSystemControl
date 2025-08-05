@@ -1,9 +1,9 @@
 ﻿using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Dtos.Units;
 using AccessControlSystem.Application.Dtos.Users;
+using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
@@ -24,7 +24,8 @@ public class UserService(
     SignInManager<User> signInManager,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
-    ITokensService tokensService) : BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
+    ITokensService tokensService,
+    IOrderingService<User> orderingService) : BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
@@ -32,9 +33,15 @@ public class UserService(
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly ITokensService _tokensService = tokensService;
-    private static readonly BaseSpecification<User> UserWithUnitsSpec = new()
+    private readonly IOrderingService<User> _orderingService = orderingService;
+    private static readonly BaseSpecification<User> userWithUnitsSpec = new()
     {
         Includes = [u => u.Units!]
+    };
+    private static readonly Dictionary<string, Action<BaseSpecification<User>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["name"] = spec => spec.OrderBy = s => s.UserName!,
+        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
     };
 
     public override async Task<ResultDto<UserDto>> CreateAsync(UserDto userDto)
@@ -126,6 +133,24 @@ public class UserService(
             });
     }
 
+    public async Task<ResultDto<IEnumerable<UserDto>>> GetAllUsersByRoleAsync(int roleId, string orderBy = "Recent")
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Users by Role",
+            action: async () =>
+            {
+                var role = await _roleManager.FindByIdAsync(roleId.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var specification = new BaseSpecification<User>();
+
+                _orderingService.ApplyOrdering(specification, OrderingRules, orderBy);
+
+                var usersWithIncludes = await _userRepository.GetAllAsync(specification);
+
+                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+            });
+    }
+
     public override async Task<ResultDto<UserDto>> UpdateAsync(UserDto newUserDto)
     {
         return await ExecuteServiceCallAsync(
@@ -162,7 +187,7 @@ public class UserService(
             {
                 var user = await AuthenticateUserAsync(model)
                     ?? throw new InvalidOperationException("Authentication failed");
-                var userWithUnits = await _userRepository.GetAsync(user.Id, UserWithUnitsSpec);
+                var userWithUnits = await _userRepository.GetAsync(user.Id, userWithUnitsSpec);
                 var roles = await _userManager.GetRolesAsync(userWithUnits);
                 var role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()!)
                     ?? throw new InvalidOperationException("Role not found");

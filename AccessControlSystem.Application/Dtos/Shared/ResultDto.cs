@@ -1,4 +1,4 @@
-﻿namespace AccessControlSystem.Application.Services.Shared;
+﻿namespace AccessControlSystem.Application.Dtos.Shared;
 
 public class ResultDto<T>
 {

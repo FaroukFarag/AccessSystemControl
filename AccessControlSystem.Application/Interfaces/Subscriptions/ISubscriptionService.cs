@@ -1,6 +1,6 @@
-﻿using AccessControlSystem.Application.Dtos.Subscriptions;
+﻿using AccessControlSystem.Application.Dtos.Shared;
+using AccessControlSystem.Application.Dtos.Subscriptions;
 using AccessControlSystem.Application.Interfaces.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Models.Subscriptions;
 
 namespace AccessControlSystem.Application.Interfaces.Subscriptions;

@@ -13,12 +13,6 @@ public class SubscriptionsController(ISubscriptionService service) :
 {
     private readonly ISubscriptionService _service = service;
 
-    [HttpPost("Create")]
-    public override Task<IActionResult> Create([FromForm] SubscriptionDto dto)
-    {
-        return base.Create(dto);
-    }
-
     [HttpGet("GetAll/{orderBy}")]
     public async Task<IActionResult> GetAll(string orderBy)
     {

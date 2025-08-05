@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AccessControlSystem.Domain.Models.Users;
 
-public class User : IdentityUser<int>, ISubscriptionEntity
+public class User : IdentityUser<int>, ISubscriptionEntity, IAuditable
 {
     public int SubscriptionId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public Subscription Subscription { get; set; } = default!;
     public virtual ICollection<IdentityUserRole<int>> UserRoles { get; set; } = default!;

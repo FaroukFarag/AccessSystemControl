@@ -18,7 +18,6 @@ public class Subscription : BaseImageModel<int>
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
     public string? Note { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public IEnumerable<User> Users { get; set; } = default!;
     public IEnumerable<Device> Devices { get; set; } = default!;

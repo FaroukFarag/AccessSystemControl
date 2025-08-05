@@ -13,7 +13,7 @@
   </dx-button>
 
   <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
-    (onItemClick)="onItemClick($event)"></dx-drop-down-button>
+    (onItemClick)="onAccessGroupItemClick($event)"></dx-drop-down-button>
 
 </div>
 
@@ -144,7 +144,7 @@
 <!--PAGE HEADER IF ADMIN-->
 <div class="page-header">
   <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
-                       (onItemClick)="onItemClick($event)">
+                       (onItemClick)="onDevicesItemClick($event)">
   </dx-drop-down-button>
   <dx-button class="button-info me-1" text="Add Device" (onClick)="showAddDevicePopup()">
   </dx-button>

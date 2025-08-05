@@ -1,5 +1,4 @@
 ﻿using AccessControlSystem.Application.Dtos.Shared;
-using AccessControlSystem.Application.Services.Shared;
 
 namespace AccessControlSystem.Application.Interfaces.Abstraction;
 

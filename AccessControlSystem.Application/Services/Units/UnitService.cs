@@ -1,8 +1,8 @@
-﻿using AccessControlSystem.Application.Dtos.Units;
+﻿using AccessControlSystem.Application.Dtos.Shared;
+using AccessControlSystem.Application.Dtos.Units;
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Units;
 using AccessControlSystem.Application.Services.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Units;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
@@ -20,28 +20,18 @@ public class UnitService(
     IUnitRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    IImageService imageService) : BaseService<Unit, UnitDto, int>(repository, unitOfWork, mapper), IUnitService
+    IImageService imageService,
+    IOrderingService<Unit> orderingService) : BaseService<Unit, UnitDto, int>(repository, unitOfWork, mapper), IUnitService
 {
     private readonly IUnitRepository _repository = repository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
-
-    private static readonly BaseSpecification<Unit> UnitWithIncludesSpec = new()
+    private readonly IOrderingService<Unit> _orderingService = orderingService;
+    private static readonly Dictionary<string, Action<BaseSpecification<Unit>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
     {
-        Includes = [u => u.Subscription, u => u.Owner!],
-        IncludeChains =
-        [
-            new IncludeChain<Unit>
-            {
-                InitialInclude = u => u.AccessGroupUnits!,
-                ThenIncludes = [
-                    agu => (agu as AccessGroupUnit)!.AccessGroup,
-                    ag => (ag as AccessGroup)!.AccessGroupDevices,
-                    agd => (agd as AccessGroupDevice)!.Device
-                ]
-            }
-        ]
+        ["name"] = spec => spec.OrderBy = s => s.Name,
+        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
     };
 
     public override async Task<ResultDto<UnitDto>> CreateAsync(UnitDto unitDto)
@@ -73,6 +63,22 @@ public class UnitService(
 
             return _mapper.Map<IEnumerable<UnitDto>>(unit);
         });
+    }
+
+    public async Task<ResultDto<IEnumerable<UnitDto>>> GetAllAsync(string orderBy = "Recent")
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Units",
+            action: async () =>
+            {
+                var specification = new BaseSpecification<Unit>();
+
+                _orderingService.ApplyOrdering(specification, OrderingRules, orderBy);
+
+                var units = await _repository.GetAllAsync(specification);
+
+                return _mapper.Map<IEnumerable<UnitDto>>(units);
+            });
     }
 
     public async Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id)
@@ -125,24 +131,6 @@ public class UnitService(
             });
     }
 
-    public override async Task<ResultDto<UnitDto>> DeleteAsync(int id)
-    {
-        return await ExecuteServiceCallAsync(
-            operationName: "Delete Unit",
-            action: async () =>
-            {
-                var unit = await base.GetAsync(id);
-
-                if (unit.ResultData?.ImagePath is not null)
-                {
-                    _imageService.DeleteImage(unit.ResultData.ImagePath);
-                }
-
-                return (await base.DeleteAsync(id)).ResultData
-                    ?? throw new InvalidOperationException("Unit deletion failed");
-            });
-    }
-
     public async Task<ResultDto<UnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
     {
         ArgumentNullException.ThrowIfNull(assignOwnerToUnitDto);
@@ -164,6 +152,24 @@ public class UnitService(
 
                 return (await base.UpdateAsync(unitDto)).ResultData
                     ?? throw new InvalidOperationException("Owner assignment failed");
+            });
+    }
+
+    public override async Task<ResultDto<UnitDto>> DeleteAsync(int id)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Delete Unit",
+            action: async () =>
+            {
+                var unit = await base.GetAsync(id);
+
+                if (unit.ResultData?.ImagePath is not null)
+                {
+                    _imageService.DeleteImage(unit.ResultData.ImagePath);
+                }
+
+                return (await base.DeleteAsync(id)).ResultData
+                    ?? throw new InvalidOperationException("Unit deletion failed");
             });
     }
 }

@@ -5,13 +5,14 @@ using AccessControlSystem.Domain.Shared.Attributs;
 
 namespace AccessControlSystem.Domain.Models.AccessGroupDevices;
 
-public class AccessGroupDevice : ISubscriptionEntity
+public class AccessGroupDevice : ISubscriptionEntity, IAuditable
 {
     [CompositeKey]
     public int AccessGroupId { get; set; }
     [CompositeKey]
     public int DeviceId { get; set; }
     public int SubscriptionId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public AccessGroup AccessGroup { get; set; } = default!;
     public Device Device { get; set; } = default!;

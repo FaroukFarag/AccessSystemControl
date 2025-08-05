@@ -11,4 +11,11 @@ namespace AccessControlSystem.WebApi.Controllers.AccessGroups;
 public class AccessGroupsController(IAccessGroupService service) :
     BaseController<IAccessGroupService, AccessGroup, AccessGroupDto, int>(service)
 {
+    private readonly IAccessGroupService _service = service;
+
+    [HttpGet("GetAll/{orderBy}")]
+    public async Task<IActionResult> GetAll(string orderBy)
+    {
+        return Ok(await _service.GetAllAsync(orderBy));
+    }
 }

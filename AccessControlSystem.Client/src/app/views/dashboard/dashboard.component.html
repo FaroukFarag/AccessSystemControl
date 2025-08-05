@@ -61,7 +61,7 @@
       <div class="grid-header">
         <h2>Units <span>({{unitsList?.length}})</span></h2>
         <div class="grid-header-btns">
-          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="UnitsSortingList"
+          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="unitsSortingList"
             (onItemClick)="onItemClick_unitsSorting($event)"></dx-drop-down-button>
           <button type="button" class="btn view-all me-2" (click)="navigateToUnits()">View All</button>
         </div>
@@ -86,7 +86,7 @@
     <div class="grid-header">
       <h2>Owners <span>({{ownersList?.length}})</span></h2>
       <div class="grid-header-btns">
-        <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }"></dx-drop-down-button>
+        <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="ownersSortingList" (onItemClick)="onItemClick_OwnerSorting($event)"></dx-drop-down-button>
         <button type="button" class="btn view-all me-2">View All</button>
       </div>
     </div>

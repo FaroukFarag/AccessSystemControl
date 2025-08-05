@@ -1,6 +1,5 @@
 ﻿using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Interfaces.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Interfaces.Repositories.Abstraction;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Shared;

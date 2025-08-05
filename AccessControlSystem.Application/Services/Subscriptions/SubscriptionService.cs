@@ -1,8 +1,8 @@
-﻿using AccessControlSystem.Application.Dtos.Subscriptions;
+﻿using AccessControlSystem.Application.Dtos.Shared;
+using AccessControlSystem.Application.Dtos.Subscriptions;
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Services.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
@@ -18,12 +18,14 @@ public class SubscriptionService(
     ISubscriptionRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    IImageService imageService) : BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
+    IImageService imageService,
+    IOrderingService<Subscription> orderingService) : BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
 {
     private readonly ISubscriptionRepository _repository = repository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
+    private readonly IOrderingService<Subscription> _orderingService = orderingService;
     private static readonly BaseSpecification<Subscription> SubscriptionWithIncludesSpec = new()
     {
         Includes = [s => s.Devices, s => s.Cards],
@@ -35,6 +37,12 @@ public class SubscriptionService(
                 ThenIncludes = [u => (u as User)!.UserRoles]
             }
         ]
+    };
+    private static readonly Dictionary<string, Action<BaseSpecification<Subscription>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["name"] = spec => spec.OrderBy = s => s.CustomerName,
+        ["subscription"] = spec => spec.OrderBy = s => s.SubscriptionType,
+        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
     };
 
     public override async Task<ResultDto<SubscriptionDto>> CreateAsync(SubscriptionDto subscriptionDto)
@@ -67,10 +75,13 @@ public class SubscriptionService(
     public async Task<ResultDto<IEnumerable<SubscriptionDto>>> GetAllAsync(string orderBy = "Recent")
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Get Subscription",
+            operationName: "Get Subscriptions",
             action: async () =>
             {
-                var specification = CreateOrderingSpecification(orderBy);
+                var specification = new BaseSpecification<Subscription>();
+
+                _orderingService.ApplyOrdering(specification, OrderingRules, orderBy);
+
                 var subscriptions = await _repository.GetAllAsync(specification);
 
                 return _mapper.Map<IEnumerable<SubscriptionDto>>(subscriptions);
@@ -130,26 +141,5 @@ public class SubscriptionService(
                 return (await base.DeleteAsync(id)).ResultData
                     ?? throw new InvalidOperationException("Subscription deletion failed");
             });
-    }
-
-    private static readonly Dictionary<string, Action<BaseSpecification<Subscription>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["name"] = spec => spec.OrderBy = s => s.CustomerName,
-        ["subscription"] = spec => spec.OrderBy = s => s.SubscriptionType,
-        ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
-    };
-
-    private static BaseSpecification<Subscription> CreateOrderingSpecification(string orderBy)
-    {
-        var specification = new BaseSpecification<Subscription>();
-        var orderKey = string.IsNullOrWhiteSpace(orderBy) ? "recent" : orderBy;
-
-        if (OrderingRules.TryGetValue(orderKey, out var applyOrder))
-            applyOrder(specification);
-
-        else
-            specification.OrderByDescending = s => s.CreatedAt;
-
-        return specification;
     }
 }

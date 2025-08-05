@@ -48,14 +48,7 @@ export class DevicesComponent {
   selectedDevices: any = [];
   popupVisible: boolean = false;
   groupDevice_popupVisible: boolean = false;
-  sortBy = [
-    { text: 'Name (A-Z)', key: 'nameAsc' },
-    { text: 'Name (Z-A)', key: 'nameDesc' },
-    { text: 'Status (Active First)', key: 'activeFirst' },
-    { text: 'Status (Inactive First)', key: 'inactiveFirst' },
-    { text: 'Most Recent', key: 'recent' },
-    { text: 'Default', key: 'default' }
-  ];
+  sortBy = ['Recent', 'Name'];
 
   sites: any[] = [];
   schedules: any[] = [];
@@ -150,13 +143,20 @@ export class DevicesComponent {
     })
   }
 
-  getAllDevices() {
-    this.deviceService.getAll('Devices/GetAll').subscribe((data: any) => {
-      this.devicesList = data.resultData;
-      console.log("DEVICCES", this.devicesList);
+  getAllDevices(orderBy?: string) {
+    const baseUrl = 'Devices/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
 
+    this.deviceService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.devicesList = data.resultData;
+      },
+      error: (err) => console.error("Failed to load owners:", err)
     })
   }
+
   getAllSubscriptions() {
     this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
       this.subscriptionList = data.resultData;
@@ -296,19 +296,13 @@ export class DevicesComponent {
     });
   }
 
+  getAllAccessGroups(orderBy?: string) {
+    const baseUrl = 'AccessGroups/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
 
-
-
-
-
-
-
-
-
-
-
-  getAllAccessGroups() {
-    this.accessGroupService.getAll('AccessGroups/GetAll').subscribe({
+    this.accessGroupService.getAll(url).subscribe({
       next: (data: any) => {
         this.accessGroups = data.resultData;
         console.log("Access Groups", this.accessGroups);
@@ -327,41 +321,14 @@ export class DevicesComponent {
     this.router.navigate(['/access-groups-devices'], { queryParams: { id: groupId } });
 
   }
-  onItemClick(e: any): void {
-    const key = e.itemData.key;
 
-    switch (key) {
-      case 'nameAsc':
-        this.devicesList.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-
-      case 'nameDesc':
-        this.devicesList.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-
-      case 'activeFirst':
-        this.devicesList.sort((a, b) => (b.active === true ? 1 : 0) - (a.active === true ? 1 : 0));
-        break;
-
-      case 'inactiveFirst':
-        this.devicesList.sort((a, b) => (a.active === true ? 1 : 0) - (b.active === true ? 1 : 0));
-        break;
-
-      case 'recent':
-        // Assuming devices have a `createdAt` or `updatedAt` field
-        this.devicesList.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        break;
-
-      default:
-        break;
-    }
-
-    notify(`Sorted by: ${e.itemData.text}`, 'success', 1500);
-
-
+  onDevicesItemClick(e: any): void {
+    this.getAllDevices(e.itemData);
   }
 
-
+  onAccessGroupItemClick(e: any): void {
+    this.getAllAccessGroups(e.itemData);
+  }
 }
 
 

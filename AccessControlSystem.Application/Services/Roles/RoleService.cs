@@ -1,7 +1,7 @@
 ﻿using AccessControlSystem.Application.Dtos.Roles;
+using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Interfaces.Roles;
 using AccessControlSystem.Application.Services.Abstraction;
-using AccessControlSystem.Application.Services.Shared;
 using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Roles;

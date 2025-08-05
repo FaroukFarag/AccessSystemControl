@@ -133,6 +133,7 @@ public static class DependencyContainer
             .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>()
             .AddScoped<IAccessGroupUnitService, AccessGroupUnitService>()
             .AddScoped<IImageService, ImageService>()
+            .AddScoped(typeof(IOrderingService<>), typeof(OrderingService<>))
             .AddScoped<ICardService, CardService>()
             .AddScoped<IVisitorService, VisitorService>()
             .AddScoped<IUserContextService, UserContextService>();

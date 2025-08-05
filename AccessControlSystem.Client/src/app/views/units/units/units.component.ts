@@ -42,12 +42,7 @@ export class UnitsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
   //sortBy = ['Recent', 'date'];
-  sortBy = [
-    { text: 'Name (A-Z)', value: 'nameAsc' },
-    { text: 'Name (Z-A)', value: 'nameDesc' },
-    { text: 'Devices Number (Low to High)', value: 'numberAsc' },
-    { text: 'Devices Number (High to Low)', value: 'numberDesc' }
-  ];
+  sortBy = ['Recent', 'Name'];
 
   unitsList: any;
   imageValidationError: string = '';
@@ -121,11 +116,18 @@ export class UnitsComponent {
     this.getAllAccessGroups();
   }
 
-  getAllUnits() {
-    this.unitsService.getAll('Units/GetAll').subscribe((data: any) => {
-      this.unitsList = data.resultData;
+  getAllUnits(orderBy?: string): void {
+    const baseUrl = 'Units/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
 
-    })
+    this.unitsService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.unitsList = data.resultData;
+      },
+      error: (err) => console.error("Failed to load units:", err)
+    });
   }
 
   getAllAccessGroups() {
@@ -155,7 +157,7 @@ export class UnitsComponent {
     this.imageValidationError = '';
     this.popupVisible = true;
   }
- 
+
   navigateToDetailsPage(unitId: number) {
     // this.router.navigate(['/unit-details', { id: unitId }]);
     this.router.navigate(['/unit-details'], { queryParams: { id: unitId } });
@@ -180,7 +182,7 @@ export class UnitsComponent {
   }
 
   getSelectedAccessGroups(selectedAccessGroupIds: number[]): AccessGroup[] {
-    return this.accessGroups.filter(ag => 
+    return this.accessGroups.filter(ag =>
       selectedAccessGroupIds.includes(ag.id)
     );
   }
@@ -240,22 +242,7 @@ export class UnitsComponent {
   /*Sorting Function */
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    const selected = e.itemData.value;
-    switch (selected) {
-      case 'nameAsc':
-        this.unitsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
-        break;
-      case 'nameDesc':
-        this.unitsList.sort((a: any, b: any) => b.name.localeCompare(a.name));
-        break;
-      case 'numberAsc':
-        this.unitsList.sort((a: any, b: any) => a.number - b.number);
-        break;
-      case 'numberDesc':
-        this.unitsList.sort((a: any, b: any) => b.number - a.number);
-        break;
-    }
-    notify(`Sorted by: ${e.itemData.name}`, 'success', 1000);
+    this.getAllUnits(e.itemData);
   }
 
 }
