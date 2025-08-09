@@ -127,7 +127,14 @@ public class UserService(
                     ?? throw new InvalidOperationException("Role not found");
                 var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
                 var userIds = usersInRole.Select(u => u.Id).ToList();
-                var usersWithIncludes = await _userRepository.GetAllAsync();
+                var spec = new BaseSpecification<User>
+                {
+                    Criteria = u => userIds.Contains(u.Id),
+                    Includes = userWithUnitsSpec.Includes,
+                    IncludeChains = userWithUnitsSpec.IncludeChains
+                };
+
+                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
 
                 return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
             });
@@ -141,11 +148,18 @@ public class UserService(
             {
                 var role = await _roleManager.FindByIdAsync(roleId.ToString())
                     ?? throw new InvalidOperationException("Role not found");
-                var specification = new BaseSpecification<User>();
+                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                var userIds = usersInRole.Select(u => u.Id).ToList();
+                var spec = new BaseSpecification<User>
+                {
+                    Criteria = u => userIds.Contains(u.Id),
+                    Includes = userWithUnitsSpec.Includes,
+                    IncludeChains = userWithUnitsSpec.IncludeChains
+                };
 
-                _orderingService.ApplyOrdering(specification, OrderingRules, orderBy);
+                _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);
 
-                var usersWithIncludes = await _userRepository.GetAllAsync(specification);
+                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
 
                 return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
             });

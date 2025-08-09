@@ -9,6 +9,7 @@ import {
   DxSelectBoxModule,
   DxTextAreaModule,
   DxDateBoxModule,
+  DxTagBoxModule,
   DxFormModule,
   DxFileUploaderModule,
 } from 'devextreme-angular';
@@ -35,11 +36,12 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
-    DxFileUploaderModule,], templateUrl: './units.component.html',
+    DxFileUploaderModule,
+    DxTagBoxModule], templateUrl: './units.component.html',
   styleUrl: './units.component.scss'
 })
 export class UnitsComponent {
-  @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
+  @ViewChild('unitFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
   //sortBy = ['Recent', 'date'];
   sortBy = ['Recent', 'Name'];
@@ -47,7 +49,21 @@ export class UnitsComponent {
   unitsList: any;
   imageValidationError: string = '';
   subscriptionId: any;
-  unitsData: any;
+  unitsData = {
+    unitImageFile: null,
+    unitImageUrl: '',
+    Name: '',
+    Number: '',
+    Area: '',
+    CardNumber: '',
+    AccessGroups: [],
+    ImageEncode: '',
+    ImageFile: null,
+    ImagePath: '',
+    Id: '0',
+    UserId: '1',
+    SubscriptionId: '0',
+  };
   deviceTypeEditorOptions: any
   subscriptionTypes = [
     {
@@ -223,7 +239,7 @@ export class UnitsComponent {
       subscriptionId: this.unitsData.SubscriptionId,
       accessGroups: this.unitsData.AccessGroups,
       imagePath: this.unitsData.unitImageUrl,
-      imageFile: this.unitsData.unitImageFile ? this.unitsData.unitImageFile.name : null
+      imageFile: this.unitsData.unitImageFile ? this.unitsData.unitImageFile : null
     });
 
 

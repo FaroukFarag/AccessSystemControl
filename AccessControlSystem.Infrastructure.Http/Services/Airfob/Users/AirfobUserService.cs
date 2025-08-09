@@ -30,6 +30,11 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
         return await _client.PostAsync<AssignAccessLevelsByUsersRequest, IEnumerable<AssignAccessLevelsByUsersResponse>>("v1/users/access_levels/members", request);
     }
 
+    public async Task<AirfobResponse<InviteUserResponse>> InviteUserAsync(InviteUserRequest request)
+    {
+        return await _client.PostAsync<InviteUserRequest, InviteUserResponse>("v1/users/invite", request);
+    }
+
     public async Task<AirfobResponse<GetUsersResponse>> GetUsersAsync()
     {
         return await _client.GetAsync<GetUsersResponse>("v1/users");
