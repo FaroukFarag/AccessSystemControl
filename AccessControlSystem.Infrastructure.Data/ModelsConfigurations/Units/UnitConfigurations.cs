@@ -23,9 +23,5 @@ public class UnitConfigurations : IEntityTypeConfiguration<Unit>
         builder.HasMany(u => u.AccessGroupUnits)
             .WithOne(agu => agu.Unit)
             .HasForeignKey(agu => agu.UnitId);
-
-        builder.HasMany(u => u.Visitors)
-            .WithOne(v => v.Unit)
-            .HasForeignKey(u => u.UnitId);
     }
 }

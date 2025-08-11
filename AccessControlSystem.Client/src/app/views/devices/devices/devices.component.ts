@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import {
@@ -43,7 +43,7 @@ import { AccessGroup } from '../../../models/access-group/access-group'
   styleUrl: './devices.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class DevicesComponent {
+export class DevicesComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   selectedDevices: any = [];
   popupVisible: boolean = false;

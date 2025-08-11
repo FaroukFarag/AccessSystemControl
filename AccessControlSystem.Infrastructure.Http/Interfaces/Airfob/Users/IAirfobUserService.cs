@@ -10,6 +10,7 @@ public interface IAirfobUserService
     Task<AirfobResponse<IEnumerable<CreateUserGroupResponse>>> CreateUserGroupsAsync(CreateUserGroupsRequest request);
     Task<AirfobResponse<IEnumerable<AssignUserGroupMemberResponse>>> AssignUserGroupMembersAsync(AssignUserGroupMembersRequest request);
     Task<AirfobResponse<IEnumerable<AssignAccessLevelsByUsersResponse>>> AssignAccessLevelsByUsersAsync(AssignAccessLevelsByUsersRequest request);
+    Task<AirfobResponse<InviteUserResponse>> InviteUserAsync(InviteUserRequest request);
     Task<AirfobResponse<GetUsersResponse>> GetUsersAsync();
     Task<AirfobResponse<GetUserGroupsResponse>> GetUserGroupsAsync();
 }

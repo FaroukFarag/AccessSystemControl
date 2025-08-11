@@ -22,6 +22,18 @@ public class AirfobUsersController(IAirfobUserService service) : ControllerBase
         return Ok(await _service.CreateUserGroupsAsync(request));
     }
 
+    [HttpPost("AssignUserGroupMembers")]
+    public virtual async Task<IActionResult> AssignUserGroupMembers(AssignUserGroupMembersRequest request)
+    {
+        return Ok(await _service.AssignUserGroupMembersAsync(request));
+    }
+
+    [HttpPost("InviteUser")]
+    public virtual async Task<IActionResult> InviteUser(InviteUserRequest request)
+    {
+        return Ok(await _service.InviteUserAsync(request));
+    }
+
     [HttpGet("GetUsers")]
     public virtual async Task<IActionResult> GetUsers()
     {
@@ -32,11 +44,5 @@ public class AirfobUsersController(IAirfobUserService service) : ControllerBase
     public virtual async Task<IActionResult> GetUserGroups()
     {
         return Ok(await _service.GetUserGroupsAsync());
-    }
-
-    [HttpPost("AssignUserGroupMembers")]
-    public virtual async Task<IActionResult> AssignUserGroupMembers(AssignUserGroupMembersRequest request)
-    {
-        return Ok(await _service.AssignUserGroupMembersAsync(request));
     }
 }

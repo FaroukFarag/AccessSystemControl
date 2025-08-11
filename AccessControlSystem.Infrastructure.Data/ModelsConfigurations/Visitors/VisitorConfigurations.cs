@@ -12,9 +12,7 @@ public class VisitorConfigurations : IEntityTypeConfiguration<Visitor>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.HasOne(v => v.Unit)
-            .WithMany(u => u.Visitors)
-            .HasForeignKey(v => v.UnitId)
-            .OnDelete(DeleteBehavior.Restrict);
+        builder.HasMany(v => v.AccessGroups)
+            .WithMany(u => u.Visitors);
     }
 }

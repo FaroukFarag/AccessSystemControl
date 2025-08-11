@@ -15,8 +15,7 @@
 <!-- ADD UNIT POPUP-->
 <dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add ew Device" [dragEnabled]="true"
   [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
-  <dx-form #subscriptionFormRef [formData]="unitsData" [colCount]="1" [labelLocation]="'top'">
-    <dxi-item itemType="simple">
+  <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
         <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
@@ -27,7 +26,7 @@
         </div>
       </div>
     </dxi-item>
-
+  <dx-form #unitFormRef [formData]="unitsData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item dataField="Name" [editorOptions]="{ placeholder: 'Unit name' }">
       <dxi-validation-rule type="required" message="Unit name is required">
       </dxi-validation-rule>
