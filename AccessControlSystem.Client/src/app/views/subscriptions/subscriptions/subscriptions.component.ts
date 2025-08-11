@@ -115,7 +115,7 @@ export class SubscriptionsComponent {
     });
   }
 
-  showAddDevicePopup() {
+  showAddSubscriptionPopup() {
     this.subscriptionData = {
       SubscriptionImageFile: null,
       SubscriptionImageUrl: '',

@@ -71,35 +71,36 @@
   </div>
 
   <div class="devices-slider">
-    <div class="device-card" *ngFor="let device of subscription?.devices">
-      <img [src]="device.imagePath" alt="Device image" class="device-img" />
-      <div class="device-name">{{ device.name }}</div>
-      <div class="device-status active">{{ device.active ? 'Active' : 'Inactive' }}</div>
-
+    <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
+         *ngFor="let device of subscription?.devices">
+      <div class="card-header">
+        <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
+        <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
+      </div>
       <div class="device-info">
-        <div class="info">
-          <img class="icon" src="/assets/icons/status.svg" />
-          <span class="key me-2"> Status:</span>
-          <span class="device-status active ">{{ device.active ? 'Active' : 'Inactive' }}</span>
-        </div>
-        <div class="info">
-          <img class="icon" src="/assets/icons/mac-address.svg" />
-          <span class="key">Mac Address:</span>
-          <span class="value"> {{ device.macAddress }}</span>
-        </div>
-        <div class="info">
-          <img class="icon" src="/assets/icons/device-type.svg" />
-          <span class="key">Device type:</span>
-          <span class="value"> {{ device.deviceTypeName }}</span>
+        <div class="icon"><img src="/assets/icons/status.svg" /></div>
+        <div class="info"> Status: </div>
+        <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+          {{ device.active ? 'Active' : 'Not Active' }}
         </div>
       </div>
+      <div class="device-info">
+        <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+        <div class="info"> Mac Address: </div>
+        <div class="info-value ">{{device.macAddress}}</div>
+      </div>
+      <div class="device-info">
+        <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+        <div class="info"> Device type: </div>
+        <div class="info-value"> {{device.deviceTypeName}}</div>
+      </div>
     </div>
-
-    <div *ngIf="subscription?.devices?.length === 0" class="empty-state">
-      No devices found for this subscription.
-    </div>
-
   </div>
+
+  <div *ngIf="subscription?.devices?.length === 0" class="empty-state">
+    No devices found for this subscription.
+  </div>
+
 </div>
 
 
@@ -108,14 +109,14 @@
 
 <!--ADD DEVICE POPUP-->
 <dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
-  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
         <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
         <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
-          class="thumbnail" />
+             class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
           {{ imageValidationError }}
         </div>
@@ -138,7 +139,7 @@
       <dxi-validation-rule type="required" message="Device MAC address is required">
       </dxi-validation-rule>
       <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
-        message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+                           message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
@@ -180,3 +181,48 @@
   </dxi-item>
 
 </dx-popup>
+
+
+<!--Device Traffic Section-->
+<div class="device-trafic-section mt-4">
+  <div class="grid-header">
+    <h5>Device traffic</h5>
+    <div class="grid-header-btns">
+      <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />Report</button>
+    </div>
+  </div>
+  <dx-data-grid id="gridContainer"
+                [dataSource]="dataSource"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
+    <!--<dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [visible]="true"
+               [showPageSizeSelector]="true"
+               [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
+    <dxo-search-panel [visible]="true"
+                      [highlightCaseSensitive]="true"></dxo-search-panel>
+
+
+    <dxi-column dataField="Traffic type"
+                caption="TRAFFIC TYPE"
+                dataType="string"
+                alignment="left"></dxi-column>
+    <dxi-column caption="TIME"
+                dataField="Time"
+                dataType="string"
+                format="time"
+                alignment="left"></dxi-column>
+    <dxi-column dataField="DATE" dataType="date"></dxi-column>
+    <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+
+    <dxi-column dataField="image" caption="IMAGE" cellTemplate="imageCellTemplate"></dxi-column>
+
+    <div *dxTemplate="let d of 'imageCellTemplate'">
+      <img />
+    </div>
+  </dx-data-grid>
+</div>
