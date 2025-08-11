@@ -6,6 +6,7 @@ import notify from 'devextreme/ui/notify';
 import { UnitService } from '../../services/units/unit.service';
 import { UserService } from '../../services/users/user.service';
 import { OwnerDashboardComponent } from '../dashboard/owner-dashboard/owner-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component'; 
 import { Router } from '@angular/router';
 import { SubscriptionService } from '../../services/subscriptions/subscription.service';
 @Component({
@@ -13,6 +14,7 @@ import { SubscriptionService } from '../../services/subscriptions/subscription.s
   standalone: true,
   imports: [
     OwnerDashboardComponent,
+    AdminDashboardComponent,
     DxDataGridModule,
     DxButtonModule,
     DxChartModule,

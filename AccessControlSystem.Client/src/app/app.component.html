@@ -1,2 +1,13 @@
-<!--<app-app-layout></app-app-layout>-->
-<router-outlet></router-outlet>
+<div class="app-container" *ngIf="showLayout">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <app-header (loggedOut)="onLogout()"></app-header>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<div class="login-container" *ngIf="!showLayout">
+  <router-outlet></router-outlet>
+</div>
