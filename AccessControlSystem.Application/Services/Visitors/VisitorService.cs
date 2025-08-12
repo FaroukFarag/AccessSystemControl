@@ -16,12 +16,14 @@ public class VisitorService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAirfobUserService airfobUserService) :
-    BaseService<Visitor, VisitorDto, int>(repository, unitOfWork, mapper),
+    BaseService<
+        CreateVisitorDto, VisitorDto, VisitorDto, VisitorDto, Visitor, int>(
+        repository, unitOfWork, mapper),
     IVisitorService
 {
     private readonly IMapper _mapper = mapper;
     private readonly IAirfobUserService _airfobUserService = airfobUserService;
-    public override async Task<ResultDto<VisitorDto>> CreateAsync(VisitorDto entityDto)
+    public override async Task<ResultDto<CreateVisitorDto>> CreateAsync(CreateVisitorDto entityDto)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Visitor Unit",
@@ -34,7 +36,6 @@ public class VisitorService(
                     throw new InvalidOperationException("Visitor creation failed");
 
                 entityDto.InviteToken = result.ResultData?.InviteToken;
-                entityDto.AccessGroups = default!;
 
                 return (await base.CreateAsync(entityDto)).ResultData
                     ?? throw new InvalidOperationException("Visitor creation failed");

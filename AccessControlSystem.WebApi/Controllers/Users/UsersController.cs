@@ -11,7 +11,8 @@ namespace AccessControlSystem.WebApi.Controllers.Users;
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController(IUserService userService)
-    : BaseController<IUserService, User, UserDto, int>(userService)
+    : BaseController<IUserService, UserDto, UserDto, UserDto, UserDto, User,
+        int>(userService)
 {
     private readonly IUserService _userService = userService;
 

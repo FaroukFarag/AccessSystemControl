@@ -9,7 +9,8 @@ namespace AccessControlSystem.WebApi.Controllers.Roles;
 [Route("api/[controller]")]
 [ApiController]
 public class RolesController(IRoleService roleService) :
-    BaseController<IRoleService, Role, RoleDto, int>(roleService)
+    BaseController<IRoleService, RoleDto, RoleDto, RoleDto, RoleDto, Role,
+        int>(roleService)
 {
 }
 

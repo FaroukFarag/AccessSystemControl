@@ -9,7 +9,8 @@ namespace AccessControlSystem.WebApi.Controllers.Devices;
 [Route("api/[controller]")]
 [ApiController]
 public class DevicesController(IDeviceService service) :
-    BaseController<IDeviceService, Device, DeviceDto, int>(service)
+    BaseController<IDeviceService, DeviceDto, DeviceDto, DeviceDto, DeviceDto,
+        Device, int>(service)
 {
     private readonly IDeviceService _service = service;
 

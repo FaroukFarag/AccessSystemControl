@@ -46,7 +46,8 @@ export class OwnersComponent implements OnInit {
     phoneNumber: '',
     roleId: '3',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '', 
+    subscriptionId: +localStorage.getItem('subscriptionId')!
   };
   owners: any;
 
@@ -88,7 +89,8 @@ export class OwnersComponent implements OnInit {
       phoneNumber: '',
       roleId: '3',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      subscriptionId: +localStorage.getItem('subscriptionId')!
     };
   }
 
@@ -101,10 +103,17 @@ export class OwnersComponent implements OnInit {
     }
 
     this.userService.create('Users/Create', this.ownerData).subscribe({
-      next: (response) => {
-        notify('Device created successfully', 'success', 1500);
-        this.popupVisible = false;
-        this.getAllOwners();
+      next: (response: any) => {
+        if (response.succeeded) {
+          notify('Device created successfully', 'success', 1500);
+          this.popupVisible = false;
+          this.getAllOwners();
+        }
+
+        else {
+          notify('Error creating device', 'error', 2000);
+          console.error(response.message);
+        }
       },
       error: (err) => {
         notify('Error creating device', 'error', 2000);

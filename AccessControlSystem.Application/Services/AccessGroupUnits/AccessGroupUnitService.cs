@@ -13,8 +13,11 @@ public class AccessGroupUnitService(
     IUnitOfWork unitOfWork,
     IMapper mapper) :
     BaseService<
-        AccessGroupUnit,
         AccessGroupUnitDto,
+        AccessGroupUnitDto,
+        AccessGroupUnitDto,
+        AccessGroupUnitDto,
+        AccessGroupUnit,
         (int AccessGroupId, int UnitId)>(
         repository,
         unitOfWork,

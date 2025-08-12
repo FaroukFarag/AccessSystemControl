@@ -43,8 +43,8 @@
 
       <div class="subscriptions-scroll">
         <div class="subscription-card card" *ngFor="let sub of subscriptions">
-          <div class="image" [style.backgroundImage]="'url(' + sub.image + ')'">
-            <div class="renewal-badge">Renewal in {{ sub.renewalInfo }}</div>
+          <div class="image" [style.backgroundImage]="'url(' + sub.imagePath + ')'">
+            <div class="renewal-badge">{{ sub.renewalInfo }}</div>
           </div>
           <div class="card-details">
             <h3>{{sub.customerName}}</h3>

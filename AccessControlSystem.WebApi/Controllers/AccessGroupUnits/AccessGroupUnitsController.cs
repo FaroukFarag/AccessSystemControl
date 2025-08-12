@@ -9,11 +9,9 @@ namespace AccessControlSystem.WebApi.Controllers.AccessGroupUnits;
 [Route("api/[controller]")]
 [ApiController]
 public class AccessGroupUnitsController(IAccessGroupUnitService service) :
-        BaseController<
-            IAccessGroupUnitService,
-            AccessGroupUnit,
-            AccessGroupUnitDto,
-            (int, int)>(service)
+        BaseController<IAccessGroupUnitService, AccessGroupUnitDto,
+            AccessGroupUnitDto, AccessGroupUnitDto, AccessGroupUnitDto,
+            AccessGroupUnit, (int, int)>(service)
 {
     [HttpGet("Get")]
     public async Task<IActionResult> Get(int accessGroupId, int unitId)

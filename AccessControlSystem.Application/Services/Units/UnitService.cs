@@ -21,7 +21,9 @@ public class UnitService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IImageService imageService,
-    IOrderingService<Unit> orderingService) : BaseService<Unit, UnitDto, int>(repository, unitOfWork, mapper), IUnitService
+    IOrderingService<Unit> orderingService) : BaseService<
+        UnitDto, UnitDto, UnitDto, UnitDto, Unit, int>(
+        repository, unitOfWork, mapper), IUnitService
 {
     private readonly IUnitRepository _repository = repository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

@@ -15,6 +15,7 @@ using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.AccessLevel
 using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.Devices;
 using AccessControlSystem.Infrastructure.Http.Models.Airfob.Responses.AccessLevels;
 using AutoMapper;
+using System.Linq.Expressions;
 
 namespace AccessControlSystem.Application.Services.AccessGroups;
 
@@ -24,15 +25,15 @@ public class AccessGroupService(
     IMapper mapper,
     IAirfobAccessLevelService airfobAccessLevelService,
     IAirfobDeviceService airfobDeviceService,
-    IOrderingService<AccessGroup> orderingService) :
-    BaseService<AccessGroup, AccessGroupDto, int>(repository, unitOfWork, mapper),
-    IAccessGroupService
+    IOrderingService<AccessGroup> orderingService) : BaseService<AccessGroupDto, GetAllAccessGroupsDto,
+    AccessGroupDto, AccessGroupDto, AccessGroup, int>(repository, unitOfWork, mapper), IAccessGroupService
 {
     private readonly IAccessGroupRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
     private readonly IAirfobAccessLevelService _airfobAccessLevelService = airfobAccessLevelService;
     private readonly IAirfobDeviceService _airfobDeviceService = airfobDeviceService;
     private readonly IOrderingService<AccessGroup> _orderingService = orderingService;
+
     private static readonly BaseSpecification<AccessGroup> AccessGroupWithDevicesSpec = new()
     {
         IncludeChains =
@@ -54,20 +55,7 @@ public class AccessGroupService(
     {
         return await ExecuteServiceCallAsync(
             operationName: "Create Access Group",
-            action: async () =>
-            {
-                var accessLevels = await CreateAccessLevelsInExternalSystem(accessGroupDto);
-                var createResult = await base.CreateAsync(accessGroupDto);
-
-                if (!createResult.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to create access group in database");
-                }
-
-                await AssignDevicesToAccessLevels(accessGroupDto, accessLevels);
-
-                return createResult.ResultData!;
-            });
+            action: async () => await CreateAccessGroupWithDependencies(accessGroupDto));
     }
 
     public override async Task<ResultDto<AccessGroupDto>> GetAsync(int id)
@@ -81,31 +69,47 @@ public class AccessGroupService(
             });
     }
 
-    public override async Task<ResultDto<IEnumerable<AccessGroupDto>>> GetAllAsync()
+    public override async Task<ResultDto<IEnumerable<GetAllAccessGroupsDto>>> GetAllAsync()
     {
-        return await ExecuteServiceCallAsync(
-            operationName: $"Get all {nameof(AccessGroup)}",
-            action: async () =>
-            {
-                var entities = await _repository.GetAllAsync(AccessGroupWithDevicesSpec);
-
-                return _mapper.Map<IEnumerable<AccessGroupDto>>(entities);
-            });
+        return await GetAllAsync(orderBy: "recent");
     }
 
-    public async Task<ResultDto<IEnumerable<AccessGroupDto>>> GetAllAsync(string orderBy = "Recent")
+    public async Task<ResultDto<IEnumerable<GetAllAccessGroupsDto>>> GetAllAsync(string orderBy = "recent")
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get All Access Groups",
             action: async () =>
             {
-                _orderingService.ApplyOrdering(AccessGroupWithDevicesSpec, OrderingRules, orderBy);
+                var specification = new BaseSpecification<AccessGroup>();
 
-                var accessGroups = await _repository.GetAllAsync(AccessGroupWithDevicesSpec);
+                _orderingService.ApplyOrdering(specification, OrderingRules, orderBy);
 
-                return _mapper.Map<IEnumerable<AccessGroupDto>>(accessGroups);
+                return await _repository.GetAllAsync(BuildGetAllSelector(), specification);
             });
     }
+
+    private async Task<AccessGroupDto> CreateAccessGroupWithDependencies(AccessGroupDto dto)
+    {
+        var accessLevels = await CreateAccessLevelsInExternalSystem(dto);
+        dto.AirfobAccessLevelId = accessLevels.First().Id;
+
+        var createResult = await base.CreateAsync(dto);
+        if (!createResult.Succeeded)
+            throw new InvalidOperationException("Failed to create access group in database");
+
+        await AssignDevicesToAccessLevels(dto, accessLevels);
+        return createResult.ResultData!;
+    }
+
+    private Expression<Func<AccessGroup, GetAllAccessGroupsDto>> BuildGetAllSelector() =>
+        ag => new GetAllAccessGroupsDto
+        {
+            Id = ag.Id,
+            Name = ag.Name,
+            SubscriptionId = ag.SubscriptionId,
+            AirfobAccessLevelId = ag.AirfobAccessLevelId,
+            DevicesCount = ag.AccessGroupDevices.Count()
+        };
 
     private async Task<IEnumerable<CreateAccessLevelResponse>> CreateAccessLevelsInExternalSystem(AccessGroupDto accessGroupDto)
     {
@@ -126,11 +130,9 @@ public class AccessGroupService(
 
     private async Task AssignDevicesToAccessLevels(AccessGroupDto accessGroupDto, IEnumerable<CreateAccessLevelResponse> accessLevels)
     {
-        //var deviceIds = accessGroupDto.Devices!
-        //    .Where(d => d.AirfobDeviceId.HasValue)
-        //    .Select(d => d.AirfobDeviceId!.Value);
-
-        List<int> deviceIds = [];
+        var deviceIds = accessGroupDto.Devices!
+            .Where(d => d.AirfobDeviceId.HasValue)
+            .Select(d => d.AirfobDeviceId!.Value);
 
         if (!deviceIds.Any())
         {

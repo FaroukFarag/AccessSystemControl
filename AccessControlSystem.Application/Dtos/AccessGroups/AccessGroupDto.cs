@@ -7,6 +7,7 @@ namespace AccessControlSystem.Application.Dtos.AccessGroups;
 public class AccessGroupDto : BaseModelDto<int>
 {
     public string Name { get; set; } = default!;
+    public int SubscriptionId { get; set; }
     public int SiteId { get; set; }
     public int ScheduleId { get; set; }
     public int AirfobAccessLevelId { get; set; }

@@ -15,6 +15,6 @@ public class BaseModelImageDtoUrlResolver(IOptions<ImageSettings> settings) : IV
         if (string.IsNullOrWhiteSpace(source.ImagePath))
             return null;
 
-        return $"{_settings.BaseUrl.TrimEnd('/')}/{source.ImagePath.TrimStart('/')}";
+        return $"{_settings.BaseUrl.TrimEnd('/')}/{source.ImagePath.Replace("\\", "/").TrimStart('/')}";
     }
 }

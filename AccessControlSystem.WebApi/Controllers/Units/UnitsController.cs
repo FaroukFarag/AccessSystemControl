@@ -8,8 +8,8 @@ namespace AccessControlSystem.WebApi.Controllers.Units;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UnitsController(IUnitService service) :
-    BaseController<IUnitService, Unit, UnitDto, int>(service)
+public class UnitsController(IUnitService service) : BaseController<IUnitService,
+    UnitDto, UnitDto, UnitDto, UnitDto, Unit, int>(service)
 {
     private readonly IUnitService _service = service;
 

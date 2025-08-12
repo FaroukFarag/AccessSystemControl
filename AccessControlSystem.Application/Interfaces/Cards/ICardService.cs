@@ -4,6 +4,7 @@ using AccessControlSystem.Domain.Models.Cards;
 
 namespace AccessControlSystem.Application.Interfaces.Cards;
 
-public interface ICardService : IBaseService<Card, CardDto, int>
+public interface ICardService : IBaseService<CardDto, CardDto, CardDto,
+    CardDto, Card, int>
 {
 }

@@ -5,7 +5,8 @@ using AccessControlSystem.Domain.Models.AccessGroups;
 
 namespace AccessControlSystem.Application.Interfaces.AccessGroups;
 
-public interface IAccessGroupService : IBaseService<AccessGroup, AccessGroupDto, int>
+public interface IAccessGroupService : IBaseService<AccessGroupDto,
+    GetAllAccessGroupsDto, AccessGroupDto, AccessGroupDto, AccessGroup, int>
 {
-    Task<ResultDto<IEnumerable<AccessGroupDto>>> GetAllAsync(string orderBy);
+    Task<ResultDto<IEnumerable<GetAllAccessGroupsDto>>> GetAllAsync(string orderBy);
 }

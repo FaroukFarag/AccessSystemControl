@@ -5,7 +5,8 @@ using AccessControlSystem.Domain.Models.Units;
 
 namespace AccessControlSystem.Application.Interfaces.Units;
 
-public interface IUnitService : IBaseService<Unit, UnitDto, int>
+public interface IUnitService : IBaseService<UnitDto, UnitDto, UnitDto, UnitDto,
+    Unit, int>
 {
     Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id);
     Task<ResultDto<IEnumerable<UnitDto>>> GetAllAsync(string orderBy);

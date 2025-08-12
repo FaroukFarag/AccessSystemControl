@@ -9,6 +9,7 @@ namespace AccessControlSystem.WebApi.Controllers.Cards;
 [Route("api/[controller]")]
 [ApiController]
 public class CardsController(ICardService service) :
-    BaseController<ICardService, Card, CardDto, int>(service)
+    BaseController<ICardService, CardDto, CardDto, CardDto, CardDto, Card,
+        int>(service)
 {
 }

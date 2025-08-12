@@ -12,6 +12,7 @@ public class CardService(
     ICardRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper) :
-    BaseService<Card, CardDto, int>(repository, unitOfWork, mapper), ICardService
+    BaseService<CardDto, CardDto, CardDto, CardDto, Card, int>(
+        repository, unitOfWork, mapper), ICardService
 {
 }

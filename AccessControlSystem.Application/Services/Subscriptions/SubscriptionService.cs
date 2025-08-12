@@ -19,7 +19,10 @@ public class SubscriptionService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IImageService imageService,
-    IOrderingService<Subscription> orderingService) : BaseService<Subscription, SubscriptionDto, int>(repository, unitOfWork, mapper), ISubscriptionService
+    IOrderingService<Subscription> orderingService) : BaseService<
+        SubscriptionDto, SubscriptionDto, SubscriptionDto,
+        SubscriptionDto, Subscription, int>(
+        repository, unitOfWork, mapper), ISubscriptionService
 {
     private readonly ISubscriptionRepository _repository = repository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

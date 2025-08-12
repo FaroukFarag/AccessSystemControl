@@ -13,8 +13,11 @@ public class AccessGroupDeviceService(
     IUnitOfWork unitOfWork,
     IMapper mapper) :
     BaseService<
-        AccessGroupDevice,
         AccessGroupDeviceDto,
+        AccessGroupDeviceDto,
+        AccessGroupDeviceDto,
+        AccessGroupDeviceDto,
+        AccessGroupDevice,
         (int AccessGroupId, int DeviceId)>(
         repository,
         unitOfWork,
