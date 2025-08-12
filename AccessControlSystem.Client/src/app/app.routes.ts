@@ -17,32 +17,52 @@ import { UnitDetailsComponent } from './views/units/unit-details/unit-details.co
 import { OwnerDashboardComponent } from './views/dashboard/owner-dashboard/owner-dashboard.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: AppLayoutComponent,
-    children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'subscriptions', component: SubscriptionsComponent },
-      { path: 'devices', component: DevicesComponent },
-      { path: 'device-details', component: DeviceDetailsComponent },
-      { path: 'subscription-details/:id', component: SubscriptionDetailsComponent },
-      { path: 'owners', component: OwnersComponent },
-      { path: 'owner-details', component: OwnerDetailsComponent },
-      { path: 'units', component: UnitsComponent },
-      { path: 'unit-details', component: UnitDetailsComponent },
-      //{ path: 'access-groups', component: AccessGroupsComponent },
-      { path: 'cards', component: CardsComponent },
-      { path: 'admins', component: AdminsComponent },
-      { path: 'access-groups-devices', component: AccessGroupDevicesComponent },
-      { path: 'owner-dashboard', component: OwnerDashboardComponent },
-    ]
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: '**',
-    redirectTo: 'dashboard'
-  }
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'subscriptions', component: SubscriptionsComponent },
+  { path: 'devices', component: DevicesComponent },
+  { path: 'device-details', component: DeviceDetailsComponent },
+  { path: 'subscription-details/:id', component: SubscriptionDetailsComponent },
+  { path: 'owners', component: OwnersComponent },
+  { path: 'owner-details', component: OwnerDetailsComponent },
+  { path: 'units', component: UnitsComponent },
+  { path: 'unit-details', component: UnitDetailsComponent },
+  { path: 'cards', component: CardsComponent },
+  { path: 'admins', component: AdminsComponent },
+  { path: 'access-groups-devices', component: AccessGroupDevicesComponent },
+  { path: 'owner-dashboard', component: OwnerDashboardComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '**', redirectTo: '/dashboard' }
 ];
+
+//export const routes: Routes = [
+//  {
+//    path: '',
+//    component: AppLayoutComponent,
+//    children: [
+//      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+//      { path: 'dashboard', component: DashboardComponent },
+//      { path: 'subscriptions', component: SubscriptionsComponent },
+//      { path: 'devices', component: DevicesComponent },
+//      { path: 'device-details', component: DeviceDetailsComponent },
+//      { path: 'subscription-details/:id', component: SubscriptionDetailsComponent },
+//      { path: 'owners', component: OwnersComponent },
+//      { path: 'owner-details', component: OwnerDetailsComponent },
+//      { path: 'units', component: UnitsComponent },
+//      { path: 'unit-details', component: UnitDetailsComponent },
+//      //{ path: 'access-groups', component: AccessGroupsComponent },
+//      { path: 'cards', component: CardsComponent },
+//      { path: 'admins', component: AdminsComponent },
+//      { path: 'access-groups-devices', component: AccessGroupDevicesComponent },
+//      { path: 'owner-dashboard', component: OwnerDashboardComponent },
+//    ]
+//  },
+//  {
+//    path: 'login',
+//    component: LoginComponent
+//  },
+//  {
+//    path: '**',
+//    redirectTo: 'dashboard'
+//  }
+//];

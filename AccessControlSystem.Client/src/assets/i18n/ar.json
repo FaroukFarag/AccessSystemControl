@@ -1,10 +1,34 @@
 {
-  "DASHBOARD": "لوحة التحكم",
-  "SUBSCRIPTIONS": "الاشتراكات",
-  "DEVICES": "الأجهزة",
-  "OWNERS": "المالكون",
-  "ADMINS": "المشرفون",
-  "UNITS": "الوحدات",
-  "CARDS": "البطاقات",
-  "LOGOUT": "تسجيل الخروج"
+  "navigation": {
+    "dashboard": "لوحة التحكم",
+    "subscriptions": "الاشتراكات",
+    "devices": "الأجهزة",
+    "settings": "الإعدادات"
+  },
+  "auth": {
+    "welcome_back": "مرحباً بعودتك",
+    "please_login": "الرجاء تسجيل الدخول إلى حسابك!",
+    "email": "اسم المستخدم / البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "remember_me": "تذكرني",
+    "forgot_password": "نسيت كلمة المرور؟",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "search": "ابحث هنا...",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "actions": "إجراءات"
+  },
+  "user": {
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "admin": "مدير",
+    "user": "مستخدم"
+  }
 }

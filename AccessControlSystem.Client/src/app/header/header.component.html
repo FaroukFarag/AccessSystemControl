@@ -1,0 +1,62 @@
+<header class="header" [dir]="direction">
+  <div class="header-content">
+    <div class="header-left">
+      <button class="sidebar-toggle" (click)="toggleSidebar()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <h1 class="page-title">{{ 'navigation.dashboard' | translate }}</h1>
+    </div>
+
+    <div class="header-right">
+      <div class="language-switcher" [class.active]="isLanguageDropdownOpen">
+        <button class="language-btn" (click)="toggleLanguageDropdown()">
+          <span class="current-language">
+            {{ getCurrentLanguage()?.flag }}
+          </span>
+          <svg class="dropdown-arrow" [class.rotated]="isLanguageDropdownOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        
+        <div class="language-dropdown" *ngIf="isLanguageDropdownOpen">
+          <button 
+            *ngFor="let lang of languages" 
+            class="language-option" 
+            [class.active]="lang.code === currentLanguage"
+            (click)="switchLanguage(lang.code)"
+          >
+            <span class="language-flag">{{ lang.flag }}</span>
+            <span class="language-name">{{ lang.name }}</span>
+            <svg *ngIf="lang.code === currentLanguage" class="check-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+
+      <div class="user-profile" (click)="toggleUserDropdown()" [class.active]="isUserDropdownOpen">
+      <!--  <img src="assets/images/profile.jpg" alt="user-name" class="profile-image">-->
+        <div class="profile-info">
+          <span class="profile-name">Shaimaa Gamal</span>
+          <span class="profile-role">{{ 'user.admin' | translate }}</span>
+        </div>
+        <svg class="dropdown-arrow" [class.rotated]="isUserDropdownOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+
+        <!-- User Dropdown Menu -->
+        <div class="user-dropdown" *ngIf="isUserDropdownOpen">
+          <button class="dropdown-item" (click)="logout()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            <span>{{ 'auth.logout' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

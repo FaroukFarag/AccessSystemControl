@@ -1,6 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { SidebarService } from '../../../services/sidebar/sidebar.service';
+import { LanguageService } from '../../../services/language/language.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../../services/users/user.service';
+import notify from 'devextreme/ui/notify';
+import { DomSanitizer } from '@angular/platform-browser';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -12,16 +20,11 @@ import {
   DxFormModule,
   DxFileUploaderModule,
 } from 'devextreme-angular';
-import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
-import notify from 'devextreme/ui/notify';
-import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
-import { DomSanitizer } from '@angular/platform-browser';
-
 @Component({
-  selector: 'app-subscriptions',
+  selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
+  imports: [CommonModule,
+    TranslatePipe,
     DxPopupModule,
     DxButtonModule,
     DxTemplateModule,
@@ -30,20 +33,20 @@ import { DomSanitizer } from '@angular/platform-browser';
     DxTextAreaModule,
     DxDateBoxModule,
     DxFormModule,
-    DxDropDownButtonModule,
-    DxFileUploaderModule
-  ],
-  templateUrl: './subscriptions.component.html',
-  styleUrl: './subscriptions.component.scss'
+    DxFileUploaderModule,],
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.scss']
 })
-export class SubscriptionsComponent {
+export class AdminDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
-  popupVisible: boolean = false;
-  sortBy = ['Recent', 'Name', 'Subscription'];
+
+  isSidebarOpen = true;
+  private sidebarSubscription?: Subscription;
+  devicesCount: any;
+  subscriptionsCount: any;
   subscriptions: any;
   imageValidationError: string = '';
-  MonthNumber: number = 1;
-
+  popupVisible: boolean = false;
   subscriptionData = {
     SubscriptionImageFile: null,
     SubscriptionImageUrl: '',
@@ -82,11 +85,41 @@ export class SubscriptionsComponent {
       name: 'Enterprise'
     }
   ]
+  devices = [
+    {
+      name: 'Smart TV Living Room',
+      startDate: '2024-01-15',
+      endDate: '2024-12-15',
+      timeRemaining: '8 months'
+    },
+    {
+      name: 'Mobile Device - iPhone',
+      startDate: '2024-02-01',
+      endDate: '2024-11-01',
+      timeRemaining: '7 months'
+    },
+    {
+      name: 'Laptop - MacBook Pro',
+      startDate: '2024-03-10',
+      endDate: '2025-03-10',
+      timeRemaining: '11 months'
+    },
+    {
+      name: 'Tablet - iPad Air',
+      startDate: '2024-01-20',
+      endDate: '2024-10-20',
+      timeRemaining: '6 months'
+    }
+  ];
+
 
   constructor(
+    private sidebarService: SidebarService,
+    public languageService: LanguageService,
     private router: Router,
     private subscriptionsService: SubscriptionService,
-    private sanitizer: DomSanitizer) {
+    private userService: UserService,
+    private sanitizer: DomSanitizer ) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
       displayExpr: 'name',
@@ -97,8 +130,26 @@ export class SubscriptionsComponent {
   }
 
   ngOnInit() {
+    this.sidebarSubscription = this.sidebarService.isOpen$.subscribe(
+      (isOpen: boolean) => this.isSidebarOpen = isOpen
+    );
+   
+    this.getSubscriptionsCount();
+    this.getDevicesCount();
     this.getAllSubscriptions();
+
   }
+
+  ngOnDestroy() {
+    if (this.sidebarSubscription) {
+      this.sidebarSubscription.unsubscribe();
+    }
+  }
+
+  get sidebarOpen() {
+    return this.isSidebarOpen;
+  }
+
 
   getAllSubscriptions(orderBy?: string): void {
     const baseUrl = 'Subscriptions/GetAll';
@@ -114,6 +165,30 @@ export class SubscriptionsComponent {
       error: (err) => console.error("Failed to load subscriptions:", err)
     });
   }
+
+
+  getSubscriptionsCount() {
+    this.userService.getAll('Subscriptions/GetSubscriptionsCount').subscribe((data: any) => {
+      this.subscriptionsCount = data.resultData;
+    })
+  }
+
+  getDevicesCount() {
+    this.userService.getAll('Devices/GetDevicesCount').subscribe((data: any) => {
+      this.devicesCount = data.resultData;
+    })
+  }
+
+
+  navigateToSubscriptions() {
+    this.router.navigate(['/subscriptions']);
+  }
+
+  navigateToDetailsPage(id: number) {
+    this.router.navigate(['/subscription-details', id]);
+  }
+
+
 
   showAddSubscriptionPopup() {
     this.subscriptionData = {
@@ -144,15 +219,11 @@ export class SubscriptionsComponent {
     this.popupVisible = true;
   }
 
-  onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
-    //notify(e.itemData.name || e.itemData, 'success', 600);
 
-    this.getAllSubscriptions(e.itemData);
-  }
+  /*Add New Subscription Functionality */
 
-  navigateToDetailsPage(id: number) {
-    this.router.navigate(['/subscription-details', id]);
-  }
+
+ 
 
   sanitizeImage(image: string) {
     return this.sanitizer.bypassSecurityTrustUrl(image);
@@ -250,5 +321,4 @@ export class SubscriptionsComponent {
 
     return selectedDate >= today;
   }
-
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { DxDrawerModule, DxDrawerTypes } from 'devextreme-angular/ui/drawer';
 import { DxListModule, DxToolbarModule } from 'devextreme-angular';
 import { CommonModule } from '@angular/common';
-import { AppComponent } from './../../app.component';
+import { HeaderComponent } from '../../header/header.component'
+import { SidebarComponent } from '../../sidebar/sidebar.component'
 @Component({
   selector: 'app-app-layout',
   standalone: true,
@@ -12,7 +13,9 @@ import { AppComponent } from './../../app.component';
     DxToolbarModule,
     DxListModule,
     CommonModule,
-    AppComponent
+    RouterModule,
+    HeaderComponent,
+    SidebarComponent
   ],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss'

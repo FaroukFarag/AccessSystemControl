@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common'
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+
 import {
   DxPopupModule,
   DxButtonModule,
@@ -32,7 +34,9 @@ import { DeviceService } from '../../../services/devices/device.service';
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
-    DxFileUploaderModule,],
+    DxFileUploaderModule,
+    DxDataGridModule],
+
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss'
 })
@@ -81,6 +85,105 @@ export class SubscriptionDetailsComponent implements OnInit {
     },
   ];
 
+
+  dataSource: any[] = [
+
+    {
+
+      "Traffic type": "Check In",
+
+      "Time": "12:00 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5E",
+
+      "image": "path/to/image1.png"
+
+    },
+
+    {
+
+      "Traffic type": "Check Out",
+
+      "Time": "12:30 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
+
+
+      "image": "path/to/image2.png"
+
+    }, {
+
+      "Traffic type": "Check Out",
+
+      "Time": "12:30 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
+
+
+      "image": "path/to/image2.png"
+
+    }, {
+
+      "Traffic type": "Check Out",
+
+      "Time": "12:30 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
+
+
+      "image": "path/to/image2.png"
+
+    }, {
+
+      "Traffic type": "Check Out",
+
+      "Time": "12:30 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
+
+
+      "image": "path/to/image2.png"
+
+    }, {
+
+      "Traffic type": "Check Out",
+
+      "Time": "12:30 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
+
+
+      "image": "path/to/image2.png"
+
+    }, {
+
+      "Traffic type": "Check Out",
+
+      "Time": "12:30 PM",
+
+      "Date": new Date(2023, 9, 1),
+
+      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
+
+
+      "image": "path/to/image2.png"
+
+    },
+
+
+  ];
   constructor(
     private route: ActivatedRoute,
     private subscriptionsService: SubscriptionService,
