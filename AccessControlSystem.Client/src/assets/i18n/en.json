@@ -2,6 +2,7 @@
   "navigation": {
     "dashboard": "Dashboard",
     "subscriptions": "Subscriptions",
+    "owners": "Owners",
     "devices": "Devices",
     "settings": "Settings"
   },

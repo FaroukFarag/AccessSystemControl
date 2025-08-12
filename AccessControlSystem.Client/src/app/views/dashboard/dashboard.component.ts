@@ -9,12 +9,14 @@ import { OwnerDashboardComponent } from '../dashboard/owner-dashboard/owner-dash
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component'; 
 import { Router } from '@angular/router';
 import { SubscriptionService } from '../../services/subscriptions/subscription.service';
+import { SubAdminDashboardComponent } from './sub-admin-dashboard/sub-admin-dashboard.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     OwnerDashboardComponent,
     AdminDashboardComponent,
+    SubAdminDashboardComponent,
     DxDataGridModule,
     DxButtonModule,
     DxChartModule,
