@@ -50,6 +50,8 @@ builder.Services.RegisterDbContext(builder.Configuration);
 builder.Services.RegisterConfiguration(builder.Configuration);
 builder.Services.RegisterServices();
 builder.Services.RegisterRepositories();
+builder.Services.RegisterHelpers();
+builder.Services.RegisterHelpers();
 builder.Services.RegisterSpecifications();
 builder.Services.RegisterStrategies();
 builder.Services.RegisterUnitOfWork();

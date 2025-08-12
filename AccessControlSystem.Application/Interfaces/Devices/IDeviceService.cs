@@ -5,7 +5,8 @@ using AccessControlSystem.Domain.Models.Devices;
 
 namespace AccessControlSystem.Application.Interfaces.Devices;
 
-public interface IDeviceService : IBaseService<Device, DeviceDto, int>
+public interface IDeviceService : IBaseService<DeviceDto, DeviceDto, DeviceDto,
+    DeviceDto, Device, int>
 {
     Task<ResultDto<IEnumerable<DeviceDto>>> GetAllAsync(string orderBy);
     Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroupAsync(int accessGroupId);

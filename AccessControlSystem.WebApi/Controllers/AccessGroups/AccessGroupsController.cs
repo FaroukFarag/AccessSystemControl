@@ -9,7 +9,8 @@ namespace AccessControlSystem.WebApi.Controllers.AccessGroups;
 [Route("api/[controller]")]
 [ApiController]
 public class AccessGroupsController(IAccessGroupService service) :
-    BaseController<IAccessGroupService, AccessGroup, AccessGroupDto, int>(service)
+    BaseController<IAccessGroupService, AccessGroupDto, GetAllAccessGroupsDto,
+        AccessGroupDto, AccessGroupDto, AccessGroup, int>(service)
 {
     private readonly IAccessGroupService _service = service;
 

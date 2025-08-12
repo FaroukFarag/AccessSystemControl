@@ -13,7 +13,7 @@ public class BaseModelImageUrlResolver(IOptions<ImageSettings> settings) : IValu
     public string Resolve(BaseImageModelDto<int> source, BaseImageModel<int> destination, string? destMember, ResolutionContext context)
     {
         if (string.IsNullOrWhiteSpace(source.ImagePath))
-            return null;
+            return default!;
 
         return $"{source.ImagePath.Replace($"{_settings.BaseUrl.TrimEnd('/')}/", "").TrimStart('/')}";
     }

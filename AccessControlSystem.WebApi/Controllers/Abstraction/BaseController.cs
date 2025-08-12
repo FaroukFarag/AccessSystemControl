@@ -6,10 +6,15 @@ namespace AccessControlSystem.WebApi.Controllers.Abstraction;
 
 [Route("api/[controller]")]
 [ApiController]
-public abstract class BaseController<TService, TEntity, TEntityDto, TPrimaryKey> : ControllerBase
+public abstract class BaseController<TService, TCreateEntityDto, TGetAllEntitiesDto,
+    TGetEntityDto, TUpdateEntityDto, TEntity, TPrimaryKey> : ControllerBase
+    where TCreateEntityDto : class
+    where TGetAllEntitiesDto : class
+    where TGetEntityDto : class
+    where TUpdateEntityDto : class
     where TEntity : class
-    where TEntityDto : class
-    where TService : IBaseService<TEntity, TEntityDto, TPrimaryKey>
+    where TService : IBaseService<TCreateEntityDto, TGetAllEntitiesDto,
+        TGetEntityDto, TUpdateEntityDto, TEntity, TPrimaryKey>
 {
     private readonly TService _service;
 
@@ -19,15 +24,16 @@ public abstract class BaseController<TService, TEntity, TEntityDto, TPrimaryKey>
     }
 
     [HttpPost("Create")]
-    public virtual async Task<IActionResult> Create(TEntityDto entityDto)
+    public virtual async Task<IActionResult> Create(TCreateEntityDto createEntityDto)
     {
-        return Ok(await _service.CreateAsync(entityDto));
+        return Ok(await _service.CreateAsync(createEntityDto));
     }
 
     [HttpPost("CreateRange")]
-    public virtual async Task<IActionResult> CreateRange(IEnumerable<TEntityDto> entitiesDtos)
+    public virtual async Task<IActionResult> CreateRange(
+        IEnumerable<TCreateEntityDto> createEntitiesDtos)
     {
-        return Ok(await _service.CreateRangeAsync(entitiesDtos));
+        return Ok(await _service.CreateRangeAsync(createEntitiesDtos));
     }
 
     [HttpGet("Get")]
@@ -54,15 +60,15 @@ public abstract class BaseController<TService, TEntity, TEntityDto, TPrimaryKey>
     }
 
     [HttpPut("Update")]
-    public virtual async Task<IActionResult> Update(TEntityDto entityDto)
+    public virtual async Task<IActionResult> Update(TUpdateEntityDto updateEntityDto)
     {
-        return Ok(await _service.UpdateAsync(entityDto));
+        return Ok(await _service.UpdateAsync(updateEntityDto));
     }
 
     [HttpPut("UpdateRange")]
-    public virtual async Task<IActionResult> UpdateRange(IEnumerable<TEntityDto> entitiesDtos)
+    public virtual async Task<IActionResult> UpdateRange(IEnumerable<TUpdateEntityDto> updateEntitiesDtos)
     {
-        return Ok(await _service.UpdateRangeAsync(entitiesDtos));
+        return Ok(await _service.UpdateRangeAsync(updateEntitiesDtos));
     }
 
     [HttpDelete("Delete")]
@@ -77,9 +83,9 @@ public abstract class BaseController<TService, TEntity, TEntityDto, TPrimaryKey>
     }
 
     [HttpDelete("DeleteRange")]
-    public virtual async Task<IActionResult> DeleteRange(IEnumerable<TEntityDto> entitiesDtos)
+    public virtual async Task<IActionResult> DeleteRange(IEnumerable<TGetAllEntitiesDto> getAllEntitiesDtos)
     {
-        return Ok(await _service.DeleteRangeAsync(entitiesDtos));
+        return Ok(await _service.DeleteRangeAsync(getAllEntitiesDtos));
     }
 
     protected int GetCurrentUserId()

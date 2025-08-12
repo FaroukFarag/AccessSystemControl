@@ -5,7 +5,8 @@ using AccessControlSystem.Domain.Models.Users;
 
 namespace AccessControlSystem.Application.Interfaces.Users;
 
-public interface IUserService : IBaseService<User, UserDto, int>
+public interface IUserService : IBaseService<UserDto, UserDto, UserDto, UserDto,
+    User, int>
 {
     Task<ResultDto<UserDto>> GetUserByRoleAsync(int userId, int roleId);
     Task<ResultDto<IEnumerable<UserDto>>> GetAllUsersByRoleAsync(int roleId);

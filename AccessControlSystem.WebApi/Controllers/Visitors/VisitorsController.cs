@@ -9,6 +9,6 @@ namespace AccessControlSystem.WebApi.Controllers.Visitors;
 [Route("api/[controller]")]
 [ApiController]
 public class VisitorsController(IVisitorService service)
-    : BaseController<IVisitorService, Visitor, VisitorDto, int>(service)
+    : BaseController<IVisitorService, CreateVisitorDto, VisitorDto, VisitorDto, VisitorDto, Visitor, int>(service)
 {
 }

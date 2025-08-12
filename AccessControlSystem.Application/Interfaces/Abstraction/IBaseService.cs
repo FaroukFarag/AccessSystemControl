@@ -2,18 +2,18 @@
 
 namespace AccessControlSystem.Application.Interfaces.Abstraction;
 
-public interface IBaseService<TEntity, TEntityDto, TPrimaryKey>
-    where TEntity : class
-    where TEntityDto : class
+public interface IBaseService<
+    TCreateEntityDto, TGetAllEntitiesDto, TGetEntityDto,
+    TUpdateEntityDto, TEntity, TPrimaryKey>
 {
-    Task<ResultDto<TEntityDto>> CreateAsync(TEntityDto entityDto);
-    Task<ResultDto<bool>> CreateRangeAsync(IEnumerable<TEntityDto> entitiesDtos);
-    Task<ResultDto<TEntityDto>> GetAsync(TPrimaryKey id);
-    Task<ResultDto<IEnumerable<TEntityDto>>> GetAllAsync();
-    Task<ResultDto<IEnumerable<TEntityDto>>> GetAllPaginatedAsync(PaginatedModelDto paginatedModelDto);
-    Task<ResultDto<IEnumerable<TEntityDto>>> GetAllFilteredAsync<TFilterDto>(TFilterDto filterDto);
-    Task<ResultDto<TEntityDto>> UpdateAsync(TEntityDto newEntityDto);
-    Task<ResultDto<bool>> UpdateRangeAsync(IEnumerable<TEntityDto> entitiesDtos);
-    Task<ResultDto<TEntityDto>> DeleteAsync(TPrimaryKey id);
-    Task<ResultDto<bool>> DeleteRangeAsync(IEnumerable<TEntityDto> entitiesDtos);
+    Task<ResultDto<TCreateEntityDto>> CreateAsync(TCreateEntityDto createEntityDto);
+    Task<ResultDto<bool>> CreateRangeAsync(IEnumerable<TCreateEntityDto> createEntitiesDtos);
+    Task<ResultDto<TGetEntityDto>> GetAsync(TPrimaryKey id);
+    Task<ResultDto<IEnumerable<TGetAllEntitiesDto>>> GetAllAsync();
+    Task<ResultDto<IEnumerable<TGetAllEntitiesDto>>> GetAllPaginatedAsync(PaginatedModelDto paginatedModelDto);
+    Task<ResultDto<IEnumerable<TGetAllEntitiesDto>>> GetAllFilteredAsync<TFilterDto>(TFilterDto filterDto);
+    Task<ResultDto<TUpdateEntityDto>> UpdateAsync(TUpdateEntityDto updateEntityDto);
+    Task<ResultDto<bool>> UpdateRangeAsync(IEnumerable<TUpdateEntityDto> updateEntitiesDtos);
+    Task<ResultDto<TGetEntityDto>> DeleteAsync(TPrimaryKey id);
+    Task<ResultDto<bool>> DeleteRangeAsync(IEnumerable<TGetAllEntitiesDto> getAllEntitiesDtos);
 }

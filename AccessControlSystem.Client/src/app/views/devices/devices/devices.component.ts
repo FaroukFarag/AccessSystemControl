@@ -61,12 +61,10 @@ export class DevicesComponent implements OnInit {
     deviceType: '',
     serial: '',
     siteId: null,
-    macAddress: '',
-    selectedSubscriptions: []
+    macAddress: ''
   };
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any;
-  subscriptionList: any;
   deviceTypes = [
     {
       'id': '1',
@@ -157,15 +155,9 @@ export class DevicesComponent implements OnInit {
     })
   }
 
-  getAllSubscriptions() {
-    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-      this.subscriptionList = data.resultData;
-      console.log("subscriptionssList", this.subscriptionList);
-    })
-  }
   showAddDevicePopup() {
     this.popupVisible = true;
-    this.getAllSubscriptions();
+    
     this.deviceData = {
       deviceImageFile: null,
       deviceImageUrl: '',
@@ -173,8 +165,7 @@ export class DevicesComponent implements OnInit {
       deviceType: '',
       serial: '',
       siteId: null,
-      macAddress: '',
-      selectedSubscriptions: []
+      macAddress: ''
     };
   }
 
@@ -206,7 +197,7 @@ export class DevicesComponent implements OnInit {
     }
 
     const result = this.dxForm.instance.validate();
-    if (!result.isValid || !this.deviceData.selectedSubscriptions.length) {
+    if (!result.isValid) {
       notify('Please fill in all required fields.', 'warning', 1500);
       return;
     }
@@ -220,15 +211,7 @@ export class DevicesComponent implements OnInit {
     formData.append('SiteId', this.deviceData.siteId || '0');
     formData.append('MacAddress', this.deviceData.macAddress);
     formData.append('Active', 'true');
-
-    const subscriptionId = Number(this.deviceData.selectedSubscriptions[0]);
-
-    if (!subscriptionId) {
-      notify('Please select a valid subscription', 'error', 2000);
-      return;
-    }
-
-    formData.append('SubscriptionId', subscriptionId.toString());
+    formData.append('SubscriptionId', localStorage.getItem('subscriptionId')!);
 
     this.deviceService.create('Devices/Create', formData as any).subscribe({
       next: (response: any) => {
@@ -270,6 +253,7 @@ export class DevicesComponent implements OnInit {
   submit() {
     const payload = {
       name: this.groupName,
+      subscriptionId: +localStorage.getItem('subscriptionId')!,
       siteId: this.selectedSiteId,
       scheduleId: this.selectedScheduleId,
       devices: this.selectedDevices

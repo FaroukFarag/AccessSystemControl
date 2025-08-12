@@ -9,11 +9,9 @@ namespace AccessControlSystem.WebApi.Controllers.AccessGroupDevices
     [Route("api/[controller]")]
     [ApiController]
     public class AccessGroupsDevicesController(IAccessGroupDeviceService service) :
-        BaseController<
-            IAccessGroupDeviceService,
-            AccessGroupDevice,
-            AccessGroupDeviceDto,
-            (int, int)>(service)
+        BaseController<IAccessGroupDeviceService, AccessGroupDeviceDto,
+            AccessGroupDeviceDto, AccessGroupDeviceDto,
+            AccessGroupDeviceDto, AccessGroupDevice, (int, int)>(service)
     {
         [HttpGet("Get")]
         public async Task<IActionResult> Get(int accessGroupId, int deviceId)

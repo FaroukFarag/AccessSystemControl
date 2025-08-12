@@ -5,9 +5,8 @@ using AccessControlSystem.Domain.Models.AccessGroupDevices;
 namespace AccessControlSystem.Application.Interfaces.AccessGroupDevices;
 
 public interface IAccessGroupDeviceService :
-    IBaseService<
-        AccessGroupDevice,
-        AccessGroupDeviceDto,
+    IBaseService<AccessGroupDeviceDto, AccessGroupDeviceDto,
+        AccessGroupDeviceDto, AccessGroupDeviceDto, AccessGroupDevice,
         (int AccessGroupId, int DeviceId)>
 {
 }

@@ -9,7 +9,8 @@ namespace AccessControlSystem.WebApi.Controllers.Subscriptions;
 [Route("api/[controller]")]
 [ApiController]
 public class SubscriptionsController(ISubscriptionService service) :
-    BaseController<ISubscriptionService, Subscription, SubscriptionDto, int>(service)
+    BaseController<ISubscriptionService, SubscriptionDto, SubscriptionDto,
+        SubscriptionDto, SubscriptionDto, Subscription, int>(service)
 {
     private readonly ISubscriptionService _service = service;
 

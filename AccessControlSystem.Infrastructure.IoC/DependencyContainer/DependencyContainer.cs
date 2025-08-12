@@ -65,10 +65,10 @@ using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Users;
+using AccessControlSystem.Domain.Services.Shared;
 using AccessControlSystem.Domain.Services.Subscriptions;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Data.Context;
-using AccessControlSystem.Infrastructure.Data.Repositories.Abstraction;
 using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroupDevices;
 using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroups;
 using AccessControlSystem.Infrastructure.Data.Repositories.AccessGroupUnits;
@@ -79,6 +79,7 @@ using AccessControlSystem.Infrastructure.Data.Repositories.Subscriptions;
 using AccessControlSystem.Infrastructure.Data.Repositories.Units;
 using AccessControlSystem.Infrastructure.Data.Repositories.Users;
 using AccessControlSystem.Infrastructure.Data.Repositories.Visitors;
+using AccessControlSystem.Infrastructure.Data.Shared.Helpers;
 using AccessControlSystem.Infrastructure.Data.UnitOfWork;
 using AccessControlSystem.Infrastructure.Http.Clients.Airfob;
 using AccessControlSystem.Infrastructure.Http.Configurations;
@@ -122,7 +123,7 @@ public static class DependencyContainer
 
     public static void RegisterServices(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IBaseService<,,>), typeof(BaseService<,,>))
+        services.AddScoped(typeof(IBaseService<,,,,,>), typeof(BaseService<,,,,,>))
             .AddScoped<ITokensService, TokensService>()
             .AddScoped<IUserService, UserService>()
             .AddScoped<IRoleService, RoleService>()
@@ -133,7 +134,6 @@ public static class DependencyContainer
             .AddScoped<IAccessGroupDeviceService, AccessGroupDeviceService>()
             .AddScoped<IAccessGroupUnitService, AccessGroupUnitService>()
             .AddScoped<IImageService, ImageService>()
-            .AddScoped(typeof(IOrderingService<>), typeof(OrderingService<>))
             .AddScoped<ICardService, CardService>()
             .AddScoped<IVisitorService, VisitorService>()
             .AddScoped<IUserContextService, UserContextService>();
@@ -160,6 +160,14 @@ public static class DependencyContainer
             .AddScoped<IAccessGroupUnitRepository, AccessGroupUnitRepository>()
             .AddScoped<ICardRepository, CardRepository>()
             .AddScoped<IVisitorRepository, VisitorRepository>();
+    }
+
+    public static void RegisterHelpers(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(IOrderingService<>), typeof(OrderingService<>))
+            .AddScoped(typeof(IQueryBuilder<>), typeof(QueryBuilder<>))
+            .AddScoped(typeof(IEntityFinder<,>), typeof(EntityFinder<,>))
+            .AddScoped<IPaginationService, PaginationService>();
     }
 
     public static void RegisterSpecifications(this IServiceCollection services)

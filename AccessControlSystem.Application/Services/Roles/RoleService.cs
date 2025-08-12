@@ -14,7 +14,9 @@ public class RoleService(
     IRoleRepository repository,
     IUnitOfWork unitOfWork,
     IMapper mapper,
-    RoleManager<Role> roleManager) : BaseService<Role, RoleDto, int>(repository, unitOfWork, mapper), IRoleService
+    RoleManager<Role> roleManager) : BaseService<
+        RoleDto, RoleDto, RoleDto, RoleDto, Role, int>(
+        repository, unitOfWork, mapper), IRoleService
 {
     private readonly IMapper _mapper = mapper;
     private readonly RoleManager<Role> _roleManager = roleManager;

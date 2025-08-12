@@ -13,6 +13,11 @@ public class OrderingService<TEntity> : IOrderingService<TEntity> where TEntity 
     {
         var orderKey = string.IsNullOrWhiteSpace(orderBy) ? "recent" : orderBy.ToLower();
 
+        ArgumentNullException.ThrowIfNull(specification);
+
+        specification.OrderBy = default!;
+        specification.OrderByDescending = default!;
+
         if (orderingRules.TryGetValue(orderKey, out var applyOrder))
         {
             applyOrder(specification);

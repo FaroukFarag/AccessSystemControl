@@ -4,6 +4,7 @@ using AccessControlSystem.Domain.Models.Visitors;
 
 namespace AccessControlSystem.Application.Interfaces.Visitors;
 
-public interface IVisitorService : IBaseService<Visitor, VisitorDto, int>
+public interface IVisitorService : IBaseService<CreateVisitorDto, VisitorDto, VisitorDto,
+    VisitorDto, Visitor, int>
 {
 }

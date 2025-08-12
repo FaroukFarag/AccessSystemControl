@@ -25,7 +25,9 @@ public class UserService(
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
     ITokensService tokensService,
-    IOrderingService<User> orderingService) : BaseService<User, UserDto, int>(userRepository, unitOfWork, mapper), IUserService
+    IOrderingService<User> orderingService) : BaseService<
+        UserDto, UserDto, UserDto, UserDto, User, int>(
+        userRepository, unitOfWork, mapper), IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;

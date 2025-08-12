@@ -102,7 +102,8 @@ export class AccessGroupsComponent {
       name: newData.name,
       siteId: newData.siteId,
       scheduleId: newData.scheduleId,
-      devices: newData.devices
+      devices: newData.devices,
+      subscriptionId: +localStorage.getItem('subscriptionId')!
     } as AccessGroup;
 
     e.cancel = true;

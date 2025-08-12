@@ -20,7 +20,9 @@ public class DeviceService(
     IMapper mapper,
     IImageService imageService,
     IAirfobDeviceService airfobDeviceService,
-    IOrderingService<Device> orderingService) : BaseService<Device, DeviceDto, int>(repository, unitOfWork, mapper), IDeviceService
+    IOrderingService<Device> orderingService) : BaseService<
+        DeviceDto, DeviceDto, DeviceDto, DeviceDto, Device, int>(
+        repository, unitOfWork, mapper), IDeviceService
 {
     private readonly IDeviceRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
