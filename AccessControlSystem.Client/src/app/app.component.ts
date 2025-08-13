@@ -20,7 +20,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit {
   showLayout = true;
 
-  constructor(private router: Router) {
+  constructor(public router: Router) {
     // Listen to route changes
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -36,7 +36,16 @@ export class AppComponent implements OnInit {
 
   checkAuthState() {
     const token = localStorage.getItem('authToken');
-    this.showLayout = !!token && !this.router.url.includes('/login');
+    const isLoginPage = this.router.url.includes('/login');
+    
+    if (!token && !isLoginPage) {
+      // No token and not on login page, redirect to login
+      this.router.navigate(['/login']);
+      this.showLayout = false;
+    } else {
+      // Normal case
+      this.showLayout = !!token && !isLoginPage;
+    }
   }
 
   onLogout() {
