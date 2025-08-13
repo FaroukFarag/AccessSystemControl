@@ -83,6 +83,7 @@ export class DashboardComponent {
   unitsList: any;
   userRole: any;
 
+
   constructor(
     private unitsService: UnitService,
     private userService: UserService,
@@ -164,6 +165,7 @@ export class DashboardComponent {
 
   navigateToOwners() {
     this.router.navigate(['/owners']);
+
   }
 
   navigateToSubscriptions() {

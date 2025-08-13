@@ -222,9 +222,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   /*Add New Subscription Functionality */
 
-
- 
-
   sanitizeImage(image: string) {
     return this.sanitizer.bypassSecurityTrustUrl(image);
   }

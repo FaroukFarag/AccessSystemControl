@@ -128,7 +128,7 @@
 <div class="dashboard-view-container">
 
   <app-admin-dashboard *ngIf="userRole === '1'"></app-admin-dashboard>
-  <app-sub-admin-dashboard *ngIf="userRole === '2'"></app-sub-admin-dashboard>
+  <sub-admin-dashboard *ngIf="userRole === '2'"></sub-admin-dashboard>
   <app-owner-dashboard *ngIf="userRole === '3'"></app-owner-dashboard>
 
 </div>

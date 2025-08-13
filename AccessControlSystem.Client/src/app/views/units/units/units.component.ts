@@ -153,7 +153,7 @@ export class UnitsComponent {
     })
   }
 
-  showAddDevicePopup() {
+  showAddUnitPopup() {
     this.subscriptionId = localStorage.getItem('subscriptionId');
     this.unitsData = {
       unitImageFile: null,
