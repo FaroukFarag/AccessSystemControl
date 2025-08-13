@@ -96,15 +96,21 @@ public class DeviceService(
             });
     }
 
-    public async Task<ResultDto<long>> GetDevicesCountAsync()
+    public async Task<ResultDto<long>> GetDevicesCountAsync(bool isLastMonth = false)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get Devices Count",
             action: async () =>
             {
-                var devicesCount = await _repository.GetCountAsync();
+                if (!isLastMonth)
+                    return await _repository.GetCountAsync();
 
-                return devicesCount;
+                BaseSpecification<Device> specification = new()
+                {
+                    Criteria = d => d.CreatedAt.Month < DateTime.Now.Month
+                };
+
+                return await _repository.GetCountAsync(specification);
             });
     }
 

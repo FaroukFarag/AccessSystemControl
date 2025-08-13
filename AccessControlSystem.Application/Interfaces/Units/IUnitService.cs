@@ -11,4 +11,5 @@ public interface IUnitService : IBaseService<UnitDto, UnitDto, UnitDto, UnitDto,
     Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id);
     Task<ResultDto<IEnumerable<UnitDto>>> GetAllAsync(string orderBy);
     Task<ResultDto<UnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto);
+    Task<ResultDto<long>> GetUnitsCountAsync(bool isLastMonth = false);
 }

@@ -33,9 +33,15 @@ public class DevicesController(IDeviceService service) :
     }
 
     [HttpGet("GetDevicesCount")]
-    public async Task<IActionResult> GetDevicesCountAsync()
+    public async Task<IActionResult> GetDevicesCount()
     {
         return Ok(await _service.GetDevicesCountAsync());
+    }
+
+    [HttpGet("GetLastMonthDevicesCount")]
+    public async Task<IActionResult> GetLastMonthDevicesCount()
+    {
+        return Ok(await _service.GetDevicesCountAsync(true));
     }
 
     [HttpPut("Update")]
