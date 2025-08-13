@@ -47,6 +47,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   subscriptions: any;
   imageValidationError: string = '';
   popupVisible: boolean = false;
+  subscriptionsLAstMonthCount!: number;
+  devicesLastMonthCount!: number;
   subscriptionData = {
     SubscriptionImageFile: null,
     SubscriptionImageUrl: '',
@@ -137,7 +139,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.getSubscriptionsCount();
     this.getDevicesCount();
     this.getAllSubscriptions();
-
+    this.getSubscriptionsLastMonthCount();
+    this.getDevicesLAstMonthCount();
   }
 
   ngOnDestroy() {
@@ -172,10 +175,20 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       this.subscriptionsCount = data.resultData;
     })
   }
-
+  getSubscriptionsLastMonthCount() {
+    this.userService.getAll('Subscriptions/GetLastMonthSubscriptionsCount').subscribe((data: any) => {
+      this.subscriptionsLAstMonthCount = data.resultData;
+    })
+  }
   getDevicesCount() {
     this.userService.getAll('Devices/GetDevicesCount').subscribe((data: any) => {
       this.devicesCount = data.resultData;
+    })
+  }
+
+   getDevicesLAstMonthCount() {
+     this.userService.getAll('Devices/GetLastMonthDevicesCount').subscribe((data: any) => {
+      this.devicesLastMonthCount = data.resultData;
     })
   }
 
