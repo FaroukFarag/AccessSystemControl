@@ -222,33 +222,31 @@
         </div>
       </div>
 
-      <div class="section-scroll">
-        <div *ngFor="let unit of unitsList" class="subscription-card">
-          <div class="subscription-image">
-
-            <img [src]="unit.imagePath" alt="Card Image" class="card-image">
-
-            <div class="village-overlay">unit.name</div>
-          </div>
-          <div class="subscription-content">
-            <div class="subscription-details">
-              <div class="subscription-detail">
-                <img src="/assets/icons/owners.svg" alt="owner" class="detail-icon" />
-                <span class="detail-label">{{ 'owner' | translate }}:</span>
-                <span class="detail-value">{{unit?.owner.ownerName}}</span>
-              </div>
-              <div class="subscription-detail">
-                <img src="/assets/icons/device.svg" alt="Device" class="detail-icon" />
-                <span class="detail-label">{{ 'card' | translate }}#:</span>
-                <span class="detail-value"> {{unit.cardNumber}} </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+             <div class="section-scroll">
+         <div *ngFor="let unit of unitsList" class="subscription-card" (click)="navigateToUnitDetails(unit.id)">
+           <div class="subscription-image">
+             <img [src]="unit.imagePath || '/assets/images/beach.jpg'" alt="Unit Image" class="card-image">
+             <div class="village-overlay">{{unit.name}}</div>
+           </div>
+           <div class="subscription-content">
+             <div class="subscription-details">
+               <div class="subscription-detail">
+                 <img src="/assets/icons/owners.svg" alt="owner" class="detail-icon" />
+                 <span class="detail-label">{{ 'owner' | translate }}:</span>
+                 <span class="detail-value">{{unit?.owner?.ownerName || 'Unassigned'}}</span>
+               </div>
+               <div class="subscription-detail">
+                 <img src="/assets/icons/device.svg" alt="Device" class="detail-icon" />
+                 <span class="detail-label">{{ 'card' | translate }}#:</span>
+                 <span class="detail-value"> {{unit.cardNumber}} </span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
 
 
-      <div *ngIf="devicesList?.length === 0" class="empty-state">
+      <div *ngIf="unitsList?.length === 0" class="empty-state">
         No Units found for this User.
       </div>
 
@@ -259,7 +257,7 @@
     <div class="devices-container mb-5">
       <div class="devices-header">
         <div class="title">
-          <strong>Owners</strong> <span class="count">({{ ownersList?.length }})</span>
+          <strong>Owners</strong> <span class="count">({{ ownersList?.length || 0 }})</span>
         </div>
         <div class="devices-actions ">
           <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="ownersSortingList"
@@ -270,33 +268,34 @@
 
         </div>
       </div>
+      
+      
 
-      <div class="section-scroll">
-        <div *ngFor="let owner of ownersList" class="subscription-card">
-          <div class="subscription-image">
+             <div class="section-scroll">
+         <div *ngFor="let owner of ownersList" class="subscription-card" (click)="navigateToOwnerDetails(owner.id)">
+           <div class="subscription-image">
+             <img [src]="owner.imagePath || '/assets/images/avatar.jpg'" alt="Owner Image" class="card-image">
+           </div>
+           <div class="subscription-content">
+             <div class="subscription-details">
+               <div class="subscription-detail">
+                 <img src="/assets/icons/owners.svg" alt="owner" class="detail-icon" />
+                 <span class="detail-label">{{ 'owner' | translate }}:</span>
+                 <span class="detail-value">{{owner.userName}}</span>
+               </div>
+               <div class="subscription-detail">
+                 <img src="/assets/icons/device.svg" alt="Device" class="detail-icon" />
+                 <span class="detail-label">{{ 'units' | translate }}#:</span>
+                 <span class="detail-value"> {{owner.units?.length || 0}} </span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
 
-            <img [src]="owner.imagePath" alt="Card Image" class="card-image">
-          </div>
-          <div class="subscription-content">
-            <div class="subscription-details">
-              <div class="subscription-detail">
-                <img src="/assets/icons/owners.svg" alt="owner" class="detail-icon" />
-                <span class="detail-label">{{ 'owner' | translate }}:</span>
-                <span class="detail-value">{{owner.userName}}</span>
-              </div>
-              <div class="subscription-detail">
-                <img src="/assets/icons/device.svg" alt="Device" class="detail-icon" />
-                <span class="detail-label">{{ 'units' | translate }}#:</span>
-                <span class="detail-value"> {{owner.units.length}} </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-
-      <div *ngIf="devicesList?.length === 0" class="empty-state">
-        No Units found for this User.
+      <div *ngIf="ownersList?.length === 0" class="empty-state">
+        No Owners found for this User.
       </div>
 
     </div>

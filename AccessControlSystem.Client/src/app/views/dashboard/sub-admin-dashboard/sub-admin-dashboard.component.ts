@@ -234,11 +234,11 @@ export class SubAdminDashboardComponent {
 
 
   ngOnInit() {
+    this.subscriptionId = localStorage.getItem('subscriptionId');
     this.getAllDevices();
     this.getAllSites();
     this.getAllUnits();
     this.getAllOwners();
-    this.subscriptionId = localStorage.getItem('subscriptionId');
     this.getAllAccessGroups();
     this.getDevicesCount();
   }
@@ -327,18 +327,20 @@ export class SubAdminDashboardComponent {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('ImageFile', this.deviceData.deviceImageFile || '');
-    formData.append('ImagePath', this.deviceData.deviceImageUrl || '');
-    formData.append('Name', this.deviceData.deviceName);
-    formData.append('DeviceType', this.deviceData.deviceType);
-    formData.append('Serial', this.deviceData.serial);
-    formData.append('SiteId', this.deviceData.siteId || '0');
-    formData.append('MacAddress', this.deviceData.macAddress);
-    formData.append('Active', 'true');
-    formData.append('SubscriptionId', localStorage.getItem('subscriptionId')!);
+    // Create JSON payload with subscription ID in request body
+    const devicePayload = {
+      imageFile: this.deviceData.deviceImageFile || null,
+      imagePath: this.deviceData.deviceImageUrl || '',
+      name: this.deviceData.deviceName,
+      deviceType: this.deviceData.deviceType,
+      serial: this.deviceData.serial,
+      siteId: this.deviceData.siteId || 0,
+      macAddress: this.deviceData.macAddress,
+      active: true,
+      subscriptionId: +localStorage.getItem('subscriptionId')!
+    };
 
-    this.deviceService.create('Devices/Create', formData as any).subscribe({
+    this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
           notify('Device created successfully', 'success', 1500);
@@ -375,16 +377,49 @@ export class SubAdminDashboardComponent {
 
 
   getAllOwners(orderBy?: string): void {
+    // For sub-admin, we might need to filter by subscription ID
     const baseUrl = 'Users/GetAllOwners';
-    const url = orderBy?.trim()
-      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
-      : baseUrl;
+    let url = baseUrl;
+    
+    if (this.subscriptionId) {
+      url = `${baseUrl}/${this.subscriptionId}`;
+    }
+    
+    if (orderBy?.trim()) {
+      url = `${url}/${encodeURIComponent(orderBy.trim())}`;
+    }
 
+    console.log('Calling owners API with URL:', url);
     this.userService.getAll(url).subscribe({
       next: (data: any) => {
+        console.log('Owners data received:', data);
         this.ownersList = data.resultData;
+        console.log('Owners list set to:', this.ownersList);
       },
-      error: (err) => console.error("Failed to load owners:", err)
+      error: (err) => {
+        console.error("Failed to load owners:", err);
+        // Try the original URL without subscription ID if the first call fails
+        if (this.subscriptionId && url.includes(this.subscriptionId)) {
+          console.log('Retrying with original URL...');
+          const originalUrl = orderBy?.trim() 
+            ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}` 
+            : baseUrl;
+          
+          this.userService.getAll(originalUrl).subscribe({
+            next: (data: any) => {
+              console.log('Owners data received (retry):', data);
+              this.ownersList = data.resultData;
+              console.log('Owners list set to (retry):', this.ownersList);
+            },
+            error: (retryErr) => {
+              console.error("Failed to load owners (retry):", retryErr);
+              notify('Error loading owners', 'error', 2000);
+            }
+          });
+        } else {
+          notify('Error loading owners', 'error', 2000);
+        }
+      }
     });
   }
 
@@ -404,7 +439,14 @@ export class SubAdminDashboardComponent {
 
   navigateToOwners() {
     this.router.navigate(['/owners']);
+  }
 
+  navigateToOwnerDetails(ownerId: number) {
+    this.router.navigate(['/owner-details'], { queryParams: { id: ownerId } });
+  }
+
+  navigateToUnitDetails(unitId: number) {
+    this.router.navigate(['/unit-details'], { queryParams: { id: unitId } });
   }
 
 

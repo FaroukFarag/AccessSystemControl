@@ -316,17 +316,20 @@ export class SubscriptionDetailsComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('ImageFile', this.deviceData.deviceImageFile);
-    formData.append('Name', this.deviceData.deviceName);
-    formData.append('MacAddress', this.deviceData.macAddress);
-    formData.append('DeviceType', String(this.deviceData.deviceType));
-    formData.append('Serial', this.deviceData.serial);
-    formData.append('SiteId', this.deviceData.siteId || '0');
-    formData.append('Active', 'true');
-    formData.append('SubscriptionId', String(this.id));
+    // Create JSON payload with subscription ID in request body
+    const devicePayload = {
+      imageFile: this.deviceData.deviceImageFile,
+      imagePath: this.deviceData.deviceImageUrl || '',
+      name: this.deviceData.deviceName,
+      macAddress: this.deviceData.macAddress,
+      deviceType: String(this.deviceData.deviceType),
+      serial: this.deviceData.serial,
+      siteId: this.deviceData.siteId || 0,
+      active: true,
+      subscriptionId: +this.id
+    };
 
-    this.deviceService.create('Devices/Create', formData as any).subscribe({
+    this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
           notify('Device created successfully', 'success', 1500);
