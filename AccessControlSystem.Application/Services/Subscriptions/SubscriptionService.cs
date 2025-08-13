@@ -91,15 +91,21 @@ public class SubscriptionService(
             });
     }
 
-    public async Task<ResultDto<long>> GetSubscriptionsCountAsync()
+    public async Task<ResultDto<long>> GetSubscriptionsCountAsync(bool isLastMonth = false)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get Subscriptions Count",
             action: async () =>
             {
-                var subscriptionsCount = await _repository.GetCountAsync();
+                if (!isLastMonth)
+                    return await _repository.GetCountAsync();
 
-                return subscriptionsCount;
+                BaseSpecification<Subscription> specification = new()
+                {
+                    Criteria = d => d.CreatedAt.Month < DateTime.Now.Month
+                };
+
+                return await _repository.GetCountAsync(specification);
             });
     }
 

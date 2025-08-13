@@ -29,6 +29,18 @@ public class UnitsController(IUnitService service) : BaseController<IUnitService
         return Ok(await _service.GetAllAsync(orderBy));
     }
 
+    [HttpGet("GetUnitsCount")]
+    public async Task<IActionResult> GetUnitsCount()
+    {
+        return Ok(await _service.GetUnitsCountAsync());
+    }
+
+    [HttpGet("GetLastMonthUnitsCount")]
+    public async Task<IActionResult> GetLastMonthUnitsCount()
+    {
+        return Ok(await _service.GetUnitsCountAsync(true));
+    }
+
     [HttpPut("AssignOwnerToUnit")]
     public virtual async Task<IActionResult> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
     {

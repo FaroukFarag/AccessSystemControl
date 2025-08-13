@@ -66,7 +66,7 @@ public class AccessControlDbContext(
                     .GetMethod(nameof(SetTenantFilter), BindingFlags.NonPublic | BindingFlags.Instance)
                     ?.MakeGenericMethod(clrType);
 
-                method?.Invoke(this, new object[] { modelBuilder });
+                method?.Invoke(this, [modelBuilder]);
             }
 
             else if (clrType == typeof(Subscription))
@@ -74,7 +74,7 @@ public class AccessControlDbContext(
                 var method = typeof(AccessControlDbContext)
                     .GetMethod(nameof(SetSubscriptionFilter), BindingFlags.NonPublic | BindingFlags.Instance);
 
-                method?.Invoke(this, new object[] { modelBuilder });
+                method?.Invoke(this, [modelBuilder]);
             }
         }
     }

@@ -26,6 +26,12 @@ public class SubscriptionsController(ISubscriptionService service) :
         return Ok(await _service.GetSubscriptionsCountAsync());
     }
 
+    [HttpGet("GetLastMonthSubscriptionsCount")]
+    public async Task<IActionResult> GetLastMonthSubscriptionsCount()
+    {
+        return Ok(await _service.GetSubscriptionsCountAsync(true));
+    }
+
     [HttpPut("Update")]
     public override Task<IActionResult> Update([FromForm] SubscriptionDto dto)
     {

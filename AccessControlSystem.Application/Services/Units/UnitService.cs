@@ -51,6 +51,31 @@ public class UnitService(
             });
     }
 
+    public async Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Unit with Includes",
+            action: async () =>
+            {
+                var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>()
+                {
+                    Includes = [u => u.Owner!],
+                    IncludeChains =
+                    [
+                        new IncludeChain<Unit>
+                        {
+                            InitialInclude = u => u.AccessGroupUnits,
+                            ThenIncludes = [
+                                agu => (agu as AccessGroupUnit)!.AccessGroup,
+                                ag => (ag as AccessGroup)!.AccessGroupDevices,
+                                agd => (agd as AccessGroupDevice)!.Device,
+                            ]
+                        }
+                    ]
+                });
+                return _mapper.Map<UnitDto>(unit);
+            });
+    }
 
     public override async Task<ResultDto<IEnumerable<UnitDto>>> GetAllAsync()
     {
@@ -83,29 +108,21 @@ public class UnitService(
             });
     }
 
-    public async Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id)
+    public async Task<ResultDto<long>> GetUnitsCountAsync(bool isLastMonth)
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Get Unit with Includes",
+            operationName: "Get Units Count",
             action: async () =>
             {
-                var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>()
+                if (!isLastMonth)
+                    return await _repository.GetCountAsync();
+
+                BaseSpecification<Unit> specification = new()
                 {
-                    Includes = [u => u.Owner!],
-                    IncludeChains =
-                    [
-                        new IncludeChain<Unit>
-                        {
-                            InitialInclude = u => u.AccessGroupUnits,
-                            ThenIncludes = [
-                                agu => (agu as AccessGroupUnit)!.AccessGroup,
-                                ag => (ag as AccessGroup)!.AccessGroupDevices,
-                                agd => (agd as AccessGroupDevice)!.Device,
-                            ]
-                        }
-                    ]
-                });
-                return _mapper.Map<UnitDto>(unit);
+                    Criteria = d => d.CreatedAt.Month < DateTime.Now.Month
+                };
+
+                return await _repository.GetCountAsync(specification);
             });
     }
 

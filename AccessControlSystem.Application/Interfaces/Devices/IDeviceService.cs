@@ -10,5 +10,5 @@ public interface IDeviceService : IBaseService<DeviceDto, DeviceDto, DeviceDto,
 {
     Task<ResultDto<IEnumerable<DeviceDto>>> GetAllAsync(string orderBy);
     Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroupAsync(int accessGroupId);
-    Task<ResultDto<long>> GetDevicesCountAsync();
+    Task<ResultDto<long>> GetDevicesCountAsync(bool isLastMonth = false);
 }
