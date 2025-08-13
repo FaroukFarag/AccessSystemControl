@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'ar', name: 'العربية', flag: '🇸🇦' }
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' }
   ];
 
   direction: 'ltr' | 'rtl' = 'ltr';
