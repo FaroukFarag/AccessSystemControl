@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
+import { LanguageService } from '../../../services/language/language.service';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -36,6 +37,7 @@ import { Location } from '@angular/common';
 })
 export class OwnersComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
+  direction: 'ltr' | 'rtl' = 'ltr';
   sortBy = ['Recent', 'Name'];
 
   popupVisible: boolean = false;
@@ -51,11 +53,19 @@ export class OwnersComponent implements OnInit {
   };
   owners: any;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private userService: UserService,
-    private location: Location) { }
+    private location: Location,
+    private languageService: LanguageService
+  ) { }
 
   ngOnInit(): void {
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
+
     this.getAllOwners();
   }
   backClicked() {

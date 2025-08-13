@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SidebarService } from '../services/sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../pipes/translate.pipe';
+import { LanguageService } from '../services/language/language.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,6 +16,7 @@ export class SidebarComponent implements OnInit {
   isOpen = true;
   userRole: number = 0;
   menuItems: any[] = [];
+  direction: 'ltr' | 'rtl' = 'ltr';
 
   // Admin menu items (role 1)
   adminMenuItems = [
@@ -38,12 +40,18 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private sidebarService: SidebarService,
-    private router: Router
+    private router: Router,
+    private languageService: LanguageService
   ) { }
 
   ngOnInit(): void {
     this.sidebarService.isOpen$.subscribe(isOpen => {
       this.isOpen = isOpen;
+    });
+    
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
     });
     
     // Get user role from localStorage

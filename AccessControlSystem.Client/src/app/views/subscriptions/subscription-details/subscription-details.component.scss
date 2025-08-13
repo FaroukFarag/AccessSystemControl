@@ -352,6 +352,20 @@
   height: 42px;
 }
 
+/* RTL specific styles for search panel */
+.device-trafic-section.rtl {
+  ::ng-deep .dx-datagrid-header-panel .dx-toolbar-items-container {
+    justify-content: center !important;
+    width: 100% !important;
+    bottom: 40px;
+  }
+
+  ::ng-deep .dx-datagrid-search-panel.dx-show-invalid-badge.dx-textbox.dx-texteditor.dx-editor-outlined.dx-searchbox.dx-show-clear-button.dx-texteditor-empty.dx-widget {
+    margin: 0 auto !important;
+    display: block !important;
+  }
+}
+
 ::ng-deep .dx-searchbox .dx-icon-search::before {
   color: #007BE2 !important;
 }

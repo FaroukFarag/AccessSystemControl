@@ -1,5 +1,5 @@
 .sidebar {
-  width: 280px;
+  width: 250px;
   height: 100vh;
   background-color: #fff;
   border-right: 1px solid #edf2f7;
@@ -84,6 +84,16 @@
       color: #007BE2;
     }
   }
+
+  // RTL specific styles for active state
+  .sidebar.rtl & {
+    &.active {
+      .nav-link {
+        border-left: none;
+        border-right: 4px solid #007BE2;
+      }
+    }
+  }
 }
 
 
@@ -123,6 +133,12 @@
   svg {
     width: 20px;
     height: 20px;
+  }
+
+  // RTL specific styles
+  .sidebar.rtl & {
+    margin-right: 0;
+    margin-left: 12px;
   }
 }
 

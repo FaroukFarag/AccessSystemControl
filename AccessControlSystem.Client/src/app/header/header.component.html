@@ -15,7 +15,7 @@
           <span class="current-language">
             {{ getCurrentLanguage()?.flag }}
           </span>
-          <svg class="dropdown-arrow" [class.rotated]="isLanguageDropdownOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="dropdown-arrow" [class.rotated]="isLanguageDropdownOpen" [class.rtl]="direction === 'rtl'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
@@ -43,7 +43,7 @@
           <span class="profile-name">Shaimaa Gamal</span>
           <span class="profile-role">{{ 'user.admin' | translate }}</span>
         </div>
-        <svg class="dropdown-arrow" [class.rotated]="isUserDropdownOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="dropdown-arrow" [class.rotated]="isUserDropdownOpen" [class.rtl]="direction === 'rtl'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
 

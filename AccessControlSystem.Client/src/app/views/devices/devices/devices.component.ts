@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
+import { LanguageService } from '../../../services/language/language.service';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -47,6 +48,7 @@ export class DevicesComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   selectedDevices: any = [];
   popupVisible: boolean = false;
+  direction: 'ltr' | 'rtl' = 'ltr';
   groupDevice_popupVisible: boolean = false;
   sortBy = ['Recent', 'Name'];
 
@@ -98,6 +100,7 @@ export class DevicesComponent implements OnInit {
 
   constructor(private router: Router,
     private deviceService: DeviceService,
+    private languageService: LanguageService,
     private sanitizer: DomSanitizer,
     private subscriptionsService: SubscriptionService,
     private accessGroupService: AccessGroupService,) {
@@ -113,6 +116,11 @@ export class DevicesComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
+
     this.getAllSites();
     this.getAllSchedules();
     this.getAllDevices();
@@ -206,11 +214,11 @@ export class DevicesComponent implements OnInit {
     const devicePayload = {
       imageFile: this.deviceData.deviceImageFile || null,
       imagePath: this.deviceData.deviceImageUrl || '',
-      name: this.deviceData.deviceName,
+      Name: this.deviceData.deviceName,
       deviceType: this.deviceData.deviceType,
-      serial: this.deviceData.serial,
+      Serial: this.deviceData.serial,
       siteId: this.deviceData.siteId || 0,
-      macAddress: this.deviceData.macAddress,
+      MacAddress: this.deviceData.macAddress,
       active: true,
       subscriptionId: +localStorage.getItem('subscriptionId')!
     };

@@ -4,6 +4,7 @@ import { SubscriptionService } from '../../../services/subscriptions/subscriptio
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { LanguageService } from '../../../services/language/language.service';
 
 import {
   DxPopupModule,
@@ -48,7 +49,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   upgradePopupVisible: boolean = false;
   subscription: any;
   imageValidationError: string = '';
-  deviceListEditorOptions: any
+  deviceListEditorOptions: any;
+  direction: 'ltr' | 'rtl' = 'ltr';
 
   devicesList: any;
   deviceData = {
@@ -214,7 +216,8 @@ export class SubscriptionDetailsComponent implements OnInit {
     private subscriptionsService: SubscriptionService,
     private deviceService: DeviceService,
     private router: Router,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private languageService: LanguageService) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -229,6 +232,11 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
+
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
 
     this.getAllSites();
 

@@ -1,6 +1,6 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
-    <img src="/assets/icons/back-arrow.svg" alt="Back Button" tabindex="0" role="button" />
+    <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" tabindex="0" role="button" />
     <h4>{{ subscription?.customerName }}</h4>
   </div>
   <span>Review village details and information</span>
@@ -229,7 +229,7 @@
 
 
 <!--Device Traffic Section-->
-<div class="device-trafic-section mt-4">
+<div class="device-trafic-section mt-4" [class.rtl]="direction === 'rtl'">
   <div class="grid-header">
     <h5>Device traffic</h5>
     <div class="grid-header-btns">

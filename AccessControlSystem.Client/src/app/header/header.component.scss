@@ -129,6 +129,14 @@
         width: 14px;
         height: 14px;
         transition: transform 0.2s ease;
+
+        &.rtl {
+          transform: scaleX(-1);
+        }
+
+        &.rtl.rotated {
+          transform: scaleX(-1) rotate(180deg);
+        }
       }
     }
 

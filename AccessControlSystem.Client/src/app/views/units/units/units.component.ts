@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
+import { LanguageService } from '../../../services/language/language.service';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -40,8 +41,9 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
     DxTagBoxModule], templateUrl: './units.component.html',
   styleUrl: './units.component.scss'
 })
-export class UnitsComponent {
+export class UnitsComponent implements OnInit {
   @ViewChild('unitFormRef', { static: false }) dxForm: any;
+  direction: 'ltr' | 'rtl' = 'ltr';
   popupVisible: boolean = false;
   //sortBy = ['Recent', 'date'];
   sortBy = ['Recent', 'Name'];
@@ -96,7 +98,8 @@ export class UnitsComponent {
     private router: Router,
     private unitsService: UnitService,
     private accessGroupService: AccessGroupService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private languageService: LanguageService) {
     this.deviceTypeEditorOptions = {
       dataSource: this.subscriptionTypes,
       valueExpr: 'name',
@@ -110,6 +113,11 @@ export class UnitsComponent {
   }
 
   ngOnInit() {
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
+
     this.subscriptionId = localStorage.getItem('subscriptionId');
 
     this.unitsData = {
