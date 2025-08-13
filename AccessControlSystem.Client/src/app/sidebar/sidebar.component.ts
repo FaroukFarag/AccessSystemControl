@@ -30,6 +30,12 @@ export class SidebarComponent implements OnInit {
     { icon: 'device', translationKey: 'navigation.devices', active: false },
   ];
 
+  // Owner menu items (role 3) - same as role 2
+  ownerRole3MenuItems = [
+    { icon: 'dashboard', translationKey: 'navigation.dashboard', active: true },
+    { icon: 'device', translationKey: 'navigation.devices', active: false },
+  ];
+
   constructor(
     private sidebarService: SidebarService,
     private router: Router
@@ -49,8 +55,11 @@ export class SidebarComponent implements OnInit {
 
   setMenuItemsByRole(): void {
     if (this.userRole === 2) {
-      // Owner role - show Dashboard, Owners, Devices
+      // Sub-Admin role - show Dashboard, Owners, Devices
       this.menuItems = [...this.ownerMenuItems];
+    } else if (this.userRole === 3) {
+      // Owner role - show Dashboard, Devices
+      this.menuItems = [...this.ownerRole3MenuItems];
     } else {
       // Admin role (default) - show Dashboard, Subscriptions, Devices
       this.menuItems = [...this.adminMenuItems];
