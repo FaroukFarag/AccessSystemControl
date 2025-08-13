@@ -12,89 +12,10 @@
         </svg>
         {{ 'add_subscription' | translate }}
       </dx-button>
-     
+
     </div>
 
-    <!-- ADD Subscription POPUP-->
-<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add New Subscription" [dragEnabled]="true"
-  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
-  <dx-form #subscriptionFormRef [formData]="subscriptionData" [colCount]="1" [labelLocation]="'top'">
-    <dxi-item itemType="simple">
-      <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
-        <img *ngIf="subscriptionData.SubscriptionImageUrl" [src]="subscriptionData.SubscriptionImageUrl"
-             alt="Device Preview" class="thumbnail" />
-        <div *ngIf="imageValidationError" class="validation-message">
-          {{ imageValidationError }}
-        </div>
-      </div>
-    </dxi-item>
-    <dxi-item dataField="CustomerName" [editorOptions]="{ placeholder: 'Customer name' }">
-      <dxi-validation-rule type="required" message="Customer name is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="SubscriptionType" editorType="dxSelectBox" [editorOptions]="{
-         dataSource: subscriptionTypes,
-         placeholder: 'Subscription type',
-         valueExpr: 'id',
-         displayExpr: 'name'
-       }">
-      <dxi-validation-rule type="required" message="Subscription type is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="AdminNumber" [editorOptions]="{ placeholder: 'Admin number' }">
-      <dxi-validation-rule type="required" message="Admin number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'Device number' }">
-      <dxi-validation-rule type="required" message="Device number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="CardNumber" [editorOptions]="{ placeholder: 'Card number' }">
-      <dxi-validation-rule type="required" message="Card number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="PaymentPerMonth" [editorOptions]="{ placeholder: 'Monthly Payment' }">
-      <dxi-validation-rule type="required" message="Monthly payment is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="StartDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'Start Date' }">
-      <dxi-validation-rule type="required" message="Start Date is required"></dxi-validation-rule>
-      <dxi-validation-rule type="custom"
-                           [validationCallback]="validateStartDate"
-                           message="Start date must be start from today or letter">
-      </dxi-validation-rule> 
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="MonthNumber"
-              editorType="dxNumberBox"
-              [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
-      <dxi-validation-rule type="required" message="Month number is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"></dxo-label>
-    </dxi-item>
 
-    <!--<dxi-item dataField="EndDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'End Date' }">
-      <dxi-validation-rule type="required" message="End Date is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>-->
-    <dxi-item dataField="Note" editorType="dxTextArea" [editorOptions]="{
-      placeholder: 'Note',
-      height: '200px',
-      maxLength: 500
-    }">
-      <dxo-label [visible]="false"></dxo-label>
-    </dxi-item>
-  </dx-form>
-  <dxi-item itemType="button">
-    <dx-button text="Add new Subscription" type="success" (onClick)="submitSubscription()"></dx-button>
-  </dxi-item>
-</dx-popup>
 
     <!-- Stats Cards -->
     <div class="dashboard-stats">
@@ -152,8 +73,8 @@
             </svg>
           </div>
         </div>
-        
-     
+
+
 
         <div class="chart-wrapper">
           <div class="chart-grid">
@@ -296,3 +217,86 @@
     </div>
   </div>
 </main>
+
+
+
+<!-- ADD Subscription POPUP-->
+<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add New Subscription" [dragEnabled]="true"
+          [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
+  <dx-form #subscriptionFormRef [formData]="subscriptionData" [colCount]="1" [labelLocation]="'top'">
+    <dxi-item itemType="simple">
+      <div class="image-upload-wrapper">
+        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+        <img *ngIf="subscriptionData.SubscriptionImageUrl" [src]="subscriptionData.SubscriptionImageUrl"
+             alt="Device Preview" class="thumbnail" />
+        <div *ngIf="imageValidationError" class="validation-message">
+          {{ imageValidationError }}
+        </div>
+      </div>
+    </dxi-item>
+    <dxi-item dataField="CustomerName" [editorOptions]="{ placeholder: 'Customer name' }">
+      <dxi-validation-rule type="required" message="Customer name is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="SubscriptionType" editorType="dxSelectBox" [editorOptions]="{
+         dataSource: subscriptionTypes,
+         placeholder: 'Subscription type',
+         valueExpr: 'id',
+         displayExpr: 'name'
+       }">
+      <dxi-validation-rule type="required" message="Subscription type is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="AdminNumber" [editorOptions]="{ placeholder: 'Admin number' }">
+      <dxi-validation-rule type="required" message="Admin number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'Device number' }">
+      <dxi-validation-rule type="required" message="Device number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="CardNumber" [editorOptions]="{ placeholder: 'Card number' }">
+      <dxi-validation-rule type="required" message="Card number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="PaymentPerMonth" [editorOptions]="{ placeholder: 'Monthly Payment' }">
+      <dxi-validation-rule type="required" message="Monthly payment is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="StartDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'Start Date' }">
+      <dxi-validation-rule type="required" message="Start Date is required"></dxi-validation-rule>
+      <dxi-validation-rule type="custom"
+                           [validationCallback]="validateStartDate"
+                           message="Start date must be start from today or letter">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="MonthNumber"
+              editorType="dxNumberBox"
+              [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
+      <dxi-validation-rule type="required" message="Month number is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <!--<dxi-item dataField="EndDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'End Date' }">
+      <dxi-validation-rule type="required" message="End Date is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>-->
+    <dxi-item dataField="Note" editorType="dxTextArea" [editorOptions]="{
+      placeholder: 'Note',
+      height: '200px',
+      maxLength: 500
+    }">
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add new Subscription" type="success" (onClick)="submitSubscription()"></dx-button>
+  </dxi-item>
+</dx-popup>

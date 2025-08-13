@@ -487,3 +487,4 @@ $RECYCLE.BIN/
 bin/
 obj/
 
+/AccessControlSystem.Client/src/app/views/cards/sub-admin-dashboard/sub-admin-dashboard.component.html

@@ -25,7 +25,7 @@
     </div>
     <div class="actions">
       <button class="cancel">Cancel subscription</button>
-      <button class="upgrade">Upgrade</button>
+      <button class="upgrade" (click)="showUpgradePopup()">Upgrade</button>
     </div>
   </div>
 
@@ -178,6 +178,51 @@
   </dx-form>
   <dxi-item itemType="button">
     <dx-button text="Add Device" type="success" (onClick)="submitDevice()"></dx-button>
+  </dxi-item>
+
+</dx-popup>
+
+<!--UPGRADE SUBSCRIPTION POPUP-->
+<dx-popup [width]="500" [height]="400" [showTitle]="true" title="Upgrade Subscription" [dragEnabled]="true"
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="upgradePopupVisible">
+  <dx-form #upgradeForm [formData]="upgradeData" [colCount]="1" [labelLocation]="'top'">
+    
+    <dxi-item dataField="subscriptionType" editorType="dxSelectBox" [editorOptions]="{
+          dataSource: subscriptionTypes,
+          placeholder: 'Select Subscription Type',
+          valueExpr: 'id',
+          displayExpr: 'name'
+        }">
+      <dxo-label text="Subscription Type"></dxo-label>
+      <dxi-validation-rule type="required" message="Subscription type is required"></dxi-validation-rule>
+    </dxi-item>
+
+    <dxi-item dataField="startDate" editorType="dxDateBox" [editorOptions]="{
+          placeholder: 'Start Date',
+          type: 'date',
+          displayFormat: 'yyyy-MM-dd'
+        }">
+      <dxo-label text="Start Date"></dxo-label>
+      <dxi-validation-rule type="required" message="Start date is required"></dxi-validation-rule>
+    </dxi-item>
+
+    <dxi-item dataField="endDate" editorType="dxDateBox" [editorOptions]="{
+          placeholder: 'End Date',
+          type: 'date',
+          displayFormat: 'yyyy-MM-dd'
+        }">
+      <dxo-label text="End Date"></dxo-label>
+      <dxi-validation-rule type="required" message="End date is required"></dxi-validation-rule>
+    </dxi-item>
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button 
+      [text]="isUpgrading ? 'Upgrading...' : 'Submit'"
+      type="success" 
+      (onClick)="submitUpgrade()"
+      [disabled]="isUpgrading">
+    </dx-button>
   </dxi-item>
 
 </dx-popup>

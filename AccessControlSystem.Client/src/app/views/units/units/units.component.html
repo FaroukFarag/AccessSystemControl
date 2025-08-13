@@ -8,12 +8,12 @@
 <div class="page-header">
   <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
     (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-  <dx-button class="button-info me-1" text="Add new unit" (onClick)="showAddDevicePopup()">
+  <dx-button class="button-info me-1" text="Add new unit" (onClick)="showAddUnitPopup()">
   </dx-button>
 </div>
 
 <!-- ADD UNIT POPUP-->
-<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add ew Device" [dragEnabled]="true"
+<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add new Unit" [dragEnabled]="true"
   [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
   <dxi-item itemType="simple">
       <div class="image-upload-wrapper">

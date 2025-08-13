@@ -2,6 +2,7 @@
   "navigation": {
     "dashboard": "لوحة التحكم",
     "subscriptions": "الاشتراكات",
+    "owners": "الملاك",
     "devices": "الأجهزة",
     "settings": "الإعدادات"
   },

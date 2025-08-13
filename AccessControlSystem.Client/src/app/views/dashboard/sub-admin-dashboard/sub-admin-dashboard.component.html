@@ -1,0 +1,471 @@
+<main class="dashboard-main">
+  <div class="dashboard-container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h1 class="welcome-title">{{ 'welcome_title' | translate }}</h1>
+        <p class="welcome-subtitle">{{ 'welcome_subtitle' | translate }}</p>
+      </div>
+      <!-- Action Buttons Section -->
+
+      <div class="action-buttons-section">
+        <button class="action-btn invoices-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z" fill="currentColor" />
+          </svg>
+          Invoices
+        </button>
+        <button class="action-btn reports-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM9 17H7V10H9V17ZM13 17H11V7H13V17ZM17 17H15V13H17V17Z" fill="currentColor" />
+          </svg>
+          Reports
+        </button>
+        <dx-button class=" add-btn" (onClick)="showAddUnitPopup()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
+          </svg>
+          Add  new unit
+        </dx-button>
+      </div>
+    </div>
+
+
+
+    <div class="dashboard-stats">
+      <!-- Units Card -->
+      <div class="stat-card units-card">
+        <div class="stat-icon units-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.793 4.293C4.98053 4.10553 5.23483 4.00021 5.5 4.00021C5.76516 4.00021 6.01947 4.10553 6.207 4.293L9.414 7.5L8 8.914L7.5 8.414V10H3.5V8.414L3 8.914L1.586 7.5L4.793 4.293ZM12.707 9.293C12.5195 9.10553 12.2652 9.00021 12 9.00021C11.7348 9.00021 11.4805 9.10553 11.293 9.293L5.086 15.5L6.5 16.914L7.5 15.914V20H10.5V17.5C10.5 17.1022 10.658 16.7206 10.9393 16.4393C11.2206 16.158 11.6022 16 12 16C12.3978 16 12.7794 16.158 13.0607 16.4393C13.342 16.7206 13.5 17.1022 13.5 17.5V20H16.5V15.914L17.5 16.914L18.914 15.5L12.707 9.293ZM20 8.414L21 9.414L22.414 8L18.707 4.293C18.5195 4.10553 18.2652 4.00021 18 4.00021C17.7348 4.00021 17.4805 4.10553 17.293 4.293L13.586 8L15 9.414L16 8.414V11H20V8.414Z" fill="currentColor" />
+          </svg>
+        </div>
+        <div class="stat-label">{{ 'units' | translate }}</div>
+        <div class="stat-number">15</div>
+        <div class="stat-comparison">
+          <span class="comparison-label">{{ 'last_month' | translate }}: </span>
+          <span class="comparison-value">14</span>
+        </div>
+      </div>
+
+      <!-- Devices Card -->
+      <div class="stat-card devices-card">
+        <div class="stat-icon devices-icon">
+          <svg fill="currentColor" viewBox="0 0 24 24">
+            <path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z" />
+          </svg>
+        </div>
+        <div class="stat-label">{{ 'devices' | translate }}</div>
+        <div class="stat-number">{{devicesCount}}</div>
+        <div class="stat-comparison">
+          <span class="comparison-label">{{ 'last_month' | translate }}: </span>
+          <span class="comparison-value">39</span>
+        </div>
+      </div>
+
+
+
+      <!-- Trafic Details Chart -->
+      <div class="total-sales-card">
+        <div class="sales-header">
+          <div class="sales-title-section">
+            <h3 class="sales-title">{{ 'trafic-details' | translate }}</h3>
+
+          </div>
+          <div class="year-dropdown">
+            <select class="year-select">
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+            </select>
+            <svg class="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+
+
+
+        <div class="chart-wrapper">
+          <div class="chart-grid">
+            <div class="y-axis-labels">
+              <span>70k</span>
+              <span>50k</span>
+              <span>30k</span>
+              <span>0</span>
+            </div>
+            <div class="chart-content">
+              <svg class="sales-chart" viewBox="0 0 500 200">
+                <!-- Grid lines -->
+                <defs>
+                  <pattern id="grid" width="50" height="33.33" patternUnits="userSpaceOnUse">
+                    <path d="M 50 0 L 0 0 0 33.33" fill="none" stroke="#f1f5f9" stroke-width="1" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+
+                <!-- Chart line -->
+                <polyline fill="none"
+                          stroke="#1e90ff"
+                          stroke-width="2"
+                          points="40,160 80,140 120,150 160,120 200,135 240,110 280,125 320,100 360,130 400,90 440,105 480,80" />
+
+                <!-- Data points -->
+                <circle cx="80" cy="140" r="4" fill="#1e90ff" />
+                <circle cx="120" cy="150" r="4" fill="#1e90ff" />
+                <circle cx="160" cy="120" r="4" fill="#1e90ff" />
+                <circle cx="200" cy="135" r="4" fill="#1e90ff" />
+                <circle cx="240" cy="110" r="4" fill="#1e90ff" />
+                <circle cx="280" cy="125" r="4" fill="#1e90ff" />
+                <circle cx="320" cy="100" r="4" fill="#1e90ff" />
+                <circle cx="360" cy="130" r="4" fill="#1e90ff" />
+                <circle cx="400" cy="90" r="4" fill="#1e90ff" />
+                <circle cx="440" cy="105" r="4" fill="#1e90ff" />
+                <circle cx="480" cy="80" r="4" fill="#1e90ff" />
+              </svg>
+
+              <!-- Tooltip -->
+              <div class="sales-tooltip">
+                <span class="tooltip-text">$95k</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="x-axis-labels">
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+            <span>Jul</span>
+            <span>Aug</span>
+            <span>Sep</span>
+            <span>Oct</span>
+            <span>Nov</span>
+            <span>Dec</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Devices Section -->
+    <div class="devices-container mb-5">
+      <div class="devices-header">
+        <div class="title">
+          <strong>Devices</strong> <span class="count">({{ devicesList?.length }})</span>
+        </div>
+        <div class="devices-actions ">
+          <dx-button class="add-btn" (onClick)="showAddDevicePopup()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor" />
+            </svg>
+            Add new Device
+          </dx-button>
+          <button class=" view-all-btn" (click)="navigateToDevices()">
+            View All
+          </button>
+
+        </div>
+      </div>
+
+      <div class="section-slider">
+        <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
+             *ngFor="let device of devicesList">
+          <div class="card-header">
+            <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDevicePage(device.id)" />
+            <span class="device-name" (click)="navigateToDevicePage(device.id)">{{device.name}}</span>
+          </div>
+          <div class="device-info">
+            <div class="icon"><img src="/assets/icons/status.svg" /></div>
+            <div class="info"> Status: </div>
+            <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+              {{ device.active ? 'Active' : 'Not Active' }}
+            </div>
+          </div>
+          <div class="device-info">
+            <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+            <div class="info"> Mac Address: </div>
+            <div class="info-value ">{{device.macAddress}}</div>
+          </div>
+          <div class="device-info">
+            <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+            <div class="info"> Device type: </div>
+            <div class="info-value"> {{device.deviceTypeName}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="devicesList?.length === 0" class="empty-state">
+        No devices found for this User.
+      </div>
+
+
+
+    </div>
+
+
+    <!-- Units Section -->
+    <div class="devices-container mb-5">
+      <div class="devices-header">
+        <div class="title">
+          <strong>Units</strong> <span class="count">({{ unitsList?.length }})</span>
+        </div>
+        <div class="devices-actions ">
+          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="unitsSortingList"
+                               (onItemClick)="onItemClick_unitsSorting($event)"></dx-drop-down-button>
+          <button class=" view-all-btn" (click)="navigateToUnits()">
+            View All
+          </button>
+
+        </div>
+      </div>
+
+             <div class="section-scroll">
+         <div *ngFor="let unit of unitsList" class="subscription-card" (click)="navigateToUnitDetails(unit.id)">
+           <div class="subscription-image">
+             <img [src]="unit.imagePath || '/assets/images/beach.jpg'" alt="Unit Image" class="card-image">
+             <div class="village-overlay">{{unit.name}}</div>
+           </div>
+           <div class="subscription-content">
+             <div class="subscription-details">
+               <div class="subscription-detail">
+                 <img src="/assets/icons/owners.svg" alt="owner" class="detail-icon" />
+                 <span class="detail-label">{{ 'owner' | translate }}:</span>
+                 <span class="detail-value">{{unit?.owner?.ownerName || 'Unassigned'}}</span>
+               </div>
+               <div class="subscription-detail">
+                 <img src="/assets/icons/device.svg" alt="Device" class="detail-icon" />
+                 <span class="detail-label">{{ 'card' | translate }}#:</span>
+                 <span class="detail-value"> {{unit.cardNumber}} </span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+
+      <div *ngIf="unitsList?.length === 0" class="empty-state">
+        No Units found for this User.
+      </div>
+
+    </div>
+
+
+    <!-- Owners Section -->
+    <div class="devices-container mb-5">
+      <div class="devices-header">
+        <div class="title">
+          <strong>Owners</strong> <span class="count">({{ ownersList?.length || 0 }})</span>
+        </div>
+        <div class="devices-actions ">
+          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="ownersSortingList"
+                               (onItemClick)="onItemClick_OwnerSorting($event)"></dx-drop-down-button>
+          <button class=" view-all-btn" (click)="navigateToOwners()">
+            View All
+          </button>
+
+        </div>
+      </div>
+      
+      
+
+             <div class="section-scroll">
+         <div *ngFor="let owner of ownersList" class="subscription-card" (click)="navigateToOwnerDetails(owner.id)">
+           <div class="subscription-image">
+             <img [src]="owner.imagePath || '/assets/images/avatar.jpg'" alt="Owner Image" class="card-image">
+           </div>
+           <div class="subscription-content">
+             <div class="subscription-details">
+               <div class="subscription-detail">
+                 <img src="/assets/icons/owners.svg" alt="owner" class="detail-icon" />
+                 <span class="detail-label">{{ 'owner' | translate }}:</span>
+                 <span class="detail-value">{{owner.userName}}</span>
+               </div>
+               <div class="subscription-detail">
+                 <img src="/assets/icons/device.svg" alt="Device" class="detail-icon" />
+                 <span class="detail-label">{{ 'units' | translate }}#:</span>
+                 <span class="detail-value"> {{owner.units?.length || 0}} </span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+
+      <div *ngIf="ownersList?.length === 0" class="empty-state">
+        No Owners found for this User.
+      </div>
+
+    </div>
+    <!--Devices Traffic Section -->
+
+
+    <div class="device-trafic-section mt-4">
+      <div class="grid-header">
+        <h5>Device traffic</h5>
+        <div class="grid-header-btns">
+          <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="unitsSortingList"
+                               (onItemClick)="onItemClick_unitsSorting($event)"></dx-drop-down-button>          <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />Report</button>
+        </div>
+      </div>
+      <dx-data-grid id="gridContainer"
+                    [dataSource]="dataSource"
+                    [remoteOperations]="false"
+                    [allowColumnReordering]="true"
+                    [rowAlternationEnabled]="false"
+                    [showBorders]="false"
+                    [width]="'100%'">
+        <!--<dxo-paging [pageSize]="10"></dxo-paging>
+      <dxo-pager [visible]="true"
+                 [showPageSizeSelector]="true"
+                 [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
+        <dxo-search-panel [visible]="true"
+                          [highlightCaseSensitive]="true"></dxo-search-panel>
+
+
+        <dxi-column dataField="Traffic type"
+                    caption="TRAFFIC TYPE"
+                    dataType="string"
+                    alignment="left"></dxi-column>
+        <dxi-column caption="TIME"
+                    dataField="Time"
+                    dataType="string"
+                    format="time"
+                    alignment="left"></dxi-column>
+        <dxi-column dataField="DATE" dataType="date"></dxi-column>
+        <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+
+        <dxi-column dataField="image" caption="IMAGE" cellTemplate="imageCellTemplate"></dxi-column>
+
+        <div *dxTemplate="let d of 'imageCellTemplate'">
+          <img />
+        </div>
+      </dx-data-grid>
+    </div>
+  </div>
+</main>
+
+
+<!-- Create DEVICE POPUP-->
+<dx-popup [width]="600" [height]="500" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="devicePopupVisible">
+  <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
+    <dxi-item itemType="simple">
+      <div class="image-upload-wrapper">
+        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+
+        <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
+             class="thumbnail" />
+        <div *ngIf="imageValidationError" class="validation-message">
+          {{ imageValidationError }}
+        </div>
+      </div>
+    </dxi-item>
+
+    <dxi-item dataField="deviceName" [editorOptions]="{ placeholder: 'Device name' }">
+      <dxi-validation-rule type="required" message="Device name is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="serial" [editorOptions]="{ placeholder: 'Serial' }">
+      <dxi-validation-rule type="required" message="Serial is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'Device MAC address' }">
+      <dxi-validation-rule type="required" message="Device MAC address is required">
+      </dxi-validation-rule>
+      <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
+                           message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="siteId" editorType="dxSelectBox" [editorOptions]="{
+          dataSource: sites,
+          placeholder: 'Site',
+          valueExpr: 'id',
+          displayExpr: 'name'
+        }">
+      <dxo-label text="Site"></dxo-label>
+      <dxi-validation-rule type="required" message="Site is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="deviceType" editorType="dxSelectBox" [editorOptions]="{
+         dataSource: deviceTypes,
+         placeholder: 'Device type',
+         valueExpr: 'id',
+         displayExpr: 'name'
+       }">
+      <dxi-validation-rule type="required" message="Device type is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add Device" type="success" (onClick)="submitDevice()"></dx-button>
+  </dxi-item>
+
+</dx-popup>
+<!-- ADD UNIT POPUP-->
+<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add new Unit" [dragEnabled]="true"
+          [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="unitPopupVisible">
+  <dxi-item itemType="simple">
+    <div class="image-upload-wrapper">
+      <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+                        (onValueChanged)="onImageChangeUnits($event)"></dx-file-uploader>
+
+      <img *ngIf="unitsData.unitImageUrl" [src]="unitsData.unitImageUrl" alt="Unit Preview" class="thumbnail" />
+      <div *ngIf="imageValidationError" class="validation-message">
+        {{ imageValidationError }}
+      </div>
+    </div>
+  </dxi-item>
+  <dx-form #unitFormRef [formData]="unitsData" [colCount]="1" [labelLocation]="'top'">
+    <dxi-item dataField="Name" [editorOptions]="{ placeholder: 'Unit name' }">
+      <dxi-validation-rule type="required" message="Unit name is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="Number" [editorOptions]="{ placeholder: 'Unit number' }">
+      <dxi-validation-rule type="required" message="Unit number is required">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+    <dxi-item dataField="Area" editorType="dxTextBox" [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
+      <dxi-validation-rule type="required" message="Area is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>>
+
+    <dxi-item dataField="CardNumber" editorType="dxNumberBox"
+              [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
+      <dxi-validation-rule type="required" message="Cards number is required"></dxi-validation-rule>
+      <dxo-label [visible]="false"></dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="AccessGroups" editorType="dxTagBox" [editorOptions]="{
+      dataSource: accessGroups,
+      placeholder: 'Select Access Group',
+        displayExpr: 'name',
+      valueExpr: 'id',
+      showSelectionControls: true,
+      searchEnabled: true
+      }">
+      <dxi-validation-rule type="required" message="At least one Access Group is required"></dxi-validation-rule>
+      <dxo-label text="Access Group" [visible]="true"></dxo-label>
+    </dxi-item>
+
+
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button text="Add new Unit" type="success" (onClick)="submitInits()"></dx-button>
+  </dxi-item>
+
+</dx-popup>

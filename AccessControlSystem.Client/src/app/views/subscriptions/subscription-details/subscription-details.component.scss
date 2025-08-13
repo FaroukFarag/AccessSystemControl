@@ -110,7 +110,10 @@
         color: #007bff;
         font-size: 0.9rem;
         text-decoration: none;
-      }}}}
+      }
+    }
+  }
+}
 .devices-slider {
   display: flex;
   overflow-x: auto;
@@ -380,4 +383,41 @@ td {
 
 .btn-outline-info {
   color: #414141;
+}
+
+/* Button Loader Styles */
+::ng-deep .dx-button.dx-button-success.dx-state-disabled {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+/* Hide loader when button is not disabled */
+::ng-deep .dx-button.dx-button-success:not(.dx-state-disabled)::before {
+  display: none !important;
+}
+
+/* Ensure loader is hidden when upgrading is false */
+::ng-deep .dx-button.dx-button-success:not(.dx-state-disabled) {
+  &::before {
+    display: none !important;
+    content: none !important;
+  }
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
 }
