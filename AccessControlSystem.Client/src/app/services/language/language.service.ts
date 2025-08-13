@@ -19,7 +19,7 @@ export class LanguageService {
   direction$ = this.directionSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    // Load both languages at startup
+    // Load all languages at startup
     this.loadTranslations('en');
     this.loadTranslations('ar');
 

@@ -4,6 +4,7 @@ import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { filter } from 'rxjs/operators';
+import { JwtService } from './services/jwt.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,10 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit {
   showLayout = true;
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    private jwtService: JwtService
+  ) {
     // Listen to route changes
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -42,8 +46,15 @@ export class AppComponent implements OnInit {
       // No token and not on login page, redirect to login
       this.router.navigate(['/login']);
       this.showLayout = false;
+    } else if (token && this.jwtService.isTokenExpired()) {
+      // Token exists but is expired, clear storage and redirect to login
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('subscriptionId');
+      this.router.navigate(['/login']);
+      this.showLayout = false;
     } else {
-      // Normal case
+      // Normal case - valid token or on login page
       this.showLayout = !!token && !isLoginPage;
     }
   }

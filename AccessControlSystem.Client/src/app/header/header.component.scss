@@ -145,19 +145,18 @@
       top: calc(100% + 4px);
       right: 0;
       background: white;
-      border-radius: 6px;
+      border-radius: 8px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      min-width: 140px;
+      min-width: 160px;
       overflow: hidden;
-      z-index: 50;
+      z-index: 1000;
       border: 1px solid #e2e8f0;
 
       .language-option {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         width: 100%;
-        padding: 8px 12px;
+        padding: 10px 16px;
         border: none;
         background: none;
         cursor: pointer;
@@ -167,7 +166,6 @@
 
         &:hover {
           background: #f8fafc;
-          color: #007BE2;
         }
 
         &.active {
@@ -176,8 +174,8 @@
         }
 
         .language-flag {
-          font-size: 18px;
-          margin-right: 8px;
+          margin-inline-end: 8px;
+          font-size: 16px;
         }
 
         .language-name {
@@ -186,8 +184,9 @@
         }
 
         .check-icon {
-          width: 14px;
-          height: 14px;
+          width: 16px;
+          height: 16px;
+          margin-inline-start: 8px;
           color: #007BE2;
         }
       }

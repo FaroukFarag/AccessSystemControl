@@ -15,6 +15,8 @@ import {
 import { UserService } from '../../../services/users/user.service';
 import notify from 'devextreme/ui/notify';
 import { AccessGroupService } from '../../../services/access-groups/access-group.service';
+import { DeviceService } from '../../../services/devices/device.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-owner-dashboard',
@@ -127,9 +129,12 @@ export class OwnerDashboardComponent implements OnInit {
   ownerDetails: any;
   userId: any;
   accessGroups: any;
+  devicesList: any[] = [];
   constructor(private http: HttpClient,
     private userService: UserService,
     private accessGroupService: AccessGroupService,
+    private deviceService: DeviceService,
+    private router: Router,
 ) { }
 
   ngOnInit() {
@@ -138,6 +143,7 @@ export class OwnerDashboardComponent implements OnInit {
     this.userId = localStorage.getItem('userId') || '';
     console.log('User ID:', this.userId);
     this.getOwnerDetails(this.userId);
+    this.getAllDevices();
   }
 
   openManageVistorsPopup() {
@@ -190,4 +196,25 @@ export class OwnerDashboardComponent implements OnInit {
       }
     });
   }
+
+  navigateToDevices() {
+    this.router.navigate(['/devices']);
+  }
+  navigateToDevicePage(deviceId: string) {
+    this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
+  }
+  getAllDevices(orderBy?: string) {
+    const baseUrl = 'Devices/GetAll';
+    const url = orderBy?.trim()
+      ? `${baseUrl}/${encodeURIComponent(orderBy.trim())}`
+      : baseUrl;
+
+    this.deviceService.getAll(url).subscribe({
+      next: (data: any) => {
+        this.devicesList = data.resultData;
+      },
+      error: (err) => console.error("Failed to load owners:", err)
+    })
+  }
+
 }

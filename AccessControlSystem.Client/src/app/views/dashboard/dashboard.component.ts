@@ -10,6 +10,8 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { Router } from '@angular/router';
 import { SubscriptionService } from '../../services/subscriptions/subscription.service';
 import { SubAdminDashboardComponent } from './sub-admin-dashboard/sub-admin-dashboard.component';
+import { JwtService } from '../../services/jwt.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -20,7 +22,9 @@ import { SubAdminDashboardComponent } from './sub-admin-dashboard/sub-admin-dash
     DxDataGridModule,
     DxButtonModule,
     DxChartModule,
-    CommonModule, DxDropDownButtonModule],
+    CommonModule, 
+    DxDropDownButtonModule,
+    TranslatePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -82,19 +86,22 @@ export class DashboardComponent {
   ownersList: any;
   unitsList: any;
   userRole: any;
+  currentUser: any;
 
 
   constructor(
     private unitsService: UnitService,
     private userService: UserService,
     private router: Router,
-    private subscriptionsService: SubscriptionService) { }
+    private subscriptionsService: SubscriptionService,
+    private jwtService: JwtService) { }
 
   ngOnInit() {
     this.getSubscriptionsCount();
     this.getDevicesCount();
 
     this.userRole = localStorage.getItem('userRole');
+    this.currentUser = this.jwtService.getCurrentUser();
     
     if (this.userRole === '1') {
       this.getAllSubscriptions();

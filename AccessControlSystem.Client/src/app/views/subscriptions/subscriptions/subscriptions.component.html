@@ -1,25 +1,25 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>Subscriptions</h4>
+    <h4>{{ 'subscriptions.title' | translate }}</h4>
   </div>
-  <span>Review all Subscriptions details and information</span>
+  <span>{{ 'subscriptions.review_details' | translate }}</span>
 </div>
 <div class="page-header">
-  <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+  <dx-drop-down-button [text]="'common.sort_by' | translate" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
     (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-  <dx-button class="button-info me-1" text="Add New Subscription" (onClick)="showAddSubscriptionPopup()">
+  <dx-button class="button-info me-1" [text]="'subscriptions.add_new' | translate" (onClick)="showAddSubscriptionPopup()">
   </dx-button>
 </div>
 
 <!-- ADD Subscription POPUP-->
-<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add New Subscription" [dragEnabled]="true"
+<dx-popup [width]="600" [height]="550" [showTitle]="true" [title]="'subscriptions.add_new' | translate" [dragEnabled]="true"
   [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form #subscriptionFormRef [formData]="subscriptionData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+                 <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
+                           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
         <img *ngIf="subscriptionData.SubscriptionImageUrl" [src]="subscriptionData.SubscriptionImageUrl"
              alt="Device Preview" class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
@@ -27,54 +27,54 @@
         </div>
       </div>
     </dxi-item>
-    <dxi-item dataField="CustomerName" [editorOptions]="{ placeholder: 'Customer name' }">
-      <dxi-validation-rule type="required" message="Customer name is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="SubscriptionType" editorType="dxSelectBox" [editorOptions]="{
-         dataSource: subscriptionTypes,
-         placeholder: 'Subscription type',
-         valueExpr: 'id',
-         displayExpr: 'name'
-       }">
-      <dxi-validation-rule type="required" message="Subscription type is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="AdminNumber" [editorOptions]="{ placeholder: 'Admin number' }">
-      <dxi-validation-rule type="required" message="Admin number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'Device number' }">
-      <dxi-validation-rule type="required" message="Device number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="CardNumber" [editorOptions]="{ placeholder: 'Card number' }">
-      <dxi-validation-rule type="required" message="Card number is required">
-      </dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="PaymentPerMonth" [editorOptions]="{ placeholder: 'Monthly Payment' }">
-      <dxi-validation-rule type="required" message="Monthly payment is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="StartDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'Start Date' }">
-      <dxi-validation-rule type="required" message="Start Date is required"></dxi-validation-rule>
-      <dxi-validation-rule type="custom"
-                           [validationCallback]="validateStartDate"
-                           message="Start date must be start from today or letter">
-      </dxi-validation-rule> 
-      <dxo-label [visible]="false"> </dxo-label>
-    </dxi-item>
-    <dxi-item dataField="MonthNumber"
-              editorType="dxNumberBox"
-              [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
-      <dxi-validation-rule type="required" message="Month number is required"></dxi-validation-rule>
-      <dxo-label [visible]="false"></dxo-label>
-    </dxi-item>
+         <dxi-item dataField="CustomerName" [editorOptions]="{ placeholder: 'subscriptions.customer_name' | translate }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate">
+       </dxi-validation-rule>
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+         <dxi-item dataField="SubscriptionType" editorType="dxSelectBox" [editorOptions]="{
+          dataSource: subscriptionTypes,
+          placeholder: 'subscriptions.subscription_type' | translate,
+          valueExpr: 'id',
+          displayExpr: 'name'
+        }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate">
+       </dxi-validation-rule>
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+         <dxi-item dataField="AdminNumber" [editorOptions]="{ placeholder: 'subscriptions.usage.admins' | translate }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate">
+       </dxi-validation-rule>
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+     <dxi-item dataField="DeviceNumber" [editorOptions]="{ placeholder: 'subscriptions.usage.devices' | translate }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate">
+       </dxi-validation-rule>
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+     <dxi-item dataField="CardNumber" [editorOptions]="{ placeholder: 'subscriptions.usage.cards' | translate }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate">
+       </dxi-validation-rule>
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+         <dxi-item dataField="PaymentPerMonth" [editorOptions]="{ placeholder: 'subscriptions.payment_per_month' | translate }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+     <dxi-item dataField="StartDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'subscriptions.start_date' | translate }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
+       <dxi-validation-rule type="custom"
+                            [validationCallback]="validateStartDate"
+                            [message]="'validation.required' | translate">
+       </dxi-validation-rule> 
+       <dxo-label [visible]="false"> </dxo-label>
+     </dxi-item>
+         <dxi-item dataField="MonthNumber"
+               editorType="dxNumberBox"
+               [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
+       <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
+       <dxo-label [visible]="false"></dxo-label>
+     </dxi-item>
 
     <!--<dxi-item dataField="EndDate" editorType="dxDateBox" [editorOptions]="{ type: 'date',placeholder: 'End Date' }">
       <dxi-validation-rule type="required" message="End Date is required"></dxi-validation-rule>
@@ -88,9 +88,9 @@
       <dxo-label [visible]="false"></dxo-label>
     </dxi-item>
   </dx-form>
-  <dxi-item itemType="button">
-    <dx-button text="Add new Subscription" type="success" (onClick)="submitSubscription()"></dx-button>
-  </dxi-item>
+     <dxi-item itemType="button">
+     <dx-button [text]="'subscriptions.add_new' | translate" type="success" (onClick)="submitSubscription()"></dx-button>
+   </dxi-item>
 </dx-popup>
 
 <!--All Subscriptions-->
@@ -101,21 +101,21 @@
       <div class="village-name" (click)="navigateToDetailsPage(sub.id)">{{sub.name}}</div>
       <div class="top-right-text">{{sub.renewalInfo}}</div>
     </div>
-    <div class="card-info">
-      <div class="icon"><img src="/assets/icons/subscriptions.svg" /></div>
-      <div class="info"> Name: </div>
-      <div class="info-value"> {{sub.customerName }}</div>
-    </div>
-    <div class="card-info">
-      <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
-      <div class="info"> Subscription: </div>
-      <div class="info-value"> {{sub.subscriptionTypeName }}</div>
-    </div>
-    <div class="card-info">
-      <div class="icon"><img src="/assets/icons/device.svg" /></div>
-      <div class="info"> Devices: </div>
-      <div class="info-value">{{sub.deviceNumber}}</div>
-    </div>
+         <div class="card-info">
+       <div class="icon"><img src="/assets/icons/subscriptions.svg" /></div>
+       <div class="info"> {{ 'subscriptions.customer_name' | translate }}: </div>
+       <div class="info-value"> {{sub.customerName }}</div>
+     </div>
+     <div class="card-info">
+       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
+       <div class="info"> {{ 'subscriptions.subscription_type' | translate }}: </div>
+       <div class="info-value"> {{sub.subscriptionTypeName }}</div>
+     </div>
+     <div class="card-info">
+       <div class="icon"><img src="/assets/icons/device.svg" /></div>
+       <div class="info"> {{ 'subscriptions.usage.devices' | translate }}: </div>
+       <div class="info-value">{{sub.deviceNumber}}</div>
+     </div>
 
   </div>
 </div>

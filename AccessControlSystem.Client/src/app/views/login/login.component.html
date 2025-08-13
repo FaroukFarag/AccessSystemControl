@@ -1,30 +1,30 @@
 <div class="login-container">
   <div class="login-card">
-    <h3 class="mb-4">Welcome Back </h3>
+    <h3 class="mb-4">{{ 'auth.welcome_back' | translate }}</h3>
     <img src="/assets/images/logo.png" class="mb-3" />
 
-    <p>Please login to your account!</p>
+    <p>{{ 'auth.please_login' | translate }}</p>
 
     <form (submit)="onSubmit()">
       <div class="form-group">
-        <label for="email">user name / E-mail</label>
+        <label for="email">{{ 'auth.email' | translate }}</label>
         <input type="email" id="email" [(ngModel)]="email" name="email" required />
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">{{ 'auth.password' | translate }}</label>
         <input type="password" id="password" [(ngModel)]="password" name="password" required />
       </div>
 
       <div class="options">
         <label class="remember">
           <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
-          Remember me
+          {{ 'auth.remember_me' | translate }}
         </label>
-        <a class="forgot" href="#">Forgot password?</a>
+        <a class="forgot" href="#">{{ 'auth.forgot_password' | translate }}</a>
       </div>
 
-      <button type="submit" class="login-btn">Login</button>
+      <button type="submit" class="login-btn">{{ 'auth.login' | translate }}</button>
     </form>
   </div>
 </div>

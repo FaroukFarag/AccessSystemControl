@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -31,7 +32,8 @@ import { Location } from '@angular/common';
     DxTextAreaModule,
     DxDateBoxModule,
     DxFormModule,
-    DxDropDownButtonModule,],
+    DxDropDownButtonModule,
+    TranslatePipe],
   templateUrl: './owners.component.html',
   styleUrl: './owners.component.scss'
 })

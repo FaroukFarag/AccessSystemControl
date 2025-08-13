@@ -322,3 +322,79 @@ td {
   text-decoration: underline;
 }
 
+/*Devices Section STYLES*/
+.devices-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.06);
+
+  .devices-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .title {
+      font-size: 1.2rem;
+
+      .count {
+        color: #888;
+        font-size: 0.9rem;
+      }
+    }
+
+    .devices-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+
+      .view-all-btn {
+        background: none !important;
+        border: none;
+        color: #007BE2;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: underline;
+
+        &:hover {
+          color: #007BE2;
+        }
+      }
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+
+      .view-all {
+        color: #007bff;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.section-slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.device-card {
+  min-width: 275px;
+  background: #fafafa;
+}
+
+
+
+.devices-card {
+  border: 1px solid #e5e7eb;
+}
+

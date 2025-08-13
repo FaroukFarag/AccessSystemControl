@@ -11,6 +11,129 @@
 
     </div>
   </div>
+
+
+  <!--<div class="unit-info">
+    <img src="/assets/images/beach.jpg" alt="Unit" class="unit-image" />
+    <div class="details">
+      <h3>Unit name</h3>
+      <p><strong>Owner:</strong> {{ownerDetails.userName}}</p>
+      <p><strong>Subscription:</strong> {{ ownerDetails.subscription }}</p>
+      <p><strong>Devices:</strong> {{ ownerDetails.accessGroups.length }} Device</p>
+    </div>
+  </div>-->
+  <!--<div class="device-group">
+      <div class="group-header">
+        <h4>Devices group name ({{ devices.length }})</h4>
+        <a href="#">View All</a>
+      </div>
+      <div class="device-cards">
+        <div class="device-card" *ngFor="let device of devices">
+          <img src="/assets/images/device.jpg"  alt="Device" />
+          <h5>{{device.name}}</h5>
+          <p>Status: <span class="status active">{{ device.status }}</span></p>
+          <p>Mac Address: {{ device.mac }}</p>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  <!-- Devices Section -->
+  <div class="devices-container mb-5">
+    <div class="devices-header">
+      <div class="title">
+        <strong>Devices</strong> <span class="count">({{ devicesList?.length }})</span>
+      </div>
+      <div class="devices-actions ">
+        <button class=" view-all-btn" (click)="navigateToDevices()">
+          View All
+        </button>
+
+      </div>
+    </div>
+
+    <div class="section-slider">
+      <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
+           *ngFor="let device of devicesList">
+        <div class="card-header">
+          <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDevicePage(device.id)" />
+          <span class="device-name" (click)="navigateToDevicePage(device.id)">{{device.name}}</span>
+        </div>
+        <div class="device-info">
+          <div class="icon"><img src="/assets/icons/status.svg" /></div>
+          <div class="info"> Status: </div>
+          <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
+            {{ device.active ? 'Active' : 'Not Active' }}
+          </div>
+        </div>
+        <div class="device-info">
+          <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
+          <div class="info"> Mac Address: </div>
+          <div class="info-value ">{{device.macAddress}}</div>
+        </div>
+        <div class="device-info">
+          <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
+          <div class="info"> Device type: </div>
+          <div class="info-value"> {{device.deviceTypeName}}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="devicesList?.length === 0" class="empty-state">
+      No devices found for this User.
+    </div>
+  </div>
+
+
+  <!--Vistor Details Section -->
+
+  <div class="grid-section mt-4">
+    <div class="grid-header">
+      <h5>Vistors Details</h5>
+      <!--<div class="grid-header-btns">
+        <button type="button" class="btn view-all me-2">View All</button>
+      </div>-->
+    </div>
+    <dx-data-grid id="gridContainer"
+                  [dataSource]="vistorsDetails"
+                  [remoteOperations]="false"
+                  [allowColumnReordering]="true"
+                  [rowAlternationEnabled]="false"
+                  [showBorders]="false"
+                  [width]="'100%'">
+      <dxi-column dataField="name" caption="Vistor Name"></dxi-column>
+      <dxi-column dataField="email" caption="Vistor Email"></dxi-column>
+      <dxi-column dataField="phone" caption="Phone number"></dxi-column>
+      <dxi-column dataField="deviceAccess" caption="Device Access"></dxi-column>
+      <dxi-column dataField="start" caption="From"></dxi-column>
+      <dxi-column dataField="end" caption="To"></dxi-column>
+    </dx-data-grid>
+  </div>
+
+  <!--Devices Traffic Section -->
+
+  <div class="grid-section mt-4">
+    <div class="grid-header">
+      <h5>Devices Traffic</h5>
+      <div class="grid-header-btns">
+        <button type="button" class="btn view-all me-2">View All</button>
+      </div>
+    </div>
+    <dx-data-grid id="gridContainer"
+                  [dataSource]="devicesTraffic"
+                  [remoteOperations]="false"
+                  [allowColumnReordering]="true"
+                  [rowAlternationEnabled]="false"
+                  [showBorders]="false"
+                  [width]="'100%'">
+      <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
+      <dxi-column dataField="start" caption="Start Date"></dxi-column>
+      <dxi-column dataField="end" caption="End Date"></dxi-column>
+      <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
+    </dx-data-grid>
+  </div>
+
+
+
+
   <!--Manage Vistors POPUP-->
   <dx-popup [width]="600"
             [height]="400"
@@ -40,80 +163,3 @@
 
 
   </dx-popup>-
-
-  <!--<div class="unit-info">
-    <img src="/assets/images/beach.jpg" alt="Unit" class="unit-image" />
-    <div class="details">
-      <h3>Unit name</h3>
-      <p><strong>Owner:</strong> {{ownerDetails.userName}}</p>
-      <p><strong>Subscription:</strong> {{ ownerDetails.subscription }}</p>
-      <p><strong>Devices:</strong> {{ ownerDetails.accessGroups.length }} Device</p>
-    </div>
-  </div>-->
-
-  <div class="device-group">
-    <div class="group-header">
-      <h4>Devices group name ({{ devices.length }})</h4>
-      <a href="#">View All</a>
-    </div>
-    <div class="device-cards">
-      <div class="device-card" *ngFor="let device of devices">
-        <img src="/assets/images/device.jpg"  alt="Device" />
-        <h5>{{device.name}}</h5>
-        <p>Status: <span class="status active">{{ device.status }}</span></p>
-        <p>Mac Address: {{ device.mac }}</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!--Vistor Details Section -->
-
-<div class="grid-section mt-4">
-  <div class="grid-header">
-    <h5>Vistors Details</h5>
-    <!--<div class="grid-header-btns">
-      <button type="button" class="btn view-all me-2">View All</button>
-    </div>-->
-  </div>
-  <dx-data-grid id="gridContainer"
-                [dataSource]="vistorsDetails"
-                [remoteOperations]="false"
-                [allowColumnReordering]="true"
-                [rowAlternationEnabled]="false"
-                [showBorders]="false"
-                [width]="'100%'">
-    <dxi-column dataField="name" caption="Vistor Name"></dxi-column>
-    <dxi-column dataField="email" caption="Vistor Email"></dxi-column>
-    <dxi-column dataField="phone" caption="Phone number"></dxi-column>
-    <dxi-column dataField="deviceAccess" caption="Device Access"></dxi-column>
-    <dxi-column dataField="start" caption="From"></dxi-column>
-    <dxi-column dataField="end" caption="To"></dxi-column>
-  </dx-data-grid>
-</div>
-
-<!--Devices Traffic Section -->
-
-<div class="grid-section mt-4">
-  <div class="grid-header">
-    <h5>Devices Traffic</h5>
-    <div class="grid-header-btns">
-      <button type="button" class="btn view-all me-2">View All</button>
-    </div>
-  </div>
-  <dx-data-grid id="gridContainer"
-                [dataSource]="devicesTraffic"
-                [remoteOperations]="false"
-                [allowColumnReordering]="true"
-                [rowAlternationEnabled]="false"
-                [showBorders]="false"
-                [width]="'100%'">
-    <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
-    <dxi-column dataField="start" caption="Start Date"></dxi-column>
-    <dxi-column dataField="end" caption="End Date"></dxi-column>
-    <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
-  </dx-data-grid>
-</div>
-

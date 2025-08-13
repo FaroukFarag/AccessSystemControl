@@ -4,9 +4,9 @@
     <div class="dashboard">
       <div class="breadcrumb mb-5">
         <div class="page-title">
-          <h4>Hi Shaimaa,</h4>
+          <h4>{{ 'dashboard.welcome_title' | translate }}, {{ currentUser?.userName || 'User' }}!</h4>
         </div>
-        <span>Take a look for your monthly overview</span>
+        <span>{{ 'dashboard.welcome_subtitle' | translate }}</span>
       </div>
 
       <div class="summary-section">

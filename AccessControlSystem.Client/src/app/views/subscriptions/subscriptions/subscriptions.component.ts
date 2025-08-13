@@ -16,6 +16,7 @@ import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angula
 import notify from 'devextreme/ui/notify';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-subscriptions',
@@ -31,7 +32,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
-    DxFileUploaderModule
+    DxFileUploaderModule,
+    TranslatePipe
   ],
   templateUrl: './subscriptions.component.html',
   styleUrl: './subscriptions.component.scss'

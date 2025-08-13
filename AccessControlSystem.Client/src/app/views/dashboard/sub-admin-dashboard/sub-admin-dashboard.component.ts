@@ -13,6 +13,7 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
 import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 import { AccessGroup } from '../../../models/access-group/access-group';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { JwtService } from '../../../services/jwt.service';
 
 import {
   DxPopupModule,
@@ -56,6 +57,9 @@ export class SubAdminDashboardComponent {
   devicesList: any;
   imageValidationError: string = '';
   devicesCount!: number;
+
+  // Current user information from JWT token
+  currentUser: { userName: string; email: string; role: string; userId: string } | null = null;
 
   deviceData = {
     deviceImageFile: null,
@@ -220,6 +224,7 @@ export class SubAdminDashboardComponent {
     private sanitizer: DomSanitizer,
     private userService: UserService,
     private unitsService: UnitService,
+    private jwtService: JwtService,
 
 ) {
 
@@ -235,6 +240,10 @@ export class SubAdminDashboardComponent {
 
   ngOnInit() {
     this.subscriptionId = localStorage.getItem('subscriptionId');
+    
+    // Load current user from JWT token
+    this.currentUser = this.jwtService.getCurrentUser();
+    
     this.getAllDevices();
     this.getAllSites();
     this.getAllUnits();

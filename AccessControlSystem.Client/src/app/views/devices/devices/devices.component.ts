@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -39,6 +40,7 @@ import { AccessGroup } from '../../../models/access-group/access-group'
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
+    TranslatePipe
   ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',

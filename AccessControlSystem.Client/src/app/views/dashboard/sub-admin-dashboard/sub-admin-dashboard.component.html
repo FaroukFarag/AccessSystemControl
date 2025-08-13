@@ -3,8 +3,8 @@
     <!-- Welcome Section -->
     <div class="welcome-section">
       <div class="welcome-content">
-        <h1 class="welcome-title">{{ 'welcome_title' | translate }}</h1>
-        <p class="welcome-subtitle">{{ 'welcome_subtitle' | translate }}</p>
+        <h1 class="welcome-title">{{ 'dashboard.welcome_title' | translate }}, {{ currentUser?.userName || 'User' }}!</h1>
+        <p class="welcome-subtitle">{{ 'dashboard.welcome_subtitle' | translate }}</p>
       </div>
       <!-- Action Buttons Section -->
 
@@ -300,8 +300,6 @@
 
     </div>
     <!--Devices Traffic Section -->
-
-
     <div class="device-trafic-section mt-4">
       <div class="grid-header">
         <h5>Device traffic</h5>
@@ -413,7 +411,7 @@
   </dxi-item>
 
 </dx-popup>
-<!-- ADD UNIT POPUP-->
+<!--Create UNIT POPUP-->
 <dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add new Unit" [dragEnabled]="true"
           [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="unitPopupVisible">
   <dxi-item itemType="simple">

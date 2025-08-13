@@ -4,7 +4,11 @@
     "subscriptions": "الاشتراكات",
     "owners": "الملاك",
     "devices": "الأجهزة",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "units": "الوحدات",
+    "cards": "البطاقات",
+    "access_groups": "مجموعات الوصول",
+    "admins": "المدراء"
   },
   "auth": {
     "welcome_back": "مرحباً بعودتك",
@@ -24,12 +28,183 @@
     "save": "حفظ",
     "cancel": "إلغاء",
     "confirm": "تأكيد",
-    "actions": "إجراءات"
+    "actions": "إجراءات",
+    "submit": "إرسال",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق",
+    "open": "فتح",
+    "view": "عرض",
+    "view_all": "عرض الكل",
+    "sort_by": "ترتيب حسب",
+    "choose_file": "اختر ملف",
+    "select": "اختر",
+    "required": "مطلوب",
+    "optional": "اختياري",
+    "loading": "جاري التحميل...",
+    "no_data": "لا توجد بيانات متاحة",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "name": "الاسم",
+    "date": "التاريخ",
+    "status": "الحالة"
   },
   "user": {
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
-    "admin": "مدير",
-    "user": "مستخدم"
+    "admin": "مدير النظام",
+    "user": "مستخدم",
+    "owner": "مالك",
+    "sub_admin": "مدير فرعي"
+  },
+  "dashboard": {
+    "welcome_title": "مرحباً بعودتك",
+    "welcome_subtitle": "هنا نظرة عامة على أنشطتك",
+    "add_subscription": "إضافة اشتراك",
+    "subscriptions": "الاشتراكات",
+    "owners": "الملاك",
+    "devices": "الأجهزة",
+    "units": "الوحدات",
+    "last_month": "الشهر الماضي",
+    "total": "المجموع",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "view_all": "عرض الكل",
+    "add_device": "إضافة جهاز",
+    "manage_visitors": "إدارة الزوار",
+    "add_visitor": "إضافة زائر",
+    "total_sales": "إجمالي المبيعات",
+    "subscription_name": "اسم الاشتراك",
+    "start_date": "تاريخ البداية",
+    "end_date": "تاريخ الانتهاء",
+    "time_remaining": "الوقت المتبقي",
+    "name": "الاسم",
+    "date": "التاريخ",
+    "status": "الحالة",
+    "subscription": "الاشتراك"
+  },
+  "subscriptions": {
+    "title": "الاشتراكات",
+    "add_new": "إضافة اشتراك جديد",
+    "subscription_details": "تفاصيل الاشتراك",
+    "customer_name": "اسم العميل",
+    "subscription_type": "نوع الاشتراك",
+    "start_date": "تاريخ البداية",
+    "end_date": "تاريخ الانتهاء",
+    "payment_per_month": "الدفع شهرياً",
+    "total_payment": "إجمالي الدفع",
+    "per_month": "/ شهرياً",
+    "plan": "الخطة",
+    "payment": "الدفع",
+    "upgrade": "ترقية",
+    "cancel_subscription": "إلغاء الاشتراك",
+    "upgrade_subscription": "ترقية الاشتراك",
+    "subscription_types": {
+      "standard": "قياسي",
+      "premium": "مميز",
+      "enterprise": "مؤسسي"
+    },
+    "usage": {
+      "admins": "المدراء",
+      "devices": "الأجهزة",
+      "cards": "البطاقات"
+    },
+    "devices_section": "أجهزة الاشتراك",
+    "create_new_device": "إنشاء جهاز جديد",
+    "review_details": "مراجعة جميع تفاصيل ومعلومات الاشتراكات"
+  },
+  "owners": {
+    "title": "الملاك",
+    "add_new": "إضافة مالك جديد",
+    "owner_details": "تفاصيل المالك",
+    "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "phone_number": "رقم الهاتف",
+    "units": "الوحدات",
+    "assigned_owners": "الملاك المعينون",
+    "review_details": "مراجعة جميع تفاصيل ومعلومات الملاك"
+  },
+  "devices": {
+    "title": "الأجهزة",
+    "add_new": "إضافة جهاز جديد",
+    "device_details": "تفاصيل الجهاز",
+    "device_name": "اسم الجهاز",
+    "mac_address": "عنوان MAC",
+    "device_type": "نوع الجهاز",
+    "status": "الحالة",
+    "site": "الموقع",
+    "access_group": "مجموعة الوصول",
+    "group_devices": "تجميع الأجهزة",
+    "add_new_group": "إضافة مجموعة جديدة",
+    "enter_group_name": "أدخل اسم المجموعة",
+    "active": "نشط",
+    "not_active": "غير نشط",
+    "review_details": "مراجعة جميع تفاصيل ومعلومات الأجهزة"
+  },
+  "units": {
+    "title": "الوحدات",
+    "add_new": "إضافة وحدة جديدة",
+    "unit_details": "تفاصيل الوحدة",
+    "unit_name": "اسم الوحدة",
+    "unit_number": "رقم الوحدة",
+    "area": "المساحة",
+    "card_number": "رقم البطاقة",
+    "assign_to_owner": "تعيين للمالك",
+    "access_group": "مجموعة الوصول",
+    "review_details": "مراجعة جميع تفاصيل ومعلومات الوحدات"
+  },
+  "cards": {
+    "title": "البطاقات",
+    "add_new": "إضافة بطاقة جديدة",
+    "card_details": "تفاصيل البطاقة",
+    "card_number": "رقم البطاقة",
+    "card_type": "نوع البطاقة",
+    "status": "الحالة",
+    "assigned_to": "معين لـ",
+    "review_details": "مراجعة جميع تفاصيل ومعلومات البطاقات"
+  },
+  "access_groups": {
+    "title": "مجموعات الوصول",
+    "add_new": "إضافة مجموعة وصول جديدة",
+    "group_name": "اسم المجموعة",
+    "site": "الموقع",
+    "schedule": "الجدول الزمني",
+    "devices": "الأجهزة",
+    "review_details": "مراجعة جميع تفاصيل ومعلومات مجموعات الوصول"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "phone": "يرجى إدخال رقم هاتف صحيح",
+    "username": "يجب أن يكون اسم المستخدم 3-20 حرفاً (أحرف، أرقام، شرطة سفلية)",
+    "min_length": "الحد الأدنى للطول هو {0} حرف",
+    "max_length": "الحد الأقصى للطول هو {0} حرف",
+    "pattern": "تنسيق غير صحيح"
+  },
+  "messages": {
+    "success": {
+      "created": "تم الإنشاء بنجاح",
+      "updated": "تم التحديث بنجاح",
+      "deleted": "تم الحذف بنجاح",
+      "saved": "تم الحفظ بنجاح"
+    },
+    "error": {
+      "general": "حدث خطأ",
+      "network": "خطأ في الشبكة",
+      "validation": "خطأ في التحقق",
+      "not_found": "غير موجود"
+    }
+  },
+  "breadcrumb": {
+    "dashboard": "لوحة التحكم",
+    "subscriptions": "الاشتراكات",
+    "owners": "الملاك",
+    "devices": "الأجهزة",
+    "units": "الوحدات",
+    "cards": "البطاقات",
+    "access_groups": "مجموعات الوصول"
   }
 }

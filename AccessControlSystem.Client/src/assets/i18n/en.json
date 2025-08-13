@@ -4,7 +4,11 @@
     "subscriptions": "Subscriptions",
     "owners": "Owners",
     "devices": "Devices",
-    "settings": "Settings"
+    "settings": "Settings",
+    "units": "Units",
+    "cards": "Cards",
+    "access_groups": "Access Groups",
+    "admins": "Admins"
   },
   "auth": {
     "welcome_back": "Welcome Back",
@@ -24,12 +28,183 @@
     "save": "Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "actions": "Actions"
+    "actions": "Actions",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "open": "Open",
+    "view": "View",
+    "view_all": "View All",
+    "sort_by": "Sort by",
+    "choose_file": "Choose File",
+    "select": "Select",
+    "required": "Required",
+    "optional": "Optional",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "name": "Name",
+    "date": "Date",
+    "status": "Status"
   },
   "user": {
     "profile": "Profile",
     "settings": "Settings",
-    "admin": "Admin",
-    "user": "User"
+    "admin": "Administrator",
+    "user": "User",
+    "owner": "Owner",
+    "sub_admin": "Sub Administrator"
+  },
+  "dashboard": {
+    "welcome_title": "Welcome Back",
+    "welcome_subtitle": "Here's an overview of your activities",
+    "add_subscription": "Add Subscription",
+    "subscriptions": "Subscriptions",
+    "owners": "Owners",
+    "devices": "Devices",
+    "units": "Units",
+    "last_month": "Last Month",
+    "total": "Total",
+    "active": "Active",
+    "inactive": "Inactive",
+    "view_all": "View All",
+    "add_device": "Add Device",
+    "manage_visitors": "Manage Visitors",
+    "add_visitor": "Add Visitor",
+    "total_sales": "Total Sales",
+    "subscription_name": "Subscription Name",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "time_remaining": "Time Remaining",
+    "name": "Name",
+    "date": "Date",
+    "status": "Status",
+    "subscription": "Subscription"
+  },
+  "subscriptions": {
+    "title": "Subscriptions",
+    "add_new": "Add New Subscription",
+    "subscription_details": "Subscription Details",
+    "customer_name": "Customer Name",
+    "subscription_type": "Subscription Type",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "payment_per_month": "Payment per Month",
+    "total_payment": "Total Payment",
+    "per_month": "/ per month",
+    "plan": "Plan",
+    "payment": "Payment",
+    "upgrade": "Upgrade",
+    "cancel_subscription": "Cancel subscription",
+    "upgrade_subscription": "Upgrade Subscription",
+    "subscription_types": {
+      "standard": "Standard",
+      "premium": "Premium",
+      "enterprise": "Enterprise"
+    },
+    "usage": {
+      "admins": "Admins",
+      "devices": "Devices",
+      "cards": "Cards"
+    },
+    "devices_section": "Subscription Devices",
+    "create_new_device": "Create new Device",
+    "review_details": "Review all Subscriptions details and information"
+  },
+  "owners": {
+    "title": "Owners",
+    "add_new": "Add New Owner",
+    "owner_details": "Owner Details",
+    "username": "Username",
+    "email": "Email",
+    "phone_number": "Phone Number",
+    "units": "Units",
+    "assigned_owners": "Assigned owners",
+    "review_details": "Review all Owners details and information"
+  },
+  "devices": {
+    "title": "Devices",
+    "add_new": "Add New Device",
+    "device_details": "Device Details",
+    "device_name": "Device Name",
+    "mac_address": "Mac Address",
+    "device_type": "Device type",
+    "status": "Status",
+    "site": "Site",
+    "access_group": "Access Group",
+    "group_devices": "Group devices",
+    "add_new_group": "Add New Group",
+    "enter_group_name": "Enter Group Name",
+    "active": "Active",
+    "not_active": "Not Active",
+    "review_details": "Review all Devices details and information"
+  },
+  "units": {
+    "title": "Units",
+    "add_new": "Add new unit",
+    "unit_details": "Unit Details",
+    "unit_name": "Unit Name",
+    "unit_number": "Unit Number",
+    "area": "Area",
+    "card_number": "Card Number",
+    "assign_to_owner": "Assign to Owner",
+    "access_group": "Access Group",
+    "review_details": "Review all Units details and information"
+  },
+  "cards": {
+    "title": "Cards",
+    "add_new": "Add New Card",
+    "card_details": "Card Details",
+    "card_number": "Card Number",
+    "card_type": "Card Type",
+    "status": "Status",
+    "assigned_to": "Assigned To",
+    "review_details": "Review all Cards details and information"
+  },
+  "access_groups": {
+    "title": "Access Groups",
+    "add_new": "Add New Access Group",
+    "group_name": "Group Name",
+    "site": "Site",
+    "schedule": "Schedule",
+    "devices": "Devices",
+    "review_details": "Review all Access Groups details and information"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "phone": "Please enter a valid phone number",
+    "username": "Username must be 3-20 chars (letters, numbers, underscore)",
+    "min_length": "Minimum length is {0} characters",
+    "max_length": "Maximum length is {0} characters",
+    "pattern": "Invalid format"
+  },
+  "messages": {
+    "success": {
+      "created": "Successfully created",
+      "updated": "Successfully updated",
+      "deleted": "Successfully deleted",
+      "saved": "Successfully saved"
+    },
+    "error": {
+      "general": "An error occurred",
+      "network": "Network error",
+      "validation": "Validation error",
+      "not_found": "Not found"
+    }
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "subscriptions": "Subscriptions",
+    "owners": "Owners",
+    "devices": "Devices",
+    "units": "Units",
+    "cards": "Cards",
+    "access_groups": "Access Groups"
   }
 }
