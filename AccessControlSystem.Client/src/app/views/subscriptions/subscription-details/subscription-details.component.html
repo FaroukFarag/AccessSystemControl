@@ -6,7 +6,7 @@
   <span>{{ 'subscriptions.subscription_details.review_village_details' | translate }}</span>
 </div>
 
-<div class="subscription-container mb-5">
+<div class="subscription-container mb-5" [ngClass]="{'rtl': direction === 'rtl'}">
   <div class="header">
     <div>
       <strong>{{ 'subscriptions.subscription_details.plan' | translate }}:</strong> {{ subscription?.subscriptionTypeName }}
@@ -33,32 +33,32 @@
     <div class="usage-card">
       <div>{{ 'subscriptions.subscription_details.admins' | translate }}</div>
       <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription?.usedAdmins, subscription?.adminNumber)"></div>
+        <div class="progress" [style.width.%]="getProgress(subscription?.admins?.length || 0, subscription?.adminNumber || 0)"></div>
       </div>
-      <div>{{ subscription?.usedAdmins }} / {{ subscription?.adminNumber }}</div>
+      <div>{{ subscription?.admins?.length || 0 }} / {{ subscription?.adminNumber || 0 }}</div>
     </div>
 
     <div class="usage-card">
       <div>{{ 'subscriptions.subscription_details.devices' | translate }}</div>
       <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription?.usedDevices, subscription?.deviceNumber)">
+        <div class="progress" [style.width.%]="getProgress(subscription?.devices?.length || 0, subscription?.deviceNumber || 0)">
         </div>
       </div>
-      <div>{{ subscription?.usedDevices }} / {{ subscription?.deviceNumber }}</div>
+      <div>{{ subscription?.devices?.length || 0 }} / {{ subscription?.deviceNumber || 0 }}</div>
     </div>
 
     <div class="usage-card">
       <div>{{ 'subscriptions.subscription_details.cards' | translate }}</div>
       <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription?.usedCards, subscription?.cardNumber)"></div>
+        <div class="progress" [style.width.%]="getProgress(subscription?.cards?.length || 0, subscription?.cardNumber || 0)"></div>
       </div>
-      <div>{{ subscription?.usedCards }} / {{ subscription?.cardNumber }}</div>
+      <div>{{ subscription?.cards?.length || 0 }} / {{ subscription?.cardNumber || 0 }}</div>
     </div>
   </div>
 </div>
 
 <!--SECTION TWO ------ SUBSCRIPTION DEVICES-->
-<div class="devices-container">
+<div class="devices-container" [ngClass]="{'rtl': direction === 'rtl'}">
   <div class="devices-header">
     <div class="title">
       <strong>{{ 'subscriptions.subscription_details.devices' | translate }}</strong> <span class="count">({{ subscription?.devices?.length }})</span>
