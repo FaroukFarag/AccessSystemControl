@@ -17,6 +17,7 @@ import notify from 'devextreme/ui/notify';
 import { AccessGroupService } from '../../../services/access-groups/access-group.service';
 import { DeviceService } from '../../../services/devices/device.service';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-owner-dashboard',
@@ -29,7 +30,8 @@ import { Router } from '@angular/router';
     DxTextAreaModule,
     DxFormModule,
     DxPopupModule,
-    DxDataGridModule],
+    DxDataGridModule,
+    TranslatePipe],
   templateUrl: './owner-dashboard.component.html',
   styleUrl: './owner-dashboard.component.scss'
 })

@@ -349,7 +349,6 @@ td {
       align-items: center;
       gap: 0.75rem;
 
-
       .view-all-btn {
         background: none !important;
         border: none;
@@ -370,7 +369,6 @@ td {
       align-items: center;
       gap: 0.75rem;
 
-
       .view-all {
         color: #007bff;
         font-size: 0.9rem;
@@ -390,11 +388,151 @@ td {
 .device-card {
   min-width: 275px;
   background: #fafafa;
+  width: 24%;
+  border-radius: 12px;
+  border-width: 1px;
+  border: 1px solid #E1E1E1;
+  padding: 10px 10px;
 }
 
+.card-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
 
+  img {
+    width: 20%;
 
-.devices-card {
-  border: 1px solid #e5e7eb;
+    &:hover {
+      cursor: pointer
+    }
+  }
+
+  span:hover {
+    cursor: pointer
+  }
+}
+
+.device-name {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  color: #007BE2;
+}
+
+.info {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color: #A3A3A3;
+  line-height: 2rem;
+  flex: 34% !important;
+}
+
+.info-value {
+  font-family: Myriad Pro;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  flex: 50% !important;
+}
+
+.active {
+  color: #00C013 !important;
+}
+
+.inactive {
+  color: #ef4444 !important;
+}
+
+.device-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+
+  .info {
+    margin-right: 15px;
+  }
+
+  .icon {
+    margin-right: 5px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .devices-container {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .slider-nav-btn {
+    width: 36px;
+    height: 36px;
+
+    &.slider-nav-prev {
+      left: -18px;
+    }
+
+    &.slider-nav-next {
+      right: -18px;
+    }
+  }
+
+  .device-card-wrapper {
+    min-width: 280px;
+    max-width: 280px;
+  }
+
+  .device-card {
+    padding: 1rem;
+
+    .card-header .device-name {
+      font-size: 1rem;
+    }
+
+    .device-info-item {
+      padding: 0.375rem;
+
+      .info-content .info-value {
+        font-size: 0.8125rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .devices-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+
+    .title {
+      font-size: 1.25rem;
+    }
+  }
+
+  .device-card-wrapper {
+    min-width: 260px;
+    max-width: 260px;
+  }
 }
 

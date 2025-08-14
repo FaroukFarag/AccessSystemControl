@@ -1,53 +1,27 @@
 <div class="unit-dashboard">
   <div class="header">
     <div>
-      <h2>Owner Name</h2>
-      <p>Review unit details and information</p>
+      <h2>{{ 'dashboard.owner_dashboard.title' | translate }}</h2>
+      <p>{{ 'dashboard.owner_dashboard.review_unit_details' | translate }}</p>
     </div>
 
     <div class="page-header">
-      <dx-button class="button-info me-1" text="Manage Vistors" (onClick)="openManageVistorsPopup()">
+      <dx-button class="button-info me-1" text="{{ 'dashboard.manage_visitors' | translate }}" (onClick)="openManageVistorsPopup()">
       </dx-button>
 
     </div>
   </div>
 
-
-  <!--<div class="unit-info">
-    <img src="/assets/images/beach.jpg" alt="Unit" class="unit-image" />
-    <div class="details">
-      <h3>Unit name</h3>
-      <p><strong>Owner:</strong> {{ownerDetails.userName}}</p>
-      <p><strong>Subscription:</strong> {{ ownerDetails.subscription }}</p>
-      <p><strong>Devices:</strong> {{ ownerDetails.accessGroups.length }} Device</p>
-    </div>
-  </div>-->
-  <!--<div class="device-group">
-      <div class="group-header">
-        <h4>Devices group name ({{ devices.length }})</h4>
-        <a href="#">View All</a>
-      </div>
-      <div class="device-cards">
-        <div class="device-card" *ngFor="let device of devices">
-          <img src="/assets/images/device.jpg"  alt="Device" />
-          <h5>{{device.name}}</h5>
-          <p>Status: <span class="status active">{{ device.status }}</span></p>
-          <p>Mac Address: {{ device.mac }}</p>
-        </div>
-      </div>
-    </div>
-  </div>-->
   <!-- Devices Section -->
   <div class="devices-container mb-5">
     <div class="devices-header">
       <div class="title">
-        <strong>Devices</strong> <span class="count">({{ devicesList?.length }})</span>
+        <strong>{{ 'dashboard.owner_dashboard.devices_section' | translate }}</strong> <span class="count">({{ devicesList?.length }})</span>
       </div>
-      <div class="devices-actions ">
-        <button class=" view-all-btn" (click)="navigateToDevices()">
-          View All
+      <div class="devices-actions">
+        <button class="view-all-btn" (click)="navigateToDevices()">
+          {{ 'dashboard.view_all' | translate }}
         </button>
-
       </div>
     </div>
 
@@ -60,37 +34,33 @@
         </div>
         <div class="device-info">
           <div class="icon"><img src="/assets/icons/status.svg" /></div>
-          <div class="info"> Status: </div>
+          <div class="info"> {{ 'devices.status' | translate }}: </div>
           <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
-            {{ device.active ? 'Active' : 'Not Active' }}
+            {{ device.active ? ('devices.active' | translate) : ('devices.not_active' | translate) }}
           </div>
         </div>
         <div class="device-info">
           <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
-          <div class="info"> Mac Address: </div>
-          <div class="info-value ">{{device.macAddress}}</div>
+          <div class="info"> {{ 'devices.mac_address' | translate }}: </div>
+          <div class="info-value">{{device.macAddress}}</div>
         </div>
         <div class="device-info">
           <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
-          <div class="info"> Device type: </div>
-          <div class="info-value"> {{device.deviceTypeName}}</div>
+          <div class="info"> {{ 'devices.device_type' | translate }}: </div>
+          <div class="info-value">{{device.deviceTypeName}}</div>
         </div>
       </div>
     </div>
+    
     <div *ngIf="devicesList?.length === 0" class="empty-state">
-      No devices found for this User.
+      {{ 'dashboard.owner_dashboard.no_devices_found' | translate }}
     </div>
   </div>
 
-
   <!--Vistor Details Section -->
-
   <div class="grid-section mt-4">
     <div class="grid-header">
-      <h5>Vistors Details</h5>
-      <!--<div class="grid-header-btns">
-        <button type="button" class="btn view-all me-2">View All</button>
-      </div>-->
+      <h5>{{ 'dashboard.owner_dashboard.visitors_details' | translate }}</h5>
     </div>
     <dx-data-grid id="gridContainer"
                   [dataSource]="vistorsDetails"
@@ -99,22 +69,21 @@
                   [rowAlternationEnabled]="false"
                   [showBorders]="false"
                   [width]="'100%'">
-      <dxi-column dataField="name" caption="Vistor Name"></dxi-column>
-      <dxi-column dataField="email" caption="Vistor Email"></dxi-column>
-      <dxi-column dataField="phone" caption="Phone number"></dxi-column>
-      <dxi-column dataField="deviceAccess" caption="Device Access"></dxi-column>
-      <dxi-column dataField="start" caption="From"></dxi-column>
-      <dxi-column dataField="end" caption="To"></dxi-column>
+      <dxi-column dataField="name" caption="{{ 'common.name' | translate }}"></dxi-column>
+      <dxi-column dataField="email" caption="{{ 'common.email' | translate }}"></dxi-column>
+      <dxi-column dataField="phone" caption="{{ 'owners.phone_number' | translate }}"></dxi-column>
+      <dxi-column dataField="deviceAccess" caption="{{ 'devices.access_group' | translate }}"></dxi-column>
+      <dxi-column dataField="start" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
+      <dxi-column dataField="end" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
     </dx-data-grid>
   </div>
 
   <!--Devices Traffic Section -->
-
   <div class="grid-section mt-4">
     <div class="grid-header">
-      <h5>Devices Traffic</h5>
+      <h5>{{ 'dashboard.owner_dashboard.devices_traffic' | translate }}</h5>
       <div class="grid-header-btns">
-        <button type="button" class="btn view-all me-2">View All</button>
+        <button type="button" class="btn view-all me-2">{{ 'dashboard.view_all' | translate }}</button>
       </div>
     </div>
     <dx-data-grid id="gridContainer"
@@ -124,21 +93,18 @@
                   [rowAlternationEnabled]="false"
                   [showBorders]="false"
                   [width]="'100%'">
-      <dxi-column dataField="name" caption="Subscription Name"></dxi-column>
-      <dxi-column dataField="start" caption="Start Date"></dxi-column>
-      <dxi-column dataField="end" caption="End Date"></dxi-column>
-      <dxi-column dataField="remaining" caption="Time Remaining"></dxi-column>
+      <dxi-column dataField="name" caption="{{ 'dashboard.subscription_name' | translate }}"></dxi-column>
+      <dxi-column dataField="start" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
+      <dxi-column dataField="end" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
+      <dxi-column dataField="remaining" caption="{{ 'dashboard.time_remaining' | translate }}"></dxi-column>
     </dx-data-grid>
   </div>
-
-
-
 
   <!--Manage Vistors POPUP-->
   <dx-popup [width]="600"
             [height]="400"
             [showTitle]="true"
-            title="Manage Vistors"
+            [title]="'dashboard.manage_visitors' | translate"
             [dragEnabled]="true"
             [hideOnOutsideClick]="false"
             [showCloseButton]="true"
@@ -148,18 +114,18 @@
              [colCount]="1"
              [labelLocation]="'top'">
 
-      <dxi-item dataField="name" [editorType]="'dxTextBox'" [label]="{ text: 'Visitor Name' }"></dxi-item>
+      <dxi-item dataField="name" [editorType]="'dxTextBox'" [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
 
       <dxi-item dataField="visitDate"
                 [editorType]="'dxDateBox'"
                 [editorOptions]="{ type: 'datetime' }"
-                [label]="{ text: 'Visit Date' }"></dxi-item>
+                [label]="{ text: 'dashboard.owner_dashboard.visit_date' | translate }"></dxi-item>
 
     </dx-form>
 
     <dxi-item itemType="button">
-      <dx-button text="Add Vistor" (onClick)="submitVistor()"></dx-button>
+      <dx-button [text]="'dashboard.owner_dashboard.add_visitor' | translate" (onClick)="submitVistor()"></dx-button>
     </dxi-item>
 
-
-  </dx-popup>-
+  </dx-popup>
+</div>
