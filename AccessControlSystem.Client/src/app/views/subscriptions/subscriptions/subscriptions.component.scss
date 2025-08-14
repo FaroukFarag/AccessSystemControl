@@ -1,138 +1,184 @@
-.subscription-card {
-  width: 222px;
-  height: 280px;
-  border-radius: 12px;
-  border-width: 1px;
-  border-radius: 12px;
-  border: 1px solid #E1E1E1;
-  padding: 8px;
-  margin: 0px 14px 14px 0px;
-  background:#fff;
+// RTL support for page title icon
+.rtl-icon {
+  transform: scaleX(-1);
 }
 
+// Enhanced subscription cards grid
+.subscriptions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
 
+.subscription-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #E1E1E1;
+  padding: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: #007BE2;
+  }
+}
 
 .card {
   position: relative;
   width: 100%;
-  height: 68%;
+  height: 75%;
   border-radius: 12px;
   border: 1px solid #ccc;
   overflow: hidden;
-}
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
 
+  &:hover {
+    border-color: #007BE2;
+  }
+}
 
 .card-image {
   width: 100%;
   height: 100%;
-  cursor:pointer;
-}
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 
+  &:hover {
+    transform: scale(1.05);
+  }
+}
 
 .village-name {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  bottom: 12px;
+  left: 12px;
   color: white;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  vertical-align: middle;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-
 
 .top-right-text {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 5px;
-  border-radius: 5px;
-  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
   font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  vertical-align: middle;
+  line-height: 1.2;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  &.expired {
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+  }
+}
+
+.card-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .card-info {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: baseline;
-  margin-bottom:4px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+
+    img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+  }
 
   .info {
-    margin-right: 15px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    vertical-align: middle;
-    color: #a3a3a3;
+    font-weight: 500;
+    font-size: 13px;
+    color: #6B7280;
+    flex-shrink: 0;
   }
 
   .info-value {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    vertical-align: middle;
-    color: #101010;
-  }
-
-  .icon img{
-    margin-right: 10px;
-    border-width: 0.79px;
-    color: #a3a3a3;
-    width: 18px;
-    height: 18px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #1F2937;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
-
 /*BTNS*/
-
 .page-header {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-bottom: 14px
+  margin-bottom: 14px;
+  gap: 12px;
 }
 
 ::ng-deep .dx-button-mode-contained {
   background-color: #007BE2 !important;
   color: #fff !important;
   border-radius: 8px !important;
-  padding-top: 2px;
-  padding-right: 16px;
-  padding-bottom: 2px;
-  padding-left: 16px;
-  gap: 16px;
-}
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
 
+  &:hover {
+    background-color: #0056b3 !important;
+    transform: translateY(-1px);
+  }
+}
 
 ::ng-deep .dx-widget.dx-dropdownbutton.dx-dropdownbutton-has-arrow {
   border-radius: 8px !important;
-  border-width: 1px;
-  padding-top: 2px;
-  padding-right: 16px;
-  padding-bottom: 2px;
-  padding-left: 16px;
-  gap: 16px;
-}
-::ng-deep .dx-widget.dx-button.dx-button-mode-outlined.dx-button-normal.dx-button-has-text.dx-item.dx-buttongroup-item.dx-item-content.dx-buttongroup-item-content.dx-buttongroup-first-item.dx-buttongroup-last-item.dx-shape-standard.dx-dropdownbutton-action.dx-buttongroup-item-has-width{
-    border-radius:8px!important;
+  //border: 1px solid #D1D5DB !important;
+  padding: 8px 16px !important;
+//  background-color: #fff !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    border-color: #007BE2 !important;
+    box-shadow: 0 2px 4px rgba(0, 123, 226, 0.1);
+  }
 }
 
-
+::ng-deep .dx-widget.dx-button.dx-button-mode-outlined.dx-button-normal.dx-button-has-text.dx-item.dx-buttongroup-item.dx-item-content.dx-buttongroup-item-content.dx-buttongroup-first-item.dx-buttongroup-last-item.dx-shape-standard.dx-dropdownbutton-action.dx-buttongroup-item-has-width {
+  border-radius: 8px !important;
+}
 
 /*----START POPUP STYLES----------*/
 /*Image Uploader Styles*/
-
 ::ng-deep .dx-toolbar.dx-widget.dx-visibility-change-handler.dx-collection.dx-popup-title.dx-has-close-button {
   border-bottom: none !important;
 }
@@ -182,12 +228,9 @@
   align-items: end !important;
 }
 
-
-
 ::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
   width: 100% !important;
 }
-
 
 dx-form {
   margin-bottom: 24px !important;
@@ -207,7 +250,60 @@ dx-form {
 /*----END POPUP STYLES----------*/
 
 /*DropDonws*/
+::ng-deep .dx-overlay-content.dx-popup-normal.dx-resizable.dx-popup-flex-height {
+  width: 232px !important;
+}
 
-::ng-deep .dx-overlay-content.dx-popup-normal.dx-resizable.dx-popup-flex-height{
-    width:232px !important;
+// Responsive design
+@media (max-width: 1200px) {
+  .subscriptions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .subscriptions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .subscription-card {
+    height: 300px;
+    padding: 12px;
+  }
+
+  .card {
+    height: 70%;
+  }
+
+  .village-name {
+    font-size: 14px;
+    bottom: 8px;
+    left: 8px;
+  }
+
+  .top-right-text {
+    font-size: 11px;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .subscriptions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .subscription-card {
+    height: 280px;
+    padding: 10px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

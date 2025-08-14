@@ -536,3 +536,45 @@ td {
   }
 }
 
+// Popup styles
+.popup-content {
+  padding: 20px;
+  text-align: center;
+
+  p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .popup-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+// DataGrid button styles
+::ng-deep .dx-datagrid-button {
+  &.dx-button-mode-contained {
+    &.dx-button-success {
+      background-color: #28a745 !important;
+      border-color: #28a745 !important;
+      color: white !important;
+    }
+
+    &.dx-button-danger {
+      background-color: #dc3545 !important;
+      border-color: #dc3545 !important;
+      color: white !important;
+    }
+
+    &.dx-button-default {
+      background-color: #6c757d !important;
+      border-color: #6c757d !important;
+      color: white !important;
+    }
+  }
+}
+

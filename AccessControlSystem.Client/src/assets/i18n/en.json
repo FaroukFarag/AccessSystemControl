@@ -94,7 +94,13 @@
       "no_devices_found": "No devices found for this User.",
       "visitor_name": "Visitor Name",
       "visit_date": "Visit Date",
-      "add_visitor": "Add Visitor"
+      "add_visitor": "Add Visitor",
+      "pause_visit": "Pause Visit",
+      "cancel_visit": "Cancel Visit",
+      "pause_visit_confirm": "Are you sure you want to pause this visit ?",
+      "cancel_visit_confirm": "Are you sure you want to Cancel this visit ?",
+      "visit_paused": "Visit paused successfully",
+      "visit_canceled": "Visit canceled successfully"
     }
   },
   "subscriptions": {
@@ -236,12 +242,15 @@
   },
   "validation": {
     "required": "This field is required",
-    "email": "Please enter a valid email address",
-    "phone": "Please enter a valid phone number",
-    "username": "Username must be 3-20 chars (letters, numbers, underscore)",
-    "min_length": "Minimum length is {0} characters",
-    "max_length": "Maximum length is {0} characters",
-    "pattern": "Invalid format"
+    "image_required": "Image is required",
+    "fill_required_fields": "Please fill in all required fields.",
+    "device_created": "Device created successfully",
+    "device_creation_error": "Error creating device",
+    "customer_name_not_found": "Customer name not found. Please refresh the page and try again.",
+    "subscription_updated": "Subscription updated successfully",
+    "subscription_update_error": "Error updating subscription",
+    "sites_error": "Error getting sites",
+    "default_customer": "Default Customer"
   },
   "messages": {
     "success": {

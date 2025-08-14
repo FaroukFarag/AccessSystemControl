@@ -17,6 +17,7 @@ import notify from 'devextreme/ui/notify';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { LanguageService } from '../../../services/language/language.service';
 
 @Component({
   selector: 'app-subscriptions',
@@ -41,10 +42,14 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
 export class SubscriptionsComponent {
   @ViewChild('subscriptionFormRef', { static: false }) dxForm: any;
   popupVisible: boolean = false;
-  sortBy = ['Recent', 'Name', 'Subscription'];
+  sortBy = [
+    { text: 'Recent', value: 'Recent' },
+    { text: 'Name', value: 'Name' }
+  ];
   subscriptions: any;
   imageValidationError: string = '';
   MonthNumber: number = 1;
+  direction: 'ltr' | 'rtl' = 'ltr';
 
   subscriptionData = {
     SubscriptionImageFile: null,
@@ -88,7 +93,8 @@ export class SubscriptionsComponent {
   constructor(
     private router: Router,
     private subscriptionsService: SubscriptionService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private languageService: LanguageService) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
       displayExpr: 'name',
@@ -99,6 +105,11 @@ export class SubscriptionsComponent {
   }
 
   ngOnInit() {
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
+    
     this.getAllSubscriptions();
   }
 
@@ -149,7 +160,7 @@ export class SubscriptionsComponent {
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     //notify(e.itemData.name || e.itemData, 'success', 600);
 
-    this.getAllSubscriptions(e.itemData);
+    this.getAllSubscriptions(e.itemData.value);
   }
 
   navigateToDetailsPage(id: number) {

@@ -94,7 +94,13 @@
       "no_devices_found": "لم يتم العثور على أجهزة لهذا المستخدم.",
       "visitor_name": "اسم الزائر",
       "visit_date": "تاريخ الزيارة",
-      "add_visitor": "إضافة زائر"
+      "add_visitor": "إضافة زائر",
+      "pause_visit": "إيقاف الزيارة مؤقتاً",
+      "cancel_visit": "إلغاء الزيارة",
+      "pause_visit_confirm": "هل أنت متأكد من أنك تريد إيقاف هذه الزيارة مؤقتاً؟",
+      "cancel_visit_confirm": "هل أنت متأكد من أنك تريد إلغاء هذه الزيارة؟",
+      "visit_paused": "تم إيقاف الزيارة مؤقتاً بنجاح",
+      "visit_canceled": "تم إلغاء الزيارة بنجاح"
     }
   },
   "subscriptions": {
@@ -236,12 +242,15 @@
   },
   "validation": {
     "required": "هذا الحقل مطلوب",
-    "email": "يرجى إدخال عنوان بريد إلكتروني صحيح",
-    "phone": "يرجى إدخال رقم هاتف صحيح",
-    "username": "يجب أن يكون اسم المستخدم 3-20 حرفاً (أحرف، أرقام، شرطة سفلية)",
-    "min_length": "الحد الأدنى للطول هو {0} حرف",
-    "max_length": "الحد الأقصى للطول هو {0} حرف",
-    "pattern": "تنسيق غير صحيح"
+    "image_required": "الصورة مطلوبة",
+    "fill_required_fields": "يرجى ملء جميع الحقول المطلوبة.",
+    "device_created": "تم إنشاء الجهاز بنجاح",
+    "device_creation_error": "خطأ في إنشاء الجهاز",
+    "customer_name_not_found": "لم يتم العثور على اسم العميل. يرجى تحديث الصفحة والمحاولة مرة أخرى.",
+    "subscription_updated": "تم تحديث الاشتراك بنجاح",
+    "subscription_update_error": "خطأ في تحديث الاشتراك",
+    "sites_error": "خطأ في الحصول على المواقع",
+    "default_customer": "العميل الافتراضي"
   },
   "messages": {
     "success": {

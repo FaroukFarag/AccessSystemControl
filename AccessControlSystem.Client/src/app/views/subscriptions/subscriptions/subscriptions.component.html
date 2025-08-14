@@ -1,6 +1,6 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
-    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <img src="/assets/icons/back-arrow.svg" alt="Back Button" [class.rtl-icon]="direction === 'rtl'" />
     <h4>{{ 'subscriptions.title' | translate }}</h4>
   </div>
   <span>{{ 'subscriptions.review_details' | translate }}</span>
@@ -14,7 +14,7 @@
 
 <!-- ADD Subscription POPUP-->
 <dx-popup [width]="600" [height]="550" [showTitle]="true" [title]="'subscriptions.add_new' | translate" [dragEnabled]="true"
-  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
+  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form #subscriptionFormRef [formData]="subscriptionData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
@@ -94,28 +94,35 @@
 </dx-popup>
 
 <!--All Subscriptions-->
-<div class="row">
-  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let sub of subscriptions">
-    <div class="card mb-2">
+<div class="subscriptions-grid">
+  <div class="subscription-card" *ngFor="let sub of subscriptions">
+    <div class="card">
       <img [src]="sub.imagePath" alt="Card Image" class="card-image" (click)="navigateToDetailsPage(sub.id)">
       <div class="village-name" (click)="navigateToDetailsPage(sub.id)">{{sub.name}}</div>
-      <div class="top-right-text">{{sub.renewalInfo}}</div>
+      <div class="top-right-text" [class.expired]="sub.renewalInfo === 'Expired'">{{sub.renewalInfo}}</div>
     </div>
-         <div class="card-info">
-       <div class="icon"><img src="/assets/icons/subscriptions.svg" /></div>
-       <div class="info"> {{ 'subscriptions.customer_name' | translate }}: </div>
-       <div class="info-value"> {{sub.customerName }}</div>
-     </div>
-     <div class="card-info">
-       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
-       <div class="info"> {{ 'subscriptions.subscription_type' | translate }}: </div>
-       <div class="info-value"> {{sub.subscriptionTypeName }}</div>
-     </div>
-     <div class="card-info">
-       <div class="icon"><img src="/assets/icons/device.svg" /></div>
-       <div class="info"> {{ 'subscriptions.usage.devices' | translate }}: </div>
-       <div class="info-value">{{sub.deviceNumber}}</div>
-     </div>
-
+    <div class="card-details">
+      <div class="card-info">
+        <div class="icon">
+          <img src="/assets/icons/subscriptions.svg" alt="Customer" />
+        </div>
+        <div class="info">{{ 'subscriptions.customer_name' | translate }}:</div>
+        <div class="info-value">{{sub.customerName}}</div>
+      </div>
+      <div class="card-info">
+        <div class="icon">
+          <img src="/assets/icons/subscription.svg" alt="Type" />
+        </div>
+        <div class="info">{{ 'subscriptions.subscription_type' | translate }}:</div>
+        <div class="info-value">{{sub.subscriptionTypeName}}</div>
+      </div>
+      <div class="card-info">
+        <div class="icon">
+          <img src="/assets/icons/device.svg" alt="Devices" />
+        </div>
+        <div class="info">{{ 'subscriptions.usage.devices' | translate }}:</div>
+        <div class="info-value">{{sub.deviceNumber}}</div>
+      </div>
+    </div>
   </div>
 </div>

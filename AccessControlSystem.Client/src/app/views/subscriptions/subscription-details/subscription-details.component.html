@@ -3,35 +3,35 @@
     <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" tabindex="0" role="button" />
     <h4>{{ subscription?.customerName }}</h4>
   </div>
-  <span>Review village details and information</span>
+  <span>{{ 'subscriptions.subscription_details.review_village_details' | translate }}</span>
 </div>
 
 <div class="subscription-container mb-5">
   <div class="header">
     <div>
-      <strong>Plan:</strong> {{ subscription?.subscriptionTypeName }}
+      <strong>{{ 'subscriptions.subscription_details.plan' | translate }}:</strong> {{ subscription?.subscriptionTypeName }}
     </div>
     <div>
-      <strong>Payment:</strong> ${{ subscription?.paymentPerMonth }} <span class="subtext">/ per month</span>
+      <strong>{{ 'subscriptions.subscription_details.payment' | translate }}:</strong> ${{ subscription?.paymentPerMonth }} <span class="subtext">{{ 'subscriptions.subscription_details.per_month' | translate }}</span>
     </div>
     <div>
-      <strong>Total Payment:</strong> ${{ totalPayment }}
+      <strong>{{ 'subscriptions.subscription_details.total_payment' | translate }}:</strong> ${{ totalPayment }}
     </div>
     <div>
-      <strong>Start:</strong> {{ subscription?.startDate }}
+      <strong>{{ 'subscriptions.subscription_details.start' | translate }}:</strong> {{ subscription?.startDate }}
     </div>
     <div>
-      <strong>End:</strong> {{ subscription?.endDate }}
+      <strong>{{ 'subscriptions.subscription_details.end' | translate }}:</strong> {{ subscription?.endDate }}
     </div>
     <div class="actions">
-      <button class="cancel">Cancel subscription</button>
-      <button class="upgrade" (click)="showUpgradePopup()">Upgrade</button>
+      <button class="cancel">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</button>
+      <button class="upgrade" (click)="showUpgradePopup()">{{ 'subscriptions.subscription_details.upgrade' | translate }}</button>
     </div>
   </div>
 
   <div class="usage-section">
     <div class="usage-card">
-      <div>Admins</div>
+      <div>{{ 'subscriptions.subscription_details.admins' | translate }}</div>
       <div class="bar">
         <div class="progress" [style.width.%]="getProgress(subscription?.usedAdmins, subscription?.adminNumber)"></div>
       </div>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="usage-card">
-      <div>Devices</div>
+      <div>{{ 'subscriptions.subscription_details.devices' | translate }}</div>
       <div class="bar">
         <div class="progress" [style.width.%]="getProgress(subscription?.usedDevices, subscription?.deviceNumber)">
         </div>
@@ -48,7 +48,7 @@
     </div>
 
     <div class="usage-card">
-      <div>Cards</div>
+      <div>{{ 'subscriptions.subscription_details.cards' | translate }}</div>
       <div class="bar">
         <div class="progress" [style.width.%]="getProgress(subscription?.usedCards, subscription?.cardNumber)"></div>
       </div>
@@ -61,110 +61,104 @@
 <div class="devices-container">
   <div class="devices-header">
     <div class="title">
-      <strong>Devices</strong> <span class="count">({{ subscription?.devices?.length }})</span>
+      <strong>{{ 'subscriptions.subscription_details.devices' | translate }}</strong> <span class="count">({{ subscription?.devices?.length }})</span>
     </div>
     <div class="actions">
-      <dx-button class="button-info me-1" text="Create new Device" (onClick)="showAddDevicePopup()">
+      <dx-button class="button-info me-1" [text]="'subscriptions.subscription_details.create_new_device' | translate" (onClick)="showAddDevicePopup()">
       </dx-button>
       <!--<a href="#" class="view-all">View All</a>-->
     </div>
   </div>
 
-  <div class="devices-slider">
-    <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
-         *ngFor="let device of subscription?.devices">
+  <div class="devices-slider" [ngClass]="{'sidebar-collapsed': !isSidebarOpen, 'sidebar-expanded': isSidebarOpen}">
+    <div class="device-card" *ngFor="let device of subscription?.devices">
       <div class="card-header">
         <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDetailsPage(device.id)" />
         <span class="device-name" (click)="navigateToDetailsPage(device.id)">{{device.name}}</span>
       </div>
       <div class="device-info">
         <div class="icon"><img src="/assets/icons/status.svg" /></div>
-        <div class="info"> Status: </div>
+        <div class="info"> {{ 'devices.status' | translate }}: </div>
         <div class="info-value" [ngClass]="device.active ? 'active' : 'inactive'">
-          {{ device.active ? 'Active' : 'Not Active' }}
+          {{ device.active ? ('devices.active' | translate) : ('devices.not_active' | translate) }}
         </div>
       </div>
       <div class="device-info">
         <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
-        <div class="info"> Mac Address: </div>
+        <div class="info"> {{ 'devices.mac_address' | translate }}: </div>
         <div class="info-value ">{{device.macAddress}}</div>
       </div>
       <div class="device-info">
         <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
-        <div class="info"> Device type: </div>
+        <div class="info"> {{ 'devices.device_type' | translate }}: </div>
         <div class="info-value"> {{device.deviceTypeName}}</div>
       </div>
     </div>
   </div>
 
   <div *ngIf="subscription?.devices?.length === 0" class="empty-state">
-    No devices found for this subscription.
+    {{ 'devices.no_devices_found' | translate }}
   </div>
 
 </div>
 
-
-
-
-
 <!--ADD DEVICE POPUP-->
-<dx-popup [width]="600" [height]="420" [showTitle]="true" title="Add New Device" [dragEnabled]="true"
+<dx-popup [width]="600" [height]="420" [showTitle]="true" [title]="'devices.add_new' | translate" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+        <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
         <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
              class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
-          {{ imageValidationError }}
+          {{ 'validation.image_required' | translate }}
         </div>
       </div>
     </dxi-item>
 
-    <dxi-item dataField="deviceName" [editorOptions]="{ placeholder: 'Device name' }">
-      <dxi-validation-rule type="required" message="Device name is required">
+    <dxi-item dataField="deviceName" [editorOptions]="{ placeholder: 'devices.device_name_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'devices.device_name_required' | translate">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="serial" [editorOptions]="{ placeholder: 'Serial' }">
-      <dxi-validation-rule type="required" message="Serial is required">
+    <dxi-item dataField="serial" [editorOptions]="{ placeholder: 'devices.serial_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'devices.serial_required' | translate">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'Device MAC address' }">
-      <dxi-validation-rule type="required" message="Device MAC address is required">
+    <dxi-item dataField="macAddress" [editorOptions]="{ placeholder: 'devices.mac_address_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'devices.mac_address_required' | translate">
       </dxi-validation-rule>
       <dxi-validation-rule type="pattern" [pattern]="macAddressPattern"
-                           message="MAC address must be in format: 00:1A:2B:3C:4D:5E or 00-1A-2B-3C-4D-5E">
+                           [message]="'devices.mac_address_format' | translate">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
     <dxi-item dataField="siteId" editorType="dxSelectBox" [editorOptions]="{
           dataSource: sites,
-          placeholder: 'Site',
+          placeholder: 'devices.site_placeholder' | translate,
           valueExpr: 'id',
           displayExpr: 'name'
         }">
-      <dxo-label text="Site"></dxo-label>
-      <dxi-validation-rule type="required" message="Site is required"></dxi-validation-rule>
+      <dxo-label [text]="'devices.site' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'devices.site_required' | translate"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
 
     <dxi-item dataField="deviceType" editorType="dxSelectBox" [editorOptions]="{
          dataSource: deviceTypes,
-         placeholder: 'Device type',
+         placeholder: 'devices.device_type_placeholder' | translate,
          valueExpr: 'id',
          displayExpr: 'name'
        }">
-      <dxi-validation-rule type="required" message="Device type is required"></dxi-validation-rule>
+      <dxi-validation-rule type="required" [message]="'devices.device_type_required' | translate"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-
 
     <!-- Subscription Template for showing image + name -->
     <div *dxTemplate="let data of 'subscriptionTemplate'">
@@ -174,51 +168,50 @@
       </div>
     </div>
 
-
   </dx-form>
   <dxi-item itemType="button">
-    <dx-button text="Add Device" type="success" (onClick)="submitDevice()"></dx-button>
+    <dx-button [text]="'devices.add_device' | translate" type="success" (onClick)="submitDevice()"></dx-button>
   </dxi-item>
 
 </dx-popup>
 
 <!--UPGRADE SUBSCRIPTION POPUP-->
-<dx-popup [width]="500" [height]="400" [showTitle]="true" title="Upgrade Subscription" [dragEnabled]="true"
+<dx-popup [width]="500" [height]="400" [showTitle]="true" [title]="'subscriptions.subscription_details.upgrade_subscription' | translate" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="upgradePopupVisible">
   <dx-form #upgradeForm [formData]="upgradeData" [colCount]="1" [labelLocation]="'top'">
     
     <dxi-item dataField="subscriptionType" editorType="dxSelectBox" [editorOptions]="{
           dataSource: subscriptionTypes,
-          placeholder: 'Select Subscription Type',
+          placeholder: 'subscriptions.subscription_details.select_subscription_type' | translate,
           valueExpr: 'id',
           displayExpr: 'name'
         }">
-      <dxo-label text="Subscription Type"></dxo-label>
-      <dxi-validation-rule type="required" message="Subscription type is required"></dxi-validation-rule>
+      <dxo-label [text]="'subscriptions.subscription_type' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.subscription_type_required' | translate"></dxi-validation-rule>
     </dxi-item>
 
     <dxi-item dataField="startDate" editorType="dxDateBox" [editorOptions]="{
-          placeholder: 'Start Date',
+          placeholder: 'subscriptions.start_date' | translate,
           type: 'date',
           displayFormat: 'yyyy-MM-dd'
         }">
-      <dxo-label text="Start Date"></dxo-label>
-      <dxi-validation-rule type="required" message="Start date is required"></dxi-validation-rule>
+      <dxo-label [text]="'subscriptions.start_date' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.start_date_required' | translate"></dxi-validation-rule>
     </dxi-item>
 
     <dxi-item dataField="endDate" editorType="dxDateBox" [editorOptions]="{
-          placeholder: 'End Date',
+          placeholder: 'subscriptions.end_date' | translate,
           type: 'date',
           displayFormat: 'yyyy-MM-dd'
         }">
-      <dxo-label text="End Date"></dxo-label>
-      <dxi-validation-rule type="required" message="End date is required"></dxi-validation-rule>
+      <dxo-label [text]="'subscriptions.end_date' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.end_date_required' | translate"></dxi-validation-rule>
     </dxi-item>
 
   </dx-form>
   <dxi-item itemType="button">
     <dx-button 
-      [text]="isUpgrading ? 'Upgrading...' : 'Submit'"
+      [text]="isUpgrading ? ('subscriptions.subscription_details.upgrading' | translate) : ('subscriptions.subscription_details.submit' | translate)"
       type="success" 
       (onClick)="submitUpgrade()"
       [disabled]="isUpgrading">
@@ -227,14 +220,13 @@
 
 </dx-popup>
 
-
 <!--Device Traffic Section-->
 <div class="device-trafic-section mt-4" [class.rtl]="direction === 'rtl'">
   <div class="grid-header">
-    <h5>Device traffic</h5>
+    <h5>{{ 'devices.device_traffic' | translate }}</h5>
     <div class="grid-header-btns">
-      <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
-      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />Report</button>
+      <button type="button" class="btn btn-outline-secondary me-2">{{ 'devices.sorting.recent' | translate }}</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />{{ 'devices.report' | translate }}</button>
     </div>
   </div>
   <dx-data-grid id="gridContainer"
@@ -244,27 +236,22 @@
                 [rowAlternationEnabled]="false"
                 [showBorders]="false"
                 [width]="'100%'">
-    <!--<dxo-paging [pageSize]="10"></dxo-paging>
-    <dxo-pager [visible]="true"
-               [showPageSizeSelector]="true"
-               [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
     <dxo-search-panel [visible]="true"
                       [highlightCaseSensitive]="true"></dxo-search-panel>
 
-
     <dxi-column dataField="Traffic type"
-                caption="TRAFFIC TYPE"
+                [caption]="'devices.traffic_type' | translate"
                 dataType="string"
                 alignment="left"></dxi-column>
-    <dxi-column caption="TIME"
+    <dxi-column [caption]="'devices.time' | translate"
                 dataField="Time"
                 dataType="string"
                 format="time"
                 alignment="left"></dxi-column>
-    <dxi-column dataField="DATE" dataType="date"></dxi-column>
-    <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+    <dxi-column dataField="DATE" [caption]="'devices.date' | translate" dataType="date"></dxi-column>
+    <dxi-column dataField="DeviceMacAddress" [caption]="'devices.device_mac_address' | translate" dataType="string"></dxi-column>
 
-    <dxi-column dataField="image" caption="IMAGE" cellTemplate="imageCellTemplate"></dxi-column>
+    <dxi-column dataField="image" [caption]="'devices.image' | translate" cellTemplate="imageCellTemplate"></dxi-column>
 
     <div *dxTemplate="let d of 'imageCellTemplate'">
       <img />

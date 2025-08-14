@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { LanguageService } from '../../../services/language/language.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { SidebarService } from '../../../services/sidebar/sidebar.service';
 
 import {
   DxPopupModule,
@@ -36,7 +38,8 @@ import { DeviceService } from '../../../services/devices/device.service';
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
-    DxDataGridModule],
+    DxDataGridModule,
+    TranslatePipe],
 
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss'
@@ -51,6 +54,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   imageValidationError: string = '';
   deviceListEditorOptions: any;
   direction: 'ltr' | 'rtl' = 'ltr';
+  isSidebarOpen: boolean = true;
 
   devicesList: any;
   deviceData = {
@@ -217,7 +221,9 @@ export class SubscriptionDetailsComponent implements OnInit {
     private deviceService: DeviceService,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private languageService: LanguageService) {
+    private languageService: LanguageService,
+    private sidebarService: SidebarService,
+    private translatePipe: TranslatePipe) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -232,6 +238,11 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
+
+    // Subscribe to sidebar state changes
+    this.sidebarService.isOpen$.subscribe(isOpen => {
+      this.isSidebarOpen = isOpen;
+    });
 
     // Subscribe to direction changes
     this.languageService.direction$.subscribe(direction => {
@@ -254,7 +265,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         this.sites = data.resultData.sites;
 
       else
-        notify('Error getting sites', 'error', 2000);
+        notify(this.translatePipe.transform('validation.sites_error'), 'error', 2000);
     })
   }
 
@@ -314,13 +325,13 @@ export class SubscriptionDetailsComponent implements OnInit {
   submitDevice() {
     this.imageValidationError = '';
     if (!this.deviceData.deviceImageFile) {
-      this.imageValidationError = 'Image is required';
+      this.imageValidationError = this.translatePipe.transform('validation.image_required');
       return;
     }
 
     const result = this.dxForm.instance.validate();
     if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.translatePipe.transform('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -340,7 +351,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify('Device created successfully', 'success', 1500);
+          notify(this.translatePipe.transform('validation.device_created'), 'success', 1500);
           this.popupVisible = false;
 
           this.getAllDevices();
@@ -349,7 +360,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         }
       },
       error: (err) => {
-        notify('Error creating device', 'error', 2000);
+        notify(this.translatePipe.transform('validation.device_creation_error'), 'error', 2000);
         console.error(err);
       }
     });
@@ -379,7 +390,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   submitUpgrade() {
     const result = this.upgradeForm.instance.validate();
     if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.translatePipe.transform('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -400,7 +411,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       customerName = this.subscription.customerName;
     } else {
       // If we can't find the customer name, show an error
-      notify('Customer name not found. Please refresh the page and try again.', 'error', 3000);
+      notify(this.translatePipe.transform('validation.customer_name_not_found'), 'error', 3000);
       return;
     }
 
@@ -419,7 +430,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     // If still no customer name, try to get it from the page title or other sources
     if (!customerName) {
-      customerName = this.subscription?.customerName || 'Default Customer';
+      customerName = this.subscription?.customerName || this.translatePipe.transform('validation.default_customer');
     }
 
     // Get subscription type name
@@ -455,7 +466,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         console.log('API Response received, setting isUpgrading to false');
         this.isUpgrading = false;
         if (response.succeeded) {
-          notify('Subscription updated successfully', 'success', 1500);
+          notify(this.translatePipe.transform('validation.subscription_updated'), 'success', 1500);
           this.upgradePopupVisible = false;
           
           // Refresh subscription data
@@ -464,13 +475,13 @@ export class SubscriptionDetailsComponent implements OnInit {
             this.calculateTotalPayment();
           });
         } else {
-          notify(response.message || 'Error updating subscription', 'error', 2000);
+          notify(response.message || this.translatePipe.transform('validation.subscription_update_error'), 'error', 2000);
         }
       },
       error: (err) => {
         console.log('API Error received, setting isUpgrading to false');
         this.isUpgrading = false;
-        notify('Error updating subscription', 'error', 2000);
+        notify(this.translatePipe.transform('validation.subscription_update_error'), 'error', 2000);
         console.error(err);
       }
     });

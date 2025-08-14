@@ -75,8 +75,50 @@
       <dxi-column dataField="deviceAccess" caption="{{ 'devices.access_group' | translate }}"></dxi-column>
       <dxi-column dataField="start" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
       <dxi-column dataField="end" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
+      <dxi-column type="buttons" [width]="80">
+        <dxi-button name="settings" icon="gear" [onClick]="onSettingsClick"></dxi-button>
+      </dxi-column>
+      <dxi-column type="buttons" [width]="100">
+        <dxi-button name="cancel" text="Cancel" [onClick]="onCancelClick"></dxi-button>
+      </dxi-column>
     </dx-data-grid>
   </div>
+
+  <!-- Pause Visit Confirmation Popup -->
+  <dx-popup [width]="400"
+            [height]="200"
+            [showTitle]="true"
+            [title]="'dashboard.owner_dashboard.pause_visit' | translate"
+            [dragEnabled]="true"
+            [hideOnOutsideClick]="true"
+            [showCloseButton]="true"
+            [(visible)]="pauseVisitPopupVisible">
+    <div class="popup-content">
+      <p>{{ 'dashboard.owner_dashboard.pause_visit_confirm' | translate }}</p>
+      <div class="popup-actions">
+        <dx-button [text]="'dashboard.owner_dashboard.pause_visit' | translate" type="success" (onClick)="confirmPauseVisit()"></dx-button>
+        <dx-button [text]="'common.back' | translate" type="default" (onClick)="closePausePopup()"></dx-button>
+      </div>
+    </div>
+  </dx-popup>
+
+  <!-- Cancel Visit Confirmation Popup -->
+  <dx-popup [width]="400"
+            [height]="200"
+            [showTitle]="true"
+            [title]="'dashboard.owner_dashboard.cancel_visit' | translate"
+            [dragEnabled]="true"
+            [hideOnOutsideClick]="true"
+            [showCloseButton]="true"
+            [(visible)]="cancelVisitPopupVisible">
+    <div class="popup-content">
+      <p>{{ 'dashboard.owner_dashboard.cancel_visit_confirm' | translate }}</p>
+      <div class="popup-actions">
+        <dx-button [text]="'dashboard.owner_dashboard.cancel_visit' | translate" type="danger" (onClick)="confirmCancelVisit()"></dx-button>
+        <dx-button [text]="'common.back' | translate" type="default" (onClick)="closeCancelPopup()"></dx-button>
+      </div>
+    </div>
+  </dx-popup>
 
   <!--Devices Traffic Section -->
   <div class="grid-section mt-4">

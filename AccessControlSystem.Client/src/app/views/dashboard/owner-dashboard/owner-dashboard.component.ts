@@ -37,6 +37,9 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
 })
 export class OwnerDashboardComponent implements OnInit {
   manageVistors_popupVisible = false;
+  pauseVisitPopupVisible = false;
+  cancelVisitPopupVisible = false;
+  selectedVisitor: any = null;
 
   formModel = {
     name: '',
@@ -58,6 +61,7 @@ export class OwnerDashboardComponent implements OnInit {
   ];
   vistorsDetails = [
     {
+      id: 1,
       name: 'Device name',
       email: 'vistor@gmail.com',
       phone: '01127257820',
@@ -65,6 +69,7 @@ export class OwnerDashboardComponent implements OnInit {
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
     },{
+      id: 2,
       name: 'Device name',
       email: 'vistor@gmail.com',
       phone: '01127257820',
@@ -72,6 +77,7 @@ export class OwnerDashboardComponent implements OnInit {
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
     },{
+      id: 3,
       name: 'Device name',
       email: 'vistor@gmail.com',
       phone: '01127257820',
@@ -79,6 +85,7 @@ export class OwnerDashboardComponent implements OnInit {
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
     },{
+      id: 4,
       name: 'Device name',
       email: 'vistor@gmail.com',
       phone: '01127257820',
@@ -86,6 +93,7 @@ export class OwnerDashboardComponent implements OnInit {
       start: 'Sep 04, 2024',
       end: 'Sep 05, 2025',
     },{
+      id: 5,
       name: 'Device name',
       email: 'vistor@gmail.com',
       phone: '01127257820',
@@ -219,4 +227,47 @@ export class OwnerDashboardComponent implements OnInit {
     })
   }
 
+  // Settings button click handler
+  onSettingsClick = (e: any) => {
+    this.selectedVisitor = e.row.data;
+    this.pauseVisitPopupVisible = true;
+  }
+
+  // Cancel button click handler
+  onCancelClick = (e: any) => {
+    this.selectedVisitor = e.row.data;
+    this.cancelVisitPopupVisible = true;
+  }
+
+  // Confirm pause visit
+  confirmPauseVisit() {
+    if (this.selectedVisitor) {
+      // Here you would typically make an API call to pause the visit
+      console.log('Pausing visit for:', this.selectedVisitor);
+      notify('dashboard.owner_dashboard.visit_paused', 'success', 2000);
+      this.closePausePopup();
+    }
+  }
+
+  // Confirm cancel visit
+  confirmCancelVisit() {
+    if (this.selectedVisitor) {
+      // Here you would typically make an API call to cancel the visit
+      console.log('Canceling visit for:', this.selectedVisitor);
+      notify('dashboard.owner_dashboard.visit_canceled', 'success', 2000);
+      this.closeCancelPopup();
+    }
+  }
+
+  // Close pause popup
+  closePausePopup() {
+    this.pauseVisitPopupVisible = false;
+    this.selectedVisitor = null;
+  }
+
+  // Close cancel popup
+  closeCancelPopup() {
+    this.cancelVisitPopupVisible = false;
+    this.selectedVisitor = null;
+  }
 }
