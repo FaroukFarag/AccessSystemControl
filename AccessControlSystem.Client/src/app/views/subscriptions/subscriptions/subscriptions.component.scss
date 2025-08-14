@@ -6,7 +6,7 @@
 // Enhanced subscription cards grid
 .subscriptions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
   padding: 1rem 0;
 }
@@ -249,7 +249,7 @@ dx-form {
 
 /*----END POPUP STYLES----------*/
 
-/*DropDonws*/
+/*DropDonWs*/
 ::ng-deep .dx-overlay-content.dx-popup-normal.dx-resizable.dx-popup-flex-height {
   width: 232px !important;
 }
