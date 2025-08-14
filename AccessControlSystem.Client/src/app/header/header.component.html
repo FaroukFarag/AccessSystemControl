@@ -40,8 +40,8 @@
       <div class="user-profile" (click)="toggleUserDropdown()" [class.active]="isUserDropdownOpen">
       <!--  <img src="assets/images/profile.jpg" alt="user-name" class="profile-image">-->
         <div class="profile-info">
-          <span class="profile-name">Shaimaa Gamal</span>
-          <span class="profile-role">{{ 'user.admin' | translate }}</span>
+          <span class="profile-name">{{ currentUser?.userName || 'User' }}</span>
+       <!--   <span class="profile-role">{{ getUserRoleTranslationKey() | translate }}</span>-->
         </div>
         <svg class="dropdown-arrow" [class.rotated]="isUserDropdownOpen" [class.rtl]="direction === 'rtl'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
