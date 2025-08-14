@@ -57,6 +57,9 @@ export class SubAdminDashboardComponent {
   devicesList: any;
   imageValidationError: string = '';
   devicesCount!: number;
+  devicesLastMonthCount!: number;
+  UnitsCount!: number;
+  unitsLastMonthCount!: number;
 
   // Current user information from JWT token
   currentUser: { userName: string; email: string; role: string; userId: string } | null = null;
@@ -250,6 +253,9 @@ export class SubAdminDashboardComponent {
     this.getAllOwners();
     this.getAllAccessGroups();
     this.getDevicesCount();
+    this.getDevicesLAstMonthCount();
+    this.getUnitsCount();
+    this.getUnitsLaMonthCount();
   }
   getAllDevices(orderBy?: string) {
     const baseUrl = 'Devices/GetAll';
@@ -576,6 +582,22 @@ export class SubAdminDashboardComponent {
   getDevicesCount() {
     this.userService.getAll('Devices/GetDevicesCount').subscribe((data: any) => {
       this.devicesCount = data.resultData;
+    })
+  }
+  getDevicesLAstMonthCount() {
+    this.userService.getAll('Devices/GetLastMonthDevicesCount').subscribe((data: any) => {
+      this.devicesLastMonthCount = data.resultData;
+    })
+  }
+
+  getUnitsCount() {
+    this.userService.getAll('Units/GetUnitsCount').subscribe((data: any) => {
+      this.UnitsCount = data.resultData;
+    })
+  }
+  getUnitsLaMonthCount() {
+    this.userService.getAll('Units/GetLastMonthUnitsCount').subscribe((data: any) => {
+      this.unitsLastMonthCount = data.resultData;
     })
   }
 

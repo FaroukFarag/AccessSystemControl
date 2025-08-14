@@ -41,10 +41,10 @@
           </svg>
         </div>
         <div class="stat-label">{{ 'units' | translate }}</div>
-        <div class="stat-number">15</div>
+        <div class="stat-number">{{UnitsCount}}</div>
         <div class="stat-comparison">
           <span class="comparison-label">{{ 'last_month' | translate }}: </span>
-          <span class="comparison-value">14</span>
+          <span class="comparison-value">{{unitsLastMonthCount}}</span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@
         <div class="stat-number">{{devicesCount}}</div>
         <div class="stat-comparison">
           <span class="comparison-label">{{ 'last_month' | translate }}: </span>
-          <span class="comparison-value">39</span>
+          <span class="comparison-value">{{devicesLastMonthCount}}</span>
         </div>
       </div>
 
