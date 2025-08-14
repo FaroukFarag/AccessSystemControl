@@ -284,18 +284,8 @@
   }
 }
 
-// RTL specific spacing - fixed selector
-.devices-container.rtl .device-info {
-  .info {
-    margin-right: 0;
-    margin-left: 15px;
-  }
 
-  .icon {
-    margin-right: 0;
-    margin-left: 12px;
-  }
-}
+
 
 
 .all-devices {
@@ -445,5 +435,3 @@ td {
   0% { transform: translateY(-50%) rotate(0deg); }
   100% { transform: translateY(-50%) rotate(360deg); }
 }
-
-

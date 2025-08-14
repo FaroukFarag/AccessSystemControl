@@ -5,6 +5,7 @@
     "owners": "Owners",
     "devices": "Devices",
     "settings": "Settings",
+    "logout": "Logout",
     "units": "Units",
     "cards": "Cards",
     "access_groups": "Access Groups",
@@ -106,18 +107,17 @@
   "subscriptions": {
     "title": "Subscriptions",
     "add_new": "Add New Subscription",
-    "review_details": "Review all Subscriptions details and information",
+    "subscription_details": "Subscription Details",
+    "subscription_name": "Subscription Name",
     "customer_name": "Customer Name",
     "subscription_type": "Subscription Type",
-    "payment_per_month": "Payment per month",
     "start_date": "Start Date",
     "end_date": "End Date",
-    "usage": {
-      "admins": "Admins",
-      "devices": "Devices",
-      "cards": "Cards"
-    },
+    "payment_per_month": "Payment per month",
+    "total_payment": "Total Payment",
+    "review_details": "Review all Subscriptions details and information",
     "subscription_details": {
+      "title": "Subscription Details",
       "review_village_details": "Review village details and information",
       "plan": "Plan",
       "payment": "Payment",
@@ -131,17 +131,6 @@
       "devices": "Devices",
       "cards": "Cards",
       "create_new_device": "Create new Device",
-      "create_new_admin": "Create New Admin",
-      "create_new_card": "Create New Card",
-      "email": "Email",
-      "status": "Status",
-      "active": "Active",
-      "inactive": "Inactive",
-      "card_type": "Card Type",
-      "assigned_to": "Assigned To",
-      "unassigned": "Unassigned",
-      "no_admins_found": "No admins found for this subscription.",
-      "no_cards_found": "No cards found for this subscription.",
       "upgrade_subscription": "Upgrade Subscription",
       "select_subscription_type": "Select Subscription Type",
       "subscription_type_required": "Subscription type is required",
@@ -262,10 +251,7 @@
     "subscription_updated": "Subscription updated successfully",
     "subscription_update_error": "Error updating subscription",
     "sites_error": "Error getting sites",
-    "default_customer": "Default Customer",
-    "invalid_subscription_id": "Invalid subscription ID",
-    "subscription_not_found": "Subscription not found",
-    "error_loading_subscription_details": "Error loading subscription details"
+    "default_customer": "Default Customer"
   },
   "messages": {
     "success": {

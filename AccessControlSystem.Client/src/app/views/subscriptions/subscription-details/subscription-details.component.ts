@@ -222,7 +222,8 @@ export class SubscriptionDetailsComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
-    private sidebarService: SidebarService) {
+    private sidebarService: SidebarService,
+    private translatePipe: TranslatePipe) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -237,14 +238,6 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
-    console.log('Subscription ID:', this.id);
-
-    if (!this.id || isNaN(this.id)) {
-      console.error('Invalid subscription ID:', this.id);
-      notify(this.languageService.translate('validation.invalid_subscription_id'), 'error', 3000);
-      this.router.navigate(['/subscriptions']);
-      return;
-    }
 
     // Subscribe to sidebar state changes
     this.sidebarService.isOpen$.subscribe(isOpen => {
@@ -258,37 +251,10 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     this.getAllSites();
 
-    console.log('Loading subscription with ID:', this.id);
-    // Try using getAll with a filter instead of getById
-    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe({
-      next: (data: any) => {
-        console.log('All subscriptions data received:', data);
-        if (data && data.resultData) {
-          // Find the specific subscription by ID
-          const subscription = data.resultData.find((sub: any) => sub.id === this.id);
-          if (subscription) {
-            this.subscription = subscription;
-            console.log('Subscription object:', this.subscription);
-            this.calculateTotalPayment();
-            
-            // Load devices for this subscription after subscription is loaded
-            this.getAllDevices();
-          } else {
-            console.error('Subscription with ID', this.id, 'not found in the list');
-            notify(this.languageService.translate('validation.subscription_not_found'), 'error', 3000);
-            this.router.navigate(['/subscriptions']);
-          }
-        } else {
-          console.error('No subscription data found');
-          notify(this.languageService.translate('validation.subscription_not_found'), 'error', 3000);
-          this.router.navigate(['/subscriptions']);
-        }
-      },
-      error: (error) => {
-        console.error('Error loading subscription:', error);
-        notify(this.languageService.translate('validation.error_loading_subscription_details'), 'error', 3000);
-        this.router.navigate(['/subscriptions']);
-      }
+    this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe((data: any) => {
+      this.subscription = data.resultData;
+      this.calculateTotalPayment();
+
     });
   }
 
@@ -299,7 +265,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         this.sites = data.resultData.sites;
 
       else
-        notify(this.languageService.translate('validation.sites_error'), 'error', 2000);
+        notify(this.translatePipe.transform('validation.sites_error'), 'error', 2000);
     })
   }
 
@@ -322,19 +288,8 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   getAllDevices() {
     this.deviceService.getAll(`Devices/GetAll`).subscribe((data: any) => {
-      if (data && data.resultData) {
-        // Filter devices by subscription ID
-        const subscriptionDevices = data.resultData.filter((device: any) => device.subscriptionId === this.id);
-        console.log('Devices for subscription', this.id, ':', subscriptionDevices);
-        
-        // Update the subscription object with the filtered devices
-        if (this.subscription) {
-          this.subscription.devices = subscriptionDevices;
-        }
-        
-        // Also update the devicesList for the dropdown
-        this.devicesList = subscriptionDevices;
-      }
+      this.devicesList = data.resultData;
+
     })
   }
 
@@ -370,13 +325,13 @@ export class SubscriptionDetailsComponent implements OnInit {
   submitDevice() {
     this.imageValidationError = '';
     if (!this.deviceData.deviceImageFile) {
-      this.imageValidationError = this.languageService.translate('validation.image_required');
+      this.imageValidationError = this.translatePipe.transform('validation.image_required');
       return;
     }
 
     const result = this.dxForm.instance.validate();
     if (!result.isValid) {
-      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
+      notify(this.translatePipe.transform('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -396,17 +351,16 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify(this.languageService.translate('validation.device_created'), 'success', 1500);
+          notify(this.translatePipe.transform('validation.device_created'), 'success', 1500);
           this.popupVisible = false;
 
-          // Refresh the devices list for this subscription
           this.getAllDevices();
         } else {
            notify(response.message, 'error', 2000);
         }
       },
       error: (err) => {
-        notify(this.languageService.translate('validation.device_creation_error'), 'error', 2000);
+        notify(this.translatePipe.transform('validation.device_creation_error'), 'error', 2000);
         console.error(err);
       }
     });
@@ -436,7 +390,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   submitUpgrade() {
     const result = this.upgradeForm.instance.validate();
     if (!result.isValid) {
-      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
+      notify(this.translatePipe.transform('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -457,7 +411,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       customerName = this.subscription.customerName;
     } else {
       // If we can't find the customer name, show an error
-      notify(this.languageService.translate('validation.customer_name_not_found'), 'error', 3000);
+      notify(this.translatePipe.transform('validation.customer_name_not_found'), 'error', 3000);
       return;
     }
 
@@ -476,7 +430,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     // If still no customer name, try to get it from the page title or other sources
     if (!customerName) {
-      customerName = this.subscription?.customerName || this.languageService.translate('validation.default_customer');
+      customerName = this.subscription?.customerName || this.translatePipe.transform('validation.default_customer');
     }
 
     // Get subscription type name
@@ -512,27 +466,22 @@ export class SubscriptionDetailsComponent implements OnInit {
         console.log('API Response received, setting isUpgrading to false');
         this.isUpgrading = false;
         if (response.succeeded) {
-          notify(this.languageService.translate('validation.subscription_updated'), 'success', 1500);
+          notify(this.translatePipe.transform('validation.subscription_updated'), 'success', 1500);
           this.upgradePopupVisible = false;
           
           // Refresh subscription data
-          this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
-            if (data && data.resultData) {
-              const subscription = data.resultData.find((sub: any) => sub.id === this.id);
-              if (subscription) {
-                this.subscription = subscription;
-                this.calculateTotalPayment();
-              }
-            }
+          this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe((data: any) => {
+            this.subscription = data.resultData;
+            this.calculateTotalPayment();
           });
         } else {
-          notify(response.message || this.languageService.translate('validation.subscription_update_error'), 'error', 2000);
+          notify(response.message || this.translatePipe.transform('validation.subscription_update_error'), 'error', 2000);
         }
       },
       error: (err) => {
         console.log('API Error received, setting isUpgrading to false');
         this.isUpgrading = false;
-        notify(this.languageService.translate('validation.subscription_update_error'), 'error', 2000);
+        notify(this.translatePipe.transform('validation.subscription_update_error'), 'error', 2000);
         console.error(err);
       }
     });

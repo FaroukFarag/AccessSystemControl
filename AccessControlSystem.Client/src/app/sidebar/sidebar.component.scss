@@ -161,3 +161,28 @@
     }
   }
 }
+
+.logout-link {
+  margin-top: auto;
+  padding: 0 16px;
+  border-top: 1px solid #edf2f7;
+  padding-top: 16px;
+
+  .nav-link {
+    color: #64748B;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #F8FAFC;
+      color: #007BE2;
+    }
+
+    .nav-icon {
+      color: #64748B;
+    }
+
+    &:hover .nav-icon {
+      color: #007BE2;
+    }
+  }
+}

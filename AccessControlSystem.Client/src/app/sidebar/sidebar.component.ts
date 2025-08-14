@@ -125,4 +125,12 @@ export class SidebarComponent implements OnInit {
     const selectedItem = this.menuItems[index];
     this.router.navigate([selectedItem.route]);
   }
+
+  logout(): void {
+    // Clear localStorage
+    localStorage.clear();
+    
+    // Navigate to login page
+    this.router.navigate(['/login']);
+  }
 }
