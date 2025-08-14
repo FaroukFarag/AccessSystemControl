@@ -52,7 +52,8 @@ export class DevicesComponent implements OnInit {
   popupVisible: boolean = false;
   direction: 'ltr' | 'rtl' = 'ltr';
   groupDevice_popupVisible: boolean = false;
-  sortBy = ['Recent', 'Name'];
+  sortBy: string[] = [];
+  accessGroupSortBy: string[] = [];
 
   sites: any[] = [];
   schedules: any[] = [];
@@ -113,7 +114,7 @@ export class DevicesComponent implements OnInit {
       displayExpr: 'name',
       searchEnabled: true,
       showClearButton: true,
-      placeholder: 'Device type'
+      placeholder: this.languageService.translate('devices.device_type_placeholder')
     };
   }
 
@@ -122,6 +123,12 @@ export class DevicesComponent implements OnInit {
     this.languageService.direction$.subscribe(direction => {
       this.direction = direction;
     });
+
+    // Initialize sort options with simple values
+    this.sortBy = ['Recent', 'Name'];
+
+    // Initialize sort options for access groups (limited options)
+    this.accessGroupSortBy = ['Recent', 'Name'];
 
     this.getAllSites();
     this.getAllSchedules();
@@ -319,11 +326,13 @@ export class DevicesComponent implements OnInit {
   }
 
   onDevicesItemClick(e: any): void {
-    this.getAllDevices(e.itemData);
+    const selectedSortOption = e.itemData;
+    this.getAllDevices(selectedSortOption);
   }
 
   onAccessGroupItemClick(e: any): void {
-    this.getAllAccessGroups(e.itemData);
+    const selectedSortOption = e.itemData;
+    this.getAllAccessGroups(selectedSortOption);
   }
 }
 

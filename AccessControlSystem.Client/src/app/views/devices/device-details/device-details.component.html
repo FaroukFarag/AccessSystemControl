@@ -1,31 +1,31 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
-    <h4>{{ deviceDetails?.name || 'Device Name' }}</h4>
+    <h4>{{ deviceDetails?.name || ('devices.device_details.device_name' | translate) }}</h4>
   </div>
-  <span>Review Device details and information</span>
+  <span>{{ 'devices.device_details.review_details' | translate }}</span>
 </div>
 
 <div class="device-data">
 
   <div class="img"><img [src]="deviceDetails?.imagePath || '/assets/images/device.png'" alt="Device Image"/></div>
   <div class="device-info">
-    <div class="device-name">{{ deviceDetails?.name || 'Device Name' }}</div>
+    <div class="device-name">{{ deviceDetails?.name || ('devices.device_details.device_name' | translate) }}</div>
 
     <div class="info">
       <img class="icon " src="/assets/icons/status.svg" />
-      <span class="info-name">Status:</span>
-      <span class="info-value"> {{ deviceDetails?.active ? 'Active' : 'Not Active' }}</span>
+      <span class="info-name">{{ 'devices.status' | translate }}:</span>
+      <span class="info-value"> {{ deviceDetails?.active ? ('devices.active' | translate) : ('devices.not_active' | translate) }}</span>
     </div>
     <div class="info">
       <img class="icon" src="/assets/icons/device.svg" />
-      <span class="info-name">Device type:</span>
-      <span class="info-value">{{ deviceDetails?.deviceTypeName || 'Type Name' }}</span>
+      <span class="info-name">{{ 'devices.device_type' | translate }}:</span>
+      <span class="info-value">{{ deviceDetails?.deviceTypeName || ('devices.device_details.type_name' | translate) }}</span>
     </div>
     <div class="info">
       <img class="icon " src="/assets/icons/mac-address.svg" />
-      <span class="info-name">Mac Address:</span>
-      <span class="info-value">{{ deviceDetails?.macAddress || 'mac Address' }}</span>
+      <span class="info-name">{{ 'devices.mac_address' | translate }}:</span>
+      <span class="info-value">{{ deviceDetails?.macAddress || ('devices.device_details.mac_address' | translate) }}</span>
     </div>
   </div>
   
@@ -34,10 +34,10 @@
 
 <div class="device-trafic-section mt-4">
   <div class="grid-header">
-    <h5>Device traffic</h5>
+    <h5>{{ 'devices.device_traffic' | translate }}</h5>
     <div class="grid-header-btns">
-      <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
-      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg"class="me-1" />Report</button>
+      <button type="button" class="btn btn-outline-secondary me-2">{{ 'devices.recent' | translate }}</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg"class="me-1" />{{ 'devices.report' | translate }}</button>
     </div>
   </div>
   <dx-data-grid id="gridContainer"
@@ -57,19 +57,19 @@
    
 
     <dxi-column dataField="Traffic type"
-                caption="TRAFFIC TYPE"
+                [caption]="'devices.traffic_type' | translate"
                 dataType="string"
                 alignment="left"></dxi-column>
-    <dxi-column caption="TIME"
+    <dxi-column [caption]="'devices.time' | translate"
                 dataField="Time"
                 dataType="string"
                 format="time"
                 alignment="left"
                 ></dxi-column>
-    <dxi-column dataField="DATE" dataType="date"></dxi-column>
-    <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+    <dxi-column dataField="DATE" [caption]="'devices.date' | translate" dataType="date"></dxi-column>
+    <dxi-column dataField="DeviceMacAddress" [caption]="'devices.device_mac_address' | translate" dataType="string"></dxi-column>
 
-    <dxi-column dataField="image" caption="IMAGE"  cellTemplate="imageCellTemplate"></dxi-column>
+    <dxi-column dataField="image" [caption]="'devices.image' | translate"  cellTemplate="imageCellTemplate"></dxi-column>
 
     <div *dxTemplate="let d of 'imageCellTemplate'">
  <img />

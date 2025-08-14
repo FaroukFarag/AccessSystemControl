@@ -3,12 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DeviceService } from '../../../services/devices/device.service';
 import { LanguageService } from '../../../services/language/language.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-device-details',
   standalone: true,
-  imports: [DxDataGridModule],
+  imports: [DxDataGridModule, TranslatePipe],
   templateUrl: './device-details.component.html',
   styleUrl: './device-details.component.scss'
 })
