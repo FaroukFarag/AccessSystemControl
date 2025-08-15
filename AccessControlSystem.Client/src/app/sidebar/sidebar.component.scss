@@ -185,4 +185,24 @@
       color: #007BE2;
     }
   }
+
+  // RTL specific styles for logout positioning
+  .sidebar.rtl & {
+    padding: 0 24px 0 16px; // More padding on the right side
+    
+    .nav-link {
+      justify-content: flex-end; // Align content to the right
+      text-align: right;
+      
+      .nav-icon {
+        order: 2; // Move icon to the right side
+        margin-left: 12px;
+        margin-right: 0;
+      }
+      
+      .nav-label {
+        order: 1; // Move text to the left side
+      }
+    }
+  }
 }

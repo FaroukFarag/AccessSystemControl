@@ -15,7 +15,7 @@
     <dx-button class="button-info me-1" [text]="'devices.group_devices' | translate" (onClick)="openGroupDEvicesPopup()">
     </dx-button>
 
-    <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="accessGroupSortBy"
+    <dx-drop-down-button [text]="'common.sort_by' | translate" [dropDownOptions]="{ width: 180 }" [items]="accessGroupSortBy"
       (onItemClick)="onAccessGroupItemClick($event)"></dx-drop-down-button>
   </div>
 </div>
@@ -39,7 +39,7 @@
           (onClick)="navigateToGroup(group.id)">
         </dx-button>
         <dx-button [text]="'owners.assigned_owners' | translate" stylingMode="contained" type="default" class="view-btn-2"
-          (onClick)="navigateToAssignedOwners(group.id)">
+          (onClick)="navigateToGroup(group.id)">
         </dx-button>
       </div>
     </div>
@@ -140,7 +140,7 @@
 <!--PAGE HEADER IF ADMIN-->
 <div class="page-header">
   <div class="page-header-content">
-    <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+    <dx-drop-down-button [text]="'common.sort_by' | translate" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
                          (onItemClick)="onDevicesItemClick($event)">
     </dx-drop-down-button>
     <dx-button class="button-info me-1" [text]="'devices.add_device' | translate" (onClick)="showAddDevicePopup()">
@@ -150,20 +150,26 @@
 
 <!-- ADD DEVICE POPUP-->
 <dx-popup [width]="600" [height]="500" [showTitle]="true" [title]="'devices.add_new' | translate" [dragEnabled]="true"
-  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">
-  <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
-    <dxi-item itemType="simple">
-      <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'devices.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
-          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+  [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible" (onHiding)="onPopupHidden()">
+  
+  <!-- File Upload Section -->
+  <div class="image-upload-wrapper" style="margin-bottom: 20px;">
+    <dx-file-uploader 
+      [selectButtonText]="'devices.choose_file' | translate" 
+      [labelText]="''" 
+      accept="image/*" 
+      uploadMode="useForm"
+      (onValueChanged)="onImageChange($event)">
+    </dx-file-uploader>
 
-        <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" [alt]="'devices.device_preview' | translate"
-          class="thumbnail" />
-        <div *ngIf="imageValidationError" class="validation-message">
-          {{ imageValidationError }}
-        </div>
-      </div>
-    </dxi-item>
+    <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" [alt]="'devices.device_preview' | translate"
+      class="thumbnail" />
+    <div *ngIf="imageValidationError" class="validation-message">
+      {{ imageValidationError }}
+    </div>
+  </div>
+
+  <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
 
     <dxi-item dataField="deviceName" [editorOptions]="{ placeholder: 'devices.device_name_placeholder' | translate }">
       <dxi-validation-rule type="required" [message]="'devices.device_name_required' | translate">

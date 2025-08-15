@@ -158,25 +158,25 @@ export class OwnersComponent implements OnInit {
     const result = this.dxForm.instance.validate();
 
     if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
     this.userService.create('Users/Create', this.ownerData).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify('Device created successfully', 'success', 1500);
+          notify(this.languageService.translate('messages.success.device_created'), 'success', 1500);
           this.popupVisible = false;
           this.getAllOwners();
         }
 
         else {
-          notify('Error creating device', 'error', 2000);
+          notify(this.languageService.translate('messages.error.device_creation'), 'error', 2000);
           console.error(response.message);
         }
       },
       error: (err) => {
-        notify('Error creating device', 'error', 2000);
+        notify(this.languageService.translate('messages.error.device_creation'), 'error', 2000);
         console.error(err);
       }
     });

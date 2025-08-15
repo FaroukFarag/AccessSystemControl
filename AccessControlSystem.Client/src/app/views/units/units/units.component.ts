@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -28,6 +29,7 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
   selector: 'app-units',
   standalone: true,
   imports: [CommonModule,
+    TranslatePipe,
     DxPopupModule,
     DxButtonModule,
     DxTemplateModule,
@@ -214,7 +216,7 @@ export class UnitsComponent implements OnInit {
   submitInits() {
     // Validate required fields
     if (!this.unitsData.Name || !this.unitsData.Number || !this.unitsData.Area || !this.unitsData.CardNumber || !this.unitsData.SubscriptionId || !this.unitsData.AccessGroups || !this.unitsData.AccessGroups.length) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -253,12 +255,12 @@ export class UnitsComponent implements OnInit {
 
     this.unitsService.create('Units/Create', formData as any).subscribe({
       next: (response) => {
-        notify('Unit created successfully', 'success', 1500);
+        notify(this.languageService.translate('messages.success.unit_created'), 'success', 1500);
         this.popupVisible = false;
         this.getAllUnits();
       },
       error: (err) => {
-        notify('Error creating Unit: ' + (err?.error?.details || err.message), 'error', 2000);
+        notify(this.languageService.translate('messages.error.unit_creation') + ': ' + (err?.error?.details || err.message), 'error', 2000);
       }
     });
   }
