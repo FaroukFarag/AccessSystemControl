@@ -4,10 +4,11 @@ import { Cardsservice } from '../../services/cards/cards.service';
 import {
   DxPopupModule,
   DxButtonModule,} from 'devextreme-angular';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [CommonModule, DxButtonModule],
+  imports: [CommonModule, DxButtonModule, TranslatePipe],
   templateUrl: './cards.component.html',
   styleUrl: './cards.component.scss'
 })

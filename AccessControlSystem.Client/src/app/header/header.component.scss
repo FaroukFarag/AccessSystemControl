@@ -384,6 +384,15 @@
   width: 200px;
   z-index: 50;
   border: 1px solid #edf2f7;
+
+  // RTL specific styling
+  [dir="rtl"] & {
+    right: auto;
+    left: 0;
+    min-width: 200px;
+    width: auto;
+    max-width: 250px;
+  }
 }
 
 .dropdown-item {
@@ -410,6 +419,28 @@
 
     svg {
       color: #007BE2;
+    }
+  }
+
+  // RTL specific styling
+  [dir="rtl"] & {
+    flex-direction: row-reverse;
+    text-align: right;
+    justify-content: flex-start;
+    padding: 12px 20px;
+    
+    svg {
+      order: 2;
+      margin-left: 12px;
+      margin-right: 0;
+    }
+    
+    span {
+      order: 1;
+      flex: 1;
+      white-space: nowrap;
+      overflow: visible;
+      padding-right: 8px;
     }
   }
 }

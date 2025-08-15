@@ -195,7 +195,7 @@ export class SubscriptionsComponent {
     const result = this.dxForm.instance.validate();
 
     if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -203,7 +203,7 @@ export class SubscriptionsComponent {
     const end = new Date(this.subscriptionData.EndDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      notify('Invalid start or end date', 'error', 2000);
+      notify(this.languageService.translate('messages.error.invalid_dates'), 'error', 2000);
       return;
     }
 
@@ -242,7 +242,7 @@ export class SubscriptionsComponent {
 
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
       next: (response) => {
-        notify('Subscription created successfully', 'success', 1500);
+        notify(this.languageService.translate('messages.success.subscription_created'), 'success', 1500);
         this.popupVisible = false;
         this.getAllSubscriptions();
       },
@@ -250,7 +250,7 @@ export class SubscriptionsComponent {
         if (err && err.error && err.error.errors) {
         }
 
-        notify('Error creating Subscription', 'error', 2000);
+        notify(this.languageService.translate('messages.error.subscription_creation'), 'error', 2000);
       }
     });
   }

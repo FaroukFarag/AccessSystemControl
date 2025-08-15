@@ -1,9 +1,9 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>Acsess Groups <span class="list-length">({{accessGroupsList?.length}})</span></h4>
+    <h4>{{ 'access_groups.title' | translate }} <span class="list-length">({{accessGroupsList?.length}})</span></h4>
   </div>
-  <span>Review all Access groups details and information</span>
+  <span>{{ 'access_groups.review_details' | translate }}</span>
 </div>
 
 <div class="grid-section mt-4 bg-white">
@@ -14,55 +14,55 @@
     <dxo-paging [enabled]="true"></dxo-paging>
     <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true" [useIcons]="true">
       <dxo-popup [width]="600" [height]="420" [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true"
-        title="Add New Access Group" [showTitle]="true">
+        [title]="'access_groups.add_new' | translate" [showTitle]="true">
       </dxo-popup>
 
       <dxo-form [labelLocation]="'top'" [colCount]="1">
         <dxi-item dataField="name">
-          <dxi-validation-rule type="required" message="Access Group Name is required"></dxi-validation-rule>
+          <dxi-validation-rule type="required" [message]="'access_groups.name_required' | translate"></dxi-validation-rule>
         </dxi-item>
 
         <dxi-item dataField="siteId" editorType="dxSelectBox" [editorOptions]="{
           dataSource: sites,
-          placeholder: 'Site',
+          placeholder: 'forms.site' | translate,
           valueExpr: 'id',
           displayExpr: 'name'
         }">
-          <dxo-label text="Site"></dxo-label>
-          <dxi-validation-rule type="required" message="Site is required"></dxi-validation-rule>
+          <dxo-label [text]="'forms.site' | translate"></dxo-label>
+          <dxi-validation-rule type="required" [message]="'access_groups.site_required' | translate"></dxi-validation-rule>
         </dxi-item>
 
         <dxi-item dataField="scheduleId" editorType="dxSelectBox" [editorOptions]="{
           dataSource: schedules,
-          placeholder: 'Schedule',
+          placeholder: 'forms.schedule' | translate,
           valueExpr: 'id',
           displayExpr: 'name'
         }">
-          <dxo-label text="Schedule"></dxo-label>
-          <dxi-validation-rule type="required" message="Schedule is required"></dxi-validation-rule>
+          <dxo-label [text]="'forms.schedule' | translate"></dxo-label>
+          <dxi-validation-rule type="required" [message]="'access_groups.schedule_required' | translate"></dxi-validation-rule>
         </dxi-item>
 
         <dxi-item dataField="devices" editorType="dxTagBox" [editorOptions]="{
           dataSource: devicesList,
-          placeholder: 'Select devices',
+          placeholder: 'access_groups.select_devices' | translate,
           valueExpr: 'id',
           displayExpr: 'name',
           showSelectionControls: true,
           searchEnabled: true
         }">
-          <dxi-validation-rule type="required" message="At least one device is required"></dxi-validation-rule>
+          <dxi-validation-rule type="required" [message]="'access_groups.devices_required' | translate"></dxi-validation-rule>
         </dxi-item>
       </dxo-form>
     </dxo-editing>
 
     <dxi-item itemType="button">
-      <dx-button text="Add Device" type="success" (onClick)="submit($event)"></dx-button>
+      <dx-button [text]="'access_groups.add_device' | translate" type="success" (onClick)="submit($event)"></dx-button>
     </dxi-item>
 
-    <dxi-column dataField="name" caption="Access Group Name" cellTemplate="GroupNameTemplate"></dxi-column>
+    <dxi-column dataField="name" [caption]="'access_groups.access_group_name' | translate" cellTemplate="GroupNameTemplate"></dxi-column>
     <dxi-column dataField="siteId" [visible]="false"></dxi-column>
     <dxi-column dataField="scheduleId" [visible]="false"></dxi-column>
-    <dxo-label text="Devices" [visible]="false"></dxo-label>
+    <dxo-label [text]="'access_groups.devices' | translate" [visible]="false"></dxo-label>
 
     <div *dxTemplate="let data of 'GroupNameTemplate'">
       <span (click)="goToAccessGroupDevices(data.data)">{{data.data.name}}</span>

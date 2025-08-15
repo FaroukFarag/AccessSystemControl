@@ -228,6 +228,7 @@ export class SubAdminDashboardComponent {
     private userService: UserService,
     private unitsService: UnitService,
     private jwtService: JwtService,
+    private languageService: LanguageService,
 
 ) {
 
@@ -290,7 +291,7 @@ export class SubAdminDashboardComponent {
         this.sites = data.resultData.sites;
 
       else
-        notify('Error getting sites', 'error', 2000);
+        notify(this.languageService.translate('messages.error.getting_sites'), 'error', 2000);
     })
   }
 
@@ -333,12 +334,12 @@ export class SubAdminDashboardComponent {
   submitDevice() {
     this.imageValidationError = '';
     if (!this.deviceData.deviceImageFile) {
-      this.imageValidationError = 'Image is required';
+      this.imageValidationError = this.languageService.translate('validation.image_required');
     }
 
     const result = this.dxForm.instance.validate();
     if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -358,7 +359,7 @@ export class SubAdminDashboardComponent {
     this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify('Device created successfully', 'success', 1500);
+          notify(this.languageService.translate('messages.success.device_created'), 'success', 1500);
           this.devicePopupVisible = false;
 
           this.getAllDevices();
@@ -367,7 +368,7 @@ export class SubAdminDashboardComponent {
         }
       },
       error: (err) => {
-        notify('Error creating device', 'error', 2000);
+        notify(this.languageService.translate('messages.error.device_creation'), 'error', 2000);
         console.error(err);
       }
     });
@@ -428,11 +429,11 @@ export class SubAdminDashboardComponent {
             },
             error: (retryErr) => {
               console.error("Failed to load owners (retry):", retryErr);
-              notify('Error loading owners', 'error', 2000);
+              notify(this.languageService.translate('messages.error.loading_owners'), 'error', 2000);
             }
           });
         } else {
-          notify('Error loading owners', 'error', 2000);
+          notify(this.languageService.translate('messages.error.loading_owners'), 'error', 2000);
         }
       }
     });
@@ -518,7 +519,7 @@ export class SubAdminDashboardComponent {
   submitInits() {
     // Validate required fields
     if (!this.unitsData.Name || !this.unitsData.Number || !this.unitsData.Area || !this.unitsData.CardNumber || !this.unitsData.SubscriptionId || !this.unitsData.AccessGroups || !this.unitsData.AccessGroups.length) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -557,12 +558,12 @@ export class SubAdminDashboardComponent {
 
     this.unitsService.create('Units/Create', formData as any).subscribe({
       next: (response) => {
-        notify('Unit created successfully', 'success', 1500);
+        notify(this.languageService.translate('messages.success.unit_created'), 'success', 1500);
         this.unitPopupVisible = false;
         this.getAllUnits();
       },
       error: (err) => {
-        notify('Error creating Unit: ' + (err?.error?.details || err.message), 'error', 2000);
+        notify(this.languageService.translate('messages.error.unit_creation') + ': ' + (err?.error?.details || err.message), 'error', 2000);
       }
     });
   }

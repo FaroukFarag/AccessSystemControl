@@ -71,7 +71,7 @@
      </dxi-item>
          <dxi-item dataField="MonthNumber"
                editorType="dxNumberBox"
-               [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
+               [editorOptions]="{ placeholder: 'subscriptions.enter_months' | translate, min: 1 }">
        <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
        <dxo-label [visible]="false"></dxo-label>
      </dxi-item>
@@ -81,7 +81,7 @@
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>-->
     <dxi-item dataField="Note" editorType="dxTextArea" [editorOptions]="{
-      placeholder: 'Note',
+      placeholder: 'forms.note' | translate,
       height: '200px',
       maxLength: 500
     }">
