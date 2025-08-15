@@ -18,6 +18,7 @@ import { SubscriptionService } from '../../../services/subscriptions/subscriptio
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { LanguageService } from '../../../services/language/language.service';
+import { LoaderService } from '../../../services/loader/loader.service';
 
 @Component({
   selector: 'app-subscriptions',
@@ -94,7 +95,8 @@ export class SubscriptionsComponent {
     private router: Router,
     private subscriptionsService: SubscriptionService,
     private sanitizer: DomSanitizer,
-    private languageService: LanguageService) {
+    private languageService: LanguageService,
+    private loaderService: LoaderService) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
       displayExpr: 'name',

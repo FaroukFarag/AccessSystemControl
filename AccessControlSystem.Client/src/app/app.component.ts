@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { GlobalLoaderComponent } from './shared/components/global-loader/global-loader.component';
+import { NavigationInterceptor } from './interceptors/navigation-interceptor.interceptor';
 import { filter } from 'rxjs/operators';
 import { JwtService } from './services/jwt.service';
 
@@ -13,7 +15,8 @@ import { JwtService } from './services/jwt.service';
     CommonModule,
     RouterModule,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    GlobalLoaderComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -23,7 +26,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private navigationInterceptor: NavigationInterceptor // Initialize the interceptor
   ) {
     // Listen to route changes
     this.router.events.pipe(

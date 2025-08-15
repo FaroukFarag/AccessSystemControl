@@ -6,53 +6,56 @@
   <span>{{ 'subscriptions.subscription_details.review_village_details' | translate }}</span>
 </div>
 
-<div class="subscription-container mb-5">
-  <div class="header">
-    <div>
-      <strong>{{ 'subscriptions.subscription_details.plan' | translate }}:</strong> {{ subscription?.subscriptionTypeName }}
-    </div>
-    <div>
-      <strong>{{ 'subscriptions.subscription_details.payment' | translate }}:</strong> ${{ subscription?.paymentPerMonth }} <span class="subtext">{{ 'subscriptions.subscription_details.per_month' | translate }}</span>
-    </div>
-    <div>
-      <strong>{{ 'subscriptions.subscription_details.total_payment' | translate }}:</strong> ${{ totalPayment }}
-    </div>
-    <div>
-      <strong>{{ 'subscriptions.subscription_details.start' | translate }}:</strong> {{ subscription?.startDate }}
-    </div>
-    <div>
-      <strong>{{ 'subscriptions.subscription_details.end' | translate }}:</strong> {{ subscription?.endDate }}
-    </div>
-    <div class="actions">
-      <button class="cancel">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</button>
-      <button class="upgrade" (click)="showUpgradePopup()">{{ 'subscriptions.subscription_details.upgrade' | translate }}</button>
-    </div>
-  </div>
-
-  <div class="usage-section">
-    <div class="usage-card">
-      <div>{{ 'subscriptions.subscription_details.admins' | translate }}</div>
-      <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription?.usedAdmins, subscription?.adminNumber)"></div>
+<div class="subscription-container mb-5" [ngClass]="{'rtl': direction === 'rtl'}">
+  <!-- Main Content -->
+  <div class="content">
+    <div class="header">
+      <div>
+        <strong>{{ 'subscriptions.subscription_details.plan' | translate }}:</strong> {{ subscription?.subscriptionTypeName }}
       </div>
-      <div>{{ subscription?.usedAdmins }} / {{ subscription?.adminNumber }}</div>
+      <div>
+        <strong>{{ 'subscriptions.subscription_details.payment' | translate }}:</strong> ${{ subscription?.paymentPerMonth }} <span class="subtext">{{ 'subscriptions.subscription_details.per_month' | translate }}</span>
+      </div>
+      <div>
+        <strong>{{ 'subscriptions.subscription_details.total_payment' | translate }}:</strong> ${{ totalPayment }}
+      </div>
+      <div>
+        <strong>{{ 'subscriptions.subscription_details.start' | translate }}:</strong> {{ subscription?.startDate }}
+      </div>
+      <div>
+        <strong>{{ 'subscriptions.subscription_details.end' | translate }}:</strong> {{ subscription?.endDate }}
+      </div>
+      <div class="actions">
+        <button class="cancel">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</button>
+        <button class="upgrade" (click)="showUpgradePopup()">{{ 'subscriptions.subscription_details.upgrade' | translate }}</button>
+      </div>
     </div>
 
-    <div class="usage-card">
-      <div>{{ 'subscriptions.subscription_details.devices' | translate }}</div>
-      <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription?.usedDevices, subscription?.deviceNumber)">
+    <div class="usage-section">
+      <div class="usage-card">
+        <div>{{ 'subscriptions.subscription_details.admins' | translate }}</div>
+        <div class="bar">
+          <div class="progress" [style.width.%]="getProgress(subscription?.usedAdmins, subscription?.adminNumber)"></div>
         </div>
+        <div>{{ subscription?.usedAdmins }} / {{ subscription?.adminNumber }}</div>
       </div>
-      <div>{{ subscription?.usedDevices }} / {{ subscription?.deviceNumber }}</div>
-    </div>
 
-    <div class="usage-card">
-      <div>{{ 'subscriptions.subscription_details.cards' | translate }}</div>
-      <div class="bar">
-        <div class="progress" [style.width.%]="getProgress(subscription?.usedCards, subscription?.cardNumber)"></div>
+      <div class="usage-card">
+        <div>{{ 'subscriptions.subscription_details.devices' | translate }}</div>
+        <div class="bar">
+          <div class="progress" [style.width.%]="getProgress(subscription?.usedDevices, subscription?.deviceNumber)">
+          </div>
+        </div>
+        <div>{{ subscription?.usedDevices }} / {{ subscription?.deviceNumber }}</div>
       </div>
-      <div>{{ subscription?.usedCards }} / {{ subscription?.cardNumber }}</div>
+
+      <div class="usage-card">
+        <div>{{ 'subscriptions.subscription_details.cards' | translate }}</div>
+        <div class="bar">
+          <div class="progress" [style.width.%]="getProgress(subscription?.usedCards, subscription?.cardNumber)"></div>
+        </div>
+        <div>{{ subscription?.usedCards }} / {{ subscription?.cardNumber }}</div>
+      </div>
     </div>
   </div>
 </div>
@@ -258,3 +261,5 @@
     </div>
   </dx-data-grid>
 </div>
+
+

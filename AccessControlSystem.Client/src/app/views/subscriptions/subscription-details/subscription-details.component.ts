@@ -7,6 +7,7 @@ import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-gr
 import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { SidebarService } from '../../../services/sidebar/sidebar.service';
+import { LoaderService } from '../../../services/loader/loader.service';
 
 import {
   DxPopupModule,
@@ -222,7 +223,8 @@ export class SubscriptionDetailsComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
-    private sidebarService: SidebarService) {
+    private sidebarService: SidebarService,
+    private loaderService: LoaderService) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -237,6 +239,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
+    this.loaderService.show(); // Start loading
 
     // Subscribe to sidebar state changes
     this.sidebarService.isOpen$.subscribe(isOpen => {
@@ -281,7 +284,6 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.subscriptionsService.getAll('AirfobSites/GetAll').subscribe((data: any) => {
       if (data.succeeded)
         this.sites = data.resultData.sites;
-
       else
         notify(this.languageService.translate('validation.sites_error'), 'error', 2000);
     })
@@ -313,6 +315,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         }
         this.devicesList = subscriptionDevices;
       }
+      this.loaderService.hide(); // Hide loader when devices are loaded
     })
   }
 
