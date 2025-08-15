@@ -78,11 +78,11 @@ export class LoginComponent {
         }
 
         else {
-          notify('Login failed: Invalid username or password', 'error', 2000);
+          notify(this.languageService.translate('messages.error.login_failed'), 'error', 2000);
         }
 
       } else {
-        notify('Login failed: No response', 'error', 2000);
+        notify(this.languageService.translate('messages.error.login_no_response'), 'error', 2000);
         console.error('Login failed: No response');
       }
     });

@@ -97,3 +97,4 @@ The global loader uses:
 The loader text is localized using the `common.loading` translation key:
 - English: "Loading..."
 - Arabic: "جاري التحميل..."
+

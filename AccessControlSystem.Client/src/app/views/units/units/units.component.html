@@ -1,23 +1,23 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
-    <h4>Units</h4>
+    <h4>{{ 'units.title' | translate }}</h4>
   </div>
-  <span>Review all Units details and information</span>
+  <span>{{ 'units.review_details' | translate }}</span>
 </div>
 <div class="page-header">
-  <dx-drop-down-button text="Sort by" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
+  <dx-drop-down-button [text]="'common.sort_by' | translate" [dropDownOptions]="{ width: 180 }" [items]="sortBy"
     (onItemClick)="onItemClick($event)"></dx-drop-down-button>
-  <dx-button class="button-info me-1" text="Add new unit" (onClick)="showAddUnitPopup()">
+  <dx-button class="button-info me-1" [text]="'units.add_new' | translate" (onClick)="showAddUnitPopup()">
   </dx-button>
 </div>
 
 <!-- ADD UNIT POPUP-->
-<dx-popup [width]="600" [height]="550" [showTitle]="true" title="Add new Unit" [dragEnabled]="true"
+<dx-popup [width]="600" [height]="550" [showTitle]="true" [title]="'actions.add_new_unit' | translate" [dragEnabled]="true"
   [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
   <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'Choose File'" [labelText]="''" accept="image/*" uploadMode="useForm"
+        <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
 
         <img *ngIf="unitsData.unitImageUrl" [src]="unitsData.unitImageUrl" alt="Device Preview" class="thumbnail" />
@@ -27,44 +27,44 @@
       </div>
     </dxi-item>
   <dx-form #unitFormRef [formData]="unitsData" [colCount]="1" [labelLocation]="'top'">
-    <dxi-item dataField="Name" [editorOptions]="{ placeholder: 'Unit name' }">
-      <dxi-validation-rule type="required" message="Unit name is required">
+    <dxi-item dataField="Name" [editorOptions]="{ placeholder: 'forms.unit_name' | translate }">
+      <dxi-validation-rule type="required" [message]="'validation.unit_name_required' | translate">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="Number" [editorOptions]="{ placeholder: 'Unit number' }">
-      <dxi-validation-rule type="required" message="Unit number is required">
+    <dxi-item dataField="Number" [editorOptions]="{ placeholder: 'forms.unit_number' | translate }">
+      <dxi-validation-rule type="required" [message]="'validation.unit_number_required' | translate">
       </dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>
-    <dxi-item dataField="Area" editorType="dxTextBox" [editorOptions]="{ placeholder: 'Enter area (e.g., 150 m²)' }">
-      <dxi-validation-rule type="required" message="Area is required"></dxi-validation-rule>
+    <dxi-item dataField="Area" editorType="dxTextBox" [editorOptions]="{ placeholder: 'forms.area' | translate }">
+      <dxi-validation-rule type="required" [message]="'validation.area_required' | translate"></dxi-validation-rule>
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>>
 
     <dxi-item dataField="CardNumber" editorType="dxNumberBox"
-      [editorOptions]="{ placeholder: 'Cards number', min: 0 , showSpinButtons: true, showClearButton: true}">
-      <dxi-validation-rule type="required" message="Cards number is required"></dxi-validation-rule>
+      [editorOptions]="{ placeholder: 'forms.cards_number' | translate, min: 0 , showSpinButtons: true, showClearButton: true}">
+      <dxi-validation-rule type="required" [message]="'validation.cards_number_required' | translate"></dxi-validation-rule>
       <dxo-label [visible]="false"></dxo-label>
     </dxi-item>
 
     <dxi-item dataField="AccessGroups" editorType="dxTagBox" [editorOptions]="{
       dataSource: accessGroups,
-      placeholder: 'Select Access Group',
+      placeholder: 'forms.access_group_name' | translate,
         displayExpr: 'name',
       valueExpr: 'id',
       showSelectionControls: true,
       searchEnabled: true
       }">
-      <dxi-validation-rule type="required" message="At least one Access Group is required"></dxi-validation-rule>
-      <dxo-label text="Access Group" [visible]="true"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'validation.access_group_required' | translate"></dxi-validation-rule>
+      <dxo-label [text]="'forms.access_group_name' | translate" [visible]="true"></dxo-label>
     </dxi-item>
 
 
 
   </dx-form>
   <dxi-item itemType="button">
-    <dx-button text="Add new Unit" type="success" (onClick)="submitInits()"></dx-button>
+    <dx-button [text]="'actions.add_new_unit' | translate" type="success" (onClick)="submitInits()"></dx-button>
   </dxi-item>
 
 </dx-popup>
