@@ -68,6 +68,7 @@ export class DevicesComponent implements OnInit {
     siteId: null,
     macAddress: ''
   };
+  fileUploaderKey = 0; // Add this to force re-render of file uploader
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any;
   deviceTypes = [
@@ -144,7 +145,7 @@ export class DevicesComponent implements OnInit {
         this.sites = data.resultData.sites;
 
       else
-        notify('Error getting sites', 'error', 2000);
+        notify(this.languageService.translate('messages.error.getting_sites'), 'error', 2000);
     })
   }
 
@@ -154,7 +155,7 @@ export class DevicesComponent implements OnInit {
         this.schedules = data.resultData.schedules;
 
       else
-        notify('Error getting schedules', 'error', 2000);
+        notify(this.languageService.translate('messages.error.getting_schedules'), 'error', 2000);
     })
   }
 
@@ -173,8 +174,7 @@ export class DevicesComponent implements OnInit {
   }
 
   showAddDevicePopup() {
-    this.popupVisible = true;
-    
+    // Reset device data first
     this.deviceData = {
       deviceImageFile: null,
       deviceImageUrl: '',
@@ -184,6 +184,26 @@ export class DevicesComponent implements OnInit {
       siteId: null,
       macAddress: ''
     };
+
+    // Reset validation error
+    this.imageValidationError = '';
+
+    // Show popup
+    this.popupVisible = true;
+  }
+
+  onPopupHidden() {
+    // Reset data when popup is closed
+    this.deviceData = {
+      deviceImageFile: null,
+      deviceImageUrl: '',
+      deviceName: '',
+      deviceType: '',
+      serial: '',
+      siteId: null,
+      macAddress: ''
+    };
+    this.imageValidationError = '';
   }
 
   navigateToDetailsPage(deviceId: string) {
@@ -210,12 +230,12 @@ export class DevicesComponent implements OnInit {
   submitDevice() {
     this.imageValidationError = '';
     if (!this.deviceData.deviceImageFile) {
-      this.imageValidationError = 'Image is required';
+      this.imageValidationError = this.languageService.translate('validation.image_required');
     }
 
     const result = this.dxForm.instance.validate();
     if (!result.isValid) {
-      notify('Please fill in all required fields.', 'warning', 1500);
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
       return;
     }
 
@@ -235,7 +255,7 @@ export class DevicesComponent implements OnInit {
     this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify('Device created successfully', 'success', 1500);
+          notify(this.languageService.translate('messages.success.device_created'), 'success', 1500);
           this.popupVisible = false;
 
           this.getAllDevices();
@@ -244,7 +264,7 @@ export class DevicesComponent implements OnInit {
         }
       },
       error: (err) => {
-        notify('Error creating device', 'error', 2000);
+        notify(this.languageService.translate('messages.error.device_creation'), 'error', 2000);
         console.error(err);
       }
     });
@@ -281,7 +301,7 @@ export class DevicesComponent implements OnInit {
     this.accessGroupService.create('AccessGroups/Create', payload as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify('Device group created successfully', 'success', 1500);
+          notify(this.languageService.translate('messages.success.device_group_created'), 'success', 1500);
 
           this.groupDevice_popupVisible = false;
           this.groupName = '';
@@ -289,11 +309,11 @@ export class DevicesComponent implements OnInit {
 
           this.getAllDevices();
         } else {
-          notify('Failed to create device group', 'error', 2000);
+          notify(this.languageService.translate('messages.error.device_group_creation'), 'error', 2000);
         }
       },
       error: (err) => {
-        notify('Failed to create device group', 'error', 2000);
+        notify(this.languageService.translate('messages.error.device_group_creation'), 'error', 2000);
         console.error(err);
       }
     });
@@ -311,7 +331,7 @@ export class DevicesComponent implements OnInit {
         console.log("Access Groups", this.accessGroups);
       },
       error: (err) => {
-        notify('Failed to load access groups', 'error', 2000);
+        notify(this.languageService.translate('messages.error.loading_access_groups'), 'error', 2000);
         console.error(err);
       }
     });
