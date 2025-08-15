@@ -14,12 +14,6 @@ public class DevicesController(IDeviceService service) :
 {
     private readonly IDeviceService _service = service;
 
-    [HttpPost("Create")]
-    public override Task<IActionResult> Create([FromForm] DeviceDto dto)
-    {
-        return base.Create(dto);
-    }
-
     [HttpGet("GetAll/{orderBy}")]
     public async Task<IActionResult> GetAll(string orderBy)
     {
