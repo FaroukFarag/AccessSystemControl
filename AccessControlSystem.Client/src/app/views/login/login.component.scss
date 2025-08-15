@@ -13,6 +13,114 @@
     max-width: 600px;
     width: 100%;
     text-align: center;
+    position: relative;
+
+    // Language Switcher Styles
+    .language-switcher {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
+
+      &.active {
+        .dropdown-arrow {
+          transform: rotate(180deg);
+        }
+      }
+
+      .language-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #f1f5f9;
+          color: #007BE2;
+          border-color: #cbd5e1;
+        }
+
+        .current-language {
+          display: flex;
+          align-items: center;
+          font-size: 18px;
+        }
+
+        .dropdown-arrow {
+          width: 14px;
+          height: 14px;
+          transition: transform 0.2s ease;
+
+          &.rtl {
+            transform: scaleX(-1);
+          }
+
+          &.rtl.rotated {
+            transform: scaleX(-1) rotate(180deg);
+          }
+        }
+      }
+
+      .language-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        min-width: 160px;
+        overflow: hidden;
+        z-index: 1000;
+        border: 1px solid #e2e8f0;
+
+        .language-option {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          padding: 10px 16px;
+          border: none;
+          background: none;
+          cursor: pointer;
+          font-size: 14px;
+          color: #64748b;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #f8fafc;
+          }
+
+          &.active {
+            color: #007BE2;
+            background: #f0f9ff;
+          }
+
+          .language-flag {
+            margin-inline-end: 8px;
+            font-size: 16px;
+          }
+
+          .language-name {
+            flex: 1;
+            text-align: start;
+          }
+
+          .check-icon {
+            width: 16px;
+            height: 16px;
+            margin-inline-start: 8px;
+            color: #007BE2;
+          }
+        }
+      }
+    }
 
     h2 {
       font-size: 2rem;
@@ -30,12 +138,13 @@
       .form-group {
         text-align: left;
         margin-bottom: 1.5rem;
-
+        
         label {
           display: block;
           font-size: 0.85rem;
           margin-bottom: 0.5rem;
           color: #555;
+          text-align: left;
         }
 
         input {
@@ -53,6 +162,15 @@
         }
       }
 
+      // RTL specific styling
+      .rtl .form-group {
+        text-align: right;
+        
+        label {
+          text-align: right;
+        }
+      }
+
       .options {
         display: flex;
         justify-content: space-between;
@@ -66,6 +184,14 @@
           input {
             margin-right: 0.4rem;
           }
+          
+          // RTL support for Arabic language
+          [dir="rtl"] & {
+            input {
+              margin-right: 0;
+              margin-left: 0.4rem;
+            }
+          }
         }
 
         .forgot {
@@ -75,6 +201,16 @@
 
           &:hover {
             text-decoration: underline;
+          }
+        }
+      }
+
+      // RTL specific styling for options
+      .rtl .options {
+        .remember {
+          input {
+            margin-right: 0;
+            margin-left: 0.4rem;
           }
         }
       }
@@ -96,6 +232,16 @@
       }
     }
   }
+}
+
+// Specific RTL rule for login form labels
+.login-container .login-card form .form-group label {
+  text-align: left; // Default for LTR
+}
+
+// RTL direction - right align
+.login-container.rtl .login-card form .form-group label {
+  text-align: right;
 }
 
 @media (max-width: 500px) {

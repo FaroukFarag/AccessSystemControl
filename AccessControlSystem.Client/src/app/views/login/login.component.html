@@ -1,5 +1,32 @@
-<div class="login-container">
+<div class="login-container" [dir]="direction" [ngClass]="{'rtl': direction === 'rtl'}">
   <div class="login-card">
+    <!-- Language Switcher -->
+    <div class="language-switcher" [class.active]="isLanguageDropdownOpen">
+      <button class="language-btn" (click)="toggleLanguageDropdown()">
+        <span class="current-language">
+          {{ getCurrentLanguage()?.flag }}
+        </span>
+        <svg class="dropdown-arrow" [class.rotated]="isLanguageDropdownOpen" [class.rtl]="direction === 'rtl'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      
+      <div class="language-dropdown" *ngIf="isLanguageDropdownOpen">
+        <button 
+          *ngFor="let lang of languages" 
+          class="language-option" 
+          [class.active]="lang.code === currentLanguage"
+          (click)="switchLanguage(lang.code)"
+        >
+          <span class="language-flag">{{ lang.flag }}</span>
+          <span class="language-name">{{ lang.name }}</span>
+          <svg *ngIf="lang.code === currentLanguage" class="check-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
     <h3 class="mb-4">{{ 'auth.welcome_back' | translate }}</h3>
     <img src="/assets/images/logo.png" class="mb-3" />
 
