@@ -64,6 +64,8 @@
         <h3 class="unit-name">{{ unitDetails?.name}}</h3>
         <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> {{ 'forms.owner' | translate }}:</span><span class="value">{{unitDetails?.owner?.userName  || ('units.unassigned' | translate)}}</span></div>
         <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> {{ 'units.number_of_cards' | translate }}:</span> <span class="value">{{ unitDetails?.cardNumber }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'units.area' | translate }}:</span> <span class="value">{{ unitDetails?.area }} m²</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'units.access_groups' | translate }}:</span> <span class="value">{{ unitDetails?.accessGroups?.length || 0 }}</span></div>
       </div>
     </div>
 
