@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import {
@@ -20,6 +20,7 @@ import notify from 'devextreme/ui/notify';
 import { UserService } from '../../../services/users/user.service';
 import { User } from '../../../models/users/user';
 import { Location } from '@angular/common';
+import { AccessGroupService } from '../../../services/access-groups/access-group.service';
 @Component({
   selector: 'app-owners',
   standalone: true,
@@ -43,6 +44,9 @@ export class OwnersComponent implements OnInit {
   sortBy = ['Recent', 'Name'];
 
   popupVisible: boolean = false;
+  groupId: number | null = null;
+  groupName: string = '';
+  isFilteredByGroup: boolean = false;
   ownerData: User = {
     id: 0,
     userName: '',
@@ -57,7 +61,9 @@ export class OwnersComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService,
+    private accessGroupService: AccessGroupService,
     private location: Location,
     private languageService: LanguageService
   ) { }
@@ -68,7 +74,17 @@ export class OwnersComponent implements OnInit {
       this.direction = direction;
     });
 
-    this.getAllOwners();
+    // Check if we're filtering by group
+    this.route.queryParams.subscribe(params => {
+      if (params['groupId']) {
+        this.groupId = +params['groupId'];
+        this.isFilteredByGroup = true;
+        this.loadGroupDetails();
+        this.getOwnersByGroup(this.groupId);
+      } else {
+        this.getAllOwners();
+      }
+    });
   }
   backClicked() {
     this.location.back();
@@ -85,6 +101,38 @@ export class OwnersComponent implements OnInit {
         this.owners = data.resultData;
       },
       error: (err) => console.error("Failed to load owners:", err)
+    });
+  }
+
+  loadGroupDetails(): void {
+    if (this.groupId) {
+      this.accessGroupService.getAccessGroupById(this.groupId).subscribe({
+        next: (data: any) => {
+          if (data && data.resultData) {
+            this.groupName = data.resultData.name;
+          }
+        },
+        error: (err) => console.error("Failed to load group details:", err)
+      });
+    }
+  }
+
+  getOwnersByGroup(groupId: number): void {
+    // For now, we'll load all owners and filter client-side
+    // In a real implementation, you might have an API endpoint like 'Users/GetOwnersByGroup/{groupId}'
+    this.userService.getAll('Users/GetAllOwners').subscribe({
+      next: (data: any) => {
+        if (data && data.resultData) {
+          // Filter owners by group - this is a placeholder implementation
+          // You would need to implement the actual filtering logic based on your data structure
+          this.owners = data.resultData.filter((owner: any) => {
+            // This is a placeholder - you need to implement the actual filtering logic
+            // based on how owners are associated with groups in your data model
+            return true; // For now, show all owners
+          });
+        }
+      },
+      error: (err) => console.error("Failed to load owners by group:", err)
     });
   }
 

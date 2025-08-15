@@ -325,6 +325,11 @@ export class DevicesComponent implements OnInit {
 
   }
 
+  navigateToAssignedOwners(groupId: number) {
+    // Navigate to owners page with group filter
+    this.router.navigate(['/owners'], { queryParams: { groupId: groupId } });
+  }
+
   onDevicesItemClick(e: any): void {
     const selectedSortOption = e.itemData;
     this.getAllDevices(selectedSortOption);

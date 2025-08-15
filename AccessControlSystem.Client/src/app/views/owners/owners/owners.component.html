@@ -1,9 +1,13 @@
 <div class="breadcrumb mb-5">
   <div class="page-title" (click)="backClicked()">
     <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
-    <h4>{{ 'owners.title' | translate }}</h4>
+    <h4>
+      <span *ngIf="isFilteredByGroup">{{ 'owners.assigned_owners' | translate }} - {{ groupName }}</span>
+      <span *ngIf="!isFilteredByGroup">{{ 'owners.title' | translate }}</span>
+    </h4>
   </div>
-  <span>{{ 'owners.review_details' | translate }}</span>
+  <span *ngIf="isFilteredByGroup">{{ 'owners.assigned_owners_description' | translate }}</span>
+  <span *ngIf="!isFilteredByGroup">{{ 'owners.review_details' | translate }}</span>
 </div>
 <div class="page-header">
   <dx-drop-down-button [text]="'common.sort_by' | translate" [dropDownOptions]="{ width: 180 }" [items]="sortBy"

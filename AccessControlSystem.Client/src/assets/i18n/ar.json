@@ -149,6 +149,7 @@
     "phone_number": "رقم الهاتف",
     "units": "الوحدات",
     "assigned_owners": "الملاك المعينون",
+    "assigned_owners_description": "مراجعة الملاك المعينين لهذه المجموعة",
     "review_details": "مراجعة جميع تفاصيل ومعلومات الملاك"
   },
   "devices": {

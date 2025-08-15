@@ -149,6 +149,7 @@
     "phone_number": "Phone Number",
     "units": "Units",
     "assigned_owners": "Assigned owners",
+    "assigned_owners_description": "Review assigned owners for this group",
     "review_details": "Review all Owners details and information"
   },
   "devices": {
