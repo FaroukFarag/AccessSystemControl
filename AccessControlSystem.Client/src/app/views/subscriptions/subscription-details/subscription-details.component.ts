@@ -69,24 +69,25 @@ export class SubscriptionDetailsComponent implements OnInit {
   };
 
   upgradeData = {
-    subscriptionType: '',
-    startDate: null,
-    endDate: null
+    id: 0,
+    subscriptionType: 0,
+    startDate: '',
+    endDate: ''
   };
 
   isUpgrading: boolean = false;
 
   subscriptionTypes = [
     {
-      'id': '1',
+      'id': 1,
       'name': 'Standard'
     },
     {
-      'id': '2',
+      'id': 2,
       'name': 'Premium'
     },
     {
-      'id': '3',
+      'id': 3,
       'name': 'Enterprise'
     },
   ];
@@ -239,6 +240,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
+
     this.loaderService.show(); // Start loading
 
     // Subscribe to sidebar state changes
@@ -407,9 +409,10 @@ export class SubscriptionDetailsComponent implements OnInit {
   showUpgradePopup() {
     this.upgradePopupVisible = true;
     this.upgradeData = {
-      subscriptionType: '',
-      startDate: null,
-      endDate: null
+      id: this.id,
+      subscriptionType: 0,
+      startDate: '',
+      endDate: ''
     };
   }
 
@@ -422,72 +425,21 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     this.isUpgrading = true;
 
-    // Debug: Log the current subscription data
-    console.log('Current subscription data:', this.subscription);
+    const start = new Date(this.upgradeData.startDate);
+    const end = new Date(this.upgradeData.endDate);
 
-    // Try to get customer name from various possible sources
-    let customerName = '';
-    if (this.subscription?.customerName) {
-      customerName = this.subscription.customerName;
-    } else if (this.subscription?.name) {
-      customerName = this.subscription.name;
-    } else if (this.subscription?.customer) {
-      customerName = this.subscription.customer;
-    } else if (this.subscription?.customerName) {
-      customerName = this.subscription.customerName;
-    } else {
-      // If we can't find the customer name, show an error
-      notify(this.languageService.translate('validation.customer_name_not_found'), 'error', 3000);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      notify('Invalid start or end date', 'error', 2000);
       return;
     }
 
-    // Try to get customer name from localStorage or current user context
-    if (!customerName) {
-      const currentUser = localStorage.getItem('user');
-      if (currentUser) {
-        try {
-          const userData = JSON.parse(currentUser);
-          customerName = userData.name || userData.userName || userData.customerName || '';
-        } catch (e) {
-          console.error('Error parsing user data:', e);
-        }
-      }
-    }
+    const startFormatted = start.toISOString().split('T')[0];
+    const endFormatted = end.toISOString().split('T')[0];
 
-    // If still no customer name, try to get it from the page title or other sources
-    if (!customerName) {
-      customerName = this.subscription?.customerName || this.languageService.translate('validation.default_customer');
-    }
+    this.upgradeData.startDate = startFormatted;
+    this.upgradeData.endDate = endFormatted;
 
-    // Get subscription type name
-    const selectedType = this.subscriptionTypes.find(t => t.id.toString() === this.upgradeData.subscriptionType);
-    const subscriptionTypeName = selectedType?.name || '';
-
-    // Create FormData with all required fields from current subscription
-    const formData = new FormData();
-    formData.append('Id', this.id.toString());
-    formData.append('CustomerName', customerName);
-    formData.append('SubscriptionType', this.upgradeData.subscriptionType);
-    formData.append('SubscriptionTypeName', subscriptionTypeName);
-    formData.append('StartDate', this.upgradeData.startDate || '');
-    formData.append('EndDate', this.upgradeData.endDate || '');
-    formData.append('PaymentPerMonth', this.subscription?.paymentPerMonth?.toString() || '0');
-    formData.append('MonthNumber', this.subscription?.monthNumber?.toString() || '1');
-    formData.append('AdminNumber', this.subscription?.adminNumber?.toString() || '0');
-    formData.append('DeviceNumber', this.subscription?.deviceNumber?.toString() || '0');
-    formData.append('CardNumber', this.subscription?.cardNumber?.toString() || '0');
-    formData.append('UsedAdmins', this.subscription?.usedAdmins?.toString() || '0');
-    formData.append('UsedDevices', this.subscription?.usedDevices?.toString() || '0');
-    formData.append('UsedCards', this.subscription?.usedCards?.toString() || '0');
-    formData.append('Note', this.subscription?.note || '');
-    formData.append('RenewalInfo', this.subscription?.renewalInfo || '');
-    formData.append('Devices', JSON.stringify(this.subscription?.devices || []));
-    formData.append('ImagePath', this.subscription?.imagePath || '');
-    formData.append('ImageFile', ''); // Empty for update since we're not changing the image
-
-    console.log('FormData being sent:', formData);
-
-    this.subscriptionsService.updateWithImage('Subscriptions/Update', formData).subscribe({
+    this.subscriptionsService.upgradeSubscription('Subscriptions/UpgradeSubscription', this.upgradeData as any).subscribe({
       next: (response: any) => {
         console.log('API Response received, setting isUpgrading to false');
         this.isUpgrading = false;

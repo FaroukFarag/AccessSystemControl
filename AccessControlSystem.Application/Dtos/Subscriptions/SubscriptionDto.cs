@@ -19,10 +19,18 @@ public class SubscriptionDto : BaseImageModelDto<int>
     public int UsedCards { get; set; }
     public decimal PaymentPerMonth { get; set; }
     public DateOnly StartDate { get; set; }
-    public DateOnly EndDate => StartDate.AddMonths(MonthNumber);
+
+    public DateOnly EndDate
+    {
+        get => _endDate ?? StartDate.AddMonths(MonthNumber);
+        set => _endDate = MonthNumber > 0 ? StartDate.AddMonths(MonthNumber) : value;
+    }
+
     public string? Note { get; set; }
     public DateTime? CreatedAt { get; set; } = DateTime.Now;
     public string RenewalInfo => RenewalCalculator.GetRenewalInfo(EndDate);
 
     public IEnumerable<DeviceDto>? Devices { get; set; }
+
+    private DateOnly? _endDate;
 }

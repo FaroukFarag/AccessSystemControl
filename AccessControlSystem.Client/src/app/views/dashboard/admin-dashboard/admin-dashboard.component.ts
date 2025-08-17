@@ -121,7 +121,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private subscriptionsService: SubscriptionService,
     private userService: UserService,
-    private sanitizer: DomSanitizer ) {
+    private sanitizer: DomSanitizer) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
       displayExpr: 'name',
@@ -135,7 +135,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.sidebarSubscription = this.sidebarService.isOpen$.subscribe(
       (isOpen: boolean) => this.isSidebarOpen = isOpen
     );
-   
+
     this.getSubscriptionsCount();
     this.getDevicesCount();
     this.getAllSubscriptions();
@@ -153,7 +153,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     return this.isSidebarOpen;
   }
 
-
   getAllSubscriptions(orderBy?: string): void {
     const baseUrl = 'Subscriptions/GetAll';
     const url = orderBy?.trim()
@@ -169,29 +168,29 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-
   getSubscriptionsCount() {
     this.userService.getAll('Subscriptions/GetSubscriptionsCount').subscribe((data: any) => {
       this.subscriptionsCount = data.resultData;
     })
   }
+
   getSubscriptionsLastMonthCount() {
     this.userService.getAll('Subscriptions/GetLastMonthSubscriptionsCount').subscribe((data: any) => {
       this.subscriptionsLAstMonthCount = data.resultData;
     })
   }
+
   getDevicesCount() {
     this.userService.getAll('Devices/GetDevicesCount').subscribe((data: any) => {
       this.devicesCount = data.resultData;
     })
   }
 
-   getDevicesLAstMonthCount() {
-     this.userService.getAll('Devices/GetLastMonthDevicesCount').subscribe((data: any) => {
+  getDevicesLAstMonthCount() {
+    this.userService.getAll('Devices/GetLastMonthDevicesCount').subscribe((data: any) => {
       this.devicesLastMonthCount = data.resultData;
     })
   }
-
 
   navigateToSubscriptions() {
     this.router.navigate(['/subscriptions']);
@@ -200,8 +199,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   navigateToDetailsPage(id: number) {
     this.router.navigate(['/subscription-details', id]);
   }
-
-
 
   showAddSubscriptionPopup() {
     this.subscriptionData = {
@@ -282,7 +279,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
     const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
     this.subscriptionData.SubscriptionTypeName = selectedType?.name || '';
-    debugger
+  
     const formData = new FormData();
 
     formData.append('CustomerName', this.subscriptionData.CustomerName);
@@ -307,8 +304,13 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
 
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
-      next: (response) => {
-        notify(this.languageService.translate('messages.success.subscription_created'), 'success', 1500);
+      next: (response: any) => {
+        if(response.succeeded)
+          notify(this.languageService.translate('messages.success.subscription_created'), 'success', 1500);
+        
+        else
+          notify(response.message, 'error', 2000);
+
         this.popupVisible = false;
         this.getAllSubscriptions();
       },

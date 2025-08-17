@@ -6,11 +6,14 @@ using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
+using AccessControlSystem.Domain.Interfaces.Services.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Subscriptions;
 using AccessControlSystem.Domain.Models.Users;
+using AccessControlSystem.Domain.Services.Subscriptions;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace AccessControlSystem.Application.Services.Subscriptions;
 
@@ -19,7 +22,8 @@ public class SubscriptionService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IImageService imageService,
-    IOrderingService<Subscription> orderingService) : BaseService<
+    IOrderingService<Subscription> orderingService,
+    SubscriptionValidationStrategyFactory strategyFactory) : BaseService<
         SubscriptionDto, SubscriptionDto, SubscriptionDto,
         SubscriptionDto, Subscription, int>(
         repository, unitOfWork, mapper), ISubscriptionService
@@ -29,6 +33,7 @@ public class SubscriptionService(
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
     private readonly IOrderingService<Subscription> _orderingService = orderingService;
+    private readonly SubscriptionValidationStrategyFactory _strategyFactory = strategyFactory;
     private static readonly BaseSpecification<Subscription> SubscriptionWithIncludesSpec = new()
     {
         Includes = [s => s.Devices, s => s.Cards],
@@ -54,12 +59,9 @@ public class SubscriptionService(
             operationName: "Create Subscription",
             action: async () =>
             {
-                subscriptionDto.ImagePath = await _imageService.SaveImageAsync(
-                    subscriptionDto.ImageFile,
-                    SubscriptionConstants.SubFolder) ?? throw new InvalidOperationException("Image upload failed");
+                await ValidateAndProcessSubscriptionAsync(subscriptionDto);
 
-                return (await base.CreateAsync(subscriptionDto)).ResultData
-                    ?? throw new InvalidOperationException("Subscription creation failed");
+                return await CreateSubscriptionAsync(subscriptionDto);
             });
     }
 
@@ -134,6 +136,26 @@ public class SubscriptionService(
             });
     }
 
+    public async Task<ResultDto<SubscriptionDto>> UpgradeAsync(UpgradeSubscriptionDto upgradeSubscriptionDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Update Subscription",
+            action: async () =>
+            {
+                var existingSubscriptionResult = await base.GetAsync(upgradeSubscriptionDto.Id);
+                var existingSubscription = existingSubscriptionResult.ResultData;
+
+                existingSubscription.SubscriptionType = upgradeSubscriptionDto.SubscriptionType;
+                existingSubscription.StartDate = upgradeSubscriptionDto.StartDate;
+                existingSubscription.EndDate = upgradeSubscriptionDto.EndDate;
+
+                var updateResult = await base.UpdateAsync(existingSubscriptionResult.ResultData);
+
+                return updateResult.ResultData
+                    ?? throw new InvalidOperationException("Subscription update failed");
+            });
+    }
+
     public override async Task<ResultDto<SubscriptionDto>> DeleteAsync(int id)
     {
         return await ExecuteServiceCallAsync(
@@ -150,5 +172,44 @@ public class SubscriptionService(
                 return (await base.DeleteAsync(id)).ResultData
                     ?? throw new InvalidOperationException("Subscription deletion failed");
             });
+    }
+
+    private async Task ValidateAndProcessSubscriptionAsync(SubscriptionDto subscriptionDto)
+    {
+        subscriptionDto.ImagePath = await SaveSubscriptionImageAsync(subscriptionDto.ImageFile!);
+        ValidateSubscriptionNumbers(subscriptionDto);
+    }
+
+    private async Task<string> SaveSubscriptionImageAsync(IFormFile imageFile)
+    {
+        return await _imageService.SaveImageAsync(
+            imageFile,
+            SubscriptionConstants.SubFolder)
+            ?? throw new InvalidOperationException("Image upload failed");
+    }
+
+    private void ValidateSubscriptionNumbers(SubscriptionDto subscriptionDto)
+    {
+        var strategy = _strategyFactory.GetStrategy(subscriptionDto.SubscriptionType);
+
+        ValidateNumber(strategy, subscriptionDto.AdminNumber, "Admin number");
+        ValidateNumber(strategy, subscriptionDto.DeviceNumber, "Device number");
+        ValidateNumber(strategy, subscriptionDto.CardNumber, "Card number");
+    }
+
+    private static void ValidateNumber(ISubscriptionValidationStrategy strategy, int number, string numberType)
+    {
+        if (!strategy.IsValid(number))
+        {
+            throw new InvalidOperationException(
+                $"{numberType} is not valid for the selected subscription type");
+        }
+    }
+
+    private async Task<SubscriptionDto> CreateSubscriptionAsync(SubscriptionDto subscriptionDto)
+    {
+        var result = await base.CreateAsync(subscriptionDto);
+        return result.ResultData
+            ?? throw new InvalidOperationException("Subscription creation failed");
     }
 }

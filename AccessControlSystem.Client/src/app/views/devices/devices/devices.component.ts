@@ -15,7 +15,7 @@ import {
   DxFileUploaderModule,
 } from 'devextreme-angular';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
+import { DxDropDownButtonModule } from 'devextreme-angular/ui/drop-down-button';
 import { DeviceService } from '../../../services/devices/device.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import notify from 'devextreme/ui/notify';
@@ -23,7 +23,6 @@ import { DxFormComponent } from 'devextreme-angular';
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { FormsModule } from '@angular/forms';
 import { AccessGroupService } from '../../../services/access-groups/access-group.service';
-import { AccessGroup } from '../../../models/access-group/access-group'
 
 @Component({
   selector: 'app-devices',
@@ -68,7 +67,7 @@ export class DevicesComponent implements OnInit {
     siteId: null,
     macAddress: ''
   };
-  fileUploaderKey = 0; // Add this to force re-render of file uploader
+  fileUploaderKey = 0;
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any;
   deviceTypes = [
@@ -106,9 +105,7 @@ export class DevicesComponent implements OnInit {
     private deviceService: DeviceService,
     private languageService: LanguageService,
     private sanitizer: DomSanitizer,
-    private subscriptionsService: SubscriptionService,
     private accessGroupService: AccessGroupService,) {
-
     this.deviceTypeEditorOptions = {
       dataSource: this.deviceTypes,
       valueExpr: 'id',
@@ -210,7 +207,6 @@ export class DevicesComponent implements OnInit {
     this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
   }
 
-
   sanitizeImage(image: string) {
     return this.sanitizer.bypassSecurityTrustUrl(image);
   }
@@ -227,6 +223,7 @@ export class DevicesComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   submitDevice() {
     this.imageValidationError = '';
     if (!this.deviceData.deviceImageFile) {
@@ -239,20 +236,31 @@ export class DevicesComponent implements OnInit {
       return;
     }
 
-    // Create JSON payload with subscription ID in request body
-    const devicePayload = {
-      imageFile: this.deviceData.deviceImageFile || null,
-      imagePath: this.deviceData.deviceImageUrl || '',
-      Name: this.deviceData.deviceName,
-      deviceType: this.deviceData.deviceType,
-      Serial: this.deviceData.serial,
-      siteId: this.deviceData.siteId || 0,
-      MacAddress: this.deviceData.macAddress,
-      active: true,
-      subscriptionId: +localStorage.getItem('subscriptionId')!
-    };
+    // Create FormData payload
+    const formData = new FormData();
 
-    this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
+    // Append simple fields
+    formData.append('Name', this.deviceData.deviceName);
+    formData.append('deviceType', this.deviceData.deviceType);
+    formData.append('Serial', this.deviceData.serial);
+    formData.append('siteId', (this.deviceData.siteId || 0).toString());
+    formData.append('MacAddress', this.deviceData.macAddress);
+    formData.append('active', 'true'); // Convert boolean to string
+    formData.append('subscriptionId', localStorage.getItem('subscriptionId')!);
+
+    // Handle image file if present
+    if (this.deviceData.deviceImageFile) {
+      formData.append('imageFile', this.deviceData.deviceImageFile);
+    }
+
+    // Append imagePath if it exists
+    if (this.deviceData.deviceImageUrl) {
+      formData.append('imagePath', this.deviceData.deviceImageUrl);
+    }
+
+    // Now use this formData in your HTTP request
+
+    this.deviceService.create('Devices/Create', formData as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
           notify(this.languageService.translate('messages.success.device_created'), 'success', 1500);
@@ -260,7 +268,7 @@ export class DevicesComponent implements OnInit {
 
           this.getAllDevices();
         } else {
-          notify(response.errorMessage, 'error', 2000);
+          notify(response.message, 'error', 2000);
         }
       },
       error: (err) => {
