@@ -65,10 +65,16 @@ builder.Services.RegisterHttpServices(builder.Configuration);
 
 var app = builder.Build();
 
+var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+
+if (!Directory.Exists(imagesPath))
+{
+    Directory.CreateDirectory(imagesPath);
+}
+
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    FileProvider = new PhysicalFileProvider(imagesPath),
     RequestPath = "/images"
 });
 
