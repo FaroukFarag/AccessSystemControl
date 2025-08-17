@@ -4,13 +4,15 @@ import {Input, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/users/user.service';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { LanguageService } from '../../../services/language/language.service';
 import notify from 'devextreme/ui/notify';
 
 
 @Component({
   selector: 'app-owner-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './owner-details.component.html',
   styleUrl: './owner-details.component.scss'
 })
@@ -44,12 +46,18 @@ export class OwnerDetailsComponent {
   ownerId: string = '';
   ownerDetails: any;
 
+  direction: 'ltr' | 'rtl' = 'ltr';
+
   constructor(private location: Location,
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router,
+    private languageService: LanguageService,
 ) {
-
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
   }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -68,7 +76,7 @@ export class OwnerDetailsComponent {
       },
       error: (err) => {
         console.error('Error fetching device details', err);
-        notify('Error fetching device details', 'error', 2000);
+        notify(this.languageService.translate('messages.error.loading_owner_details'), 'error', 2000);
       }
     });
 

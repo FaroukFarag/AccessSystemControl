@@ -1,9 +1,9 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
-    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
+    <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
     <h4>{{accessGroup?.name}} <span class="devices-number">({{accessGroup.devices.length}})</span></h4>
   </div>
-  <span>Review all devices details and information</span>
+  <span>{{ 'access_groups.review_devices_details' | translate }}</span>
 </div>
 
 <!--ALL DEVICES-->
@@ -16,19 +16,19 @@
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/status.svg" /></div>
-      <div class="info"> Status: </div>
+      <div class="info"> {{ 'devices.status' | translate }}: </div>
       <div class="info-value" [ngClass]="device?.active ? 'active' : 'inactive'">
-        {{ device?.active ? 'Active' : 'Not Active' }}
+        {{ device?.active ? ('devices.active' | translate) : ('devices.not_active' | translate) }}
       </div>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/mac-address.svg" /></div>
-      <div class="info"> Mac Address: </div>
+      <div class="info"> {{ 'devices.mac_address' | translate }}: </div>
       <div class="info-value ">{{device?.macAddress}}</div>
     </div>
     <div class="device-info">
       <div class="icon"><img src="/assets/icons/device-type.svg" /></div>
-      <div class="info"> Device type: </div>
+      <div class="info"> {{ 'devices.device_type' | translate }}: </div>
       <div class="info-value"> {{device?.deviceTypeName}}</div>
     </div>
   </div>
@@ -36,30 +36,42 @@
 
 
 
-<div class="device-trafic-section mt-4 bg-white p-4">
+<div class="device-trafic-section mt-4">
   <div class="grid-header">
-    <h5>Device traffic</h5>
+    <h5>{{ 'devices.device_traffic' | translate }}</h5>
     <div class="grid-header-btns">
-      <button type="button" class="btn btn-outline-secondary me-2">Recent</button>
-      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg"
-          class="me-1" />Report</button>
+      <button type="button" class="btn btn-outline-secondary me-2">{{ 'devices.recent' | translate }}</button>
+      <button type="button" class="btn btn-outline-info"> <img src="/assets/icons/report.svg" class="me-1" />{{ 'devices.report' | translate }}</button>
     </div>
   </div>
-  <dx-data-grid id="gridContainer" [dataSource]="dataSource" [remoteOperations]="false" [allowColumnReordering]="true"
-    [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
+  <dx-data-grid id="gridContainer"
+                [dataSource]="dataSource"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showBorders]="false"
+                [width]="'100%'">
     <!--<dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager [visible]="true"
                [showPageSizeSelector]="true"
                [allowedPageSizes]="[10, 25, 50, 100]"></dxo-pager>-->
-    <dxo-search-panel [visible]="false" [highlightCaseSensitive]="true"></dxo-search-panel>
+    <dxo-search-panel [visible]="false"
+                      [highlightCaseSensitive]="false"></dxo-search-panel>
 
 
-    <dxi-column dataField="Traffic type" caption="TRAFFIC TYPE" dataType="string" alignment="left"></dxi-column>
-    <dxi-column caption="TIME" dataField="Time" dataType="string" format="time" alignment="left"></dxi-column>
-    <dxi-column dataField="DATE" dataType="date"></dxi-column>
-    <dxi-column dataField="DeviceMacAddress" caption="DEVICE MAC ADDRESS" dataType="string"></dxi-column>
+    <dxi-column dataField="Traffic type"
+                [caption]="'devices.traffic_type' | translate"
+                dataType="string"
+                alignment="left"></dxi-column>
+    <dxi-column [caption]="'devices.time' | translate"
+                dataField="Time"
+                dataType="string"
+                format="time"
+                alignment="left"></dxi-column>
+    <dxi-column dataField="DATE" [caption]="'devices.date' | translate" dataType="date"></dxi-column>
+    <dxi-column dataField="DeviceMacAddress" [caption]="'devices.device_mac_address' | translate" dataType="string"></dxi-column>
 
-    <dxi-column dataField="image" caption="IMAGE" cellTemplate="imageCellTemplate"></dxi-column>
+    <dxi-column dataField="image" [caption]="'devices.image' | translate" cellTemplate="imageCellTemplate"></dxi-column>
 
     <div *dxTemplate="let d of 'imageCellTemplate'">
       <img />

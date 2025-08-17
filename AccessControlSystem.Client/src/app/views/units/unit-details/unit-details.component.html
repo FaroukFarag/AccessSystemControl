@@ -1,13 +1,13 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
     <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>{{ unitDetails?.name || 'Unite Name' }}</h4>
+    <h4>{{ unitDetails?.name || ('units.unit_name' | translate) }}</h4>
   </div>
-  <span>Review Unit details and information</span>
+  <span>{{ 'units.review_details' | translate }}</span>
 </div>
 
 <div class="page-header">
-  <dx-button  class="button-info me-1" text="Assign to Owner" (onClick)="openAssignToOwnerPopup()">
+  <dx-button  class="button-info me-1" [text]="'units.assign_to_owner' | translate" (onClick)="openAssignToOwnerPopup()">
   </dx-button>
 
 </div>
@@ -15,7 +15,7 @@
 <dx-popup [width]="600"
           [height]="270"
           [showTitle]="true"
-          title="Assign owner"
+          [title]="'units.assign_to_owner' | translate"
           [dragEnabled]="true"
           [hideOnOutsideClick]="false"
           [showCloseButton]="true"
@@ -27,14 +27,14 @@
     <dxi-item dataField="ownerId" editorType="dxSelectBox"
               [editorOptions]="{
             dataSource: ownersList,
-            placeholder: 'Select Owner',
+            placeholder: 'forms.select_owner' | translate,
             valueExpr: 'id',
             displayExpr: 'ownerName',
             itemTemplate: 'ownerTemplate',
             searchEnabled: true
           }">
-      <dxi-validation-rule type="required" message="Owner is required"></dxi-validation-rule>
-      <dxo-label text="Owner" [visible]="true"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'validation.owner_required' | translate"></dxi-validation-rule>
+      <dxo-label [text]="'forms.owner' | translate" [visible]="true"></dxo-label>
     </dxi-item>
 
     <!-- Owner Template -->
@@ -48,7 +48,7 @@
 
   </dx-form>
   <dxi-item itemType="button">
-    <dx-button text="Assign to Owner" (onClick)="submitInits()"></dx-button>
+    <dx-button [text]="'units.assign_to_owner' | translate" (onClick)="submitInits()"></dx-button>
   </dxi-item>
 
 </dx-popup>-
@@ -62,8 +62,10 @@
       <img class="unit-img" [src]="unitDetails?.imagePath" alt="Unit" />
       <div class="unit-meta ms-2">
         <h3 class="unit-name">{{ unitDetails?.name}}</h3>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">{{unitDetails?.owner?.userName  || 'un Assigned'}}</span></div>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unitDetails?.cardNumber }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> {{ 'forms.owner' | translate }}:</span><span class="value">{{unitDetails?.owner?.userName  || ('units.unassigned' | translate)}}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> {{ 'units.number_of_cards' | translate }}:</span> <span class="value">{{ unitDetails?.cardNumber }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'units.area' | translate }}:</span> <span class="value">{{ unitDetails?.area }} m²</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'units.access_groups' | translate }}:</span> <span class="value">{{ unitDetails?.accessGroups?.length || 0 }}</span></div>
       </div>
     </div>
 
@@ -73,7 +75,7 @@
   <!--GROUPED DEVICES VIEW-->
 <div class="row m-auto bg-white px-2 py-3 mb-5 group-devices" *ngIf="userRole == 2">
   <div class="group-device-header">
-    <h3 class="mb-3">Access Groups ({{ unitDetails?.accessGroups?.length }})</h3>
+    <h3 class="mb-3">{{ 'units.access_groups' | translate }} ({{ unitDetails?.accessGroups?.length }})</h3>
 
     <!--<dx-button class="button-info me-1 mb-4"
                text="Assigned owners">
@@ -87,15 +89,15 @@
           <h5 class="group-name mb-0">{{ group.name }}</h5>
           <img src="/assets/images/device.png" alt="Group Icon" width="10%">
         </div>
-        <p class="device-count mb-3">{{ group.devices?.length || 0 }} Device{{ group.devices?.length === 1 ? '' : 's' }}
+        <p class="device-count mb-3">{{ group.devices?.length || 0 }} {{ group.devices?.length === 1 ? ('units.device_count' | translate) : ('units.devices_count' | translate) }}
         </p>
 
         <div class="btns-row">
-          <dx-button text="Devices" stylingMode="outlined" type="default" class="view-btn"
+          <dx-button [text]="'units.devices' | translate" stylingMode="outlined" type="default" class="view-btn"
             (onClick)="navigateToGroup(group.id)">
           </dx-button>
-          <dx-button text="Assigned owners" stylingMode="contained" type="default" class="view-btn-2"
-            (onClick)="navigateToGroup(group.id)">
+          <dx-button [text]="'units.assigned_owners' | translate" stylingMode="contained" type="default" class="view-btn-2"
+            (onClick)="navigateToAssignedOwners(group.id)">
           </dx-button>
         </div>
       </div>

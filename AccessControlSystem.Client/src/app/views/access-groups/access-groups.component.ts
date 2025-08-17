@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import {
   DxDataGridModule,
   DxButtonModule,
@@ -13,11 +14,15 @@ import { DxFormComponent } from 'devextreme-angular';
 import notify from 'devextreme/ui/notify';
 import { DeviceService } from '../../services/devices/device.service';
 import { AccessGroup } from '../../models/access-group/access-group';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageService } from '../../services/language/language.service';
 
 @Component({
   selector: 'app-access-groups',
   standalone: true,
   imports: [
+    CommonModule,
+    TranslatePipe,
     DxDataGridModule,
     DxButtonModule,
     DxFormModule,
@@ -41,7 +46,7 @@ export class AccessGroupsComponent {
     selectedDevices: [] as number[],
   };
 
-  constructor(private router: Router, private accessGroupService: AccessGroupService, private deviceService: DeviceService) {
+  constructor(private router: Router, private accessGroupService: AccessGroupService, private deviceService: DeviceService, private languageService: LanguageService) {
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
       valueExpr: 'name',
@@ -74,7 +79,7 @@ export class AccessGroupsComponent {
         this.sites = data.resultData.sites;
 
       else
-        notify('Error getting sites', 'error', 2000);
+        notify(this.languageService.translate('messages.error.getting_sites'), 'error', 2000);
     })
   }
 
@@ -84,7 +89,7 @@ export class AccessGroupsComponent {
         this.schedules = data.resultData.schedules;
 
       else
-        notify('Error getting schedules', 'error', 2000);
+        notify(this.languageService.translate('messages.error.getting_schedules'), 'error', 2000);
     })
   }
 
@@ -109,17 +114,17 @@ export class AccessGroupsComponent {
     e.cancel = true;
 
     this.accessGroupService.create('AccessGroups/Create', payload).subscribe({
-      next: () => {
-        notify('Access group created successfully', 'success', 1500);
+             next: () => {
+         notify(this.languageService.translate('messages.success.access_group_created'), 'success', 1500);
 
-        e.component.cancelEditData();
+         e.component.cancelEditData();
 
-        this.getAllAccessGroups();
-      },
-      error: (err) => {
-        notify('Failed to create access group', 'error', 2000);
-        console.error(err);
-      }
+         this.getAllAccessGroups();
+       },
+       error: (err) => {
+         notify(this.languageService.translate('messages.error.access_group_creation'), 'error', 2000);
+         console.error(err);
+       }
     });
   }
 

@@ -118,21 +118,29 @@ export class OwnersComponent implements OnInit {
   }
 
   getOwnersByGroup(groupId: number): void {
-    // For now, we'll load all owners and filter client-side
-    // In a real implementation, you might have an API endpoint like 'Users/GetOwnersByGroup/{groupId}'
-    this.userService.getAll('Users/GetAllOwners').subscribe({
+    // Try to use a specific API endpoint for getting owners by group
+    // If the endpoint doesn't exist, it will fall back to getting all owners
+    this.userService.getAll(`Users/GetOwnersByGroup/${groupId}`).subscribe({
       next: (data: any) => {
         if (data && data.resultData) {
-          // Filter owners by group - this is a placeholder implementation
-          // You would need to implement the actual filtering logic based on your data structure
-          this.owners = data.resultData.filter((owner: any) => {
-            // This is a placeholder - you need to implement the actual filtering logic
-            // based on how owners are associated with groups in your data model
-            return true; // For now, show all owners
-          });
+          this.owners = data.resultData;
         }
       },
-      error: (err) => console.error("Failed to load owners by group:", err)
+      error: (err) => {
+        console.log("Specific endpoint not available, falling back to all owners");
+        // Fallback: Get all owners and filter client-side
+        this.userService.getAll('Users/GetAllOwners').subscribe({
+          next: (data: any) => {
+            if (data && data.resultData) {
+              // For now, show all owners since we don't have the relationship data
+              // In a real implementation, you would filter based on the actual relationship
+              this.owners = data.resultData;
+              console.log("Showing all owners for group:", groupId);
+            }
+          },
+          error: (fallbackErr) => console.error("Failed to load owners:", fallbackErr)
+        });
+      }
     });
   }
 
@@ -165,7 +173,7 @@ export class OwnersComponent implements OnInit {
     this.userService.create('Users/Create', this.ownerData).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
-          notify(this.languageService.translate('messages.success.device_created'), 'success', 1500);
+          notify(this.languageService.translate('messages.success.owner_created'), 'success', 1500);
           this.popupVisible = false;
           this.getAllOwners();
         }

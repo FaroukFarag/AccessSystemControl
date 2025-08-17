@@ -18,6 +18,8 @@ import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-gr
 import { DxFormComponent } from 'devextreme-angular';
 import { CommonModule } from '@angular/common';
 import { DeviceService } from '../../services/devices/device.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageService } from '../../services/language/language.service';
 @Component({
   selector: 'app-access-group-devices',
   standalone: true,
@@ -26,7 +28,8 @@ import { DeviceService } from '../../services/devices/device.service';
     DxTemplateModule,
     CommonModule,
     DxFormModule,
-    DxDataGridModule
+    DxDataGridModule,
+    TranslatePipe
   ],
   templateUrl: './access-group-devices.component.html',
   styleUrls: ['./access-group-devices.component.scss']
@@ -34,6 +37,16 @@ import { DeviceService } from '../../services/devices/device.service';
 export class AccessGroupDevicesComponent {
   groupId!: number;
   accessGroup: any = null;
+  direction: 'ltr' | 'rtl' = 'ltr';
+  
+  // Column captions for the data grid
+  columnCaptions = {
+    trafficType: '',
+    time: '',
+    date: '',
+    deviceMacAddress: '',
+    image: ''
+  };
   dataSource: any[] = [
 
     {
@@ -137,9 +150,23 @@ export class AccessGroupDevicesComponent {
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-  ) { }
+    private languageService: LanguageService,
+  ) {
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
+    
+    // Subscribe to language changes to update column captions
+    this.languageService.currentLang$.subscribe(() => {
+      this.updateColumnCaptions();
+    });
+  }
 
   ngOnInit(): void {
+    // Initialize column captions
+    this.updateColumnCaptions();
+    
     this.route.queryParams.subscribe(params => {
       this.groupId = params['id'];
       if (this.groupId) {
@@ -156,7 +183,7 @@ export class AccessGroupDevicesComponent {
         this.accessGroup = data.resultData;
       },
       error: (err) => {
-        notify('Error fetching access group details', 'error', 2000);
+        notify(this.languageService.translate('messages.error.loading_access_group_details'), 'error', 2000);
         console.error('Error fetching access group details:', err);
       }
     });
@@ -164,5 +191,15 @@ export class AccessGroupDevicesComponent {
 
   navigateToDetailsPage(deviceId: string) {
     this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
+  }
+  
+  private updateColumnCaptions() {
+    this.columnCaptions = {
+      trafficType: this.languageService.translate('access_groups.traffic_type'),
+      time: this.languageService.translate('access_groups.time'),
+      date: this.languageService.translate('access_groups.date'),
+      deviceMacAddress: this.languageService.translate('access_groups.device_mac_address'),
+      image: this.languageService.translate('access_groups.image')
+    };
   }
 }

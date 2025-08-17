@@ -1,9 +1,9 @@
 <div class="breadcrumb mb-5">
   <div class="page-title" (click)="backClicked()">
-    <img src="/assets/icons/back-arrow.svg" alt="Back Button" />
-    <h4>Owner Name</h4>
+    <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
+    <h4>{{ 'owners.owner_details_title' | translate }}</h4>
   </div>
-  <span>Review unit details and information</span>
+  <span>{{ 'owners.review_unit_details' | translate }}</span>
 </div>
 
 
@@ -17,9 +17,9 @@
       <img class="unit-img" [src]="unit.image" alt="Unit" />
       <div class="unit-meta ms-2">
         <h3 class="unit-name">{{ unit.name }}</h3>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> Owner:</span><span class="value">Ahmed Adly</span></div>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> # of Cards:</span> <span class="value">{{ unit.count }}</span></div>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> Devices:</span> <span class="value">{{ unit.group }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> {{ 'forms.owner' | translate }}:</span><span class="value">Ahmed Adly</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> {{ 'owners.number_of_cards' | translate }}:</span> <span class="value">{{ unit.count }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'owners.devices' | translate }}:</span> <span class="value">{{ unit.group }}</span></div>
       </div>
     </div>
 
@@ -40,41 +40,41 @@
   <div class="bottom-section">
     <div class="subscription-details">
       <div>
-        <span class="progress-name">Plan</span><br />
+        <span class="progress-name">{{ 'owners.plan' | translate }}</span><br />
         <span class="strong"> {{ subscription.plan }}</span>
       </div>
       <div>
-        <span class="progress-name">Payment</span><br />
-        <span class="strong"> ${{ subscription.payment.toFixed(2) }} <small class="small">/ year</small> </span>
+        <span class="progress-name">{{ 'owners.payment' | translate }}</span><br />
+        <span class="strong"> ${{ subscription.payment.toFixed(2) }} <small class="small">{{ 'owners.per_year' | translate }}</small> </span>
       </div>
       <div>
-        <span class="progress-name">Subscription start date</span><br />
+        <span class="progress-name">{{ 'owners.subscription_start_date' | translate }}</span><br />
         <span class="strong"> {{ subscription.start }}</span>
       </div>
       <div>
-        <span class="progress-name">Subscription end date</span><br />
+        <span class="progress-name">{{ 'owners.subscription_end_date' | translate }}</span><br />
         <span class="strong">  {{ subscription.end }}</span>
       </div>
       <div class="actions">
-        <a href="#" class="cancel-subscription">Cancel subscription</a>
-        <a href="#" class="upgrade">Upgrade</a>
+        <a href="#" class="cancel-subscription">{{ 'owners.cancel_subscription' | translate }}</a>
+        <a href="#" class="upgrade">{{ 'owners.upgrade' | translate }}</a>
       </div>
     </div>
 
     <!-- Usage Stats -->
     <div class="stats">
       <div class="stat">
-        <p><img class="icon" src="assets/icons/person.svg" /> Owners</p>
+        <p><img class="icon" src="assets/icons/person.svg" /> {{ 'owners.title' | translate }}</p>
         <div class="bar"><div class="fill" [style.width.%]="(3/5)*100"></div></div>
         <small>3 / 5</small>
       </div>
       <div class="stat">
-        <p><img class="icon me-1" src="assets/icons/device.svg" />Devices</p>
+        <p><img class="icon me-1" src="assets/icons/device.svg" />{{ 'owners.devices' | translate }}</p>
         <div class="bar"><div class="fill" [style.width.%]="(4/8)*100"></div></div>
         <small>4 / 8</small>
       </div>
       <div class="stat">
-        <p><img class="icon me-1" src="assets/icons/visitor.svg" />Visitors <small>/ day</small></p>
+        <p><img class="icon me-1" src="assets/icons/visitor.svg" />{{ 'visitors.title' | translate }} <small>{{ 'owners.visitors_per_day' | translate }}</small></p>
         <div class="bar"><div class="fill"></div></div>
         <small>6 / 10</small>
       </div>
@@ -86,7 +86,7 @@
 <!--UNITS SECTION-->
 <!--All Units-->
 <div class="row">
-  <h2>Units <span>({{ownerDetails.units.length}})</span></h2>
+  <h2>{{ 'units.title' | translate }} <span>({{ownerDetails.units.length}})</span></h2>
 
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let unit of ownerDetails.units">
 
@@ -97,15 +97,20 @@
 
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
-      <div class="info"> Subscription: </div>
+      <div class="info"> {{ 'owners.subscription' | translate }}: </div>
       <div class="info-value"> {{ unit.subscriptionId }}</div>
     </div>
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/device.svg" /></div>
-      <div class="info"> Devices: </div>
+      <div class="info"> {{ 'owners.devices' | translate }}: </div>
       <div class="info-value">{{ unit.number }}</div>
     </div>
 
+  </div>
+
+  <!-- No Units Message -->
+  <div *ngIf="ownerDetails.units && ownerDetails.units.length === 0" class="no-units-message">
+    {{ 'owners.no_units_assigned' | translate }}
   </div>
 </div>
 

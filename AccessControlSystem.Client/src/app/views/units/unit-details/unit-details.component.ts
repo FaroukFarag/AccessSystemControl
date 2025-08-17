@@ -14,6 +14,7 @@ import {
 import { UserService } from '../../../services/users/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-unit-details',
@@ -27,7 +28,8 @@ import { FormsModule } from '@angular/forms';
     DxToolbarModule,
     DxSelectBoxModule,
     DxTextAreaModule,
-    DxFormModule],
+    DxFormModule,
+    TranslatePipe],
   templateUrl: './unit-details.component.html',
   styleUrl: './unit-details.component.scss'
 })
@@ -145,5 +147,10 @@ export class UnitDetailsComponent {
     // Example: navigate to group details page
     this.router.navigate(['/access-groups-devices'], { queryParams: { id: groupId } });
 
+  }
+
+  navigateToAssignedOwners(groupId: number) {
+    // Navigate to owners page with group filter
+    this.router.navigate(['/owners'], { queryParams: { groupId: groupId } });
   }
 }
