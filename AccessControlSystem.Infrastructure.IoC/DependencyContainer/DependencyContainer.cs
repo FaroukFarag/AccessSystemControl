@@ -88,6 +88,7 @@ using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.AccessLevels;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Devices;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Doors;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.EventLogs;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.FloorLevels;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Schedules;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Sites;
@@ -96,6 +97,7 @@ using AccessControlSystem.Infrastructure.Http.Services.Airfob;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob.AccessLevels;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob.Devices;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob.Doors;
+using AccessControlSystem.Infrastructure.Http.Services.Airfob.EventLogs;
 using AccessControlSystem.Infrastructure.Http.Services.Airfob.Users;
 using AccessControlSystem.WebApi.Middlewares.Exceptions;
 using FluentValidation;
@@ -286,7 +288,8 @@ public static class DependencyContainer
             .AddScoped<IAirfobAccessLevelService, AirfobAccessLevelService>()
             .AddScoped<IAirfobUserService, AirfobUserService>()
             .AddScoped<IAirfobDeviceService, AirfobDeviceService>()
-            .AddScoped<IAirfobDoorService, AirfobDoorService>();
+            .AddScoped<IAirfobDoorService, AirfobDoorService>()
+            .AddScoped<IAirfobEventLogService, AirfobEventLogService>();
 
 
         services.AddHttpClient<AirfobAuthHandler>(client =>

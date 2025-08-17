@@ -37,4 +37,10 @@ public class SubscriptionsController(ISubscriptionService service) :
     {
         return base.Update(dto);
     }
+
+    [HttpPatch("UpgradeSubscription")]
+    public async Task<IActionResult> UpgradeSubscription(UpgradeSubscriptionDto dto)
+    {
+        return Ok(await _service.UpgradeAsync(dto));
+    }
 }

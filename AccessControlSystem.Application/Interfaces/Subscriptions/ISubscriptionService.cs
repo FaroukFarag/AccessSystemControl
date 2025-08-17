@@ -10,4 +10,5 @@ public interface ISubscriptionService : IBaseService<SubscriptionDto,
 {
     Task<ResultDto<IEnumerable<SubscriptionDto>>> GetAllAsync(string orderBy);
     Task<ResultDto<long>> GetSubscriptionsCountAsync(bool isLastMonth = false);
+    Task<ResultDto<SubscriptionDto>> UpgradeAsync(UpgradeSubscriptionDto newSubscriptionDto);
 }

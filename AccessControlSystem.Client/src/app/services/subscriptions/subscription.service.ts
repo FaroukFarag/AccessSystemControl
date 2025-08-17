@@ -18,4 +18,8 @@ export class SubscriptionService extends BaseService<Subscription>{
   updateWithImage(endpoint: string, formData: FormData): Observable<any> {
     return this.http.put(`${this.baseUrl}/${endpoint}`, formData);
   }
+
+  upgradeSubscription(endpoint: string, data: any): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${endpoint}`, data);
+  }
 }
