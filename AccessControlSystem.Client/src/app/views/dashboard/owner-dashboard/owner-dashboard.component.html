@@ -75,10 +75,10 @@
       <dxi-column dataField="deviceAccess" caption="{{ 'devices.access_group' | translate }}"></dxi-column>
       <dxi-column dataField="start" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
       <dxi-column dataField="end" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
-      <dxi-column type="buttons" [width]="80">
+      <dxi-column type="buttons" name="settings" [width]="80">
         <dxi-button name="settings" icon="gear" [onClick]="onSettingsClick"></dxi-button>
       </dxi-column>
-      <dxi-column type="buttons" [width]="100">
+      <dxi-column type="buttons" name="cancel" [width]="100">
         <dxi-button name="cancel" text="Cancel" [onClick]="onCancelClick"></dxi-button>
       </dxi-column>
     </dx-data-grid>
@@ -142,32 +142,63 @@
     </dx-data-grid>
   </div>
 
-  <!--Manage Vistors POPUP-->
-  <dx-popup [width]="600"
-            [height]="400"
-            [showTitle]="true"
-            [title]="'dashboard.manage_visitors' | translate"
-            [dragEnabled]="true"
-            [hideOnOutsideClick]="false"
-            [showCloseButton]="true"
-            [(visible)]="this.manageVistors_popupVisible">
-    <dx-form #subscriptionFormRef
-             [formData]="formModel"
-             [colCount]="1"
-             [labelLocation]="'top'">
+     <!--Manage Vistors POPUP-->
+   <dx-popup [width]="700"
+             [height]="600"
+             [showTitle]="true"
+             [title]="'dashboard.manage_visitors' | translate"
+             [dragEnabled]="true"
+             [hideOnOutsideClick]="false"
+             [showCloseButton]="true"
+             [(visible)]="this.manageVistors_popupVisible">
+     <dx-form #subscriptionFormRef
+              [formData]="formModel"
+              [colCount]="1"
+              [labelLocation]="'top'">
 
-      <dxi-item dataField="name" [editorType]="'dxTextBox'" [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
+       <dxi-item dataField="name" [editorType]="'dxTextBox'" [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
 
-      <dxi-item dataField="visitDate"
-                [editorType]="'dxDateBox'"
-                [editorOptions]="{ type: 'datetime' }"
-                [label]="{ text: 'dashboard.owner_dashboard.visit_date' | translate }"></dxi-item>
+       <dxi-item dataField="mobile" [editorType]="'dxTextBox'" [label]="{ text: 'owners.phone_number' | translate }"></dxi-item>
 
-    </dx-form>
+       <dxi-item dataField="email" [editorType]="'dxTextBox'" [label]="{ text: 'common.email' | translate }"></dxi-item>
 
-    <dxi-item itemType="button">
-      <dx-button [text]="'dashboard.owner_dashboard.add_visitor' | translate" (onClick)="submitVistor()"></dx-button>
-    </dxi-item>
+       <dxi-item dataField="siteId" [editorType]="'dxNumberBox'" [label]="{ text: 'dashboard.owner_dashboard.site_id' | translate }"></dxi-item>
 
-  </dx-popup>
+       <dxi-item dataField="accessGroupIds"
+                 [editorType]="'dxTagBox'"
+                 [editorOptions]="{
+                   dataSource: accessGroups,
+                   displayExpr: 'name',
+                   valueExpr: 'id',
+                   placeholder: 'Select access groups'
+                 }"
+                 [label]="{ text: 'devices.access_group' | translate }"></dxi-item>
+
+       <dxi-item itemType="group" [colCount]="2">
+         <dxi-item dataField="startDate"
+                   [editorType]="'dxDateBox'"
+                   [editorOptions]="{ type: 'datetime' }"
+                   [label]="{ text: 'dashboard.start_date' | translate }"></dxi-item>
+
+         <dxi-item dataField="endDate"
+                   [editorType]="'dxDateBox'"
+                   [editorOptions]="{ type: 'datetime' }"
+                   [label]="{ text: 'dashboard.end_date' | translate }"></dxi-item>
+       </dxi-item>
+
+       <dxi-item dataField="notes"
+                 [editorType]="'dxTextArea'"
+                 [editorOptions]="{ height: 80 }"
+                 [label]="{ text: 'dashboard.owner_dashboard.notes' | translate }"></dxi-item>
+
+       <dxi-item itemType="button">
+         <dx-button [text]="'devices.add_device' | translate" 
+                   (onClick)="submitVistor()"
+                   [width]="'100%'"
+                   type="success"></dx-button>
+       </dxi-item>
+
+     </dx-form>
+
+   </dx-popup>
 </div>

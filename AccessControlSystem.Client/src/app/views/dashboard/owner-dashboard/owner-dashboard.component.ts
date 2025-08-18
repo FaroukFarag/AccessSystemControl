@@ -10,7 +10,8 @@ import {
   DxSelectBoxModule,
   DxTextAreaModule,
   DxFormModule,
-  DxDataGridModule
+  DxDataGridModule,
+  DxTagBoxModule
 } from 'devextreme-angular';
 import { UserService } from '../../../services/users/user.service';
 import notify from 'devextreme/ui/notify';
@@ -18,6 +19,7 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
 import { DeviceService } from '../../../services/devices/device.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { BaseService } from '../../../services/shared/base-service.service';
 
 @Component({
   selector: 'app-owner-dashboard',
@@ -31,6 +33,7 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
     DxFormModule,
     DxPopupModule,
     DxDataGridModule,
+    DxTagBoxModule,
     TranslatePipe],
   templateUrl: './owner-dashboard.component.html',
   styleUrl: './owner-dashboard.component.scss'
@@ -43,7 +46,13 @@ export class OwnerDashboardComponent implements OnInit {
 
   formModel = {
     name: '',
-    visitDate: new Date(),
+    mobile: '',
+    siteId: 0,
+    email: '',
+    startDate: new Date(),
+    endDate: new Date(),
+    notes: '',
+    accessGroupIds: [],
     unitId: 1, // Change this to the correct unitId from your app
     subscriptionId: 0
   };
@@ -145,6 +154,7 @@ export class OwnerDashboardComponent implements OnInit {
     private accessGroupService: AccessGroupService,
     private deviceService: DeviceService,
     private router: Router,
+    private baseService: BaseService<any>
 ) { }
 
   ngOnInit() {
@@ -152,8 +162,17 @@ export class OwnerDashboardComponent implements OnInit {
     this.formModel.subscriptionId = subId ? +subId : 0;
     this.userId = localStorage.getItem('userId') || '';
     console.log('User ID:', this.userId);
-    this.getOwnerDetails(this.userId);
+    
+    // Only call getOwnerDetails if userId exists
+    if (this.userId) {
+      this.getOwnerDetails(this.userId);
+    } else {
+      console.warn('User ID not found in localStorage');
+    }
+    
     this.getAllDevices();
+    this.getVisitorsDetails();
+    this.getAllAccessGroups();
   }
 
   openManageVistorsPopup() {
@@ -164,18 +183,43 @@ export class OwnerDashboardComponent implements OnInit {
     const payload = {
       id: 0,
       name: this.formModel.name,
-      visitDate: this.formModel.visitDate,
+      mobile: this.formModel.mobile, // Changed back to mobile as API expects
+      siteId: this.formModel.siteId,
+      email: this.formModel.email,
+      startDate: this.formModel.startDate,
+      endDate: this.formModel.endDate,
+      notes: this.formModel.notes,
       unitId: this.formModel.unitId,
-      subscriptionId: this.formModel.subscriptionId
+      subscriptionId: this.formModel.subscriptionId,
+      accessGroupIds: this.formModel.accessGroupIds // Use form model value
     };
 
-    this.http.post('/api/Visitors/Create', payload).subscribe({
+    console.log('Submitting visitor payload:', payload);
+
+    this.baseService.create('Visitors/Create', payload).subscribe({
       next: (res) => {
         this.manageVistors_popupVisible = false;
+        notify('Visitor created successfully', 'success', 2000);
+        // Reset form
+        this.formModel = {
+          name: '',
+          mobile: '',
+          siteId: 0,
+          email: '',
+          startDate: new Date(),
+          endDate: new Date(),
+          notes: '',
+          accessGroupIds: [],
+          unitId: this.formModel.unitId,
+          subscriptionId: this.formModel.subscriptionId
+        };
+        // Refresh visitors list
+        this.getVisitorsDetails();
       },
       error: (err) => {
-        notify('Error creating visitor:', 'error', 2000);
-
+        console.error('Error creating visitor:', err);
+        console.error('Error response:', err.error);
+        notify('Error creating visitor: ' + (err.error?.message || err.message), 'error', 3000);
       }
     });
   }
@@ -225,6 +269,28 @@ export class OwnerDashboardComponent implements OnInit {
       },
       error: (err) => console.error("Failed to load owners:", err)
     })
+  }
+
+  getVisitorsDetails() {
+    this.baseService.getAll('Visitors/GetAll').subscribe({
+      next: (data: any) => {
+        console.log('Raw visitors API response:', data);
+        if (data && data.resultData) {
+          this.vistorsDetails = data.resultData;
+        } else if (Array.isArray(data)) {
+          this.vistorsDetails = data;
+        } else {
+          this.vistorsDetails = [];
+        }
+        console.log('Visitors Details:', this.vistorsDetails);
+      },
+      error: (err) => {
+        console.error('Error fetching visitors details:', err);
+        console.error('Error response:', err.error);
+        notify('Error fetching visitors details: ' + (err.error?.message || err.message), 'error', 3000);
+        this.vistorsDetails = [];
+      }
+    });
   }
 
   // Settings button click handler
