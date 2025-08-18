@@ -44,6 +44,7 @@ export class OwnerDashboardComponent implements OnInit {
   pauseVisitPopupVisible = false;
   cancelVisitPopupVisible = false;
   selectedVisitor: any = null;
+  settingsTemplate: any;
 
   formModel = {
     name: '',
@@ -267,7 +268,18 @@ export class OwnerDashboardComponent implements OnInit {
 
   // Settings button click handler
   onSettingsClick = (e: any) => {
-    this.selectedVisitor = e.row.data;
+    // Handle both direct row data and button click events
+    if (e.row && e.row.data) {
+      this.selectedVisitor = e.row.data;
+    } else if (e.rowData) {
+      this.selectedVisitor = e.rowData;
+    } else if (e.data) {
+      this.selectedVisitor = e.data;
+    } else {
+      console.error('No row data found in settings click event:', e);
+      return;
+    }
+    console.log('Selected visitor for settings:', this.selectedVisitor);
     this.pauseVisitPopupVisible = true;
   }
 

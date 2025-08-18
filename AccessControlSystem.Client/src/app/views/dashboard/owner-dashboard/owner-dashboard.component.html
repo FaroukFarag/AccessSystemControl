@@ -65,20 +65,26 @@
       <h5>{{ 'dashboard.owner_dashboard.visitors_details' | translate }}</h5>
     </div>
     <dx-data-grid id="gridContainer" [dataSource]="vistorsDetails" [remoteOperations]="false"
-      [allowColumnReordering]="true" [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
+                  [allowColumnReordering]="true" [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
       <dxi-column dataField="name" caption="{{ 'common.name' | translate }}"></dxi-column>
       <dxi-column dataField="email" caption="{{ 'common.email' | translate }}"></dxi-column>
       <dxi-column dataField="mobile" caption="{{ 'owners.phone_number' | translate }}"></dxi-column>
       <dxi-column dataField="deviceAccess" caption="{{ 'devices.access_group' | translate }}"></dxi-column>
       <dxi-column dataField="startDate" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
       <dxi-column dataField="endDate" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
-      <dxi-column type="buttons" name="settings" [width]="80">
-        <dxi-button name="settings" icon="gear" [onClick]="onSettingsClick"></dxi-button>
+      <dxi-column type="buttons" name="settings" [width]="80" [cellTemplate]="settingsTemplate">
+        <dxi-button name="settings" icon="gear" [onClick]="onSettingsClick" ></dxi-button>
       </dxi-column>
       <dxi-column type="buttons" name="cancel" [width]="100">
         <dxi-button name="cancel" text="Cancel" [onClick]="onCancelClick"></dxi-button>
       </dxi-column>
+      <!-- Settings Template -->
+      <div *dxTemplate="let data of 'settingsTemplate'">
+
+      </div>
     </dx-data-grid>
+    
+ 
   </div>
 
   <!-- Pause Visit Confirmation Popup -->
@@ -128,15 +134,15 @@
 
   <!--Manage Vistors POPUP-->
   <dx-popup [width]="700" [height]="600" [showTitle]="true" [title]="'dashboard.manage_visitors' | translate"
-    [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true"
-    [(visible)]="this.manageVistors_popupVisible">
+            [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true"
+            [(visible)]="this.manageVistors_popupVisible">
     <dx-form #subscriptionFormRef [formData]="formModel" [colCount]="1" [labelLocation]="'top'">
 
       <dxi-item dataField="name" [editorType]="'dxTextBox'"
-        [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
+                [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
 
       <dxi-item dataField="mobile" [editorType]="'dxTextBox'"
-        [label]="{ text: 'owners.phone_number' | translate }"></dxi-item>
+                [label]="{ text: 'owners.phone_number' | translate }"></dxi-item>
 
       <dxi-item dataField="email" [editorType]="'dxTextBox'" [label]="{ text: 'common.email' | translate }"></dxi-item>
 
@@ -156,21 +162,21 @@
 
       <dxi-item itemType="group" [colCount]="2">
         <dxi-item dataField="startDate" [editorType]="'dxDateBox'" [editorOptions]="{ type: 'datetime' }"
-          [label]="{ text: 'dashboard.start_date' | translate }"></dxi-item>
+                  [label]="{ text: 'dashboard.start_date' | translate }"></dxi-item>
 
         <dxi-item dataField="endDate" [editorType]="'dxDateBox'" [editorOptions]="{ type: 'datetime' }"
-          [label]="{ text: 'dashboard.end_date' | translate }"></dxi-item>
+                  [label]="{ text: 'dashboard.end_date' | translate }"></dxi-item>
       </dxi-item>
 
       <dxi-item dataField="notes" [editorType]="'dxTextArea'" [editorOptions]="{ height: 80 }"
-        [label]="{ text: 'dashboard.owner_dashboard.notes' | translate }"></dxi-item>
-
-      <dxi-item itemType="button">
-        <dx-button [text]="'devices.add_device' | translate" (onClick)="submitVistor()" [width]="'100%'"
-          type="success"></dx-button>
-      </dxi-item>
+                [label]="{ text: 'dashboard.owner_dashboard.notes' | translate }"></dxi-item>
 
     </dx-form>
+
+    <dxi-item itemType="button">
+      <dx-button [text]="'devices.add_device' | translate" (onClick)="submitVistor()" [width]="'100%'"
+                 type="success"></dx-button>
+    </dxi-item>
 
   </dx-popup>
 </div>
