@@ -51,6 +51,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   id!: number;
   popupVisible: boolean = false;
   upgradePopupVisible: boolean = false;
+  cancelConfirmationPopupVisible: boolean = false;
+  isCancelling: boolean = false;
   subscription: any;
   imageValidationError: string = '';
   deviceListEditorOptions: any;
@@ -453,6 +455,145 @@ export class SubscriptionDetailsComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  showCancelConfirmationPopup() {
+    this.cancelConfirmationPopupVisible = true;
+  }
+
+  confirmCancelSubscription() {
+    this.isCancelling = true;
+    
+    console.log('Attempting to cancel subscription with ID:', this.id);
+    
+    // First, try the standard DELETE approach
+    this.tryDeleteEndpoints();
+  }
+
+  private tryDeleteEndpoints() {
+    // Try different endpoint formats - first try with query parameter
+    this.subscriptionsService.delete(`Subscriptions/Delete?id=${this.id}`).subscribe({
+      next: (response: any) => {
+        this.isCancelling = false;
+        console.log('Delete response:', response);
+        if (response.succeeded) {
+          notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancelled_successfully'), 'success', 2000);
+          this.cancelConfirmationPopupVisible = false;
+          // Navigate back to subscriptions list
+          this.router.navigate(['/subscriptions']);
+        } else {
+          notify(response.message || this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+        }
+      },
+      error: (err) => {
+        this.isCancelling = false;
+        console.error('Error cancelling subscription:', err);
+        console.error('Error status:', err.status);
+        console.error('Error status text:', err.statusText);
+        
+        // Log the full error details for debugging
+        if (err.error) {
+          console.error('Error details:', err.error);
+        }
+        
+        // If first attempt fails, try alternative endpoint formats
+        if (err.status === 400) {
+          console.log('Trying alternative endpoint formats...');
+          
+          // Try different endpoint patterns
+          const endpoints = [
+            `Subscriptions/Delete/${this.id}`,
+            `Subscriptions/${this.id}`,
+            `Subscription/Delete?id=${this.id}`,
+            `Subscription/${this.id}`
+          ];
+          
+          let attemptCount = 0;
+          const tryNextEndpoint = () => {
+            if (attemptCount >= endpoints.length) {
+              this.isCancelling = false;
+              console.error('All endpoint attempts failed');
+              notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+              return;
+            }
+            
+            const endpoint = endpoints[attemptCount];
+            console.log(`Trying endpoint: ${endpoint}`);
+            
+            this.subscriptionsService.delete(endpoint).subscribe({
+              next: (response2: any) => {
+                this.isCancelling = false;
+                console.log('Alternative endpoint response:', response2);
+                if (response2.succeeded) {
+                  notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancelled_successfully'), 'success', 2000);
+                  this.cancelConfirmationPopupVisible = false;
+                  this.router.navigate(['/subscriptions']);
+                } else {
+                  notify(response2.message || this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+                }
+              },
+              error: (err2) => {
+                console.error(`Endpoint ${endpoint} failed:`, err2);
+                attemptCount++;
+                tryNextEndpoint();
+              }
+            });
+          };
+          
+          tryNextEndpoint();
+        } else {
+          // If DELETE fails, try POST approach
+          console.log('DELETE failed, trying POST approach...');
+          this.tryPostEndpoints();
+        }
+      }
+    });
+  }
+
+  private tryPostEndpoints() {
+    // Some APIs prefer POST for deletion with a specific action
+    const postData: any = { id: this.id };
+    
+    const postEndpoints = [
+      'Subscriptions/Delete',
+      'Subscriptions/Cancel',
+      'Subscription/Delete',
+      'Subscription/Cancel'
+    ];
+    
+    let attemptCount = 0;
+    const tryNextPostEndpoint = () => {
+      if (attemptCount >= postEndpoints.length) {
+        this.isCancelling = false;
+        console.error('All POST endpoint attempts failed');
+        notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+        return;
+      }
+      
+      const endpoint = postEndpoints[attemptCount];
+      console.log(`Trying POST endpoint: ${endpoint}`);
+      
+      this.subscriptionsService.postAction(endpoint, postData).subscribe({
+        next: (response: any) => {
+          this.isCancelling = false;
+          console.log('POST endpoint response:', response);
+          if (response.succeeded) {
+            notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancelled_successfully'), 'success', 2000);
+            this.cancelConfirmationPopupVisible = false;
+            this.router.navigate(['/subscriptions']);
+          } else {
+            notify(response.message || this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+          }
+        },
+        error: (err) => {
+          console.error(`POST endpoint ${endpoint} failed:`, err);
+          attemptCount++;
+          tryNextPostEndpoint();
+        }
+      });
+    };
+    
+    tryNextPostEndpoint();
   }
 
 }

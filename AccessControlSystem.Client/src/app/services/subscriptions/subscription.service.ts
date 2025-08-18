@@ -22,4 +22,9 @@ export class SubscriptionService extends BaseService<Subscription>{
   upgradeSubscription(endpoint: string, data: any): Observable<any> {
     return this.http.patch(`${this.baseUrl}/${endpoint}`, data);
   }
+
+  // Generic POST for actions that are not full Subscription payloads (e.g., cancel/delete by id)
+  postAction(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${endpoint}`, data);
+  }
 }

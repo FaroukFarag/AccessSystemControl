@@ -53,7 +53,9 @@
     "email": "Email",
     "date": "Date",
     "status": "Status",
-    "subscription":"Subscription"
+    "subscription":"Subscription",
+    "yes": "Yes",
+    "no": "No"
   },
   "user": {
     "profile": "Profile",
@@ -167,7 +169,10 @@
       "start_date_required": "Start date is required",
       "end_date_required": "End date is required",
       "upgrading": "Upgrading...",
-      "submit": "Submit"
+      "submit": "Submit",
+      "cancel_confirmation_message": "Are you sure you want to cancel this subscription? This action cannot be undone.",
+      "subscription_cancelled_successfully": "Subscription cancelled successfully",
+      "subscription_cancel_error": "Error cancelling subscription"
     }
   },
   "owners": {

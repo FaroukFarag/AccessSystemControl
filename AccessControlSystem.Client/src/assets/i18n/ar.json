@@ -53,7 +53,9 @@
     "email": "البريد الإلكتروني",
     "date": "التاريخ",
     "subscription":"الاشتراك",
-    "status": "الحالة"
+    "status": "الحالة",
+    "yes": "نعم",
+    "no": "لا"
   },
   "user": {
     "profile": "الملف الشخصي",
@@ -167,7 +169,10 @@
       "start_date_required": "تاريخ البدء مطلوب",
       "end_date_required": "تاريخ الانتهاء مطلوب",
       "upgrading": "جاري الترقية...",
-      "submit": "إرسال"
+      "submit": "إرسال",
+      "cancel_confirmation_message": "هل أنت متأكد من أنك تريد إلغاء هذا الاشتراك؟ لا يمكن التراجع عن هذا الإجراء.",
+      "subscription_cancelled_successfully": "تم إلغاء الاشتراك بنجاح",
+      "subscription_cancel_error": "خطأ في إلغاء الاشتراك"
     }
   },
   "owners": {

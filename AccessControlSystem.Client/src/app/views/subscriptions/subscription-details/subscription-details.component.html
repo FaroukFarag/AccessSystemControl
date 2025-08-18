@@ -26,7 +26,7 @@
         <strong>{{ 'subscriptions.subscription_details.end' | translate }}:</strong> {{ subscription?.endDate }}
       </div>
       <div class="actions">
-        <button class="cancel">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</button>
+        <button class="cancel" (click)="showCancelConfirmationPopup()">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</button>
         <button class="upgrade" (click)="showUpgradePopup()">{{ 'subscriptions.subscription_details.upgrade' | translate }}</button>
       </div>
     </div>
@@ -261,5 +261,35 @@
     </div>
   </dx-data-grid>
 </div>
+
+<!--CANCEL SUBSCRIPTION CONFIRMATION POPUP-->
+<dx-popup 
+  [width]="400" 
+  [height]="200" 
+  [showTitle]="true" 
+  [title]="'subscriptions.subscription_details.cancel_subscription' | translate" 
+  [dragEnabled]="true"
+  [hideOnOutsideClick]="true" 
+  [showCloseButton]="true" 
+  [(visible)]="cancelConfirmationPopupVisible">
+  
+  <div class="confirmation-content">
+    <p>{{ 'subscriptions.subscription_details.cancel_confirmation_message' | translate }}</p>
+    <div class="confirmation-buttons">
+      <dx-button 
+        [text]="'common.yes' | translate" 
+        type="danger" 
+        (onClick)="confirmCancelSubscription()"
+        [disabled]="isCancelling">
+      </dx-button>
+      <dx-button 
+        [text]="'common.no' | translate" 
+        type="default" 
+        (onClick)="cancelConfirmationPopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
 
 
