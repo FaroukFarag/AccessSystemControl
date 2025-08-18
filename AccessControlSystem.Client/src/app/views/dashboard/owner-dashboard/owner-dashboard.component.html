@@ -6,7 +6,8 @@
     </div>
 
     <div class="page-header">
-      <dx-button class="button-info me-1" text="{{ 'dashboard.manage_visitors' | translate }}" (onClick)="openManageVistorsPopup()">
+      <dx-button class="button-info me-1" text="{{ 'dashboard.manage_visitors' | translate }}"
+        (onClick)="openManageVistorsPopup()">
       </dx-button>
 
     </div>
@@ -16,7 +17,8 @@
   <div class="devices-container mb-5">
     <div class="devices-header">
       <div class="title">
-        <strong>{{ 'dashboard.owner_dashboard.devices_section' | translate }}</strong> <span class="count">({{ devicesList.length }})</span>
+        <strong>{{ 'dashboard.owner_dashboard.devices_section' | translate }}</strong> <span class="count">({{
+          devicesList.length }})</span>
       </div>
       <div class="devices-actions">
         <button class="view-all-btn" (click)="navigateToDevices()">
@@ -27,7 +29,7 @@
 
     <div class="section-slider">
       <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 mx-lg-3 mx-md-2 mx-sm-1 mb-3 device-card"
-           *ngFor="let device of devicesList">
+        *ngFor="let device of devicesList">
         <div class="card-header">
           <img [src]="device.imagePath" alt="Device Image" (click)="navigateToDevicePage(device.id)" />
           <span class="device-name" (click)="navigateToDevicePage(device.id)">{{device.name}}</span>
@@ -51,7 +53,7 @@
         </div>
       </div>
     </div>
-    
+
     <div *ngIf="devicesList?.length === 0" class="empty-state">
       {{ 'dashboard.owner_dashboard.no_devices_found' | translate }}
     </div>
@@ -62,19 +64,14 @@
     <div class="grid-header">
       <h5>{{ 'dashboard.owner_dashboard.visitors_details' | translate }}</h5>
     </div>
-    <dx-data-grid id="gridContainer"
-                  [dataSource]="vistorsDetails"
-                  [remoteOperations]="false"
-                  [allowColumnReordering]="true"
-                  [rowAlternationEnabled]="false"
-                  [showBorders]="false"
-                  [width]="'100%'">
+    <dx-data-grid id="gridContainer" [dataSource]="vistorsDetails" [remoteOperations]="false"
+      [allowColumnReordering]="true" [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
       <dxi-column dataField="name" caption="{{ 'common.name' | translate }}"></dxi-column>
       <dxi-column dataField="email" caption="{{ 'common.email' | translate }}"></dxi-column>
-      <dxi-column dataField="phone" caption="{{ 'owners.phone_number' | translate }}"></dxi-column>
+      <dxi-column dataField="mobile" caption="{{ 'owners.phone_number' | translate }}"></dxi-column>
       <dxi-column dataField="deviceAccess" caption="{{ 'devices.access_group' | translate }}"></dxi-column>
-      <dxi-column dataField="start" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
-      <dxi-column dataField="end" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
+      <dxi-column dataField="startDate" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
+      <dxi-column dataField="endDate" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
       <dxi-column type="buttons" name="settings" [width]="80">
         <dxi-button name="settings" icon="gear" [onClick]="onSettingsClick"></dxi-button>
       </dxi-column>
@@ -85,36 +82,28 @@
   </div>
 
   <!-- Pause Visit Confirmation Popup -->
-  <dx-popup [width]="400"
-            [height]="200"
-            [showTitle]="true"
-            [title]="'dashboard.owner_dashboard.pause_visit' | translate"
-            [dragEnabled]="true"
-            [hideOnOutsideClick]="true"
-            [showCloseButton]="true"
-            [(visible)]="pauseVisitPopupVisible">
+  <dx-popup [width]="400" [height]="200" [showTitle]="true"
+    [title]="'dashboard.owner_dashboard.pause_visit' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true"
+    [showCloseButton]="true" [(visible)]="pauseVisitPopupVisible">
     <div class="popup-content">
       <p>{{ 'dashboard.owner_dashboard.pause_visit_confirm' | translate }}</p>
       <div class="popup-actions">
-        <dx-button [text]="'dashboard.owner_dashboard.pause_visit' | translate" type="success" (onClick)="confirmPauseVisit()"></dx-button>
+        <dx-button [text]="'dashboard.owner_dashboard.pause_visit' | translate" type="success"
+          (onClick)="confirmPauseVisit()"></dx-button>
         <dx-button [text]="'common.back' | translate" type="default" (onClick)="closePausePopup()"></dx-button>
       </div>
     </div>
   </dx-popup>
 
   <!-- Cancel Visit Confirmation Popup -->
-  <dx-popup [width]="400"
-            [height]="200"
-            [showTitle]="true"
-            [title]="'dashboard.owner_dashboard.cancel_visit' | translate"
-            [dragEnabled]="true"
-            [hideOnOutsideClick]="true"
-            [showCloseButton]="true"
-            [(visible)]="cancelVisitPopupVisible">
+  <dx-popup [width]="400" [height]="200" [showTitle]="true"
+    [title]="'dashboard.owner_dashboard.cancel_visit' | translate" [dragEnabled]="true" [hideOnOutsideClick]="true"
+    [showCloseButton]="true" [(visible)]="cancelVisitPopupVisible">
     <div class="popup-content">
       <p>{{ 'dashboard.owner_dashboard.cancel_visit_confirm' | translate }}</p>
       <div class="popup-actions">
-        <dx-button [text]="'dashboard.owner_dashboard.cancel_visit' | translate" type="danger" (onClick)="confirmCancelVisit()"></dx-button>
+        <dx-button [text]="'dashboard.owner_dashboard.cancel_visit' | translate" type="danger"
+          (onClick)="confirmCancelVisit()"></dx-button>
         <dx-button [text]="'common.back' | translate" type="default" (onClick)="closeCancelPopup()"></dx-button>
       </div>
     </div>
@@ -128,13 +117,8 @@
         <button type="button" class="btn view-all me-2">{{ 'dashboard.view_all' | translate }}</button>
       </div>
     </div>
-    <dx-data-grid id="gridContainer"
-                  [dataSource]="devicesTraffic"
-                  [remoteOperations]="false"
-                  [allowColumnReordering]="true"
-                  [rowAlternationEnabled]="false"
-                  [showBorders]="false"
-                  [width]="'100%'">
+    <dx-data-grid id="gridContainer" [dataSource]="devicesTraffic" [remoteOperations]="false"
+      [allowColumnReordering]="true" [rowAlternationEnabled]="false" [showBorders]="false" [width]="'100%'">
       <dxi-column dataField="name" caption="{{ 'dashboard.subscription_name' | translate }}"></dxi-column>
       <dxi-column dataField="start" caption="{{ 'dashboard.start_date' | translate }}"></dxi-column>
       <dxi-column dataField="end" caption="{{ 'dashboard.end_date' | translate }}"></dxi-column>
@@ -142,63 +126,51 @@
     </dx-data-grid>
   </div>
 
-     <!--Manage Vistors POPUP-->
-   <dx-popup [width]="700"
-             [height]="600"
-             [showTitle]="true"
-             [title]="'dashboard.manage_visitors' | translate"
-             [dragEnabled]="true"
-             [hideOnOutsideClick]="false"
-             [showCloseButton]="true"
-             [(visible)]="this.manageVistors_popupVisible">
-     <dx-form #subscriptionFormRef
-              [formData]="formModel"
-              [colCount]="1"
-              [labelLocation]="'top'">
+  <!--Manage Vistors POPUP-->
+  <dx-popup [width]="700" [height]="600" [showTitle]="true" [title]="'dashboard.manage_visitors' | translate"
+    [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true"
+    [(visible)]="this.manageVistors_popupVisible">
+    <dx-form #subscriptionFormRef [formData]="formModel" [colCount]="1" [labelLocation]="'top'">
 
-       <dxi-item dataField="name" [editorType]="'dxTextBox'" [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
+      <dxi-item dataField="name" [editorType]="'dxTextBox'"
+        [label]="{ text: 'dashboard.owner_dashboard.visitor_name' | translate }"></dxi-item>
 
-       <dxi-item dataField="mobile" [editorType]="'dxTextBox'" [label]="{ text: 'owners.phone_number' | translate }"></dxi-item>
+      <dxi-item dataField="mobile" [editorType]="'dxTextBox'"
+        [label]="{ text: 'owners.phone_number' | translate }"></dxi-item>
 
-       <dxi-item dataField="email" [editorType]="'dxTextBox'" [label]="{ text: 'common.email' | translate }"></dxi-item>
+      <dxi-item dataField="email" [editorType]="'dxTextBox'" [label]="{ text: 'common.email' | translate }"></dxi-item>
 
-       <dxi-item dataField="siteId" [editorType]="'dxNumberBox'" [label]="{ text: 'dashboard.owner_dashboard.site_id' | translate }"></dxi-item>
+      <dxi-item dataField="siteId" editorType="dxSelectBox" [editorOptions]="{
+         dataSource: sites,
+         placeholder: 'dashboard.owner_dashboard.site_id' | translate,
+         valueExpr: 'id',
+         displayExpr: 'name'
+       }" [label]="{ text: 'dashboard.owner_dashboard.site_id' | translate }"></dxi-item>
 
-       <dxi-item dataField="accessGroupIds"
-                 [editorType]="'dxTagBox'"
-                 [editorOptions]="{
+      <dxi-item dataField="accessGroupIds" [editorType]="'dxTagBox'" [editorOptions]="{
                    dataSource: accessGroups,
                    displayExpr: 'name',
                    valueExpr: 'id',
                    placeholder: 'Select access groups'
-                 }"
-                 [label]="{ text: 'devices.access_group' | translate }"></dxi-item>
+                 }" [label]="{ text: 'devices.access_group' | translate }"></dxi-item>
 
-       <dxi-item itemType="group" [colCount]="2">
-         <dxi-item dataField="startDate"
-                   [editorType]="'dxDateBox'"
-                   [editorOptions]="{ type: 'datetime' }"
-                   [label]="{ text: 'dashboard.start_date' | translate }"></dxi-item>
+      <dxi-item itemType="group" [colCount]="2">
+        <dxi-item dataField="startDate" [editorType]="'dxDateBox'" [editorOptions]="{ type: 'datetime' }"
+          [label]="{ text: 'dashboard.start_date' | translate }"></dxi-item>
 
-         <dxi-item dataField="endDate"
-                   [editorType]="'dxDateBox'"
-                   [editorOptions]="{ type: 'datetime' }"
-                   [label]="{ text: 'dashboard.end_date' | translate }"></dxi-item>
-       </dxi-item>
+        <dxi-item dataField="endDate" [editorType]="'dxDateBox'" [editorOptions]="{ type: 'datetime' }"
+          [label]="{ text: 'dashboard.end_date' | translate }"></dxi-item>
+      </dxi-item>
 
-       <dxi-item dataField="notes"
-                 [editorType]="'dxTextArea'"
-                 [editorOptions]="{ height: 80 }"
-                 [label]="{ text: 'dashboard.owner_dashboard.notes' | translate }"></dxi-item>
+      <dxi-item dataField="notes" [editorType]="'dxTextArea'" [editorOptions]="{ height: 80 }"
+        [label]="{ text: 'dashboard.owner_dashboard.notes' | translate }"></dxi-item>
 
-       <dxi-item itemType="button">
-         <dx-button [text]="'devices.add_device' | translate" 
-                   (onClick)="submitVistor()"
-                   [width]="'100%'"
-                   type="success"></dx-button>
-       </dxi-item>
+      <dxi-item itemType="button">
+        <dx-button [text]="'devices.add_device' | translate" (onClick)="submitVistor()" [width]="'100%'"
+          type="success"></dx-button>
+      </dxi-item>
 
-     </dx-form>
+    </dx-form>
 
-   </dx-popup>
+  </dx-popup>
 </div>

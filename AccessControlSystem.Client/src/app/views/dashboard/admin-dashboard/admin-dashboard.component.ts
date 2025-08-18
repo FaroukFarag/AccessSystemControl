@@ -237,9 +237,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   }
 
   onOrderByChange(e: any): void {
-    debugger
-      this.getAllSubscriptions(e.target.value);
-    }
+    this.getAllSubscriptions(e.target.value);
+  }
 
   onImageChange(e: any) {
     const file = e.value[0];
@@ -284,7 +283,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
     const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
     this.subscriptionData.SubscriptionTypeName = selectedType?.name || '';
-  
+
     const formData = new FormData();
 
     formData.append('CustomerName', this.subscriptionData.CustomerName);
@@ -310,9 +309,9 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
       next: (response: any) => {
-        if(response.succeeded)
+        if (response.succeeded)
           notify(this.languageService.translate('messages.success.subscription_created'), 'success', 1500);
-        
+
         else
           notify(response.message, 'error', 2000);
 

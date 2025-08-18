@@ -20,6 +20,7 @@ import { DeviceService } from '../../../services/devices/device.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { BaseService } from '../../../services/shared/base-service.service';
+import { LanguageService } from '../../../services/language/language.service';
 
 @Component({
   selector: 'app-owner-dashboard',
@@ -68,49 +69,8 @@ export class OwnerDashboardComponent implements OnInit {
     { name: 'Device name', status: 'Active', mac: '50:B0:0D:63:...', image: 'device.png' },
     { name: 'Device name', status: 'Active', mac: '50:B0:0D:63:...', image: 'device.png' }
   ];
-  vistorsDetails = [
-    {
-      id: 1,
-      name: 'Device name',
-      email: 'vistor@gmail.com',
-      phone: '01127257820',
-      deviceAccess: 'Group 1',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-    },{
-      id: 2,
-      name: 'Device name',
-      email: 'vistor@gmail.com',
-      phone: '01127257820',
-      deviceAccess: 'Group 1',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-    },{
-      id: 3,
-      name: 'Device name',
-      email: 'vistor@gmail.com',
-      phone: '01127257820',
-      deviceAccess: 'Group 1',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-    },{
-      id: 4,
-      name: 'Device name',
-      email: 'vistor@gmail.com',
-      phone: '01127257820',
-      deviceAccess: 'Group 1',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-    },{
-      id: 5,
-      name: 'Device name',
-      email: 'vistor@gmail.com',
-      phone: '01127257820',
-      deviceAccess: 'Group 1',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-    },
-  ];
+  sites: any[] = [];
+  vistorsDetails: any[] = [];
   devicesTraffic = [
     {
       name: 'Device name',
@@ -154,6 +114,7 @@ export class OwnerDashboardComponent implements OnInit {
     private accessGroupService: AccessGroupService,
     private deviceService: DeviceService,
     private router: Router,
+    private languageService: LanguageService,
     private baseService: BaseService<any>
 ) { }
 
@@ -173,6 +134,17 @@ export class OwnerDashboardComponent implements OnInit {
     this.getAllDevices();
     this.getVisitorsDetails();
     this.getAllAccessGroups();
+    this.getAllSites();
+  }
+
+  getAllSites() {
+    this.accessGroupService.getAll('AirfobSites/GetAll').subscribe((data: any) => {
+      if (data.succeeded)
+        this.sites = data.resultData.sites;
+
+      else
+        notify(this.languageService.translate('messages.error.getting_sites'), 'error', 2000);
+    })
   }
 
   openManageVistorsPopup() {

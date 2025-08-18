@@ -221,6 +221,8 @@ export class SubAdminDashboardComponent {
 
 
   ];
+  fileUploaderKey = 0;
+
   constructor(private router : Router,
     private deviceService: DeviceService,
     private accessGroupService: AccessGroupService,
@@ -343,20 +345,31 @@ export class SubAdminDashboardComponent {
       return;
     }
 
-    // Create JSON payload with subscription ID in request body
-    const devicePayload = {
-      imageFile: this.deviceData.deviceImageFile || null,
-      imagePath: this.deviceData.deviceImageUrl || '',
-      name: this.deviceData.deviceName,
-      deviceType: this.deviceData.deviceType,
-      serial: this.deviceData.serial,
-      siteId: this.deviceData.siteId || 0,
-      macAddress: this.deviceData.macAddress,
-      active: true,
-      subscriptionId: +localStorage.getItem('subscriptionId')!
-    };
+    // Create FormData payload
+    const formData = new FormData();
 
-    this.deviceService.create('Devices/Create', devicePayload as any).subscribe({
+    // Append simple fields
+    formData.append('Name', this.deviceData.deviceName);
+    formData.append('deviceType', this.deviceData.deviceType);
+    formData.append('Serial', this.deviceData.serial);
+    formData.append('siteId', (this.deviceData.siteId || 0).toString());
+    formData.append('MacAddress', this.deviceData.macAddress);
+    formData.append('active', 'true'); // Convert boolean to string
+    formData.append('subscriptionId', localStorage.getItem('subscriptionId')!);
+
+    // Handle image file if present
+    if (this.deviceData.deviceImageFile) {
+      formData.append('imageFile', this.deviceData.deviceImageFile);
+    }
+
+    // Append imagePath if it exists
+    if (this.deviceData.deviceImageUrl) {
+      formData.append('imagePath', this.deviceData.deviceImageUrl);
+    }
+
+    // Now use this formData in your HTTP request
+
+    this.deviceService.create('Devices/Create', formData as any).subscribe({
       next: (response: any) => {
         if (response.succeeded) {
           notify(this.languageService.translate('messages.success.device_created'), 'success', 1500);
@@ -364,7 +377,7 @@ export class SubAdminDashboardComponent {
 
           this.getAllDevices();
         } else {
-          notify(response.errorMessage, 'error', 2000);
+          notify(response.message, 'error', 2000);
         }
       },
       error: (err) => {
