@@ -18,6 +18,7 @@ public class SubscriptionDto : BaseImageModelDto<int>
     public int UsedDevices { get; set; }
     public int UsedCards { get; set; }
     public decimal PaymentPerMonth { get; set; }
+    public decimal TotalPayment { get; set; }
     public DateOnly StartDate { get; set; }
 
     public DateOnly EndDate

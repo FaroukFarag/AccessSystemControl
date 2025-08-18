@@ -21,7 +21,9 @@ public class SubscriptionProfile : Profile
             .ForMember(des => des.UsedDevices, opt => opt
                 .MapFrom(src => src.Devices.Count()))
             .ForMember(des => des.UsedCards, opt => opt
-                .MapFrom(src => src.Cards.Count()));
+                .MapFrom(src => src.Cards.Count()))
+            .ForMember(des => des.TotalPayment, opt => opt
+                .MapFrom(src => (src.EndDate.Month - src.StartDate.Month) * src.PaymentPerMonth));
 
         CreateMap<SubscriptionDto, Subscription>()
             .ForMember(des => des.ImagePath, opt => opt

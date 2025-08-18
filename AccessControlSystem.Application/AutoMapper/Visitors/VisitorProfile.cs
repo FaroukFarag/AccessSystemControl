@@ -14,8 +14,8 @@ public class VisitorProfile : Profile
         CreateMap<CreateVisitorDto, Visitor>().ForMember(
             des => des.AccessGroups, opt => opt.Ignore());
 
-        CreateMap<VisitorDto, InviteUserRequest>()
+        CreateMap<CreateVisitorDto, InviteUserRequest>()
             .ForMember(des => des.AccessLevelIds, opt => opt
-                .MapFrom(src => src.AccessGroups.Select(ag => ag.AirfobAccessLevelId)));
+                .MapFrom(src => src.AccessGroupIds));
     }
 }

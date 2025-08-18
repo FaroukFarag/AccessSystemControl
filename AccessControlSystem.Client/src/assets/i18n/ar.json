@@ -51,6 +51,7 @@
     "info": "معلومات",
     "name": "الاسم",
     "date": "التاريخ",
+    "subscription":"الاشتراك",
     "status": "الحالة"
   },
   "user": {
@@ -127,7 +128,6 @@
   "subscriptions": {
     "title": "الاشتراكات",
     "add_new": "إضافة اشتراك جديد",
-    "subscription_details": "تفاصيل الاشتراك",
     "subscription_name": "اسم الاشتراك",
     "customer_name": "اسم العميل",
     "subscription_type": "نوع الاشتراك",
@@ -394,19 +394,6 @@
     "units": "الوحدات",
     "cards": "البطاقات",
     "access_groups": "مجموعات الوصول"
-  },
-  "access_groups": {
-    "title": "مجموعات الوصول",
-    "review_details": "مراجعة جميع تفاصيل ومعلومات مجموعات الوصول",
-    "add_new": "إضافة مجموعة وصول جديدة",
-    "name_required": "اسم مجموعة الوصول مطلوب",
-    "site_required": "الموقع مطلوب",
-    "schedule_required": "الجدول الزمني مطلوب",
-    "devices_required": "يجب اختيار جهاز واحد على الأقل",
-    "select_devices": "اختر الأجهزة",
-    "add_device": "إضافة جهاز",
-    "access_group_name": "اسم مجموعة الوصول",
-    "devices": "الأجهزة"
   },
   "forms": {
     "customer_name": "اسم العميل",

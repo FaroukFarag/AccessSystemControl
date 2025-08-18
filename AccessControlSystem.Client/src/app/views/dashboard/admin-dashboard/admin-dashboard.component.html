@@ -176,11 +176,11 @@
         </div>
         <div class="section-actions">
           <div class="sort-dropdown">
-            <select class="sort-select">
+            <select class="sort-select" (change)="onOrderByChange($event)">
               <option>{{ 'common.sort_by' | translate }}</option>
-              <option>{{ 'common.name' | translate }}</option>
-              <option>{{ 'common.date' | translate }}</option>
-              <option>{{ 'common.status' | translate }}</option>
+              <option value="name">{{ 'common.name' | translate }}</option>
+              <option value="subscription">{{ 'common.subscription' | translate }}</option>
+              <option value="recent">{{ 'common.date' | translate }}</option>
             </select>
           </div>
           <button class="view-all-btn" (click)="navigateToSubscriptions()">{{ 'common.view_all' | translate }}</button>

@@ -236,6 +236,11 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustUrl(image);
   }
 
+  onOrderByChange(e: any): void {
+    debugger
+      this.getAllSubscriptions(e.target.value);
+    }
+
   onImageChange(e: any) {
     const file = e.value[0];
     if (file) {

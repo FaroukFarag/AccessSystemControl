@@ -51,7 +51,8 @@
     "info": "Information",
     "name": "Name",
     "date": "Date",
-    "status": "Status"
+    "status": "Status",
+    "subscription":"Subscription"
   },
   "user": {
     "profile": "Profile",
@@ -127,7 +128,6 @@
   "subscriptions": {
     "title": "Subscriptions",
     "add_new": "Add New Subscription",
-    "subscription_details": "Subscription Details",
     "subscription_name": "Subscription Name",
     "customer_name": "Customer Name",
     "subscription_type": "Subscription Type",
@@ -394,19 +394,6 @@
     "units": "Units",
     "cards": "Cards",
     "access_groups": "Access Groups"
-  },
-  "access_groups": {
-    "title": "Access Groups",
-    "review_details": "Review all Access groups details and information",
-    "add_new": "Add New Access Group",
-    "name_required": "Access Group Name is required",
-    "site_required": "Site is required",
-    "schedule_required": "Schedule is required",
-    "devices_required": "At least one device is required",
-    "select_devices": "Select devices",
-    "add_device": "Add Device",
-    "access_group_name": "Access Group Name",
-    "devices": "Devices"
   },
   "forms": {
     "customer_name": "Customer name",

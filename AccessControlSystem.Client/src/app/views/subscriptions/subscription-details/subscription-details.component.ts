@@ -117,8 +117,6 @@ export class SubscriptionDetailsComponent implements OnInit {
       'name': 'Wireless Door Locks'
     },
   ];
-
-
   dataSource: any[] = [
 
     {
@@ -217,6 +215,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
 
   ];
+
   constructor(
     private route: ActivatedRoute,
     private subscriptionsService: SubscriptionService,
@@ -256,13 +255,13 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.getAllSites();
 
     // Load subscription data using getAll and filter client-side
-    this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe({
+    this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe({
       next: (data: any) => {
         if (data && data.resultData) {
-          const subscription = data.resultData.find((sub: any) => sub.id === this.id);
+          const subscription = data.resultData;
           if (subscription) {
             this.subscription = subscription;
-            this.calculateTotalPayment();
+           
             // Load devices for this subscription after subscription is loaded
             this.getAllDevices();
           } else {
@@ -289,19 +288,6 @@ export class SubscriptionDetailsComponent implements OnInit {
       else
         notify(this.languageService.translate('validation.sites_error'), 'error', 2000);
     })
-  }
-
-
-  totalPayment: number = 0;
-
-  calculateTotalPayment() {
-    const payment = Number(this.subscription?.paymentPerMonth);
-    const months = Number(this.subscription?.monthNumber);
-    if (!isNaN(payment) && !isNaN(months)) {
-      this.totalPayment = payment * months;
-    } else {
-      this.totalPayment = 0;
-    }
   }
 
   getProgress(used: number, total: number): number {
@@ -448,12 +434,11 @@ export class SubscriptionDetailsComponent implements OnInit {
           this.upgradePopupVisible = false;
           
           // Refresh subscription data using getAll and filter
-          this.subscriptionsService.getAll('Subscriptions/GetAll').subscribe((data: any) => {
+          this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe((data: any) => {
             if (data && data.resultData) {
-              const subscription = data.resultData.find((sub: any) => sub.id === this.id);
+              const subscription = data.resultData;
               if (subscription) {
                 this.subscription = subscription;
-                this.calculateTotalPayment();
               }
             }
           });
