@@ -14,11 +14,17 @@
 
 <!-- ADD UNIT POPUP-->
 <dx-popup [width]="600" [height]="550" [showTitle]="true" [title]="'actions.add_new_unit' | translate" [dragEnabled]="true"
-  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
+  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible" (onHiding)="onPopupHidden()">
   <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
-          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+        <dx-file-uploader 
+          [value]="fileUploaderValue"
+          [selectButtonText]="'common.choose_file' | translate" 
+          [labelText]="''" 
+          accept="image/*" 
+          uploadMode="useForm"
+          (onValueChanged)="onImageChange($event)">
+        </dx-file-uploader>
 
         <img *ngIf="unitsData.unitImageUrl" [src]="unitsData.unitImageUrl" alt="Device Preview" class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">

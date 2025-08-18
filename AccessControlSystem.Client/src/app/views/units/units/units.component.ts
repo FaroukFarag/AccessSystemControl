@@ -95,6 +95,7 @@ export class UnitsComponent implements OnInit {
     { id: 4, name: 'Group D' },
   ];
   accessGroups: AccessGroup[] = [];
+  fileUploaderValue: any[] = [];
 
   constructor(
     private router: Router,
@@ -165,6 +166,10 @@ export class UnitsComponent implements OnInit {
 
   showAddUnitPopup() {
     this.subscriptionId = localStorage.getItem('subscriptionId');
+    
+    // Reset file uploader value to force re-render
+    this.fileUploaderValue = [];
+    
     this.unitsData = {
       unitImageFile: null,
       unitImageUrl: '',
@@ -182,6 +187,27 @@ export class UnitsComponent implements OnInit {
     };
     this.imageValidationError = '';
     this.popupVisible = true;
+  }
+
+  onPopupHidden() {
+    // Reset unit data when popup is closed
+    this.unitsData = {
+      unitImageFile: null,
+      unitImageUrl: '',
+      Name: '',
+      Number: '',
+      Area: '',
+      CardNumber: '',
+      AccessGroups: [],
+      ImageEncode: '',
+      ImageFile: null,
+      ImagePath: '',
+      Id: '0',
+      UserId: '1',
+      SubscriptionId: this.subscriptionId
+    };
+    this.imageValidationError = '';
+    this.fileUploaderValue = [];
   }
 
   navigateToDetailsPage(unitId: number) {

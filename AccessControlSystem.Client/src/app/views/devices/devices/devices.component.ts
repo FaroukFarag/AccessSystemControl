@@ -67,7 +67,7 @@ export class DevicesComponent implements OnInit {
     siteId: null,
     macAddress: ''
   };
-  fileUploaderKey = 0;
+  fileUploaderValue: any[] = [];
   macAddressPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
   deviceTypeEditorOptions: any;
   deviceTypes = [
@@ -171,6 +171,9 @@ export class DevicesComponent implements OnInit {
   }
 
   showAddDevicePopup() {
+    // Reset file uploader value to force re-render
+    this.fileUploaderValue = [];
+    
     // Reset device data first
     this.deviceData = {
       deviceImageFile: null,
@@ -201,6 +204,7 @@ export class DevicesComponent implements OnInit {
       macAddress: ''
     };
     this.imageValidationError = '';
+    this.fileUploaderValue = [];
   }
 
   navigateToDetailsPage(deviceId: string) {

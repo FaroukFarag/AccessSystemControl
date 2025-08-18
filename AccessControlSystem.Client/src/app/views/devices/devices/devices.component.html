@@ -155,6 +155,7 @@
   <!-- File Upload Section -->
   <div class="image-upload-wrapper" style="margin-bottom: 20px;">
     <dx-file-uploader 
+      [value]="fileUploaderValue"
       [selectButtonText]="'devices.choose_file' | translate" 
       [labelText]="''" 
       accept="image/*" 

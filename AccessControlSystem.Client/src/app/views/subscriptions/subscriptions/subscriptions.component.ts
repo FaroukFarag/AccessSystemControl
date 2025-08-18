@@ -51,6 +51,7 @@ export class SubscriptionsComponent {
   imageValidationError: string = '';
   MonthNumber: number = 1;
   direction: 'ltr' | 'rtl' = 'ltr';
+  fileUploaderValue: any[] = [];
 
   subscriptionData = {
     SubscriptionImageFile: null,
@@ -131,6 +132,9 @@ export class SubscriptionsComponent {
   }
 
   showAddSubscriptionPopup() {
+    // Reset file uploader value to force re-render
+    this.fileUploaderValue = [];
+    
     this.subscriptionData = {
       SubscriptionImageFile: null,
       SubscriptionImageUrl: '',
@@ -157,6 +161,34 @@ export class SubscriptionsComponent {
 
     this.imageValidationError = '';
     this.popupVisible = true;
+  }
+
+  onPopupHidden() {
+    // Reset subscription data when popup is closed
+    this.subscriptionData = {
+      SubscriptionImageFile: null,
+      SubscriptionImageUrl: '',
+      CustomerName: '',
+      SubscriptionType: '',
+      SubscriptionTypeName: '',
+      AdminNumber: '',
+      DeviceNumber: '',
+      CardNumber: '',
+      MonthNumber: '',
+      UsedAdmins: 0,
+      UsedDevices: 0,
+      UsedCards: 0,
+      PaymentPerMonth: '',
+      StartDate: new Date(),
+      EndDate: new Date(),
+      Note: '',
+      RenewalInfo: '',
+      Devices: [],
+      ImagePath: '',
+      Id: 0
+    };
+    this.imageValidationError = '';
+    this.fileUploaderValue = [];
   }
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {

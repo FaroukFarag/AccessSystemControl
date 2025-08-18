@@ -54,6 +54,8 @@ export class SubAdminDashboardComponent {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   devicePopupVisible: boolean = false;
   unitPopupVisible: boolean = false;
+  deviceFileUploaderVisible: boolean = true;
+  unitFileUploaderVisible: boolean = true;
   devicesList: any;
   imageValidationError: string = '';
   devicesCount!: number;
@@ -221,7 +223,6 @@ export class SubAdminDashboardComponent {
 
 
   ];
-  fileUploaderKey = 0;
 
   constructor(private router : Router,
     private deviceService: DeviceService,
@@ -303,6 +304,12 @@ export class SubAdminDashboardComponent {
 
   showAddDevicePopup() {
     this.devicePopupVisible = true;
+    
+    // Force file uploader to re-render
+    this.deviceFileUploaderVisible = false;
+    setTimeout(() => {
+      this.deviceFileUploaderVisible = true;
+    }, 10);
 
     this.deviceData = {
       deviceImageFile: null,
@@ -313,6 +320,26 @@ export class SubAdminDashboardComponent {
       siteId: null,
       macAddress: ''
     };
+    
+    // Clear any previous validation errors
+    this.imageValidationError = '';
+  }
+
+  onDevicePopupHidden() {
+    // Reset device data when popup is closed
+    this.deviceData = {
+      deviceImageFile: null,
+      deviceImageUrl: '',
+      deviceName: '',
+      deviceType: '',
+      serial: '',
+      siteId: null,
+      macAddress: ''
+    };
+    this.imageValidationError = '';
+    
+    // Reset file uploader visibility
+    this.deviceFileUploaderVisible = false;
   }
 
 
@@ -481,6 +508,13 @@ export class SubAdminDashboardComponent {
 
   showAddUnitPopup() {
     this.subscriptionId = localStorage.getItem('subscriptionId');
+    
+    // Force file uploader to re-render
+    this.unitFileUploaderVisible = false;
+    setTimeout(() => {
+      this.unitFileUploaderVisible = true;
+    }, 10);
+    
     this.unitsData = {
       unitImageFile: null,
       unitImageUrl: '',
@@ -498,6 +532,29 @@ export class SubAdminDashboardComponent {
     };
     this.imageValidationError = '';
     this.unitPopupVisible = true;
+  }
+
+  onUnitPopupHidden() {
+    // Reset unit data when popup is closed
+    this.unitsData = {
+      unitImageFile: null,
+      unitImageUrl: '',
+      Name: '',
+      Number: '',
+      Area: '',
+      CardNumber: '',
+      AccessGroups: [],
+      ImageEncode: '',
+      ImageFile: null,
+      ImagePath: '',
+      Id: '0',
+      UserId: '1',
+      SubscriptionId: this.subscriptionId
+    };
+    this.imageValidationError = '';
+    
+    // Reset file uploader visibility
+    this.unitFileUploaderVisible = false;
   }
 
   navigateToDetailsPage(unitId: number) {

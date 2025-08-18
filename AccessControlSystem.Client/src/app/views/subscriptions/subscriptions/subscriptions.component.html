@@ -14,12 +14,18 @@
 
 <!-- ADD Subscription POPUP-->
 <dx-popup [width]="600" [height]="550" [showTitle]="true" [title]="'subscriptions.add_new' | translate" [dragEnabled]="true"
-  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible">
+  [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="popupVisible" (onHiding)="onPopupHidden()">
   <dx-form #subscriptionFormRef [formData]="subscriptionData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-                 <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
-                           (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+                 <dx-file-uploader 
+                   [value]="fileUploaderValue"
+                   [selectButtonText]="'common.choose_file' | translate" 
+                   [labelText]="''" 
+                   accept="image/*" 
+                   uploadMode="useForm"
+                   (onValueChanged)="onImageChange($event)">
+                 </dx-file-uploader>
         <img *ngIf="subscriptionData.SubscriptionImageUrl" [src]="subscriptionData.SubscriptionImageUrl"
              alt="Device Preview" class="thumbnail" />
         <div *ngIf="imageValidationError" class="validation-message">
@@ -71,7 +77,7 @@
      </dxi-item>
          <dxi-item dataField="MonthNumber"
                editorType="dxNumberBox"
-               [editorOptions]="{ placeholder: 'subscriptions.enter_months' | translate, min: 1 }">
+               [editorOptions]="{ placeholder: 'Enter number of months', min: 1 }">
        <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
        <dxo-label [visible]="false"></dxo-label>
      </dxi-item>
@@ -81,7 +87,7 @@
       <dxo-label [visible]="false"> </dxo-label>
     </dxi-item>-->
     <dxi-item dataField="Note" editorType="dxTextArea" [editorOptions]="{
-      placeholder: 'forms.note' | translate,
+      placeholder: 'Note',
       height: '200px',
       maxLength: 500
     }">

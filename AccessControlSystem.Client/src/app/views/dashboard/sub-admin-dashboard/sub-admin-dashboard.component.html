@@ -348,12 +348,20 @@
 
 <!-- Create DEVICE POPUP-->
 <dx-popup [width]="600" [height]="500" [showTitle]="true" [title]="'actions.add_new_device' | translate" [dragEnabled]="true"
-          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="devicePopupVisible">
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="devicePopupVisible" (onHiding)="onDevicePopupHidden()">
   <dx-form [formData]="deviceData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item itemType="simple">
       <div class="image-upload-wrapper">
-        <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
-                          (onValueChanged)="onImageChange($event)"></dx-file-uploader>
+        <dx-file-uploader 
+          *ngIf="deviceFileUploaderVisible"
+          [selectButtonText]="'common.choose_file' | translate" 
+          [labelText]="''" 
+          accept="image/*" 
+          uploadMode="useForm"
+          [showFileList]="false"
+          [multiple]="false"
+          (onValueChanged)="onImageChange($event)">
+        </dx-file-uploader>
 
         <img *ngIf="deviceData.deviceImageUrl" [src]="deviceData.deviceImageUrl" alt="Device Preview"
              class="thumbnail" />
@@ -413,11 +421,19 @@
 </dx-popup>
 <!--Create UNIT POPUP-->
 <dx-popup [width]="600" [height]="550" [showTitle]="true" [title]="'actions.add_new_unit' | translate" [dragEnabled]="true"
-          [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="unitPopupVisible">
+          [hideOnOutsideClick]="false" [showCloseButton]="true" [(visible)]="unitPopupVisible" (onHiding)="onUnitPopupHidden()">
   <dxi-item itemType="simple">
     <div class="image-upload-wrapper">
-      <dx-file-uploader [selectButtonText]="'common.choose_file' | translate" [labelText]="''" accept="image/*" uploadMode="useForm"
-                        (onValueChanged)="onImageChangeUnits($event)"></dx-file-uploader>
+      <dx-file-uploader 
+        *ngIf="unitFileUploaderVisible"
+        [selectButtonText]="'common.choose_file' | translate" 
+        [labelText]="''" 
+        accept="image/*" 
+        uploadMode="useForm"
+        [showFileList]="false"
+        [multiple]="false"
+        (onValueChanged)="onImageChangeUnits($event)">
+      </dx-file-uploader>
 
       <img *ngIf="unitsData.unitImageUrl" [src]="unitsData.unitImageUrl" alt="Unit Preview" class="thumbnail" />
       <div *ngIf="imageValidationError" class="validation-message">
