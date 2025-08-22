@@ -123,8 +123,8 @@
       "notes": "Notes",
       "select_access_groups": "Select access groups",
       "add_visitor": "Add Visitor",
-      "pause_visit": "Pause Visit",
-      "cancel_visit": "Cancel Visit",
+      "pause_visit": "Pause",
+      "cancel_visit": "Cancel",
       "pause_visit_confirm": "Are you sure you want to pause this visit ?",
       "cancel_visit_confirm": "Are you sure you want to Cancel this visit ?",
       "visit_paused": "Visit paused successfully",
@@ -446,8 +446,8 @@
     "assign_owner": "Assign owner",
     "add_device": "Add Device",
     "cancel": "Cancel",
-    "pause_visit": "Pause Visit",
-    "cancel_visit": "Cancel Visit"
+    "pause_visit": "Pause",
+    "cancel_visit": "Cancel"
   },
   "sub_admin_dashboard": {
     "invoices": "Invoices",
