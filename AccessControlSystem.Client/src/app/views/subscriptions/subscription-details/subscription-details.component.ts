@@ -17,6 +17,7 @@ import {
   DxSelectBoxModule,
   DxTextAreaModule,
   DxDateBoxModule,
+  DxNumberBoxModule,
   DxFormModule,
   DxFileUploaderModule,
 } from 'devextreme-angular';
@@ -36,6 +37,7 @@ import { DeviceService } from '../../../services/devices/device.service';
     DxSelectBoxModule,
     DxTextAreaModule,
     DxDateBoxModule,
+    DxNumberBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
@@ -74,7 +76,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     id: 0,
     subscriptionType: 0,
     startDate: '',
-    endDate: ''
+    numberOfMonths: 1
   };
 
   isUpgrading: boolean = false;
@@ -400,7 +402,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       id: this.id,
       subscriptionType: 0,
       startDate: '',
-      endDate: ''
+      numberOfMonths: 1
     };
   }
 
@@ -414,18 +416,15 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.isUpgrading = true;
 
     const start = new Date(this.upgradeData.startDate);
-    const end = new Date(this.upgradeData.endDate);
 
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      notify('Invalid start or end date', 'error', 2000);
+    if (isNaN(start.getTime())) {
+      notify('Invalid start date', 'error', 2000);
       return;
     }
 
     const startFormatted = start.toISOString().split('T')[0];
-    const endFormatted = end.toISOString().split('T')[0];
 
     this.upgradeData.startDate = startFormatted;
-    this.upgradeData.endDate = endFormatted;
 
     this.subscriptionsService.upgradeSubscription('Subscriptions/UpgradeSubscription', this.upgradeData as any).subscribe({
       next: (response: any) => {
