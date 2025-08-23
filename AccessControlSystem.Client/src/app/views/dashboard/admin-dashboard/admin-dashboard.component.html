@@ -149,7 +149,7 @@
         <table class="devices-table">
           <thead>
             <tr>
-              <th>{{ 'dashboard.subscription_name' | translate }}</th>
+              <th>{{ 'dashboard.device_name' | translate }}</th>
               <th>{{ 'dashboard.start_date' | translate }}</th>
               <th>{{ 'dashboard.end_date' | translate }}</th>
               <th>{{ 'dashboard.time_remaining' | translate }}</th>
@@ -157,10 +157,10 @@
           </thead>
           <tbody>
             <tr *ngFor="let device of devices">
-              <td class="device-name">{{ device.name }}</td>
+              <td class="device-name">{{ device.deviceName }}</td>
               <td class="device-date">{{ device.startDate }}</td>
               <td class="device-date">{{ device.endDate }}</td>
-              <td class="device-remaining">{{ device.timeRemaining }}</td>
+              <td class="device-remaining">{{ device.remainingPeriod }}</td>
             </tr>
           </tbody>
         </table>

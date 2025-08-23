@@ -15,113 +15,16 @@ import notify from 'devextreme/ui/notify';
 })
 export class DeviceDetailsComponent implements OnInit {
   direction: 'ltr' | 'rtl' = 'ltr';
-  dataSource: any[] = [
-
-    {
-
-      "Traffic type": "Check In",
-
-      "Time": "12:00 PM",
-
-      "Date": new Date(2023, 9, 1), 
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5E",
-
-      "image": "path/to/image1.png" 
-
-    },
-
-    {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },   {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },   {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },   {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },   {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },   {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },
-
-
-  ];
-  deviceDetails: any = null; 
+  dataSource: any[] = [];
+  deviceDetails: any = null;
   deviceId: string = '';
-  
+
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private deviceService: DeviceService,
     private languageService: LanguageService
   ) { }
- 
+
 
   ngOnInit() {
     // Subscribe to direction changes
@@ -135,6 +38,8 @@ export class DeviceDetailsComponent implements OnInit {
         this.getDeviceDetails(this.deviceId);
       }
     });
+
+    this.getDevicesTraffic();
   }
 
 
@@ -152,5 +57,9 @@ export class DeviceDetailsComponent implements OnInit {
 
   }
 
-
+  getDevicesTraffic() {
+    this.deviceService.getAll('Devices/GetDevicesTraffic').subscribe((data: any) => {
+      this.dataSource = data.resultData;
+    })
+  }
 }

@@ -119,104 +119,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       'name': 'Wireless Door Locks'
     },
   ];
-  dataSource: any[] = [
-
-    {
-
-      "Traffic type": "Check In",
-
-      "Time": "12:00 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5E",
-
-      "image": "path/to/image1.png"
-
-    },
-
-    {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },
-
-
-  ];
+  dataSource!: any[];
 
   constructor(
     private route: ActivatedRoute,
@@ -255,6 +158,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     });
 
     this.getAllSites();
+    this.getDevicesTraffic();
 
     // Load subscription data using getAll and filter client-side
     this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe({
@@ -263,7 +167,7 @@ export class SubscriptionDetailsComponent implements OnInit {
           const subscription = data.resultData;
           if (subscription) {
             this.subscription = subscription;
-           
+
             // Load devices for this subscription after subscription is loaded
             this.getAllDevices();
           } else {
@@ -304,6 +208,15 @@ export class SubscriptionDetailsComponent implements OnInit {
           this.subscription.devices = subscriptionDevices;
         }
         this.devicesList = subscriptionDevices;
+      }
+      this.loaderService.hide(); // Hide loader when devices are loaded
+    })
+  }
+
+  getDevicesTraffic() {
+    this.deviceService.getAll(`Devices/GetDevicesTraffic`).subscribe((data: any) => {
+      if (data.succeeded) {
+        this.dataSource = data.resultData
       }
       this.loaderService.hide(); // Hide loader when devices are loaded
     })
@@ -372,7 +285,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
           this.getAllDevices();
         } else {
-           notify(response.message, 'error', 2000);
+          notify(response.message, 'error', 2000);
         }
       },
       error: (err) => {
@@ -434,7 +347,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         if (response.succeeded) {
           notify(this.languageService.translate('validation.subscription_updated'), 'success', 1500);
           this.upgradePopupVisible = false;
-          
+
           // Refresh subscription data using getAll and filter
           this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe((data: any) => {
             if (data && data.resultData) {
@@ -463,9 +376,9 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   confirmCancelSubscription() {
     this.isCancelling = true;
-    
+
     console.log('Attempting to cancel subscription with ID:', this.id);
-    
+
     // First, try the standard DELETE approach
     this.tryDeleteEndpoints();
   }
@@ -490,16 +403,16 @@ export class SubscriptionDetailsComponent implements OnInit {
         console.error('Error cancelling subscription:', err);
         console.error('Error status:', err.status);
         console.error('Error status text:', err.statusText);
-        
+
         // Log the full error details for debugging
         if (err.error) {
           console.error('Error details:', err.error);
         }
-        
+
         // If first attempt fails, try alternative endpoint formats
         if (err.status === 400) {
           console.log('Trying alternative endpoint formats...');
-          
+
           // Try different endpoint patterns
           const endpoints = [
             `Subscriptions/Delete/${this.id}`,
@@ -507,7 +420,7 @@ export class SubscriptionDetailsComponent implements OnInit {
             `Subscription/Delete?id=${this.id}`,
             `Subscription/${this.id}`
           ];
-          
+
           let attemptCount = 0;
           const tryNextEndpoint = () => {
             if (attemptCount >= endpoints.length) {
@@ -516,10 +429,10 @@ export class SubscriptionDetailsComponent implements OnInit {
               notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
               return;
             }
-            
+
             const endpoint = endpoints[attemptCount];
             console.log(`Trying endpoint: ${endpoint}`);
-            
+
             this.subscriptionsService.delete(endpoint).subscribe({
               next: (response2: any) => {
                 this.isCancelling = false;
@@ -539,7 +452,7 @@ export class SubscriptionDetailsComponent implements OnInit {
               }
             });
           };
-          
+
           tryNextEndpoint();
         } else {
           // If DELETE fails, try POST approach
@@ -553,14 +466,14 @@ export class SubscriptionDetailsComponent implements OnInit {
   private tryPostEndpoints() {
     // Some APIs prefer POST for deletion with a specific action
     const postData: any = { id: this.id };
-    
+
     const postEndpoints = [
       'Subscriptions/Delete',
       'Subscriptions/Cancel',
       'Subscription/Delete',
       'Subscription/Cancel'
     ];
-    
+
     let attemptCount = 0;
     const tryNextPostEndpoint = () => {
       if (attemptCount >= postEndpoints.length) {
@@ -569,10 +482,10 @@ export class SubscriptionDetailsComponent implements OnInit {
         notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
         return;
       }
-      
+
       const endpoint = postEndpoints[attemptCount];
       console.log(`Trying POST endpoint: ${endpoint}`);
-      
+
       this.subscriptionsService.postAction(endpoint, postData).subscribe({
         next: (response: any) => {
           this.isCancelling = false;
@@ -592,7 +505,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         }
       });
     };
-    
+
     tryNextPostEndpoint();
   }
 

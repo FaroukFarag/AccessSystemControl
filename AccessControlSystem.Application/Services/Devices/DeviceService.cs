@@ -1,4 +1,7 @@
-﻿using AccessControlSystem.Application.Dtos.Devices;
+﻿using AccessControlSystem.Application.Common.Mappings;
+using AccessControlSystem.Application.Common.Utilities;
+using AccessControlSystem.Application.Configurations;
+using AccessControlSystem.Application.Dtos.Devices;
 using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Interfaces.Devices;
 using AccessControlSystem.Application.Interfaces.Shared;
@@ -9,8 +12,10 @@ using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Devices;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Devices;
+using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.EventLogs;
 using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.Devices;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 
 namespace AccessControlSystem.Application.Services.Devices;
 
@@ -20,6 +25,8 @@ public class DeviceService(
     IMapper mapper,
     IImageService imageService,
     IAirfobDeviceService airfobDeviceService,
+    IAirfobEventLogService airfobEventLogService,
+    IOptions<ImageSettings> settings,
     IOrderingService<Device> orderingService) : BaseService<
         DeviceDto, DeviceDto, DeviceDto, DeviceDto, Device, int>(
         repository, unitOfWork, mapper), IDeviceService
@@ -28,6 +35,8 @@ public class DeviceService(
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
     private readonly IAirfobDeviceService _airfobDeviceService = airfobDeviceService;
+    private readonly IAirfobEventLogService _airfobEventLogService = airfobEventLogService;
+    private readonly ImageSettings _settings = settings.Value;
     private readonly IOrderingService<Device> _orderingService = orderingService;
     private static readonly Dictionary<string, Action<BaseSpecification<Device>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -93,6 +102,56 @@ public class DeviceService(
                 var devices = await _repository.GetAllAsync(spec);
 
                 return _mapper.Map<IEnumerable<DeviceDto>>(devices);
+            });
+    }
+
+    public async Task<ResultDto<IEnumerable<DeviceTrafficDto>>> GetDevicesTrafficAsync()
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Available Devices for Access Group",
+            action: async () =>
+            {
+                var eventLogsResponse = await _airfobEventLogService.GetEventLogsAsync();
+
+                if (!eventLogsResponse.Succeeded && eventLogsResponse.ResultData is null)
+                    throw new InvalidOperationException("Failed to get event logs");
+
+                var airfobDevicesLog = eventLogsResponse.ResultData.EventLogs;
+                var airfobDeviceSerials = airfobDevicesLog.Select(l => l.DeviceSerial).ToHashSet();
+                var devices = await _repository.GetAllAsync(new BaseSpecification<Device>
+                {
+                    Criteria = d => airfobDeviceSerials.Contains(d.Serial)
+                });
+                var trafficList = (from log in airfobDevicesLog
+                                   join device in devices
+                                   on log.DeviceSerial equals device.Serial.ToString()
+                                   select new DeviceTrafficDto
+                                   {
+                                       TrafficType = DeviceTrafficCodeMapper.GetTrafficTypeDescription(log.Code),
+                                       Time = TimeOnly.FromDateTime(log.DateTime),
+                                       Date = DateOnly.FromDateTime(log.DateTime),
+                                       MacAddress = device.MacAddress,
+                                       ImagePath = $"{_settings.BaseUrl.TrimEnd('/')}/{device.ImagePath.Replace("\\", "/").TrimStart('/')}"
+                                   });
+
+                return trafficList;
+            });
+    }
+
+    public async Task<ResultDto<IEnumerable<SubscriptionDeviceDto>>> GetSubscriptionDevicesAsync()
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Subscription Devices",
+            action: async () =>
+            {
+                return await _repository.GetAllAsync(
+                    d => new SubscriptionDeviceDto
+                    {
+                        DeviceName = d.Name,
+                        StartDate = d.Subscription.StartDate,
+                        EndDate = d.Subscription.EndDate,
+                        RemainingPeriod = RenewalCalculator.GetRenewalInfo(d.Subscription.EndDate, false)
+                    });
             });
     }
 

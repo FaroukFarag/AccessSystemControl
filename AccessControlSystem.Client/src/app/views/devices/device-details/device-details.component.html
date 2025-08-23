@@ -56,18 +56,18 @@
                       [highlightCaseSensitive]="false"></dxo-search-panel>
    
 
-    <dxi-column dataField="Traffic type"
+    <dxi-column dataField="trafficType"
                 [caption]="'devices.traffic_type' | translate"
                 dataType="string"
                 alignment="left"></dxi-column>
     <dxi-column [caption]="'devices.time' | translate"
-                dataField="Time"
+                dataField="time"
                 dataType="string"
                 format="time"
                 alignment="left"
                 ></dxi-column>
-    <dxi-column dataField="DATE" [caption]="'devices.date' | translate" dataType="date"></dxi-column>
-    <dxi-column dataField="DeviceMacAddress" [caption]="'devices.device_mac_address' | translate" dataType="string"></dxi-column>
+    <dxi-column dataField="date" [caption]="'devices.date' | translate" dataType="date"></dxi-column>
+    <dxi-column dataField="macAddress" [caption]="'devices.device_mac_address' | translate" dataType="string"></dxi-column>
 
     <dxi-column dataField="image" [caption]="'devices.image' | translate"  cellTemplate="imageCellTemplate"></dxi-column>
 

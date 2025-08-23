@@ -125,104 +125,7 @@ export class SubAdminDashboardComponent {
   unitsSortingList = ['Recent', 'Name'];
   ownersList: any;
   accessGroups: AccessGroup[] = [];
-  dataSource: any[] = [
-
-    {
-
-      "Traffic type": "Check In",
-
-      "Time": "12:00 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5E",
-
-      "image": "path/to/image1.png"
-
-    },
-
-    {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    }, {
-
-      "Traffic type": "Check Out",
-
-      "Time": "12:30 PM",
-
-      "Date": new Date(2023, 9, 1),
-
-      "DeviceMacAddress": "00:1A:2B:3C:4D:5F",
-
-
-      "image": "path/to/image2.png"
-
-    },
-
-
-  ];
+  dataSource: any[] = [];
 
   constructor(private router : Router,
     private deviceService: DeviceService,
@@ -256,10 +159,11 @@ export class SubAdminDashboardComponent {
     this.getAllUnits();
     this.getAllOwners();
     this.getAllAccessGroups();
+    this.getDevicesTraffic();
     this.getDevicesCount();
     this.getDevicesLAstMonthCount();
     this.getUnitsCount();
-    this.getUnitsLaMonthCount();
+    this.getUnitsLastMonthCount();
   }
   getAllDevices(orderBy?: string) {
     const baseUrl = 'Devices/GetAll';
@@ -650,11 +554,19 @@ export class SubAdminDashboardComponent {
 
     })
   }
+
   getDevicesCount() {
     this.userService.getAll('Devices/GetDevicesCount').subscribe((data: any) => {
       this.devicesCount = data.resultData;
     })
   }
+
+  getDevicesTraffic() {
+    this.userService.getAll('Devices/GetDevicesTraffic').subscribe((data: any) => {
+      this.dataSource = data.resultData;
+    })
+  }
+
   getDevicesLAstMonthCount() {
     this.userService.getAll('Devices/GetLastMonthDevicesCount').subscribe((data: any) => {
       this.devicesLastMonthCount = data.resultData;
@@ -666,7 +578,7 @@ export class SubAdminDashboardComponent {
       this.UnitsCount = data.resultData;
     })
   }
-  getUnitsLaMonthCount() {
+  getUnitsLastMonthCount() {
     this.userService.getAll('Units/GetLastMonthUnitsCount').subscribe((data: any) => {
       this.unitsLastMonthCount = data.resultData;
     })

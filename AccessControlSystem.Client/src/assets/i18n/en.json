@@ -83,6 +83,7 @@
     "add_visitor": "Add Visitor",
     "total_sales": "Total Sales",
     "subscription_name": "Subscription Name",
+    "device_name": "Device Name",
     "start_date": "Start Date",
     "end_date": "End Date",
     "time_remaining": "Time Remaining",

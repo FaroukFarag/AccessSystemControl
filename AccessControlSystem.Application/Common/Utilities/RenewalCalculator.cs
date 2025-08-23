@@ -2,7 +2,7 @@
 
 public static class RenewalCalculator
 {
-    public static string GetRenewalInfo(DateOnly endDate)
+    public static string GetRenewalInfo(DateOnly endDate, bool includePrefix = true)
     {
         var today = DateOnly.FromDateTime(DateTime.Now);
 
@@ -10,10 +10,10 @@ public static class RenewalCalculator
 
         var (years, months, days) = CalculateRemainingTime(today, endDate);
 
-        return FormatRenewalMessage(years, months, days);
+        return FormatRenewalMessage(years, months, days, includePrefix);
     }
 
-    private static string FormatRenewalMessage(int years, int months, int days)
+    private static string FormatRenewalMessage(int years, int months, int days, bool includePrefix = true)
     {
         var parts = new List<string>();
 
@@ -21,7 +21,9 @@ public static class RenewalCalculator
         parts.AddIf(months > 0, () => $"{months} month{Pluralize(months)}");
         parts.AddIf(days > 0 || parts.Count == 0, () => $"{days} day{Pluralize(days)}");
 
-        return "Renewal in " + parts.JoinGrammatically();
+        var durationText = parts.JoinGrammatically();
+
+        return includePrefix ? $"Renewal in {durationText}" : durationText;
     }
 
     private static (int years, int months, int days) CalculateRemainingTime(DateOnly fromDate, DateOnly toDate)

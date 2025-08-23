@@ -87,33 +87,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       name: 'Enterprise'
     }
   ]
-  devices = [
-    {
-      name: 'Smart TV Living Room',
-      startDate: '2024-01-15',
-      endDate: '2024-12-15',
-      timeRemaining: '8 months'
-    },
-    {
-      name: 'Mobile Device - iPhone',
-      startDate: '2024-02-01',
-      endDate: '2024-11-01',
-      timeRemaining: '7 months'
-    },
-    {
-      name: 'Laptop - MacBook Pro',
-      startDate: '2024-03-10',
-      endDate: '2025-03-10',
-      timeRemaining: '11 months'
-    },
-    {
-      name: 'Tablet - iPad Air',
-      startDate: '2024-01-20',
-      endDate: '2024-10-20',
-      timeRemaining: '6 months'
-    }
-  ];
-
+  devices: any[] = [];
 
   constructor(
     private sidebarService: SidebarService,
@@ -140,7 +114,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.getDevicesCount();
     this.getAllSubscriptions();
     this.getSubscriptionsLastMonthCount();
-    this.getDevicesLAstMonthCount();
+    this.getDevicesLastMonthCount();
+    this.getSubscriptionDevices();
   }
 
   ngOnDestroy() {
@@ -186,9 +161,15 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDevicesLAstMonthCount() {
+  getDevicesLastMonthCount() {
     this.userService.getAll('Devices/GetLastMonthDevicesCount').subscribe((data: any) => {
       this.devicesLastMonthCount = data.resultData;
+    })
+  }
+
+  getSubscriptionDevices() {
+    this.userService.getAll('Devices/GetSubscriptionDevices').subscribe((data: any) => {
+      this.devices = data.resultData;
     })
   }
 

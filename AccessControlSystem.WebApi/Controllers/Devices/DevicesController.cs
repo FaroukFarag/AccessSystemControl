@@ -26,6 +26,18 @@ public class DevicesController(IDeviceService service) :
         return Ok(await _service.GetAvailableDevicesForAccessGroupAsync(accessGroupId));
     }
 
+    [HttpGet("GetDevicesTraffic")]
+    public async Task<IActionResult> GetDevicesTraffic()
+    {
+        return Ok(await _service.GetDevicesTrafficAsync());
+    }
+
+    [HttpGet("GetSubscriptionDevices")]
+    public async Task<IActionResult> GetSubscriptionDevices()
+    {
+        return Ok(await _service.GetSubscriptionDevicesAsync());
+    }
+
     [HttpGet("GetDevicesCount")]
     public async Task<IActionResult> GetDevicesCount()
     {
