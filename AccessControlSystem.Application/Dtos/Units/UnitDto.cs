@@ -16,7 +16,7 @@ public class UnitDto : BaseImageModelDto<int>
     public string? AccessGroupsJson { get; set; }
     public int? OwnerId { get; set; }
 
-    private IEnumerable<AccessGroupDto>? _accessGroups; // Backing field
+    private IEnumerable<AccessGroupDto>? _accessGroups;
 
     public IEnumerable<AccessGroupDto>? AccessGroups
     {

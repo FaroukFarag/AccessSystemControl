@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Application.Dtos.Abstraction;
 using AccessControlSystem.Application.Dtos.AccessGroups;
+using AccessControlSystem.Application.Dtos.Cards;
 using AccessControlSystem.Application.Dtos.Subscriptions;
 using AccessControlSystem.Application.Dtos.Units;
 
@@ -17,4 +18,5 @@ public class UserDto : BaseModelDto<int>
     public SubscriptionDto? Subscription { get; set; }
     public virtual ICollection<UnitDto>? Units { get; set; }
     public virtual ICollection<AccessGroupDto>? AccessGroups { get; set; }
+    public virtual ICollection<CardDto>? Cards { get; set; }
 }

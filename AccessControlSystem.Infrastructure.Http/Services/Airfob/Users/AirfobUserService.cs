@@ -44,4 +44,14 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
     {
         return await _client.GetAsync<GetUserGroupsResponse>("v1/users/groups");
     }
+
+    public async Task<AirfobResponse<SuspendUsersResponse>> SuspendUsersAsync(SuspendUsersRequest request)
+    {
+        return await _client.PostAsync<SuspendUsersRequest, SuspendUsersResponse>("v1/users/suspend", request);
+    }
+
+    public async Task<AirfobResponse<int>> DeleteUserAsync(int id)
+    {
+        return await _client.DeleteAsync<int>($"v1/users/{id}");
+    }
 }

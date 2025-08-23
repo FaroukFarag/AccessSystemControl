@@ -21,7 +21,7 @@ public class CreateUserRequest
     public string Mobile { get; set; } = default!;
 
     [JsonPropertyName("used_mobile_card")]
-    public bool UsedMobileCard { get; set; }
+    public bool UsedMobileCard { get; set; } = true;
 
     [JsonPropertyName("mobile_card_id")]
     public int? MobileCardId { get; set; }
@@ -47,5 +47,5 @@ public class CreateUserRequest
     public string Type { get; set; } = default!;
 
     [JsonPropertyName("used_mobile_qr_card")]
-    public bool UsedMobileQrCard { get; set; }
+    public bool UsedMobileQrCard { get; set; } = true;
 }

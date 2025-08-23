@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Common.Interfaces.Subscriptions;
 using AccessControlSystem.Domain.Models.AccessGroups;
+using AccessControlSystem.Domain.Models.Cards;
 using AccessControlSystem.Domain.Models.Subscriptions;
 using AccessControlSystem.Domain.Models.Units;
 using Microsoft.AspNetCore.Identity;
@@ -15,4 +16,5 @@ public class User : IdentityUser<int>, ISubscriptionEntity, IAuditable
     public virtual ICollection<IdentityUserRole<int>> UserRoles { get; set; } = default!;
     public virtual ICollection<Unit>? Units { get; set; }
     public virtual ICollection<AccessGroup>? AccessGroups { get; set; }
+    public virtual ICollection<Card>? Cards { get; set; }
 }

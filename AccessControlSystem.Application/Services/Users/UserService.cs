@@ -113,7 +113,7 @@ public class UserService(
                 var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
                 var user = usersInRole.FirstOrDefault(u => u.Id == userId)
                     ?? throw new InvalidOperationException("User not found in specified role");
-                var userWithIncludes = await _userRepository.GetAsync(user.Id);
+                var userWithIncludes = await _userRepository.GetAsync(user.Id, userWithUnitsSpec);
 
                 return _mapper.Map<UserDto>(userWithIncludes);
             });

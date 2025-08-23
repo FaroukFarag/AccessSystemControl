@@ -1,10 +1,12 @@
 ﻿using AccessControlSystem.Domain.Models.Shared;
+using AccessControlSystem.Domain.Models.Users;
 
 namespace AccessControlSystem.Domain.Models.Cards;
 
 public class Card : SubscriptionEntity
 {
-    public string Name { get; set; } = default!;
-    public int SubscriptionId { get; set; }
-    public bool Active { get; set; }
+    public int OwnerId { get; set; }
+    public int AirfobUserId { get; set; }
+
+    public User Owner { get; set; } = default!;
 }

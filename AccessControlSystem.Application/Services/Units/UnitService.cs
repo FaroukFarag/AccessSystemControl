@@ -1,10 +1,14 @@
-﻿using AccessControlSystem.Application.Dtos.Shared;
+﻿using AccessControlSystem.Application.Dtos.Cards;
+using AccessControlSystem.Application.Dtos.Shared;
 using AccessControlSystem.Application.Dtos.Units;
+using AccessControlSystem.Application.Interfaces.Cards;
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Units;
+using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Domain.Constants.Units;
+using AccessControlSystem.Domain.Enums.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.AccessGroupDevices;
@@ -21,7 +25,9 @@ public class UnitService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IImageService imageService,
-    IOrderingService<Unit> orderingService) : BaseService<
+    IOrderingService<Unit> orderingService,
+    IUserService userService,
+    ICardService cardService) : BaseService<
         UnitDto, UnitDto, UnitDto, UnitDto, Unit, int>(
         repository, unitOfWork, mapper), IUnitService
 {
@@ -30,6 +36,8 @@ public class UnitService(
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
     private readonly IOrderingService<Unit> _orderingService = orderingService;
+    private readonly IUserService _userService = userService;
+    private readonly ICardService _cardService = cardService;
     private static readonly Dictionary<string, Action<BaseSpecification<Unit>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
     {
         ["name"] = spec => spec.OrderBy = s => s.Name,
@@ -158,14 +166,38 @@ public class UnitService(
             operationName: "Assign Owner to Unit",
             action: async () =>
             {
-                var unitResult = await GetAsync(assignOwnerToUnitDto.UnitId);
+                var unit = await _repository.GetAsync(assignOwnerToUnitDto.UnitId, new BaseSpecification<Unit>
+                {
+                    IncludeChains =
+                    [
+                        new IncludeChain<Unit>
+                        {
+                            InitialInclude = u => u.AccessGroupUnits,
+                            ThenIncludes =
+                            [
+                                agu => (agu as AccessGroupUnit)!.AccessGroup
+                            ]
+                        }
+                    ]
+                }) ?? throw new InvalidOperationException("Unit not found");
+                var ownerResult = await _userService.GetUserByRoleAsync(assignOwnerToUnitDto.OwnerId, (int)RoleNames.Owner);
 
-                if (!unitResult.Succeeded || unitResult.ResultData == null)
+                if (!ownerResult.Succeeded || ownerResult.ResultData == null)
                 {
                     throw new InvalidOperationException("Unit not found");
                 }
 
-                var unitDto = unitResult.ResultData;
+                var owner = ownerResult.ResultData;
+                var unitDto = _mapper.Map<UnitDto>(unit);
+                var createResult = _cardService.CreateAsync(new CreateCardDto
+                {
+                    OwnerId = owner.Id,
+                    UserName = owner.UserName,
+                    SiteId = assignOwnerToUnitDto.SiteId,
+                    Email = owner.Email,
+                    Mobile = owner.PhoneNumber,
+                    Unit = _mapper.Map<UnitDto>(unit)
+                });
 
                 unitDto.OwnerId = assignOwnerToUnitDto.OwnerId;
 

@@ -7,7 +7,7 @@ public class CardDtoValidator : AbstractValidator<CardDto>
 {
     public CardDtoValidator()
     {
-        RuleFor(c => c.Name)
+        RuleFor(c => c.UserName)
             .NotEmpty()
             .MaximumLength(50);
     }

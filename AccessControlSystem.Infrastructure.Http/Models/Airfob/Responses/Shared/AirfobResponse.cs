@@ -1,7 +1,6 @@
 ﻿namespace AccessControlSystem.Infrastructure.Http.Models.Airfob.Responses.Shared;
 
 public class AirfobResponse<T>
-    where T : class
 {
     public bool Succeeded { get; set; }
     public T ResultData { get; set; } = default!;

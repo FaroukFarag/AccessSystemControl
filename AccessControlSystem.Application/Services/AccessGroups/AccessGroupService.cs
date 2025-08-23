@@ -91,13 +91,16 @@ public class AccessGroupService(
     private async Task<AccessGroupDto> CreateAccessGroupWithDependencies(AccessGroupDto dto)
     {
         var accessLevels = await CreateAccessLevelsInExternalSystem(dto);
+
         dto.AirfobAccessLevelId = accessLevels.First().Id;
 
         var createResult = await base.CreateAsync(dto);
+
         if (!createResult.Succeeded)
             throw new InvalidOperationException("Failed to create access group in database");
 
         await AssignDevicesToAccessLevels(dto, accessLevels);
+
         return createResult.ResultData!;
     }
 

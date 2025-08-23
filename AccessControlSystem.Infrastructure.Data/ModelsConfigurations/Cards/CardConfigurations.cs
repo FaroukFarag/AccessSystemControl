@@ -8,8 +8,8 @@ public class CardConfigurations : IEntityTypeConfiguration<Card>
 {
     public void Configure(EntityTypeBuilder<Card> builder)
     {
-        builder.Property(c => c.Name)
-            .IsRequired()
-            .HasMaxLength(50);
+        builder.HasOne(c => c.Owner)
+            .WithMany(o => o.Cards)
+            .HasForeignKey(c => c.OwnerId);
     }
 }
