@@ -202,13 +202,15 @@
       <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.start_date_required' | translate"></dxi-validation-rule>
     </dxi-item>
 
-    <dxi-item dataField="endDate" editorType="dxDateBox" [editorOptions]="{
-          placeholder: 'subscriptions.end_date' | translate,
-          type: 'date',
-          displayFormat: 'yyyy-MM-dd'
+    <dxi-item dataField="numberOfMonths" editorType="dxNumberBox" [editorOptions]="{
+          placeholder: 'subscriptions.number_of_months' | translate,
+          min: 1,
+          max: 60,
+          showSpinButtons: true
         }">
-      <dxo-label [text]="'subscriptions.end_date' | translate"></dxo-label>
-      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.end_date_required' | translate"></dxi-validation-rule>
+      <dxo-label [text]="'subscriptions.number_of_months' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.number_of_months_required' | translate"></dxi-validation-rule>
+      <dxi-validation-rule type="range" [min]="1" [max]="60" [message]="'subscriptions.subscription_details.number_of_months_range' | translate"></dxi-validation-rule>
     </dxi-item>
 
   </dx-form>
@@ -221,6 +223,34 @@
     </dx-button>
   </dxi-item>
 
+</dx-popup>
+
+<!-- Cancel Subscription Confirmation Popup -->
+<dx-popup [width]="500" [height]="300" [showTitle]="true" 
+          [title]="'subscriptions.subscription_details.cancel_subscription' | translate" 
+          [dragEnabled]="true" [hideOnOutsideClick]="true" 
+          [showCloseButton]="true" [(visible)]="cancelConfirmationPopupVisible">
+  <div class="popup-content p-4">
+   
+    <div class="text-center mb-4">
+      <h5 class="text-danger">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</h5>
+      <p class="text-muted">{{ 'subscriptions.subscription_details.cancel_confirmation_message' | translate }}</p>
+    </div>
+    <div class="d-flex justify-content-center gap-3">
+      <dx-button 
+        [text]="isCancelling ? ('common.loading' | translate) : ('subscriptions.subscription_details.cancel_subscription' | translate)"
+        type="danger" 
+        (onClick)="confirmCancelSubscription()"
+        [disabled]="isCancelling">
+      </dx-button>
+      <dx-button 
+        [text]="'common.cancel' | translate" 
+        type="default" 
+        (onClick)="cancelConfirmationPopupVisible = false"
+        [disabled]="isCancelling">
+      </dx-button>
+    </div>
+  </div>
 </dx-popup>
 
 <!--Device Traffic Section-->
@@ -261,35 +291,5 @@
     </div>
   </dx-data-grid>
 </div>
-
-<!--CANCEL SUBSCRIPTION CONFIRMATION POPUP-->
-<dx-popup 
-  [width]="550" 
-  [height]="250" 
-  [showTitle]="true" 
-  [title]="'subscriptions.subscription_details.cancel_subscription' | translate" 
-  [dragEnabled]="true"
-  [hideOnOutsideClick]="true" 
-  [showCloseButton]="true" 
-  [(visible)]="cancelConfirmationPopupVisible">
-  
-  <div class="confirmation-content">
-    <p>{{ 'subscriptions.subscription_details.cancel_confirmation_message' | translate }}</p>
-    <div class="confirmation-buttons">
-      <dx-button 
-        [text]="'common.yes' | translate" 
-        type="danger" 
-        (onClick)="confirmCancelSubscription()"
-        [disabled]="isCancelling">
-      </dx-button>
-      <dx-button 
-        [text]="'common.no' | translate" 
-        type="default" 
-        (onClick)="cancelConfirmationPopupVisible = false">
-      </dx-button>
-    </div>
-  </div>
-
-</dx-popup>
 
 

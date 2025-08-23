@@ -184,11 +184,9 @@
 
 
 
-
-::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
-  width: 100% !important;
+.dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
+  width: auto !important;
 }
-
 
 dx-form {
   margin-bottom: 24px !important;
@@ -216,9 +214,7 @@ dx-form {
   gap: 16px;
 }
 
-::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text {
-  width: 100% !important;
-}
+
 
 /*----END POPUP STYLES------*/
 /***/
@@ -536,6 +532,32 @@ td {
   }
 }
 
+// Settings button styles
+.settings-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: none;
+  
+  &:hover {
+    background: none;
+    border: none;
+    transform: none;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  &:active {
+    background: none;
+    border: none;
+  }
+}
+
 // Popup styles
 .popup-content {
   padding: 20px;
@@ -588,3 +610,19 @@ td {
   margin-top: 20px !important;
 }
 
+.settings-btn{
+    border:none;
+}
+.dx-button-mode-contained:nth-child(2) {
+  background-color: transparent !important;
+  color: #007BE2 !important;
+  border-radius: 8px !important;
+  padding-top: 2px;
+  padding-right: 16px;
+  padding-bottom: 2px;
+  padding-left: 16px;
+  gap: 16px;
+}
+.dx-popup-content.dx-popup-content-scrollable{
+    overflow:hidden !important;
+}

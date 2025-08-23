@@ -44,7 +44,8 @@ export class OwnerDashboardComponent implements OnInit {
   pauseVisitPopupVisible = false;
   cancelVisitPopupVisible = false;
   selectedVisitor: any = null;
-  settingsTemplate: any;
+  
+
 
   formModel = {
     name: '',
@@ -71,7 +72,24 @@ export class OwnerDashboardComponent implements OnInit {
     { name: 'Device name', status: 'Active', mac: '50:B0:0D:63:...', image: 'device.png' }
   ];
   sites: any[] = [];
-  vistorsDetails: any[] = [];
+  vistorsDetails: any[] = [
+    {
+      id: 1,
+      name: 'John Doe',
+      email: 'john@example.com',
+      mobile: '+1234567890',
+      startDate: '2024-01-01',
+      endDate: '2024-12-31'
+    },
+    {
+      id: 2,
+      name: 'Jane Smith',
+      email: 'jane@example.com',
+      mobile: '+0987654321',
+      startDate: '2024-02-01',
+      endDate: '2024-11-30'
+    }
+  ];
   devicesTraffic = [
     {
       name: 'Device name',
@@ -133,7 +151,7 @@ export class OwnerDashboardComponent implements OnInit {
     }
     
     this.getAllDevices();
-    this.getVisitorsDetails();
+    this.getVisitorsDetails(); // Get real data from API
     this.getAllAccessGroups();
     this.getAllSites();
   }
@@ -256,6 +274,7 @@ export class OwnerDashboardComponent implements OnInit {
           this.vistorsDetails = [];
         }
         console.log('Visitors Details:', this.vistorsDetails);
+        console.log('Visitors Details length:', this.vistorsDetails.length);
       },
       error: (err) => {
         console.error('Error fetching visitors details:', err);
@@ -267,45 +286,86 @@ export class OwnerDashboardComponent implements OnInit {
   }
 
   // Settings button click handler
-  onSettingsClick = (e: any) => {
-    // Handle both direct row data and button click events
-    if (e.row && e.row.data) {
-      this.selectedVisitor = e.row.data;
-    } else if (e.rowData) {
-      this.selectedVisitor = e.rowData;
-    } else if (e.data) {
-      this.selectedVisitor = e.data;
-    } else {
-      console.error('No row data found in settings click event:', e);
-      return;
-    }
+  onSettingsClick = (data: any) => {
+    console.log('Settings button clicked');
+    console.log('Visitor data:', data);
+    this.selectedVisitor = data;
     console.log('Selected visitor for settings:', this.selectedVisitor);
+    console.log('Visitor ID:', this.selectedVisitor?.id);
+    console.log('All visitor properties:', Object.keys(this.selectedVisitor || {}));
+    
+    // Set popup visibility
     this.pauseVisitPopupVisible = true;
+    console.log('Pause popup visibility set to:', this.pauseVisitPopupVisible);
+    
+    // Force change detection
+    setTimeout(() => {
+      console.log('Pause popup visibility after timeout:', this.pauseVisitPopupVisible);
+    }, 100);
   }
 
   // Cancel button click handler
   onCancelClick = (e: any) => {
+    console.log('Cancel button clicked');
+    console.log('Row data:', e.row.data);
     this.selectedVisitor = e.row.data;
+    console.log('Selected visitor for cancel:', this.selectedVisitor);
+    console.log('Visitor ID:', this.selectedVisitor?.id);
+    console.log('All visitor properties:', Object.keys(this.selectedVisitor || {}));
+    
+    // Set popup visibility
     this.cancelVisitPopupVisible = true;
+    console.log('Cancel popup visibility set to:', this.cancelVisitPopupVisible);
+    
+    // Force change detection
+    setTimeout(() => {
+      console.log('Cancel popup visibility after timeout:', this.cancelVisitPopupVisible);
+    }, 100);
   }
 
   // Confirm pause visit
   confirmPauseVisit() {
     if (this.selectedVisitor) {
-      // Here you would typically make an API call to pause the visit
-      console.log('Pausing visit for:', this.selectedVisitor);
-      notify('dashboard.owner_dashboard.visit_paused', 'success', 2000);
-      this.closePausePopup();
+      // Make API call to delete the visitor
+      console.log('Deleting visitor via pause button:', this.selectedVisitor);
+      console.log('Visitor ID being used:', this.selectedVisitor.id);
+      console.log('All visitor properties:', Object.keys(this.selectedVisitor));
+      
+      this.baseService.delete(`Visitors/Delete/${this.selectedVisitor.id}`).subscribe({
+        next: (response) => {
+          console.log('Visitor deleted successfully via pause:', response);
+          notify('Visitor deleted successfully', 'success', 2000);
+          this.closePausePopup();
+          this.getVisitorsDetails(); // Refresh the list
+        },
+        error: (error) => {
+          console.error('Error deleting visitor via pause:', error);
+          notify('Error deleting visitor: ' + (error.error?.message || error.message), 'error', 3000);
+        }
+      });
     }
   }
 
   // Confirm cancel visit
   confirmCancelVisit() {
     if (this.selectedVisitor) {
-      // Here you would typically make an API call to cancel the visit
-      console.log('Canceling visit for:', this.selectedVisitor);
-      notify('dashboard.owner_dashboard.visit_canceled', 'success', 2000);
-      this.closeCancelPopup();
+      // Make API call to delete the visitor
+      console.log('Deleting visitor:', this.selectedVisitor);
+      console.log('Visitor ID being used:', this.selectedVisitor.id);
+      console.log('All visitor properties:', Object.keys(this.selectedVisitor));
+      
+      this.baseService.delete(`Visitors/Delete/${this.selectedVisitor.id}`).subscribe({
+        next: (response) => {
+          console.log('Visitor deleted successfully:', response);
+          notify('Visitor deleted successfully', 'success', 2000);
+          this.closeCancelPopup();
+          this.getVisitorsDetails(); // Refresh the list
+        },
+        error: (error) => {
+          console.error('Error deleting visitor:', error);
+          notify('Error deleting visitor: ' + (error.error?.message || error.message), 'error', 3000);
+        }
+      });
     }
   }
 

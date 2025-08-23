@@ -70,6 +70,54 @@
   }
 }
 
+/* Cancel Subscription Popup Styles */
+.popup-content {
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-danger {
+    color: #dc3545;
+  }
+  
+  .text-muted {
+    color: #6c757d;
+  }
+  
+  .text-warning {
+    color: #ffc107;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .p-4 {
+    padding: 1.5rem;
+  }
+  
+  .d-flex {
+    display: flex;
+  }
+  
+  .justify-content-center {
+    justify-content: center;
+  }
+  
+  .gap-3 {
+    gap: 1rem;
+  }
+  
+  .fas {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+  }
+  
+  .fa-exclamation-triangle::before {
+    content: "⚠";
+  }
+}
+
 /*SECTION TWO STYLES*/
 .devices-container {
   background: #fff;

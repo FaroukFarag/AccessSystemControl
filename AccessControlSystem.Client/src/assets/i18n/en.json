@@ -124,8 +124,8 @@
       "notes": "Notes",
       "select_access_groups": "Select access groups",
       "add_visitor": "Add Visitor",
-      "pause_visit": "Pause Visit",
-      "cancel_visit": "Cancel Visit",
+      "pause_visit": "Pause",
+      "cancel_visit": "Cancel",
       "pause_visit_confirm": "Are you sure you want to pause this visit ?",
       "cancel_visit_confirm": "Are you sure you want to Cancel this visit ?",
       "visit_paused": "Visit paused successfully",
@@ -140,6 +140,7 @@
     "subscription_type": "Subscription Type",
     "start_date": "Start Date",
     "end_date": "End Date",
+    "number_of_months": "Number of Months",
     "payment_per_month": "Payment per month",
     "total_payment": "Total Payment",
     "review_details": "Review all Subscriptions details and information",
@@ -169,6 +170,8 @@
       "subscription_type_required": "Subscription type is required",
       "start_date_required": "Start date is required",
       "end_date_required": "End date is required",
+      "number_of_months_required": "Number of months is required",
+      "number_of_months_range": "Number of months must be between 1 and 60",
       "upgrading": "Upgrading...",
       "submit": "Submit",
       "cancel_confirmation_message": "Are you sure you want to cancel this subscription? This action cannot be undone.",
@@ -447,8 +450,8 @@
     "assign_owner": "Assign owner",
     "add_device": "Add Device",
     "cancel": "Cancel",
-    "pause_visit": "Pause Visit",
-    "cancel_visit": "Cancel Visit"
+    "pause_visit": "Pause",
+    "cancel_visit": "Cancel"
   },
   "sub_admin_dashboard": {
     "invoices": "Invoices",
