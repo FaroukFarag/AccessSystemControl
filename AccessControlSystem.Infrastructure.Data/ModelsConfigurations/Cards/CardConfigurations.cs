@@ -8,8 +8,9 @@ public class CardConfigurations : IEntityTypeConfiguration<Card>
 {
     public void Configure(EntityTypeBuilder<Card> builder)
     {
-        builder.HasOne(c => c.Owner)
-            .WithMany(o => o.Cards)
-            .HasForeignKey(c => c.OwnerId);
+        builder.HasOne(c => c.Unit)
+            .WithMany(u => u.Cards)
+            .HasForeignKey(c => c.UnitId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

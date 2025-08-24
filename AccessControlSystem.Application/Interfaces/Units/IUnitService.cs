@@ -5,11 +5,11 @@ using AccessControlSystem.Domain.Models.Units;
 
 namespace AccessControlSystem.Application.Interfaces.Units;
 
-public interface IUnitService : IBaseService<UnitDto, UnitDto, UnitDto, UnitDto,
+public interface IUnitService : IBaseService<UnitDto, UnitDto, UnitDto, UpdateUnitDto,
     Unit, int>
 {
     Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id);
     Task<ResultDto<IEnumerable<UnitDto>>> GetAllAsync(string orderBy);
-    Task<ResultDto<UnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto);
+    Task<ResultDto<UpdateUnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto);
     Task<ResultDto<long>> GetUnitsCountAsync(bool isLastMonth = false);
 }

@@ -13,6 +13,8 @@ public class UnitProfile : Profile
         CreateMap<Unit, UnitDto>()
             .ForMember(des => des.SubscriptionCustomerName, opt => opt
                 .MapFrom(src => src.Subscription.CustomerName))
+            .ForMember(des => des.UsedCardsNumber, opt => opt
+                .MapFrom(src => src.Cards.Count()))
             .ForMember(des => des.ImagePath, opt => opt
                 .MapFrom<BaseModelImageDtoUrlResolver>())
             .ForMember(des => des.AccessGroups, opt => opt
@@ -29,5 +31,13 @@ public class UnitProfile : Profile
                     })
                 )
             );
+
+        CreateMap<Unit, UpdateUnitDto>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageDtoUrlResolver>());
+
+        CreateMap<UpdateUnitDto, Unit>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageUrlResolver>());
     }
 }

@@ -11,10 +11,11 @@ public class UnitDto : BaseImageModelDto<int>
     public int Number { get; set; }
     public decimal Area { get; set; }
     public int CardNumber { get; set; }
+    public int UsedCardsNumber { get; set; }
+    public string? AssignedOwner { get; set; }
     public int SubscriptionId { get; set; }
     public string? SubscriptionCustomerName { get; set; }
     public string? AccessGroupsJson { get; set; }
-    public int? OwnerId { get; set; }
 
     private IEnumerable<AccessGroupDto>? _accessGroups;
 

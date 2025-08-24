@@ -16,9 +16,10 @@ public class UnitConfigurations : IEntityTypeConfiguration<Unit>
             .HasPrecision(18, 6)
             .IsRequired();
 
-        builder.HasOne(u => u.Owner)
-            .WithMany(o => o.Units)
-            .HasForeignKey(o => o.OwnerId);
+        builder.HasMany(u => u.Owners)
+            .WithOne(o => o.Unit)
+            .HasForeignKey(o => o.UnitId)
+            .IsRequired(false);
 
         builder.HasMany(u => u.AccessGroupUnits)
             .WithOne(agu => agu.Unit)

@@ -36,9 +36,9 @@ public class UserService(
     private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly ITokensService _tokensService = tokensService;
     private readonly IOrderingService<User> _orderingService = orderingService;
-    private static readonly BaseSpecification<User> userWithUnitsSpec = new()
+    private static readonly BaseSpecification<User> userWithUnitSpec = new()
     {
-        Includes = [u => u.Units!]
+        Includes = [u => u.Unit!]
     };
     private static readonly Dictionary<string, Action<BaseSpecification<User>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -113,7 +113,7 @@ public class UserService(
                 var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
                 var user = usersInRole.FirstOrDefault(u => u.Id == userId)
                     ?? throw new InvalidOperationException("User not found in specified role");
-                var userWithIncludes = await _userRepository.GetAsync(user.Id, userWithUnitsSpec);
+                var userWithIncludes = await _userRepository.GetAsync(user.Id, userWithUnitSpec);
 
                 return _mapper.Map<UserDto>(userWithIncludes);
             });
@@ -131,9 +131,7 @@ public class UserService(
                 var userIds = usersInRole.Select(u => u.Id).ToList();
                 var spec = new BaseSpecification<User>
                 {
-                    Criteria = u => userIds.Contains(u.Id),
-                    Includes = userWithUnitsSpec.Includes,
-                    IncludeChains = userWithUnitsSpec.IncludeChains
+                    Criteria = u => userIds.Contains(u.Id)
                 };
 
                 var usersWithIncludes = await _userRepository.GetAllAsync(spec);
@@ -154,9 +152,7 @@ public class UserService(
                 var userIds = usersInRole.Select(u => u.Id).ToList();
                 var spec = new BaseSpecification<User>
                 {
-                    Criteria = u => userIds.Contains(u.Id),
-                    Includes = userWithUnitsSpec.Includes,
-                    IncludeChains = userWithUnitsSpec.IncludeChains
+                    Criteria = u => userIds.Contains(u.Id)
                 };
 
                 _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);
@@ -203,7 +199,7 @@ public class UserService(
             {
                 var user = await AuthenticateUserAsync(model)
                     ?? throw new InvalidOperationException("Authentication failed");
-                var userWithUnits = await _userRepository.GetAsync(user.Id, userWithUnitsSpec);
+                var userWithUnits = await _userRepository.GetAsync(user.Id, userWithUnitSpec);
                 var roles = await _userManager.GetRolesAsync(userWithUnits);
                 var role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()!)
                     ?? throw new InvalidOperationException("Role not found");
@@ -213,7 +209,7 @@ public class UserService(
                     UserId = userWithUnits.Id,
                     RoleId = role.Id,
                     SubscriptionId = userWithUnits.SubscriptionId,
-                    Units = _mapper.Map<IReadOnlyList<UnitDto>>(userWithUnits.Units),
+                    Units = _mapper.Map<UnitDto>(userWithUnits.Unit),
                     Token = await GetToken(userWithUnits)
                 };
             });

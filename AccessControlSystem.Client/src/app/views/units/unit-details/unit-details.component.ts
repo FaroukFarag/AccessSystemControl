@@ -40,7 +40,8 @@ export class UnitDetailsComponent {
   ownersList: any;
   selectedOwnerId: number | null = null;
   formModel = {
-    ownerId: null
+    ownerId: null,
+    siteId: null
   };
   sites: any[] = [];
   schedules: any[] = [];
@@ -126,16 +127,29 @@ export class UnitDetailsComponent {
       return;
     }
 
+    if (!this.formModel.siteId || !this.unitId) {
+      notify('Please select an owner before submitting.', 'warning', 2000);
+      return;
+    }
+
     const payload = {
       ownerId: this.formModel.ownerId,
-      unitId: Number(this.unitId)
+      unitId: Number(this.unitId),
+      siteId: this.formModel.siteId
     };
 
     this.unitsService.update('Units/AssignOwnerToUnit', payload as any).subscribe({
-      next: () => {
-        notify('Owner assigned successfully!', 'success', 2000);
-        this.assignToOwner_popupVisible = false;
-        this.getUnitDetails(this.unitId); // Refresh unit details
+      next: (data: any) => {
+        if (data.succeeded) {
+          notify('Owner assigned successfully!', 'success', 2000);
+          this.assignToOwner_popupVisible = false;
+          this.getUnitDetails(this.unitId); // Refresh unit details
+        }
+
+        else {
+          console.error('Failed to assign owner:', data.message);
+          notify('Failed to assign owner', 'error', 2000);
+        }
       },
       error: (err) => {
         console.error('Failed to assign owner:', err);

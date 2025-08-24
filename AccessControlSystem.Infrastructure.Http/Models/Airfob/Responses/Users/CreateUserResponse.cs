@@ -14,10 +14,10 @@ public class CreateUserResponse
     public string UserKey { get; set; } = default!;
 
     [JsonPropertyName("start_date")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [JsonPropertyName("end_date")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public string Email { get; set; } = default!;
     public string Mobile { get; set; } = default!;
 

@@ -4,6 +4,7 @@ using AccessControlSystem.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessControlSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AccessControlDbContext))]
-    partial class AccessControlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824102943_ModifyUserAndUnitRelationshipAndModifyVisitor")]
+    partial class ModifyUserAndUnitRelationshipAndModifyVisitor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,17 +113,17 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UnitId")
+                    b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionId");
+                    b.HasIndex("OwnerId");
 
-                    b.HasIndex("UnitId");
+                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("Cards");
                 });
@@ -591,19 +594,19 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Cards.Card", b =>
                 {
+                    b.HasOne("AccessControlSystem.Domain.Models.Users.User", "Owner")
+                        .WithMany("Cards")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AccessControlSystem.Domain.Models.Subscriptions.Subscription", null)
                         .WithMany("Cards")
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AccessControlSystem.Domain.Models.Units.Unit", "Unit")
-                        .WithMany("Cards")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Unit");
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Devices.Device", b =>
@@ -747,14 +750,14 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 {
                     b.Navigation("AccessGroupUnits");
 
-                    b.Navigation("Cards");
-
                     b.Navigation("Owners");
                 });
 
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Users.User", b =>
                 {
                     b.Navigation("AccessGroups");
+
+                    b.Navigation("Cards");
 
                     b.Navigation("UserRoles");
                 });

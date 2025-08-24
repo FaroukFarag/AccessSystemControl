@@ -28,11 +28,10 @@ public class UnitService(
     IOrderingService<Unit> orderingService,
     IUserService userService,
     ICardService cardService) : BaseService<
-        UnitDto, UnitDto, UnitDto, UnitDto, Unit, int>(
+        UnitDto, UnitDto, UnitDto, UpdateUnitDto, Unit, int>(
         repository, unitOfWork, mapper), IUnitService
 {
     private readonly IUnitRepository _repository = repository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IImageService _imageService = imageService;
     private readonly IOrderingService<Unit> _orderingService = orderingService;
@@ -67,7 +66,7 @@ public class UnitService(
             {
                 var unit = await _repository.GetAsync(id, new BaseSpecification<Unit>()
                 {
-                    Includes = [u => u.Owner!],
+                    Includes = [u => u.Cards],
                     IncludeChains =
                     [
                         new IncludeChain<Unit>
@@ -93,7 +92,7 @@ public class UnitService(
         {
             var unit = await _repository.GetAllAsync(new BaseSpecification<Unit>()
             {
-                Includes = [u => u.Subscription, u => u.Owner!]
+                Includes = [u => u.Subscription]
             });
 
             return _mapper.Map<IEnumerable<UnitDto>>(unit);
@@ -134,7 +133,7 @@ public class UnitService(
             });
     }
 
-    public override async Task<ResultDto<UnitDto>> UpdateAsync(UnitDto newUnitDto)
+    public override async Task<ResultDto<UpdateUnitDto>> UpdateAsync(UpdateUnitDto newUnitDto)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Update Unit",
@@ -158,7 +157,7 @@ public class UnitService(
             });
     }
 
-    public async Task<ResultDto<UnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
+    public async Task<ResultDto<UpdateUnitDto>> AssignOwnerToUnit(AssignOwnerToUnitDto assignOwnerToUnitDto)
     {
         ArgumentNullException.ThrowIfNull(assignOwnerToUnitDto);
 
@@ -184,24 +183,33 @@ public class UnitService(
 
                 if (!ownerResult.Succeeded || ownerResult.ResultData == null)
                 {
-                    throw new InvalidOperationException("Unit not found");
+                    throw new InvalidOperationException("Owner not found");
                 }
 
                 var owner = ownerResult.ResultData;
-                var unitDto = _mapper.Map<UnitDto>(unit);
-                var createResult = _cardService.CreateAsync(new CreateCardDto
+
+                owner.UnitId = unit.Id;
+
+                var updateOwnerResult = await _userService.UpdateAsync(owner);
+
+                if (!updateOwnerResult.Succeeded || updateOwnerResult.ResultData == null)
                 {
-                    OwnerId = owner.Id,
-                    UserName = owner.UserName,
-                    SiteId = assignOwnerToUnitDto.SiteId,
-                    Email = owner.Email,
-                    Mobile = owner.PhoneNumber,
-                    Unit = _mapper.Map<UnitDto>(unit)
-                });
+                    throw new InvalidOperationException("Owner assignment failed");
+                }
 
-                unitDto.OwnerId = assignOwnerToUnitDto.OwnerId;
+                var unitDto = _mapper.Map<UnitDto>(unit);
+                var updateUnitDto = _mapper.Map<UpdateUnitDto>(unit);
+                var cardResult = await _cardService.CreateAsync(
+                    _mapper.Map<CreateCardDto>((owner, assignOwnerToUnitDto, unitDto, "normal")));
 
-                return (await base.UpdateAsync(unitDto)).ResultData
+                if (!cardResult.Succeeded || cardResult.ResultData == null)
+                {
+                    throw new InvalidOperationException("Owner assignment failed");
+                }
+
+                updateUnitDto.AssignedOwner = owner.UserName;
+
+                return (await base.UpdateAsync(updateUnitDto)).ResultData
                     ?? throw new InvalidOperationException("Owner assignment failed");
             });
     }

@@ -23,19 +23,27 @@ public class VisitorService(
 {
     private readonly IMapper _mapper = mapper;
     private readonly IAirfobUserService _airfobUserService = airfobUserService;
+
     public override async Task<ResultDto<CreateVisitorDto>> CreateAsync(CreateVisitorDto entityDto)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Visitor Unit",
             action: async () =>
             {
-                var inviteUserRequest = _mapper.Map<InviteUserRequest>(entityDto);
-                var result = await _airfobUserService.InviteUserAsync(inviteUserRequest);
+                var response = await _airfobUserService.CreateUsersAsync(
+                    new CreateUsersRequest
+                    {
+                        Users = [_mapper.Map<CreateUserRequest>(entityDto)]
+                    }
+                );
 
-                if (!result.Succeeded)
-                    throw new InvalidOperationException("Visitor creation failed");
-
-                entityDto.InviteToken = result.ResultData?.InviteToken;
+                if (!response.Succeeded || response.ResultData == null ||
+                    !response.ResultData.Any())
+                {
+                    throw new InvalidOperationException("Failed to create visitor in external system");
+                }
+                
+                entityDto.AirfobUserId = response.ResultData.FirstOrDefault()!.Id;
 
                 return (await base.CreateAsync(entityDto)).ResultData
                     ?? throw new InvalidOperationException("Visitor creation failed");

@@ -14,9 +14,10 @@ public class UserDto : BaseModelDto<int>
     public string PhoneNumber { get; set; } = default!;
     public int RoleId { get; set; }
     public int? SubscriptionId { get; set; }
+    public int? UnitId { get; set; }
 
     public SubscriptionDto? Subscription { get; set; }
-    public virtual ICollection<UnitDto>? Units { get; set; }
+    public virtual UnitDto? Unit { get; set; }
     public virtual ICollection<AccessGroupDto>? AccessGroups { get; set; }
     public virtual ICollection<CardDto>? Cards { get; set; }
 }

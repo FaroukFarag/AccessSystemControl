@@ -1,4 +1,6 @@
-﻿namespace AccessControlSystem.Application.Dtos.Visitors;
+﻿using AccessControlSystem.Application.Dtos.Units;
+
+namespace AccessControlSystem.Application.Dtos.Visitors;
 
 public class CreateVisitorDto
 {
@@ -7,9 +9,9 @@ public class CreateVisitorDto
     public string Mobile { get; set; } = default!;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public int AirfobUserId { get; set; }
     public int SiteId { get; set; }
-    public string? InviteToken { get; set; }
     public int SubscriptionId { get; set; }
 
-    public IEnumerable<int> AccessGroupIds { get; set; } = default!;
+    public UnitDto Unit { get; set; } = default!;
 }

@@ -5,10 +5,10 @@ namespace AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.Users;
 public class UserAccessLevelRequest
 {
     [JsonPropertyName("start_date")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [JsonPropertyName("end_date")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     [JsonPropertyName("user_id")]
     public int? UserId { get; set; }
