@@ -5,7 +5,7 @@
 namespace AccessControlSystem.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ModifyUserAndUnitRelationshipAndModifyVisitor : Migration
+    public partial class ModifyCard : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,14 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 name: "OwnerId",
                 table: "Units");
 
+            migrationBuilder.DropColumn(
+                name: "Active",
+                table: "Cards");
+
+            migrationBuilder.DropColumn(
+                name: "Name",
+                table: "Cards");
+
             migrationBuilder.AddColumn<int>(
                 name: "AirfobUserId",
                 table: "Visitors",
@@ -40,10 +48,29 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
+                name: "AirfobUserId",
+                table: "Cards",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "UnitId",
+                table: "Cards",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
                 name: "UnitId",
                 table: "AspNetUsers",
                 type: "int",
                 nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cards_UnitId",
+                table: "Cards",
+                column: "UnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_UnitId",
@@ -56,6 +83,13 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 column: "UnitId",
                 principalTable: "Units",
                 principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Cards_Units_UnitId",
+                table: "Cards",
+                column: "UnitId",
+                principalTable: "Units",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
@@ -64,6 +98,14 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUsers_Units_UnitId",
                 table: "AspNetUsers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Cards_Units_UnitId",
+                table: "Cards");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Cards_UnitId",
+                table: "Cards");
 
             migrationBuilder.DropIndex(
                 name: "IX_AspNetUsers_UnitId",
@@ -76,6 +118,14 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "AssignedOwner",
                 table: "Units");
+
+            migrationBuilder.DropColumn(
+                name: "AirfobUserId",
+                table: "Cards");
+
+            migrationBuilder.DropColumn(
+                name: "UnitId",
+                table: "Cards");
 
             migrationBuilder.DropColumn(
                 name: "UnitId",
@@ -93,6 +143,21 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 table: "Units",
                 type: "int",
                 nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "Active",
+                table: "Cards",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
+                table: "Cards",
+                type: "nvarchar(50)",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Units_OwnerId",
