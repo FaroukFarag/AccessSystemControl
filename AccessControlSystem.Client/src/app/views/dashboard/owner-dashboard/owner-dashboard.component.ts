@@ -44,8 +44,6 @@ export class OwnerDashboardComponent implements OnInit {
   pauseVisitPopupVisible = false;
   cancelVisitPopupVisible = false;
   selectedVisitor: any = null;
-  
-
 
   formModel = {
     name: '',
@@ -55,8 +53,7 @@ export class OwnerDashboardComponent implements OnInit {
     startDate: new Date(),
     endDate: new Date(),
     notes: '',
-    accessGroupIds: [],
-    unitId: 1, // Change this to the correct unitId from your app
+    unit: undefined,
     subscriptionId: 0
   };
 
@@ -90,44 +87,11 @@ export class OwnerDashboardComponent implements OnInit {
       endDate: '2024-11-30'
     }
   ];
-  devicesTraffic = [
-    {
-      name: 'Device name',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-      remaining: '1 year and 2 months'
-    }, {
-      name: 'Device name',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-      remaining: '1 year and 2 months'
-    }, {
-      name: 'Device name',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-      remaining: '1 year and 2 months'
-    }, {
-      name: 'Device name',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-      remaining: '1 year and 2 months'
-    }, {
-      name: 'Device name',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-      remaining: '1 year and 2 months'
-    },
-    {
-      name: 'Device name',
-      start: 'Sep 04, 2024',
-      end: 'Sep 05, 2025',
-      remaining: '4 months'
-    }
-  ];
+  devicesTraffic = [];
   ownerDetails: any;
   userId: any;
-  accessGroups: any;
   devicesList: any[] = [];
+  
   constructor(private http: HttpClient,
     private userService: UserService,
     private accessGroupService: AccessGroupService,
@@ -151,8 +115,8 @@ export class OwnerDashboardComponent implements OnInit {
     }
     
     this.getAllDevices();
-    this.getVisitorsDetails(); // Get real data from API
-    this.getAllAccessGroups();
+    this.getSubscriptionDevices();
+    this.getVisitorsDetails();
     this.getAllSites();
   }
 
@@ -180,9 +144,8 @@ export class OwnerDashboardComponent implements OnInit {
       startDate: this.formModel.startDate,
       endDate: this.formModel.endDate,
       notes: this.formModel.notes,
-      unitId: this.formModel.unitId,
-      subscriptionId: this.formModel.subscriptionId,
-      accessGroupIds: this.formModel.accessGroupIds // Use form model value
+      unit: this.ownerDetails?.unit,
+      subscriptionId: this.formModel.subscriptionId
     };
 
     console.log('Submitting visitor payload:', payload);
@@ -200,8 +163,7 @@ export class OwnerDashboardComponent implements OnInit {
           startDate: new Date(),
           endDate: new Date(),
           notes: '',
-          accessGroupIds: [],
-          unitId: this.formModel.unitId,
+          unit: this.ownerDetails?.unit,
           subscriptionId: this.formModel.subscriptionId
         };
         // Refresh visitors list
@@ -215,11 +177,10 @@ export class OwnerDashboardComponent implements OnInit {
     });
   }
 
-
   getOwnerDetails(id: string) {
     this.userService.getById('Users/GetOwnerDetails', this.userId).subscribe({
       next: (data: any) => {
-        this.ownerDetails = data;
+        this.ownerDetails = data.resultData;
       },
       error: (err) => {
         console.error('Error fetching device details', err);
@@ -229,25 +190,14 @@ export class OwnerDashboardComponent implements OnInit {
 
   }
 
-  getAllAccessGroups() {
-    this.accessGroupService.getAll('AccessGroups/GetAll').subscribe({
-      next: (data: any) => {
-        this.accessGroups = data.resultData;
-        console.log("Access Groups", this.accessGroups);
-      },
-      error: (err) => {
-        notify('Failed to load access groups', 'error', 2000);
-        console.error(err);
-      }
-    });
-  }
-
   navigateToDevices() {
     this.router.navigate(['/devices']);
   }
+  
   navigateToDevicePage(deviceId: string) {
     this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
   }
+
   getAllDevices(orderBy?: string) {
     const baseUrl = 'Devices/GetAll';
     const url = orderBy?.trim()
@@ -259,6 +209,12 @@ export class OwnerDashboardComponent implements OnInit {
         this.devicesList = data.resultData;
       },
       error: (err) => console.error("Failed to load owners:", err)
+    })
+  }
+
+  getSubscriptionDevices() {
+    this.userService.getAll('Devices/GetSubscriptionDevices').subscribe((data: any) => {
+      this.devicesTraffic = data.resultData;
     })
   }
 

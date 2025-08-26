@@ -70,6 +70,7 @@ export class LoginComponent {
     this.loginService.login(loginData).subscribe(response => {
       if (response) {
         if (response.succeeded) {
+          localStorage.setItem('userId', response.resultData.userId);
           localStorage.setItem('authToken', response.resultData.token);
           localStorage.setItem('userRole', response.resultData.roleId);
           localStorage.setItem('subscriptionId', response.resultData.subscriptionId);

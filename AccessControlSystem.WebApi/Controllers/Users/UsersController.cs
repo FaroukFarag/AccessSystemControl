@@ -27,9 +27,16 @@ public class UsersController(IUserService userService)
     [HttpGet("GetAllOwners/{orderBy}")]
     public async Task<IActionResult> GetAll(string orderBy) => Ok(await _userService.GetAllUsersByRoleAsync((int)RoleNames.Owner, orderBy));
 
+    [HttpGet("GetSubscriptionAdminDetails")]
+    public async Task<IActionResult> GetSubscriptionAdminDetails(int id)
+        => Ok(await _userService.GetUserByRoleAsync(id, (int)RoleNames.Owner));
+
     [HttpGet("GetAllSubscriptionAdmins")]
     public async Task<IActionResult> GetAllSubscriptionAdmins()
         => Ok(await _userService.GetAllUsersByRoleAsync((int)RoleNames.SubscriptionAdmin));
+
+    [HttpGet("GetAllSubscriptionAdmins/{orderBy}")]
+    public async Task<IActionResult> GetAllSubscriptionAdmins(string orderBy) => Ok(await _userService.GetAllUsersByRoleAsync((int)RoleNames.SubscriptionAdmin, orderBy));
 
     [HttpPost("Login")]
     [AllowAnonymous]

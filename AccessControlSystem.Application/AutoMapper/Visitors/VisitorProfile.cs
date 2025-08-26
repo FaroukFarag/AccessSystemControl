@@ -16,7 +16,7 @@ public class VisitorProfile : Profile
 
         CreateMap<CreateVisitorDto, CreateUserRequest>()
             .ForMember(des => des.AccessLevels, opt => opt
-                .MapFrom(src => src.Unit.AccessGroups!
+                .MapFrom(src => src.Unit!.AccessGroups!
                     .Select(ag => new UserAccessLevelRequest
                     {
                         StartDate = src.StartDate,

@@ -4,11 +4,14 @@ using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Shared;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
+using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Common.Tokens.Interfaces;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
+using AccessControlSystem.Domain.Models.AccessGroupUnits;
 using AccessControlSystem.Domain.Models.Roles;
 using AccessControlSystem.Domain.Models.Shared;
+using AccessControlSystem.Domain.Models.Units;
 using AccessControlSystem.Domain.Models.Users;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AutoMapper;
@@ -38,7 +41,18 @@ public class UserService(
     private readonly IOrderingService<User> _orderingService = orderingService;
     private static readonly BaseSpecification<User> userWithUnitSpec = new()
     {
-        Includes = [u => u.Unit!]
+        IncludeChains =
+        [
+            new IncludeChain<User>
+            {
+                InitialInclude = u => u.Unit!,
+                ThenIncludes =
+                [
+                    u => (u as Unit)!.AccessGroupUnits,
+                    agu => (agu as AccessGroupUnit)!.AccessGroup
+                ]
+            }
+        ]
     };
     private static readonly Dictionary<string, Action<BaseSpecification<User>>> OrderingRules = new(StringComparer.OrdinalIgnoreCase)
     {

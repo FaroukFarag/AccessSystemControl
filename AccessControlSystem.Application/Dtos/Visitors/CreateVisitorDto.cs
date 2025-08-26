@@ -9,9 +9,10 @@ public class CreateVisitorDto
     public string Mobile { get; set; } = default!;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public string? Type { get; set; } = "temp";
     public int AirfobUserId { get; set; }
     public int SiteId { get; set; }
     public int SubscriptionId { get; set; }
 
-    public UnitDto Unit { get; set; } = default!;
+    public UnitDto? Unit { get; set; }
 }

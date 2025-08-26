@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessControlSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AccessControlDbContext))]
-    [Migration("20250825173917_ModifyCard")]
+    [Migration("20250825175839_ModifyCard")]
     partial class ModifyCard
     {
         /// <inheritdoc />
