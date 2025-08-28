@@ -105,6 +105,57 @@
 
 </div>
 
+<!--SECTION THREE ------ SUBSCRIPTION ADMINS-->
+<div class="admins-container">
+  <div class="admins-header">
+    <div class="title">
+      <div class="title-content">
+        <div class="title-text">
+          <strong>{{ 'subscriptions.subscription_details.admins' | translate }}</strong>
+          <span class="count">({{ subscriptionAdmins.length }})</span>
+        </div>
+      </div>
+      <div class="title-subtitle">{{ 'subscriptions.subscription_details.manage_subscription_admins' | translate }}</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let admin of subscriptionAdmins; let i = index" [@fadeInUp]="{value: '*', params: {delay: i * 100}}">
+      <div class="card mb-2">
+        <img [src]="admin.imagePath || '/assets/images/avatar.jpg'" alt="Card Image" class="card-image" (click)="navigateToAdminDetails(admin.id)">
+        <div class="village-name" (click)="navigateToAdminDetails(admin.id)">{{admin.userName || admin.name}}</div>
+      </div>
+
+      <div class="card-info">
+        <div class="icon"><img src="/assets/icons/person.svg" /></div>
+        <div class="info">{{ 'users.email' | translate }}: </div>
+        <div class="info-value">{{admin.email}}</div>
+      </div>
+      <div class="card-info">
+        <div class="icon"><img src="/assets/icons/device.svg" /></div>
+        <div class="info">{{ 'users.phone' | translate }}: </div>
+        <div class="info-value">{{admin.phoneNumber || 'N/A'}}</div>
+      </div>
+      <div class="card-info">
+        <div class="icon"><img src="/assets/icons/card-owner.svg" /></div>
+        <div class="info">{{ 'users.cards' | translate }}: </div>
+        <div class="info-value">{{admin.cards?.length || 0}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="subscriptionAdmins?.length === 0" class="empty-state" [@fadeIn]>
+    <div class="empty-icon">
+      <img src="/assets/icons/person.svg" alt="No Admins" />
+    </div>
+    <div class="empty-text">
+      <h4>{{ 'subscriptions.subscription_details.no_admins_found' | translate }}</h4>
+      <p>{{ 'subscriptions.subscription_details.add_first_admin' | translate }}</p>
+    </div>
+  </div>
+
+</div>
+
 <!--ADD DEVICE POPUP-->
 <dx-popup [width]="600" [height]="420" [showTitle]="true" [title]="'devices.add_new' | translate" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="popupVisible">

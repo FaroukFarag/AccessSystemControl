@@ -8,6 +8,8 @@ import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { SidebarService } from '../../../services/sidebar/sidebar.service';
 import { LoaderService } from '../../../services/loader/loader.service';
+import { UserService } from '../../../services/users/user.service';
+import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
 
 import {
   DxPopupModule,
@@ -45,7 +47,21 @@ import { DeviceService } from '../../../services/devices/device.service';
     TranslatePipe],
 
   templateUrl: './subscription-details.component.html',
-  styleUrl: './subscription-details.component.scss'
+  styleUrl: './subscription-details.component.scss',
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(30px)' }),
+        animate('0.6s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ]),
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.5s ease-out', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class SubscriptionDetailsComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
@@ -60,6 +76,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   deviceListEditorOptions: any;
   direction: 'ltr' | 'rtl' = 'ltr';
   isSidebarOpen: boolean = true;
+  subscriptionAdmins: any[] = [];
 
   devicesList: any;
   deviceData = {
@@ -127,6 +144,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private subscriptionsService: SubscriptionService,
     private deviceService: DeviceService,
+    private userService: UserService,
     private router: Router,
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
@@ -147,7 +165,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
 
-    this.loaderService.show(); // Start loading
+    this.loaderService.show(); 
 
     // Subscribe to sidebar state changes
     this.sidebarService.isOpen$.subscribe(isOpen => {
@@ -161,6 +179,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     this.getAllSites();
     this.getDevicesTraffic();
+    this.getAllSubscriptionAdmins();
 
     // Load subscription data using getAll and filter client-side
     this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe({
@@ -235,6 +254,11 @@ export class SubscriptionDetailsComponent implements OnInit {
       serial: '',
       siteId: null
     };
+  }
+
+  showAddAdminPopup() {
+    // TODO: Implement add admin popup functionality
+    notify(this.languageService.translate('subscriptions.subscription_details.add_admin_feature_coming_soon'), 'info', 3000);
   }
   sanitizeImage(image: string) {
     return this.sanitizer.bypassSecurityTrustUrl(image);
@@ -506,6 +530,31 @@ export class SubscriptionDetailsComponent implements OnInit {
     };
 
     tryNextPostEndpoint();
+  }
+
+  getAllSubscriptionAdmins() {
+    this.userService.getAll('Users/GetAllSubscriptionAdmins').subscribe({
+      next: (data: any) => {
+        if (data && data.resultData) {
+          this.subscriptionAdmins = data.resultData;
+          console.log(" this.subscriptionAdmins", this.subscriptionAdmins)
+        } else {
+          this.subscriptionAdmins = [];
+        }
+      },
+      error: (error) => {
+        console.error('Error loading subscription admins:', error);
+        this.subscriptionAdmins = [];
+        notify(this.languageService.translate('validation.error_loading_subscription_admins'), 'error', 3000);
+      }
+    });
+  }
+
+  navigateToAdminDetails(adminId: number) {
+    // Navigate to admin details page or show admin details popup
+    console.log('Navigate to admin details:', adminId);
+    // You can implement navigation logic here based on your requirements
+    // this.router.navigate(['/admin-details', adminId]);
   }
 
 }
