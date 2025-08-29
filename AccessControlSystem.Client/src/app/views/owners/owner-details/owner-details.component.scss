@@ -104,7 +104,7 @@
           width: 100%;
           max-width: 120px;
           height: 160px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient( 135deg, #2046f2 0%, #1076ff 100%);
           border-radius: 8px;
           position: relative;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -288,8 +288,6 @@
       font-size: 14px;
       color: #A3A3A3;
     }
-
-
   }
 }
 
@@ -692,5 +690,85 @@ dx-form {
   .gap-3 {
     gap: 1rem;
   }
+}
+
+/* Card Settings Popup Button Styles */
+::ng-deep .dx-button-mode-contained.dx-button-success {
+  background-color: transparent !important;
+  color: #007bff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  width: 200px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+::ng-deep .dx-button-mode-contained.dx-button-success:hover,
+::ng-deep .dx-button-mode-contained.dx-button-success:active {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+::ng-deep .dx-widget.dx-button.dx-button-mode-contained.dx-button-success.dx-button-has-text{
+    width:200px!important;
+}
+::ng-deep .dx-button-mode-outlined.dx-button-default {
+  color: #007bff !important;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  font-weight: 500 !important;
+  width: 200px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+::ng-deep .dx-button-mode-outlined.dx-button-default:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default:active {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+/* Pause/Enable button specific styling - ensure no background and blue text */
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Pause"],
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Enable"],
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="إيقاف مؤقت"],
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="تفعيل"] {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: #007bff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Pause"]:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Pause"]:active,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Enable"]:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Enable"]:active,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="إيقاف مؤقت"]:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="إيقاف مؤقت"]:active,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="تفعيل"]:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="تفعيل"]:active {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+/* Delete button specific styling - ensure no background */
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Delete"],
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="حذف"] {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: #dc3545 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Delete"]:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="Delete"]:active,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="حذف"]:hover,
+::ng-deep .dx-button-mode-outlined.dx-button-default[text="حذف"]:active {
+  background-color: #dc3545 !important;
+  color: white !important;
 }
 

@@ -49,6 +49,7 @@ export class OwnerDetailsComponent {
   // Popup properties
   upgradePopupVisible: boolean = false;
   cancelConfirmationPopupVisible: boolean = false;
+  cardSettingsPopupVisible: boolean = false;
   isCancelling: boolean = false;
   isUpgrading: boolean = false;
   
@@ -61,7 +62,20 @@ export class OwnerDetailsComponent {
   };
   
   // Subscription types for dropdown
-  subscriptionTypes: any[] = [];
+  subscriptionTypes = [
+    {
+      'id': 1,
+      'name': 'Standard'
+    },
+    {
+      'id': 2,
+      'name': 'Premium'
+    },
+    {
+      'id': 3,
+      'name': 'Enterprise'
+    },
+  ];
 
   unit = {
     name: 'Unit name',
@@ -88,6 +102,7 @@ export class OwnerDetailsComponent {
   selectedCard: any = null;
   ownerId: string = '';
   ownerDetails: any;
+  cardSettingsPopupTitle: string = '';
 
   direction: 'ltr' | 'rtl' = 'ltr';
 
@@ -228,5 +243,48 @@ export class OwnerDetailsComponent {
   getProgress(used: number, total: number): number {
     if (total === 0) return 0;
     return Math.round((used / total) * 100);
+  }
+
+  // Card Settings Popup Methods
+  showCardSettingsPopup(card: any) {
+    this.selectedCard = card;
+    this.cardSettingsPopupTitle = `${card.name} - ${this.languageService.translate('owners.settings')}`;
+    this.cardSettingsPopupVisible = true;
+  }
+
+  regenerateCard() {
+    if (this.selectedCard) {
+      notify(this.languageService.translate('owners.card_regenerated'), 'success', 1500);
+      this.cardSettingsPopupVisible = false;
+      // TODO: Implement actual regenerate API call
+      console.log('Regenerating card:', this.selectedCard);
+    }
+  }
+
+  pauseCard() {
+    if (this.selectedCard) {
+      notify(this.languageService.translate('owners.card_paused'), 'warning', 1500);
+      this.cardSettingsPopupVisible = false;
+      // TODO: Implement actual pause API call
+      console.log('Pausing card:', this.selectedCard);
+    }
+  }
+
+  enableCard() {
+    if (this.selectedCard) {
+      notify(this.languageService.translate('owners.card_enabled'), 'success', 1500);
+      this.cardSettingsPopupVisible = false;
+      // TODO: Implement actual enable API call
+      console.log('Enabling card:', this.selectedCard);
+    }
+  }
+
+  deleteCard() {
+    if (this.selectedCard) {
+      notify(this.languageService.translate('owners.card_deleted'), 'success', 1500);
+      this.cardSettingsPopupVisible = false;
+      // TODO: Implement actual delete API call
+      console.log('Deleting card:', this.selectedCard);
+    }
   }
 }

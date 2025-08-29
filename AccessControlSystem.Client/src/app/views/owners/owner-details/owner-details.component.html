@@ -64,7 +64,8 @@
               <span class="status" [ngClass]="card.status?.toLowerCase()">{{ card.status || 'Active' }}</span>
             </div>
             <div class="card-actions">
-              <img src="/assets/icons/gear.svg" alt="Settings" class="settings-icon" />
+              <img src="/assets/icons/gear.svg" alt="Settings" class="settings-icon" 
+                   (click)="showCardSettingsPopup(card)" />
             </div>
           </div>
         </div>
@@ -219,12 +220,12 @@
 </div>-->
 
 <!--UPGRADE SUBSCRIPTION POPUP-->
-<dx-popup [width]="500" [height]="400" [showTitle]="true" [title]="'subscriptions.subscription_details.upgrade_subscription' | translate" [dragEnabled]="true"
+<dx-popup width="35%" [height]="400" [showTitle]="true" [title]="'subscriptions.subscription_details.upgrade_subscription' | translate" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="upgradePopupVisible">
   <dx-form #upgradeForm [formData]="upgradeData" [colCount]="1" [labelLocation]="'top'">
     
     <dxi-item dataField="subscriptionType" editorType="dxSelectBox" [editorOptions]="{
-          dataSource: subscriptionTypes,
+          dataSource: subscriptionTypes ? subscriptionTypes : [],
           placeholder: 'subscriptions.subscription_details.select_subscription_type' | translate,
           valueExpr: 'id',
           displayExpr: 'name'
@@ -265,8 +266,37 @@
 
 </dx-popup>
 
+<!-- Card Settings Popup -->
+<dx-popup width="35%" [height]="300" [showTitle]="true" 
+          [title]="cardSettingsPopupTitle" 
+          [dragEnabled]="true" [hideOnOutsideClick]="true" 
+          [showCloseButton]="true" [(visible)]="cardSettingsPopupVisible">
+  <div class="popup-content p-4">
+    <div class="text-center mb-4">
+      <p class="text-muted">{{ 'owners.choose_card_action' | translate }}</p>
+    </div>
+    <div class="d-flex justify-content-center gap-3">
+      <dx-button 
+        [text]="'owners.regenerate' | translate"
+        type="success" 
+        (onClick)="regenerateCard()">
+      </dx-button>
+      <dx-button 
+        [text]="selectedCard?.status?.toLowerCase() === 'active' ? ('owners.pause' | translate) : ('owners.enable' | translate)"
+        type="default" 
+        (onClick)="selectedCard?.status?.toLowerCase() === 'active' ? pauseCard() : enableCard()">
+      </dx-button>
+      <dx-button 
+        [text]="'owners.delete' | translate"
+        type="default" 
+        (onClick)="deleteCard()">
+      </dx-button>
+    </div>
+  </div>
+</dx-popup>
+
 <!-- Cancel Subscription Confirmation Popup -->
-<dx-popup [width]="500" [height]="300" [showTitle]="true" 
+<dx-popup width="35%" [height]="300" [showTitle]="true" 
           [title]="'subscriptions.subscription_details.cancel_subscription' | translate" 
           [dragEnabled]="true" [hideOnOutsideClick]="true" 
           [showCloseButton]="true" [(visible)]="cancelConfirmationPopupVisible">
