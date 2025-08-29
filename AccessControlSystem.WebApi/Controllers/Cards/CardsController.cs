@@ -12,4 +12,11 @@ public class CardsController(ICardService service) :
     BaseController<ICardService, CreateCardDto, CardDto, CardDto, CardDto, Card,
         int>(service)
 {
+    private readonly ICardService _service = service;
+
+    [HttpDelete("PauseCard")]
+    public virtual async Task<IActionResult> PauseCard(PauseCardDto pauseCardDto)
+    {
+        return Ok(await _service.PauseCardAsync(pauseCardDto));
+    }
 }

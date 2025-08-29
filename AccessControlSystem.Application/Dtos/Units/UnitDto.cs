@@ -1,5 +1,6 @@
 ﻿using AccessControlSystem.Application.Dtos.Abstraction;
 using AccessControlSystem.Application.Dtos.AccessGroups;
+using AccessControlSystem.Application.Dtos.Cards;
 using AccessControlSystem.Application.Dtos.Users;
 using System.Text.Json;
 
@@ -17,8 +18,6 @@ public class UnitDto : BaseImageModelDto<int>
     public string? SubscriptionCustomerName { get; set; }
     public string? AccessGroupsJson { get; set; }
 
-    private IEnumerable<AccessGroupDto>? _accessGroups;
-
     public IEnumerable<AccessGroupDto>? AccessGroups
     {
         get
@@ -35,6 +34,9 @@ public class UnitDto : BaseImageModelDto<int>
             _accessGroups = value;
         }
     }
-
+    public IEnumerable<CardDto>? Cards { get; set; }
     public UserDto? Owner { get; set; }
+
+    private IEnumerable<AccessGroupDto>? _accessGroups;
+
 }

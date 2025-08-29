@@ -49,4 +49,56 @@ public class CardService(
                 return createResult.ResultData;
             });
     }
+
+    public async Task<ResultDto<bool>> PauseCardAsync(PauseCardDto pauseCardDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Pause Card",
+            action: async () =>
+            {
+                var response = await _airfobUserService.SuspendUsersAsync(
+                    new SuspendUsersRequest
+                    {
+                        Ids = [pauseCardDto.CardId]
+                    }
+                );
+
+                if (!response.Succeeded)
+                {
+                    throw new InvalidOperationException("Failed to suspend card in external system");
+                }
+
+                return true;
+            });
+    }
+
+    public async override Task<ResultDto<CardDto>> DeleteAsync(int id)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Delete Card",
+            action: async () =>
+            {
+                var getCardResult = await GetAsync(id);
+
+                if (!getCardResult.Succeeded)
+                    throw new InvalidOperationException("Card not found");
+
+                var cardDto = getCardResult.ResultData;
+                var response = await _airfobUserService.DeleteUserAsync(cardDto.AirfobUserId);
+
+                if (!response.Succeeded)
+                {
+                    throw new InvalidOperationException("Failed to delete card in external system");
+                }
+
+                var deleteResult = await base.DeleteAsync(id);
+
+                if (!deleteResult.Succeeded)
+                {
+                    throw new InvalidOperationException("Failed to delete card");
+                }
+
+                return deleteResult.ResultData;
+            });
+    }
 }

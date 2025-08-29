@@ -48,6 +48,14 @@ public class UserService(
                 InitialInclude = u => u.Unit!,
                 ThenIncludes =
                 [
+                    u => (u as Unit)!.Cards,
+                ]
+            },
+            new IncludeChain<User>
+            {
+                InitialInclude = u => u.Unit!,
+                ThenIncludes =
+                [
                     u => (u as Unit)!.AccessGroupUnits,
                     agu => (agu as AccessGroupUnit)!.AccessGroup
                 ]

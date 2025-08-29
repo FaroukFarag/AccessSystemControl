@@ -11,4 +11,17 @@ namespace AccessControlSystem.WebApi.Controllers.Visitors;
 public class VisitorsController(IVisitorService service)
     : BaseController<IVisitorService, CreateVisitorDto, VisitorDto, VisitorDto, VisitorDto, Visitor, int>(service)
 {
+    private readonly IVisitorService _service = service;
+
+    [HttpPatch("SuspendVisit")]
+    public virtual async Task<IActionResult> SuspendVisit(SuspendVisitDto suspendVisitDto)
+    {
+        return Ok(await _service.SuspendVisitAsync(suspendVisitDto));
+    }
+
+    [HttpDelete("PauseVisit")]
+    public virtual async Task<IActionResult> PauseVisit(PauseVisitDto pauseVisitDto)
+    {
+        return Ok(await _service.PauseVisitAsync(pauseVisitDto));
+    }
 }

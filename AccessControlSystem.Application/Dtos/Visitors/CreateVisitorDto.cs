@@ -13,6 +13,7 @@ public class CreateVisitorDto
     public int AirfobUserId { get; set; }
     public int SiteId { get; set; }
     public int SubscriptionId { get; set; }
+    public string Status { get; set; } = "activated";
 
     public UnitDto? Unit { get; set; }
 }
