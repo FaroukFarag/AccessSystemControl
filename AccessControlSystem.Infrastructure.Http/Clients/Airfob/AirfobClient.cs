@@ -47,6 +47,27 @@ public class AirfobClient(HttpClient httpClient)
         }
     }
 
+    public async Task<AirfobResponse<TResponse>> PatchAsync<TRequest, TResponse>(
+        string endpoint,
+        TRequest request) where TResponse : class
+    {
+        try
+        {
+            var response = await _httpClient.PatchAsJsonAsync(endpoint, request);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<TResponse>();
+
+            return AirfobResponse<TResponse>.CreateSuccessResponse(result!);
+        }
+
+        catch (Exception)
+        {
+            return AirfobResponse<TResponse>.CreateFailResponse();
+        }
+    }
+
     public async Task<AirfobResponse<TResponse>> DeleteAsync<TResponse>(
         string endpoint)
     {

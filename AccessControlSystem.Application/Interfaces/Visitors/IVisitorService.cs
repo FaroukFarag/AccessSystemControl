@@ -1,4 +1,5 @@
-﻿using AccessControlSystem.Application.Dtos.Visitors;
+﻿using AccessControlSystem.Application.Dtos.Shared;
+using AccessControlSystem.Application.Dtos.Visitors;
 using AccessControlSystem.Application.Interfaces.Abstraction;
 using AccessControlSystem.Domain.Models.Visitors;
 
@@ -7,4 +8,6 @@ namespace AccessControlSystem.Application.Interfaces.Visitors;
 public interface IVisitorService : IBaseService<CreateVisitorDto, VisitorDto, VisitorDto,
     VisitorDto, Visitor, int>
 {
+    Task<ResultDto<bool>> SuspendVisitAsync(SuspendVisitDto suspendVisitDto);
+    Task<ResultDto<bool>> PauseVisitAsync(PauseVisitDto pauseVisitDto);
 }
