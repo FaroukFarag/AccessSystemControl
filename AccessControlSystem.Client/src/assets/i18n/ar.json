@@ -63,7 +63,21 @@
     "admin": "مدير النظام",
     "user": "مستخدم",
     "owner": "مالك",
-    "sub_admin": "مدير فرعي"
+    "sub_admin": "مدير فرعي",
+    "name_placeholder": "أدخل اسم المستخدم",
+    "email_placeholder": "أدخل عنوان البريد الإلكتروني",
+    "password_placeholder": "أدخل كلمة المرور",
+    "phone_placeholder": "أدخل رقم الهاتف",
+    "name_required": "اسم المستخدم مطلوب",
+    "email_required": "البريد الإلكتروني مطلوب",
+    "password_required": "كلمة المرور مطلوبة",
+    "phone_required": "رقم الهاتف مطلوب",
+    "email_format": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "password_min_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+    "password_complexity": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد، ورمز خاص واحد",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "cards": "البطاقات"
   },
   "dashboard": {
     "welcome_title": "مرحباً بعودتك",
@@ -176,7 +190,10 @@
       "submit": "إرسال",
       "cancel_confirmation_message": "هل أنت متأكد من أنك تريد إلغاء هذا الاشتراك؟ لا يمكن التراجع عن هذا الإجراء.",
       "subscription_cancelled_successfully": "تم إلغاء الاشتراك بنجاح",
-      "subscription_cancel_error": "خطأ في إلغاء الاشتراك"
+      "subscription_cancel_error": "خطأ في إلغاء الاشتراك",
+      "add_new_admin": "إضافة مدير جديد",
+      "no_admins_found": "لا توجد مدراء",
+      "add_first_admin": "أضف أول مدير للبدء"
     }
   },
   "owners": {
@@ -207,7 +224,17 @@
     "upgrade": "ترقية",
     "visitors_per_day": "الزوار / يوم",
     "subscription": "الاشتراك",
-    "no_units_assigned": "لا توجد وحدات معينة لهذا المالك"
+    "no_units_assigned": "لا توجد وحدات معينة لهذا المالك",
+    "settings": "الإعدادات",
+    "choose_card_action": "اختر الإجراء الذي تريد تطبيقه على هذه البطاقة",
+    "regenerate": "إعادة توليد",
+    "pause": "إيقاف مؤقت",
+    "enable": "تفعيل",
+    "delete": "حذف",
+    "card_regenerated": "تم إعادة توليد البطاقة بنجاح",
+    "card_paused": "تم إيقاف البطاقة مؤقتاً بنجاح",
+    "card_enabled": "تم تفعيل البطاقة بنجاح",
+    "card_deleted": "تم حذف البطاقة بنجاح"
   },
   "devices": {
     "title": "الأجهزة",

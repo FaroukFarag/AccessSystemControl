@@ -63,7 +63,21 @@
     "admin": "Administrator",
     "user": "User",
     "owner": "Owner",
-    "sub_admin": "Sub Administrator"
+    "sub_admin": "Sub Administrator",
+    "name_placeholder": "Enter user name",
+    "email_placeholder": "Enter email address",
+    "password_placeholder": "Enter password",
+    "phone_placeholder": "Enter phone number",
+    "name_required": "User name is required",
+    "email_required": "Email is required",
+    "password_required": "Password is required",
+    "phone_required": "Phone number is required",
+    "email_format": "Please enter a valid email address",
+    "password_min_length": "Password must be at least 6 characters long",
+    "password_complexity": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    "email": "Email",
+    "phone": "Phone",
+    "cards": "Cards"
   },
   "dashboard": {
     "welcome_title": "Welcome Back",
@@ -176,7 +190,10 @@
       "submit": "Submit",
       "cancel_confirmation_message": "Are you sure you want to cancel this subscription? This action cannot be undone.",
       "subscription_cancelled_successfully": "Subscription cancelled successfully",
-      "subscription_cancel_error": "Error cancelling subscription"
+      "subscription_cancel_error": "Error cancelling subscription",
+      "add_new_admin": "Add New Admin",
+      "no_admins_found": "No Admins Found",
+      "add_first_admin": "Add your first admin to get started"
     }
   },
   "owners": {
@@ -207,7 +224,17 @@
     "upgrade": "Upgrade",
     "visitors_per_day": "Visitors / day",
     "subscription": "Subscription",
-    "no_units_assigned": "No units assigned for this owner"
+    "no_units_assigned": "No units assigned for this owner",
+    "settings": "Settings",
+    "choose_card_action": "Choose which action you want to apply on this card",
+    "regenerate": "Regenerate",
+    "pause": "Pause",
+    "enable": "Enable",
+    "delete": "Delete",
+    "card_regenerated": "Card regenerated successfully",
+    "card_paused": "Card paused successfully",
+    "card_enabled": "Card enabled successfully",
+    "card_deleted": "Card deleted successfully"
   },
   "devices": {
     "title": "Devices",
