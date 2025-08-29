@@ -124,7 +124,7 @@
         <div class="village-name" (click)="navigateToAdminDetails(admin.id)">{{admin.userName || admin.name}}</div>
       </div>
 
-      <div class="card-info" *ngIf="subscriptionAdmins?.length > 0">
+      <div class="card-info" *ngIf="subscriptionAdmins!.length > 0">
         <div class="icon"><img src="/assets/icons/person.svg" /></div>
         <div class="info">{{ 'user.email' | translate }}: </div>
         <div class="info-value">{{admin.email}}</div>

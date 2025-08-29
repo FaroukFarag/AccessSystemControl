@@ -15,5 +15,6 @@ public interface IAirfobUserService
     Task<AirfobResponse<GetUserGroupsResponse>> GetUserGroupsAsync();
     Task<AirfobResponse<UpdateUserResponse>> UpdateUserAsync(UpdateUserRequest request);
     Task<AirfobResponse<SuspendUsersResponse>> SuspendUsersAsync(SuspendUsersRequest request);
+    Task<AirfobResponse<IEnumerable<ActivateUserResponse>>> ActivateUsersAsync(ActivateUsersRequest request);
     Task<AirfobResponse<int>> DeleteUserAsync(int id);
 }

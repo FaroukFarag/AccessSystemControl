@@ -5,6 +5,7 @@ using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Domain.Interfaces.Repositories.Cards;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.Cards;
+using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Users;
 using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.Users;
 using AutoMapper;
@@ -19,6 +20,7 @@ public class CardService(
     BaseService<CreateCardDto, CardDto, CardDto, CardDto, Card, int>(
         repository, unitOfWork, mapper), ICardService
 {
+    private readonly ICardRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
     private readonly IAirfobUserService _airfobUserService = airfobUserService;
 
@@ -50,6 +52,37 @@ public class CardService(
             });
     }
 
+    public async Task<ResultDto<IEnumerable<GetUnitCardDto>>> GetUnitCardsAsync(int unitId)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Unit Cards",
+            action: async () =>
+            {
+                var getCardsResult = await _airfobUserService.GetUsersAsync();
+
+                if (!getCardsResult.Succeeded)
+                {
+                    throw new InvalidOperationException("Failed to get unit cards in external system");
+                }
+
+                var cardsResult = await _repository.GetAllAsync(new BaseSpecification<Card>
+                {
+                    Criteria = c => c.UnitId == unitId
+                });
+
+                return (from airfobUser in getCardsResult.ResultData.Users
+                        .Where(u => u.Type == "normal")
+                        join card in cardsResult
+                        on airfobUser.Id equals card.AirfobUserId
+                        where airfobUser.Type == "normal"
+                        select new GetUnitCardDto
+                        {
+                            Name = airfobUser.Name,
+                            Status = airfobUser.Status,
+                        });
+            });
+    }
+
     public async Task<ResultDto<bool>> PauseCardAsync(PauseCardDto pauseCardDto)
     {
         return await ExecuteServiceCallAsync(
@@ -66,6 +99,27 @@ public class CardService(
                 if (!response.Succeeded)
                 {
                     throw new InvalidOperationException("Failed to suspend card in external system");
+                }
+
+                return true;
+            });
+    }
+
+    public async Task<ResultDto<bool>> EnableCardAsync(EnableCardDto enableCardDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Enable Card",
+            action: async () =>
+            {
+                var response = await _airfobUserService.ActivateUsersAsync(new ActivateUsersRequest
+                {
+                    Users = [_mapper.Map<ActivateUserRequest>(enableCardDto)]
+                });
+
+                if (!response.Succeeded || response.ResultData == null ||
+                    !response.ResultData.Any())
+                {
+                    throw new InvalidOperationException("Failed to create card in external system");
                 }
 
                 return true;

@@ -56,6 +56,11 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
         return await _client.PostAsync<SuspendUsersRequest, SuspendUsersResponse>("v1/users/suspend", request);
     }
 
+    public async Task<AirfobResponse<IEnumerable<ActivateUserResponse>>> ActivateUsersAsync(ActivateUsersRequest request)
+    {
+        return await _client.PostAsync<ActivateUsersRequest, IEnumerable<ActivateUserResponse>>("v1/users/activate", request);
+    }
+
     public async Task<AirfobResponse<int>> DeleteUserAsync(int id)
     {
         return await _client.DeleteAsync<int>($"v1/users/{id}");

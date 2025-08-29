@@ -9,5 +9,4 @@ public interface IVisitorService : IBaseService<CreateVisitorDto, VisitorDto, Vi
     VisitorDto, Visitor, int>
 {
     Task<ResultDto<bool>> SuspendVisitAsync(SuspendVisitDto suspendVisitDto);
-    Task<ResultDto<bool>> PauseVisitAsync(PauseVisitDto pauseVisitDto);
 }

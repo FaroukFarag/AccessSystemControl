@@ -18,10 +18,4 @@ public class VisitorsController(IVisitorService service)
     {
         return Ok(await _service.SuspendVisitAsync(suspendVisitDto));
     }
-
-    [HttpDelete("PauseVisit")]
-    public virtual async Task<IActionResult> PauseVisit(PauseVisitDto pauseVisitDto)
-    {
-        return Ok(await _service.PauseVisitAsync(pauseVisitDto));
-    }
 }

@@ -100,20 +100,33 @@ public class VisitorService(
             });
     }
 
-    public async Task<ResultDto<bool>> PauseVisitAsync(PauseVisitDto pauseVisitDto)
+    public async override Task<ResultDto<VisitorDto>> DeleteAsync(int id)
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Pause Visit",
+            operationName: "Delete Visitor",
             action: async () =>
             {
-                var response = await _airfobUserService.DeleteUserAsync(pauseVisitDto.VisitorId);
+                var getVisitorResult = await GetAsync(id);
+
+                if (!getVisitorResult.Succeeded)
+                    throw new InvalidOperationException("Visitor not found");
+
+                var visitorDto = getVisitorResult.ResultData;
+                var response = await _airfobUserService.DeleteUserAsync(visitorDto.AirfobUserId);
 
                 if (!response.Succeeded)
                 {
                     throw new InvalidOperationException("Failed to pause visitor in external system");
                 }
 
-                return true;
+                var deleteResult = await base.DeleteAsync(id);
+
+                if (!deleteResult.Succeeded)
+                {
+                    throw new InvalidOperationException("Failed to delete visitor");
+                }
+
+                return deleteResult.ResultData;
             });
     }
 }

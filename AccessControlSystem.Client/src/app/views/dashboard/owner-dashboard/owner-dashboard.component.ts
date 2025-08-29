@@ -91,7 +91,7 @@ export class OwnerDashboardComponent implements OnInit {
   ownerDetails: any;
   userId: any;
   devicesList: any[] = [];
-  
+
   constructor(private http: HttpClient,
     private userService: UserService,
     private accessGroupService: AccessGroupService,
@@ -99,21 +99,21 @@ export class OwnerDashboardComponent implements OnInit {
     private router: Router,
     private languageService: LanguageService,
     private baseService: BaseService<any>
-) { }
+  ) { }
 
   ngOnInit() {
     const subId = localStorage.getItem('subscriptionId');
     this.formModel.subscriptionId = subId ? +subId : 0;
     this.userId = localStorage.getItem('userId') || '';
     console.log('User ID:', this.userId);
-    
+
     // Only call getOwnerDetails if userId exists
     if (this.userId) {
       this.getOwnerDetails(this.userId);
     } else {
       console.warn('User ID not found in localStorage');
     }
-    
+
     this.getAllDevices();
     this.getSubscriptionDevices();
     this.getVisitorsDetails();
@@ -193,7 +193,7 @@ export class OwnerDashboardComponent implements OnInit {
   navigateToDevices() {
     this.router.navigate(['/devices']);
   }
-  
+
   navigateToDevicePage(deviceId: string) {
     this.router.navigate(['/device-details'], { queryParams: { id: deviceId } });
   }
@@ -249,11 +249,11 @@ export class OwnerDashboardComponent implements OnInit {
     console.log('Selected visitor for settings:', this.selectedVisitor);
     console.log('Visitor ID:', this.selectedVisitor?.id);
     console.log('All visitor properties:', Object.keys(this.selectedVisitor || {}));
-    
+
     // Set popup visibility
     this.pauseVisitPopupVisible = true;
     console.log('Pause popup visibility set to:', this.pauseVisitPopupVisible);
-    
+
     // Force change detection
     setTimeout(() => {
       console.log('Pause popup visibility after timeout:', this.pauseVisitPopupVisible);
@@ -268,11 +268,11 @@ export class OwnerDashboardComponent implements OnInit {
     console.log('Selected visitor for cancel:', this.selectedVisitor);
     console.log('Visitor ID:', this.selectedVisitor?.id);
     console.log('All visitor properties:', Object.keys(this.selectedVisitor || {}));
-    
+
     // Set popup visibility
     this.cancelVisitPopupVisible = true;
     console.log('Cancel popup visibility set to:', this.cancelVisitPopupVisible);
-    
+
     // Force change detection
     setTimeout(() => {
       console.log('Cancel popup visibility after timeout:', this.cancelVisitPopupVisible);
@@ -282,17 +282,24 @@ export class OwnerDashboardComponent implements OnInit {
   // Confirm pause visit
   confirmPauseVisit() {
     if (this.selectedVisitor) {
+      debugger
       // Make API call to delete the visitor
-      console.log('Deleting visitor via pause button:', this.selectedVisitor);
-      console.log('Visitor ID being used:', this.selectedVisitor.id);
-      console.log('All visitor properties:', Object.keys(this.selectedVisitor));
-      
-      this.baseService.delete(`Visitors/Delete/${this.selectedVisitor.id}`).subscribe({
+      console.log('Deleting visitor via pause button:', this.selectedVisitor.row.data);
+      console.log('Visitor ID being used:', this.selectedVisitor.row.data.id);
+      console.log('All visitor properties:', Object.keys(this.selectedVisitor.row.data));
+
+      this.baseService.delete(`Visitors/Delete?id=${this.selectedVisitor.row.data.id}`).subscribe({
         next: (response) => {
-          console.log('Visitor deleted successfully via pause:', response);
-          notify('Visitor deleted successfully', 'success', 2000);
-          this.closePausePopup();
-          this.getVisitorsDetails(); // Refresh the list
+          if (response.succeeded) {
+            console.log('Visitor deleted successfully via pause:', response);
+            notify('Visitor deleted successfully', 'success', 2000);
+            this.closePausePopup();
+            this.getVisitorsDetails();
+          }
+
+          else {
+            notify('Error deleting visitor: ' + (response.message), 'error', 3000);
+          }
         },
         error: (error) => {
           console.error('Error deleting visitor via pause:', error);
@@ -309,7 +316,7 @@ export class OwnerDashboardComponent implements OnInit {
       console.log('Deleting visitor:', this.selectedVisitor);
       console.log('Visitor ID being used:', this.selectedVisitor.id);
       console.log('All visitor properties:', Object.keys(this.selectedVisitor));
-      
+
       this.baseService.delete(`Visitors/Delete/${this.selectedVisitor.id}`).subscribe({
         next: (response) => {
           console.log('Visitor deleted successfully:', response);

@@ -39,5 +39,7 @@ public class CardProfile : Profile
                 .ForMember(dest => dest.Mobile, opt => opt.MapFrom(src => src.owner.PhoneNumber))
                 .ForMember(dest => dest.Unit, opt => opt.MapFrom(src => src.unit))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.cardType));
+
+        CreateMap<EnableCardDto, ActivateUserRequest>();
     }
 }

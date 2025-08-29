@@ -12,7 +12,7 @@ public class Visitor : BaseModel<int>, ISubscriptionEntity
     public string Mobile { get; set; } = default!;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public int AirfobUserId { get; set; } = default!;
+    public int AirfobUserId { get; set; }
     public int SiteId { get; set; }
     public int SubscriptionId { get; set; }
 
