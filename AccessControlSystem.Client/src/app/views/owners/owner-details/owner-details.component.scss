@@ -81,38 +81,183 @@
       padding: 10px;
       border-radius: 12px;
 
-
-
       h4 {
         margin-bottom: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
       }
 
-      .card-entry {
+      .cards-content {
+        display: flex;
+        gap: 20px;
+        height: calc(100% - 40px);
+      }
+
+      .id-card-preview {
+        width: 35%;
         display: flex;
         align-items: center;
+        justify-content: center;
+
+        .id-card {
+          width: 100%;
+          max-width: 120px;
+          height: 160px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 8px;
+          position: relative;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+
+          .id-card-header {
+            height: 25%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+
+            .visa-logo {
+              color: white;
+              font-weight: bold;
+              font-size: 12px;
+              letter-spacing: 1px;
+            }
+          }
+
+          .id-card-body {
+            height: 60%;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .profile-photo {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              overflow: hidden;
+              margin-bottom: 8px;
+              border: 2px solid white;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+
+            .card-holder-info {
+              text-align: center;
+              color: white;
+
+              .card-holder-name {
+                font-size: 10px;
+                font-weight: bold;
+                margin-bottom: 2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
+              .card-details {
+                font-size: 8px;
+                opacity: 0.8;
+              }
+            }
+          }
+
+          .id-card-footer {
+            height: 15%;
+            background: rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+
+      .cards-list {
+        width: 65%;
+        display: flex;
+        flex-direction: column;
         gap: 8px;
-        font-size: 14px;
-        margin-bottom: 6px;
 
-        .card-name {
-          font-weight: 600;
-        }
+        .card-entry {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 0;
+          border-bottom: 1px solid #f0f0f0;
 
-        .status {
-          font-weight: bold;
-
-          &.Active {
-            color: green;
+          &:last-child {
+            border-bottom: none;
           }
 
-          &.Disabled {
-            color: red;
-          }
-        }
+          .card-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        .action {
-          margin-left: auto;
-          cursor: pointer;
+            img {
+              width: 16px;
+              height: 16px;
+              opacity: 0.6;
+            }
+          }
+
+          .card-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .card-label {
+              font-size: 11px;
+              color: #666;
+              font-weight: 500;
+            }
+
+            .card-name {
+              font-size: 13px;
+              font-weight: 600;
+              color: #333;
+            }
+          }
+
+          .card-status {
+            .status {
+              font-size: 11px;
+              font-weight: 600;
+              padding: 2px 6px;
+              border-radius: 4px;
+
+              &.active {
+                color: #28a745;
+                background: rgba(40, 167, 69, 0.1);
+              }
+
+              &.disabled {
+                color: #dc3545;
+                background: rgba(220, 53, 69, 0.1);
+              }
+            }
+          }
+
+          .card-actions {
+            .settings-icon {
+              width: 16px;
+              height: 16px;
+              opacity: 0.6;
+              cursor: pointer;
+              transition: opacity 0.2s;
+
+              &:hover {
+                opacity: 1;
+              }
+            }
+          }
         }
       }
     }
@@ -144,70 +289,7 @@
       color: #A3A3A3;
     }
 
-    .subscription-details {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
 
-      div {
-        min-width: 140px;
-      }
-
-      .actions {
-        align-self: center;
-        align-items: center;
-        display: flex;
-
-        .upgrade {
-          font-weight: bold;
-          color: #007bff;
-          text-decoration: none;
-        }
-
-        .cancel-subscription {
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 100%;
-          color: #414141;
-          vertical-align: middle;
-          text-decoration:none;
-          margin-right:14px;
-        }
-      }
-    }
-
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-
-      .stat {
-        flex: 1;
-        padding: 0 10px;
-
-        p {
-          margin-bottom: 6px;
-        }
-
-        .bar {
-          background: #eee;
-          height: 8px;
-          border-radius: 4px;
-          margin-bottom: 4px;
-
-          .fill {
-            height: 8px;
-            background: #007bff;
-            border-radius: 4px;
-          }
-        }
-
-        small {
-          color: #666;
-        }
-      }
-    }
   }
 }
 
@@ -500,4 +582,115 @@ dx-form {
 }
 
 /*----END POPUP STYLES----------*/
+
+/* Subscription Container Styles */
+.subscription-container {
+  font-family: Arial, sans-serif;
+  background: #fefefe;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: auto;
+  box-shadow: 8px 8px 20px 0px #C0C0C040;
+
+  .content {
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+          padding: 0.4rem 0.8rem;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
+        .cancel {
+          background: transparent;
+          color: red;
+          border: 1px solid red;
+        }
+
+        .upgrade {
+          background-color: #007bff;
+          color: white;
+        }
+      }
+
+      .subtext {
+        font-size: 0.8rem;
+        color: #888;
+      }
+    }
+
+    .usage-section {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      .usage-card {
+        flex: 1;
+        min-width: 200px;
+
+        .bar {
+          background: #eee;
+          border-radius: 6px;
+          overflow: hidden;
+          height: 8px;
+          margin: 0.5rem 0;
+
+          .progress {
+            height: 100%;
+            background: #007bff;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Popup Content Styles */
+.popup-content {
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-danger {
+    color: #dc3545;
+  }
+  
+  .text-muted {
+    color: #6c757d;
+  }
+  
+  .text-warning {
+    color: #ffc107;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .p-4 {
+    padding: 1.5rem;
+  }
+  
+  .d-flex {
+    display: flex;
+  }
+  
+  .justify-content-center {
+    justify-content: center;
+  }
+  
+  .gap-3 {
+    gap: 1rem;
+  }
+}
 

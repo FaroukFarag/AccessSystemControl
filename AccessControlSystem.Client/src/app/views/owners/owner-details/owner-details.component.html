@@ -1,6 +1,11 @@
 <div class="breadcrumb mb-5">
-  <div class="page-title" (click)="backClicked()">
-    <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
+  <div class="page-title" (click)="goBack()">
+    <svg *ngIf="direction === 'ltr'" width="10" height="15" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0.759419 12.724L11.9054 23.344C12.0914 23.5213 12.3385 23.6202 12.5954 23.6202C12.8524 23.6202 13.0994 23.5213 13.2854 23.344L13.2974 23.332C13.3879 23.246 13.4599 23.1426 13.5092 23.0279C13.5584 22.9133 13.5838 22.7898 13.5838 22.665C13.5838 22.5402 13.5584 22.4167 13.5092 22.3021C13.4599 22.1874 13.3879 22.0839 13.2974 21.998L2.80142 11.998L13.2974 2.00199C13.3879 1.91604 13.4599 1.81259 13.5092 1.69792C13.5584 1.58326 13.5838 1.45977 13.5838 1.33499C13.5838 1.2102 13.5584 1.08672 13.5092 0.972054C13.4599 0.857388 13.3879 0.753935 13.2974 0.667988L13.2854 0.655987C13.0994 0.478697 12.8524 0.379795 12.5954 0.379795C12.3385 0.379795 12.0914 0.478697 11.9054 0.655987L0.759419 11.276C0.661395 11.3694 0.583357 11.4817 0.530035 11.6062C0.476714 11.7306 0.449219 11.8646 0.449219 12C0.449219 12.1354 0.476714 12.2694 0.530035 12.3938C0.583357 12.5183 0.661395 12.6306 0.759419 12.724Z" fill="black"/>
+    </svg>
+    <svg *ngIf="direction === 'rtl'" width="10" height="15" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.2406 12.724L2.0946 23.344C1.9086 23.5213 1.6615 23.6202 1.4046 23.6202C1.1476 23.6202 0.9006 23.5213 0.7146 23.344L0.7026 23.332C0.6121 23.246 0.5401 23.1426 0.4908 23.0279C0.4416 22.9133 0.4162 22.7898 0.4162 22.665C0.4162 22.5402 0.4416 22.4167 0.4908 22.3021C0.5401 22.1874 0.6121 22.0839 0.7026 21.998L11.1986 11.998L0.7026 2.00199C0.6121 1.91604 0.5401 1.81259 0.4908 1.69792C0.4416 1.58326 0.4162 1.45977 0.4162 1.33499C0.4162 1.2102 0.4416 1.08672 0.4908 0.972054C0.5401 0.857388 0.6121 0.753935 0.7026 0.667988L0.7146 0.655987C0.9006 0.478697 1.1476 0.379795 1.4046 0.379795C1.6615 0.379795 1.9086 0.478697 2.0946 0.655987L13.2406 11.276C13.3386 11.3694 13.4166 11.4817 13.47 11.6062C13.5233 11.7306 13.5508 11.8646 13.5508 12C13.5508 12.1354 13.5233 12.2694 13.47 12.3938C13.4166 12.5183 13.3386 12.6306 13.2406 12.724Z" fill="black"/>
+    </svg>
     <h4>{{ 'owners.owner_details_title' | translate }}</h4>
   </div>
   <span>{{ 'owners.review_unit_details' | translate }}</span>
@@ -11,82 +16,122 @@
 <div class="unit-details">
 
   <!-- Top Section -->
-  <div class="top-section">
-    <!-- Left: Unit Info -->
+    <div class="top-section">
+    <!-- Left: Owner Info -->
     <div class="unit-info">
-      <img class="unit-img" [src]="unit.image" alt="Unit" />
+      <img class="unit-img" [src]="ownerDetails?.imagePath || '/assets/images/avatar.jpg'" alt="Owner" />
       <div class="unit-meta ms-2">
-        <h3 class="unit-name">{{ unit.name }}</h3>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> {{ 'forms.owner' | translate }}:</span><span class="value">Ahmed Adly</span></div>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> {{ 'owners.number_of_cards' | translate }}:</span> <span class="value">{{ unit.count }}</span></div>
-        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'owners.devices' | translate }}:</span> <span class="value">{{ unit.group }}</span></div>
+        <h3 class="unit-name">{{ ownerDetails?.userName || 'Owner Name' }}</h3>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/person.svg" /></div><span class="info"> {{ 'forms.owner' | translate }}:</span><span class="value">{{ ownerDetails?.userName || 'N/A' }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/card-owner.svg" /></div><span class="info"> {{ 'owners.number_of_cards' | translate }}:</span> <span class="value">{{ ownerDetails?.vcards?.length || 0 }}</span></div>
+        <div class="info-line"><div class="icon-container"><img class="icon" src="assets/icons/device.svg" /></div><span class="info"> {{ 'owners.access_groups' | translate }}:</span> <span class="value">{{ ownerDetails?.accessGroups?.length || 0 }}</span></div>
       </div>
     </div>
 
     <!-- Right: Cards -->
-    <!--<div class="cards-box">
-      <h4>Cards ({{ cards.length }})</h4>
-      <div class="card-entry" *ngFor="let card of cards">
-        <input type="checkbox" />
-        <span>Card name:</span>
-        <span class="card-name">{{ card.name }}</span>
-        <span class="status" [ngClass]="card.status">{{ card.status }}</span>
-        <i class="icon action">⚙️</i>
+    <div class="cards-box">
+      <h4>{{ 'owners.cards' | translate }} ({{ cards.length }})</h4>
+      <div class="cards-content">
+        <!-- Left: ID Card Image -->
+        <div class="id-card-preview">
+          <div class="id-card">
+            <div class="id-card-header">
+              <div class="visa-logo">Card</div>
+            </div>
+            <div class="id-card-body">
+              <div class="profile-photo">
+                <img [src]="ownerDetails?.imagePath || '/assets/images/avatar.jpg'" alt="Profile" />
+              </div>
+              <div class="card-holder-info">
+                <div class="card-holder-name">{{ ownerDetails?.userName || 'Card Holder' }}</div>
+                <div class="card-details">ID: {{ ownerDetails?.id || 'N/A' }}</div>
+              </div>
+            </div>
+            <div class="id-card-footer"></div>
+          </div>
+        </div>
+        
+        <!-- Right: Card List -->
+        <div class="cards-list">
+          <div class="card-entry" *ngFor="let card of cards; let i = index">
+            <div class="card-icon">
+              <img src="/assets/icons/card-owner.svg" alt="Card" />
+            </div>
+            <div class="card-info">
+           <h6> Card name  <span class="card-name">{{ card.name || 'Card Name' }}</span></h6>
+            </div>
+            <div class="card-status">
+              <span class="status" [ngClass]="card.status?.toLowerCase()">{{ card.status || 'Active' }}</span>
+            </div>
+            <div class="card-actions">
+              <img src="/assets/icons/gear.svg" alt="Settings" class="settings-icon" />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>-->
+    </div>
   </div>
 
   <!-- Bottom Section -->
-  <div class="bottom-section">
-    <div class="subscription-details">
+<div class="subscription-container mb-5" [ngClass]="{'rtl': direction === 'rtl'}">
+  <!-- Main Content -->
+  <div class="content">
+    <div class="header">
       <div>
-        <span class="progress-name">{{ 'owners.plan' | translate }}</span><br />
-        <span class="strong"> {{ subscription.plan }}</span>
+        <strong>{{ 'subscriptions.subscription_details.plan' | translate }}:</strong> {{ subscription.plan }}
       </div>
       <div>
-        <span class="progress-name">{{ 'owners.payment' | translate }}</span><br />
-        <span class="strong"> ${{ subscription.payment.toFixed(2) }} <small class="small">{{ 'owners.per_year' | translate }}</small> </span>
+        <strong>{{ 'subscriptions.subscription_details.payment' | translate }}:</strong> ${{ subscription.payment.toFixed(2) }} <span class="subtext">{{ 'owners.per_year' | translate }}</span>
       </div>
       <div>
-        <span class="progress-name">{{ 'owners.subscription_start_date' | translate }}</span><br />
-        <span class="strong"> {{ subscription.start }}</span>
+        <strong>{{ 'subscriptions.subscription_details.total_payment' | translate }}:</strong> ${{ subscription.payment.toFixed(2) }}
       </div>
       <div>
-        <span class="progress-name">{{ 'owners.subscription_end_date' | translate }}</span><br />
-        <span class="strong">  {{ subscription.end }}</span>
+        <strong>{{ 'subscriptions.subscription_details.start' | translate }}:</strong> {{ subscription.start }}
+      </div>
+      <div>
+        <strong>{{ 'subscriptions.subscription_details.end' | translate }}:</strong> {{ subscription.end }}
       </div>
       <div class="actions">
-        <a href="#" class="cancel-subscription">{{ 'owners.cancel_subscription' | translate }}</a>
-        <a href="#" class="upgrade">{{ 'owners.upgrade' | translate }}</a>
+        <button class="cancel" (click)="showCancelConfirmationPopup()">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</button>
+        <button class="upgrade" (click)="showUpgradePopup()">{{ 'subscriptions.subscription_details.upgrade' | translate }}</button>
       </div>
     </div>
 
-    <!-- Usage Stats -->
-    <div class="stats">
-      <div class="stat">
-        <p><img class="icon" src="assets/icons/person.svg" /> {{ 'owners.title' | translate }}</p>
-        <div class="bar"><div class="fill" [style.width.%]="(3/5)*100"></div></div>
-        <small>3 / 5</small>
+    <div class="usage-section">
+      <div class="usage-card">
+        <div>{{ 'owners.title' | translate }}</div>
+        <div class="bar">
+          <div class="progress" [style.width.%]="getProgress(3, 5)"></div>
+        </div>
+        <div>3 / 5</div>
       </div>
-      <div class="stat">
-        <p><img class="icon me-1" src="assets/icons/device.svg" />{{ 'owners.devices' | translate }}</p>
-        <div class="bar"><div class="fill" [style.width.%]="(4/8)*100"></div></div>
-        <small>4 / 8</small>
+
+      <div class="usage-card">
+        <div>{{ 'subscriptions.subscription_details.devices' | translate }}</div>
+        <div class="bar">
+          <div class="progress" [style.width.%]="getProgress(4, 8)"></div>
+        </div>
+        <div>4 / 8</div>
       </div>
-      <div class="stat">
-        <p><img class="icon me-1" src="assets/icons/visitor.svg" />{{ 'visitors.title' | translate }} <small>{{ 'owners.visitors_per_day' | translate }}</small></p>
-        <div class="bar"><div class="fill"></div></div>
-        <small>6 / 10</small>
+
+      <div class="usage-card">
+        <div>{{ 'visitors.title' | translate }} {{ 'owners.visitors_per_day' | translate }}</div>
+        <div class="bar">
+          <div class="progress" [style.width.%]="getProgress(6, 10)"></div>
+        </div>
+        <div>6 / 10</div>
       </div>
     </div>
   </div>
+</div>
 
 </div>
 
 <!--UNITS SECTION-->
 <!--All Units-->
-<div class="row">
-  <h2>{{ 'units.title' | translate }} <span>({{ownerDetails.units.length}})</span></h2>
+<div class="row" *ngIf="ownerDetails">
+  <h2>{{ 'units.title' | translate }} <span>({{ownerDetails.units?.length || 0}})</span></h2>
 
   <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let unit of ownerDetails.units">
 
@@ -172,3 +217,78 @@
     </ng-container>
   </div>
 </div>-->
+
+<!--UPGRADE SUBSCRIPTION POPUP-->
+<dx-popup [width]="500" [height]="400" [showTitle]="true" [title]="'subscriptions.subscription_details.upgrade_subscription' | translate" [dragEnabled]="true"
+          [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="upgradePopupVisible">
+  <dx-form #upgradeForm [formData]="upgradeData" [colCount]="1" [labelLocation]="'top'">
+    
+    <dxi-item dataField="subscriptionType" editorType="dxSelectBox" [editorOptions]="{
+          dataSource: subscriptionTypes,
+          placeholder: 'subscriptions.subscription_details.select_subscription_type' | translate,
+          valueExpr: 'id',
+          displayExpr: 'name'
+        }">
+      <dxo-label [text]="'subscriptions.subscription_type' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.subscription_type_required' | translate"></dxi-validation-rule>
+    </dxi-item>
+
+    <dxi-item dataField="startDate" editorType="dxDateBox" [editorOptions]="{
+          placeholder: 'subscriptions.start_date' | translate,
+          type: 'date',
+          displayFormat: 'yyyy-MM-dd'
+        }">
+      <dxo-label [text]="'subscriptions.start_date' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.start_date_required' | translate"></dxi-validation-rule>
+    </dxi-item>
+
+    <dxi-item dataField="numberOfMonths" editorType="dxNumberBox" [editorOptions]="{
+          placeholder: 'subscriptions.number_of_months' | translate,
+          min: 1,
+          max: 60,
+          showSpinButtons: true
+        }">
+      <dxo-label [text]="'subscriptions.number_of_months' | translate"></dxo-label>
+      <dxi-validation-rule type="required" [message]="'subscriptions.subscription_details.number_of_months_required' | translate"></dxi-validation-rule>
+      <dxi-validation-rule type="range" [min]="1" [max]="60" [message]="'subscriptions.subscription_details.number_of_months_range' | translate"></dxi-validation-rule>
+    </dxi-item>
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button 
+      [text]="isUpgrading ? ('subscriptions.subscription_details.upgrading' | translate) : ('subscriptions.subscription_details.submit' | translate)"
+      type="success" 
+      (onClick)="submitUpgrade()"
+      [disabled]="isUpgrading">
+    </dx-button>
+  </dxi-item>
+
+</dx-popup>
+
+<!-- Cancel Subscription Confirmation Popup -->
+<dx-popup [width]="500" [height]="300" [showTitle]="true" 
+          [title]="'subscriptions.subscription_details.cancel_subscription' | translate" 
+          [dragEnabled]="true" [hideOnOutsideClick]="true" 
+          [showCloseButton]="true" [(visible)]="cancelConfirmationPopupVisible">
+  <div class="popup-content p-4">
+   
+    <div class="text-center mb-4">
+      <h5 class="text-danger">{{ 'subscriptions.subscription_details.cancel_subscription' | translate }}</h5>
+      <p class="text-muted">{{ 'subscriptions.subscription_details.cancel_confirmation_message' | translate }}</p>
+    </div>
+    <div class="d-flex justify-content-center gap-3">
+      <dx-button 
+        [text]="isCancelling ? ('common.loading' | translate) : ('subscriptions.subscription_details.cancel_subscription' | translate)"
+        type="danger" 
+        (onClick)="confirmCancelSubscription()"
+        [disabled]="isCancelling">
+      </dx-button>
+      <dx-button 
+        [text]="'common.cancel' | translate" 
+        type="default" 
+        (onClick)="cancelConfirmationPopupVisible = false"
+        [disabled]="isCancelling">
+      </dx-button>
+    </div>
+  </div>
+</dx-popup>

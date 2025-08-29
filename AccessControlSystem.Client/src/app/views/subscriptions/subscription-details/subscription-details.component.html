@@ -109,13 +109,11 @@
 <div class="admins-container">
   <div class="admins-header">
     <div class="title">
-      <div class="title-content">
-        <div class="title-text">
-          <strong>{{ 'subscriptions.subscription_details.admins' | translate }}</strong>
-          <span class="count">({{ subscriptionAdmins.length }})</span>
-        </div>
-      </div>
-      <div class="title-subtitle">{{ 'subscriptions.subscription_details.manage_subscription_admins' | translate }}</div>
+      <strong>{{ 'subscriptions.subscription_details.admins' | translate }}</strong> <span class="count">({{ subscriptionAdmins.length }})</span>
+    </div>
+    <div class="actions">
+      <dx-button class="button-info me-1" [text]="'subscriptions.subscription_details.add_new_admin' | translate" (onClick)="showAddAdminPopup()">
+      </dx-button>
     </div>
   </div>
 
@@ -126,19 +124,19 @@
         <div class="village-name" (click)="navigateToAdminDetails(admin.id)">{{admin.userName || admin.name}}</div>
       </div>
 
-      <div class="card-info">
+      <div class="card-info" *ngIf="subscriptionAdmins?.length > 0">
         <div class="icon"><img src="/assets/icons/person.svg" /></div>
-        <div class="info">{{ 'users.email' | translate }}: </div>
+        <div class="info">{{ 'user.email' | translate }}: </div>
         <div class="info-value">{{admin.email}}</div>
       </div>
       <div class="card-info">
         <div class="icon"><img src="/assets/icons/device.svg" /></div>
-        <div class="info">{{ 'users.phone' | translate }}: </div>
+        <div class="info">{{ 'user.phone' | translate }}: </div>
         <div class="info-value">{{admin.phoneNumber || 'N/A'}}</div>
       </div>
       <div class="card-info">
         <div class="icon"><img src="/assets/icons/card-owner.svg" /></div>
-        <div class="info">{{ 'users.cards' | translate }}: </div>
+        <div class="info">{{ 'user.cards' | translate }}: </div>
         <div class="info-value">{{admin.cards?.length || 0}}</div>
       </div>
     </div>
@@ -302,6 +300,54 @@
       </dx-button>
     </div>
   </div>
+</dx-popup>
+
+<!-- Add Admin Popup -->
+<dx-popup [width]="600" [height]="500" [showTitle]="true" 
+          [title]="'subscriptions.subscription_details.add_new_admin' | translate" 
+          [dragEnabled]="true" [hideOnOutsideClick]="true" 
+          [showCloseButton]="true" [(visible)]="addAdminPopupVisible">
+  <dx-form #adminForm [formData]="adminData" [colCount]="1" [labelLocation]="'top'">
+
+    <dxi-item dataField="userName" [editorOptions]="{ placeholder: 'user.name_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'user.name_required' | translate">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="email" [editorOptions]="{ placeholder: 'user.email_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'user.email_required' | translate">
+      </dxi-validation-rule>
+      <dxi-validation-rule type="email" [message]="'user.email_format' | translate">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="password" [editorOptions]="{ placeholder: 'user.password_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'user.password_required' | translate">
+      </dxi-validation-rule>
+      <dxi-validation-rule type="stringLength" [min]="6" [message]="'user.password_min_length' | translate">
+      </dxi-validation-rule>
+      <dxi-validation-rule type="pattern" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]" [message]="'user.password_complexity' | translate">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+    <dxi-item dataField="phoneNumber" [editorOptions]="{ placeholder: 'user.phone_placeholder' | translate }">
+      <dxi-validation-rule type="required" [message]="'user.phone_required' | translate">
+      </dxi-validation-rule>
+      <dxo-label [visible]="false"> </dxo-label>
+    </dxi-item>
+
+  </dx-form>
+  <dxi-item itemType="button">
+    <dx-button 
+      [text]="isAddingAdmin ? ('common.loading' | translate) : ('subscriptions.subscription_details.add_new_admin' | translate)"
+      type="success" 
+      (onClick)="submitAdmin()"
+      [disabled]="isAddingAdmin">
+    </dx-button>
+  </dxi-item>
 </dx-popup>
 
 <!--Device Traffic Section-->

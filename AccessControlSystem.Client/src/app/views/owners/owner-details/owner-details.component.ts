@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Input, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
@@ -7,18 +7,61 @@ import { UserService } from '../../../services/users/user.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { LanguageService } from '../../../services/language/language.service';
 import notify from 'devextreme/ui/notify';
+import {
+  DxPopupModule,
+  DxButtonModule,
+  DxTemplateModule,
+  DxToolbarModule,
+  DxSelectBoxModule,
+  DxTextAreaModule,
+  DxDateBoxModule,
+  DxNumberBoxModule,
+  DxFormModule,
+} from 'devextreme-angular';
+import { DxFormComponent } from 'devextreme-angular';
 
 
 @Component({
   selector: 'app-owner-details',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [
+    CommonModule, 
+    TranslatePipe,
+    DxPopupModule,
+    DxButtonModule,
+    DxTemplateModule,
+    DxToolbarModule,
+    DxSelectBoxModule,
+    DxTextAreaModule,
+    DxDateBoxModule,
+    DxNumberBoxModule,
+    DxFormModule
+  ],
   templateUrl: './owner-details.component.html',
   styleUrl: './owner-details.component.scss'
 })
 export class OwnerDetailsComponent {
+  @ViewChild('upgradeForm', { static: false }) upgradeForm!: DxFormComponent;
+  
   groupDevices = new Array(5).fill({});
   allDevices = new Array(7).fill({});
+  
+  // Popup properties
+  upgradePopupVisible: boolean = false;
+  cancelConfirmationPopupVisible: boolean = false;
+  isCancelling: boolean = false;
+  isUpgrading: boolean = false;
+  
+  // Data for upgrade popup
+  upgradeData = {
+    id: 0,
+    subscriptionType: 0,
+    startDate: '',
+    numberOfMonths: 1
+  };
+  
+  // Subscription types for dropdown
+  subscriptionTypes: any[] = [];
 
   unit = {
     name: 'Unit name',
@@ -28,7 +71,7 @@ export class OwnerDetailsComponent {
     count:'3'
   };
 
-  cards = [
+  cards: any[] = [
     { name: 'Card Name', status: 'Active' },
     { name: 'Card Name', status: 'Active' },
     { name: 'Card Name', status: 'Disabled' }
@@ -88,11 +131,102 @@ export class OwnerDetailsComponent {
   closePopup() {
     this.selectedCard = null;
   }
-  backClicked() {
+  goBack() {
     this.location.back();
   }
   navigateToUnitDetailsPage(unitId: number) {
     this.router.navigate(['/unit-details'], { queryParams: { id: unitId } });
+  }
 
+  showUpgradePopup() {
+    this.upgradePopupVisible = true;
+    this.upgradeData = {
+      id: this.ownerId ? parseInt(this.ownerId) : 0,
+      subscriptionType: 0,
+      startDate: '',
+      numberOfMonths: 1
+    };
+  }
+
+  submitUpgrade() {
+    const result = this.upgradeForm.instance.validate();
+    if (!result.isValid) {
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
+      return;
+    }
+
+    this.isUpgrading = true;
+
+    const start = new Date(this.upgradeData.startDate);
+
+    if (isNaN(start.getTime())) {
+      notify('Invalid start date', 'error', 2000);
+      return;
+    }
+
+    const startFormatted = start.toISOString().split('T')[0];
+
+    this.upgradeData.startDate = startFormatted;
+
+    // TODO: Replace with actual service call
+    this.userService.postAction('Users/UpgradeSubscription', this.upgradeData as any).subscribe({
+      next: (response: any) => {
+        console.log('API Response received, setting isUpgrading to false');
+        this.isUpgrading = false;
+        if (response.succeeded) {
+          notify(this.languageService.translate('validation.subscription_updated'), 'success', 1500);
+          this.upgradePopupVisible = false;
+
+          // Refresh owner data
+          if (this.ownerId) {
+            this.getOwnerDetails(this.ownerId);
+          }
+        } else {
+          notify(response.message || this.languageService.translate('validation.subscription_update_error'), 'error', 2000);
+        }
+      },
+      error: (err) => {
+        console.log('API Error received, setting isUpgrading to false');
+        this.isUpgrading = false;
+        notify(this.languageService.translate('validation.subscription_update_error'), 'error', 2000);
+        console.error(err);
+      }
+    });
+  }
+
+  showCancelConfirmationPopup() {
+    this.cancelConfirmationPopupVisible = true;
+  }
+
+  confirmCancelSubscription() {
+    this.isCancelling = true;
+
+    console.log('Attempting to cancel subscription for owner ID:', this.ownerId);
+
+    // TODO: Replace with actual service call
+    this.userService.delete(`Users/CancelSubscription?id=${this.ownerId}`).subscribe({
+      next: (response: any) => {
+        this.isCancelling = false;
+        console.log('Cancel response:', response);
+        if (response.succeeded) {
+          notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancelled_successfully'), 'success', 2000);
+          this.cancelConfirmationPopupVisible = false;
+          // Navigate back to owners list
+          this.router.navigate(['/owners']);
+        } else {
+          notify(response.message || this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+        }
+      },
+      error: (err) => {
+        this.isCancelling = false;
+        console.error('Error cancelling subscription:', err);
+        notify(this.languageService.translate('subscriptions.subscription_details.subscription_cancel_error'), 'error', 2000);
+      }
+    });
+  }
+
+  getProgress(used: number, total: number): number {
+    if (total === 0) return 0;
+    return Math.round((used / total) * 100);
   }
 }
