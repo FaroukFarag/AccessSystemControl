@@ -66,6 +66,7 @@ import { DeviceService } from '../../../services/devices/device.service';
 export class SubscriptionDetailsComponent implements OnInit {
   @ViewChild(DxFormComponent, { static: false }) dxForm!: DxFormComponent;
   @ViewChild('upgradeForm', { static: false }) upgradeForm!: DxFormComponent;
+  @ViewChild('adminForm', { static: false }) adminForm!: DxFormComponent;
   id!: number;
   popupVisible: boolean = false;
   upgradePopupVisible: boolean = false;
@@ -97,6 +98,18 @@ export class SubscriptionDetailsComponent implements OnInit {
   };
 
   isUpgrading: boolean = false;
+  
+  // Admin popup properties
+  addAdminPopupVisible: boolean = false;
+  isAddingAdmin: boolean = false;
+  
+  // Admin form data
+  adminData = {
+    userName: '',
+    email: '',
+    password: '',
+    phoneNumber: ''
+  };
 
   subscriptionTypes = [
     {
@@ -179,7 +192,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
     this.getAllSites();
     this.getDevicesTraffic();
-    this.getAllSubscriptionAdmins();
+    this.getSubscriptionAdmins();
 
     // Load subscription data using getAll and filter client-side
     this.subscriptionsService.getById('Subscriptions/Get', this.id).subscribe({
@@ -257,8 +270,75 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   showAddAdminPopup() {
-    // TODO: Implement add admin popup functionality
-    notify(this.languageService.translate('subscriptions.subscription_details.add_admin_feature_coming_soon'), 'info', 3000);
+    this.addAdminPopupVisible = true;
+    this.resetAdminData();
+  }
+
+  resetAdminData() {
+    this.adminData = {
+      userName: '',
+      email: '',
+      password: '',
+      phoneNumber: ''
+    };
+  }
+
+
+
+  submitAdmin() {
+    const result = this.adminForm.instance.validate();
+    if (!result.isValid) {
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
+      return;
+    }
+
+    this.isAddingAdmin = true;
+
+    // Create admin payload
+    const adminPayload = {
+      userName: this.adminData.userName,
+      email: this.adminData.email,
+      password: this.adminData.password,
+      phoneNumber: this.adminData.phoneNumber,
+      roleId: 2,
+      subscriptionId: this.id
+    };
+
+    this.userService.create('Users/Create', adminPayload as any).subscribe({
+      next: (response: any) => {
+        this.isAddingAdmin = false;
+        if (response.succeeded) {
+          notify(this.languageService.translate('validation.admin_created'), 'success', 1500);
+          this.addAdminPopupVisible = false;
+          this.getSubscriptionAdmins();
+        } else {
+          notify(response.message || this.languageService.translate('validation.admin_creation_error'), 'error', 2000);
+        }
+      },
+      error: (err) => {
+        this.isAddingAdmin = false;
+        notify(this.languageService.translate('validation.admin_creation_error'), 'error', 2000);
+        console.error(err);
+      }
+    });
+  }
+
+  getSubscriptionAdmins() {
+    if (this.id) {
+      this.userService.getAll(`Users/GetAllSubscriptionAdmins`).subscribe({
+        next: (response: any) => {
+          if (response.succeeded) {
+            this.subscriptionAdmins = response.resultData || [];
+          } else {
+            this.subscriptionAdmins = [];
+          }
+        },
+        error: (err: any) => {
+          console.error('Error fetching subscription admins:', err);
+          this.subscriptionAdmins = [];
+        }
+      });
+    }
   }
   sanitizeImage(image: string) {
     return this.sanitizer.bypassSecurityTrustUrl(image);
@@ -532,23 +612,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     tryNextPostEndpoint();
   }
 
-  getAllSubscriptionAdmins() {
-    this.userService.getAll('Users/GetAllSubscriptionAdmins').subscribe({
-      next: (data: any) => {
-        if (data && data.resultData) {
-          this.subscriptionAdmins = data.resultData;
-          console.log(" this.subscriptionAdmins", this.subscriptionAdmins)
-        } else {
-          this.subscriptionAdmins = [];
-        }
-      },
-      error: (error) => {
-        console.error('Error loading subscription admins:', error);
-        this.subscriptionAdmins = [];
-        notify(this.languageService.translate('validation.error_loading_subscription_admins'), 'error', 3000);
-      }
-    });
-  }
+
 
   navigateToAdminDetails(adminId: number) {
     // Navigate to admin details page or show admin details popup
