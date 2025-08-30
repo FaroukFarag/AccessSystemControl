@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
 import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DeviceService } from '../../../services/devices/device.service';
 import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-device-details',
   standalone: true,
-  imports: [DxDataGridModule, TranslatePipe],
+  imports: [CommonModule, DxDataGridModule, TranslatePipe, BackButtonComponent],
   templateUrl: './device-details.component.html',
   styleUrl: './device-details.component.scss'
 })
@@ -22,7 +24,8 @@ export class DeviceDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private deviceService: DeviceService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private location: Location
   ) { }
 
 
@@ -61,5 +64,9 @@ export class DeviceDetailsComponent implements OnInit {
     this.deviceService.getAll('Devices/GetDevicesTraffic').subscribe((data: any) => {
       this.dataSource = data.resultData;
     })
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

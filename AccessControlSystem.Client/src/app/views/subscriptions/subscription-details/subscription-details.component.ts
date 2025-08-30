@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule, Location } from '@angular/common'
 import { SubscriptionService } from '../../../services/subscriptions/subscription.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { SidebarService } from '../../../services/sidebar/sidebar.service';
 import { LoaderService } from '../../../services/loader/loader.service';
 import { UserService } from '../../../services/users/user.service';
 import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 
 import {
   DxPopupModule,
@@ -45,7 +46,8 @@ import { DateUtilService } from '../../../services/shared/utils/date-util.servic
     DxDropDownButtonModule,
     DxFileUploaderModule,
     DxDataGridModule,
-    TranslatePipe],
+    TranslatePipe,
+    BackButtonComponent],
 
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss',
@@ -164,7 +166,8 @@ export class SubscriptionDetailsComponent implements OnInit {
     private languageService: LanguageService,
     private sidebarService: SidebarService,
     private loaderService: LoaderService,
-    private dateUtil: DateUtilService) {
+      private dateUtil: DateUtilService,
+      private location: Location) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -621,6 +624,10 @@ export class SubscriptionDetailsComponent implements OnInit {
     console.log('Navigate to admin details:', adminId);
     // You can implement navigation logic here based on your requirements
     // this.router.navigate(['/admin-details', adminId]);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

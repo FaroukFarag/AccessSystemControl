@@ -1,8 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule, Location } from '@angular/common'
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -40,7 +41,8 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
-    DxTagBoxModule], templateUrl: './units.component.html',
+    DxTagBoxModule,
+    BackButtonComponent], templateUrl: './units.component.html',
   styleUrl: './units.component.scss'
 })
 export class UnitsComponent implements OnInit {
@@ -102,7 +104,8 @@ export class UnitsComponent implements OnInit {
     private unitsService: UnitService,
     private accessGroupService: AccessGroupService,
     private sanitizer: DomSanitizer,
-    private languageService: LanguageService) {
+    private languageService: LanguageService,
+    private location: Location) {
     this.deviceTypeEditorOptions = {
       dataSource: this.subscriptionTypes,
       valueExpr: 'name',
@@ -295,6 +298,10 @@ export class UnitsComponent implements OnInit {
 
   onItemClick(e: DxDropDownButtonTypes.ItemClickEvent): void {
     this.getAllUnits(e.itemData);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

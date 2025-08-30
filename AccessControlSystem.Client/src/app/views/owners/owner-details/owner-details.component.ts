@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {Input, Output, EventEmitter } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/users/user.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { LanguageService } from '../../../services/language/language.service';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 import notify from 'devextreme/ui/notify';
 import {
   DxPopupModule,
@@ -36,7 +36,8 @@ import { DateUtilService } from '../../../services/shared/utils/date-util.servic
     DxTextAreaModule,
     DxDateBoxModule,
     DxNumberBoxModule,
-    DxFormModule
+    DxFormModule,
+    BackButtonComponent
   ],
   templateUrl: './owner-details.component.html',
   styleUrl: './owner-details.component.scss'

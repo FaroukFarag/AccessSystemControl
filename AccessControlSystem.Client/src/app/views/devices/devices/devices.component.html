@@ -1,7 +1,11 @@
 <div class="breadcrumb">
   <div class="breadcrumb-content">
     <div class="page-title">
-      <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
+      <app-back-button 
+        [direction]="direction" 
+        [marginLeft]="14"
+        (backClick)="goBack()">
+      </app-back-button>
       <h4>{{ 'devices.title' | translate }} <span class="devices-number">({{devicesList.length}})</span></h4>
     </div>
     <span class="breadcrumb-description">{{ 'devices.review_details' | translate }}</span>

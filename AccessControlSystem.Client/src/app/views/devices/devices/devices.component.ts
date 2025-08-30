@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule, Location } from '@angular/common'
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -39,7 +40,8 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
-    TranslatePipe
+    TranslatePipe,
+    BackButtonComponent
   ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',
@@ -105,7 +107,8 @@ export class DevicesComponent implements OnInit {
     private deviceService: DeviceService,
     private languageService: LanguageService,
     private sanitizer: DomSanitizer,
-    private accessGroupService: AccessGroupService,) {
+    private accessGroupService: AccessGroupService,
+    private location: Location) {
     this.deviceTypeEditorOptions = {
       dataSource: this.deviceTypes,
       valueExpr: 'id',
@@ -370,6 +373,10 @@ export class DevicesComponent implements OnInit {
   onAccessGroupItemClick(e: any): void {
     const selectedSortOption = e.itemData;
     this.getAllAccessGroups(selectedSortOption);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
 

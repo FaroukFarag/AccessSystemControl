@@ -137,7 +137,7 @@
   </div>
 
   <!--Manage Vistors POPUP-->
-  <dx-popup [width]="700" [height]="600" [showTitle]="true" [title]="'dashboard.manage_visitors' | translate"
+  <dx-popup [width]="700" [height]="600" [showTitle]="true" [title]="'dashboard.add_visitor' | translate"
             [dragEnabled]="true" [hideOnOutsideClick]="false" [showCloseButton]="true"
             [(visible)]="this.manageVistors_popupVisible">
     <dx-form #subscriptionFormRef [formData]="formModel" [colCount]="1" [labelLocation]="'top'">
@@ -171,7 +171,7 @@
     </dx-form>
 
     <dxi-item itemType="button">
-      <dx-button [text]="'devices.add_device' | translate" (onClick)="submitVistor()" [width]="'100%'"
+      <dx-button [text]="'dashboard.add_visitor' | translate" (onClick)="submitVistor()" [width]="'100%'"
                  type="success"></dx-button>
     </dxi-item>
 

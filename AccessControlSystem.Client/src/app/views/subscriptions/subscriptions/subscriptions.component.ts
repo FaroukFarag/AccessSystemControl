@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule, Location } from '@angular/common'
 import { Router } from '@angular/router';
 import {
   DxPopupModule,
@@ -20,6 +20,7 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { LanguageService } from '../../../services/language/language.service';
 import { LoaderService } from '../../../services/loader/loader.service';
 import { DateUtilService } from '../../../services/shared/utils/date-util.service';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 
 @Component({
   selector: 'app-subscriptions',
@@ -36,7 +37,8 @@ import { DateUtilService } from '../../../services/shared/utils/date-util.servic
     DxFormModule,
     DxDropDownButtonModule,
     DxFileUploaderModule,
-    TranslatePipe
+    TranslatePipe,
+    BackButtonComponent
   ],
   templateUrl: './subscriptions.component.html',
   styleUrl: './subscriptions.component.scss'
@@ -99,7 +101,8 @@ export class SubscriptionsComponent {
     private dateUtil: DateUtilService,
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
-    private loaderService: LoaderService) {
+    private loaderService: LoaderService,
+    private location : Location) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
       displayExpr: 'name',
@@ -197,6 +200,10 @@ export class SubscriptionsComponent {
     //notify(e.itemData.name || e.itemData, 'success', 600);
 
     this.getAllSubscriptions(e.itemData.value);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   navigateToDetailsPage(id: number) {
@@ -301,4 +308,9 @@ export class SubscriptionsComponent {
     return selectedDate >= today;
   }
 
+
+  back() {
+    console.log("Back clicked");
+    this.location.back();
+  }
 }
