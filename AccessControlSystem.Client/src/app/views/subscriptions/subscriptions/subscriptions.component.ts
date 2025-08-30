@@ -19,6 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { LanguageService } from '../../../services/language/language.service';
 import { LoaderService } from '../../../services/loader/loader.service';
+import { DateUtilService } from '../../../services/shared/utils/date-util.service';
 
 @Component({
   selector: 'app-subscriptions',
@@ -95,6 +96,7 @@ export class SubscriptionsComponent {
   constructor(
     private router: Router,
     private subscriptionsService: SubscriptionService,
+    private dateUtil: DateUtilService,
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
     private loaderService: LoaderService) {
@@ -239,16 +241,17 @@ export class SubscriptionsComponent {
       return;
     }
 
-    const startFormatted = start.toISOString().split('T')[0];
-    const endFormatted = end.toISOString().split('T')[0];
+    const startFormatted = this.dateUtil.formatDate(start);
+    const endFormatted = this.dateUtil.formatDate(end);
 
     console.log('Start Date:', startFormatted);
     console.log('End Date:', endFormatted);
 
 
     const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
+    
     this.subscriptionData.SubscriptionTypeName = selectedType?.name || '';
-    debugger
+    
     const formData = new FormData();
 
     formData.append('CustomerName', this.subscriptionData.CustomerName);

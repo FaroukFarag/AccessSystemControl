@@ -42,7 +42,7 @@ public class VisitorService(
                 {
                     var visitor = visitors.FirstOrDefault()!;
                     var updateExternalResponse = await _airfobUserService
-                        .UpdateUserAsync(_mapper.Map<UpdateUserRequest>(entityDto));
+                        .UpdateUserAsync(visitor.AirfobUserId, _mapper.Map<UpdateUserRequest>(entityDto));
 
                     if (!updateExternalResponse.Succeeded)
                         throw new InvalidOperationException("Failed to create visitor in external system");

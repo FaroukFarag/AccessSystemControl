@@ -27,6 +27,7 @@ import { DxDropDownButtonModule, DxDropDownButtonComponent, DxDropDownButtonType
 import notify from 'devextreme/ui/notify';
 import { DxFormComponent } from 'devextreme-angular';
 import { DeviceService } from '../../../services/devices/device.service';
+import { DateUtilService } from '../../../services/shared/utils/date-util.service';
 
 @Component({
   selector: 'app-subscription-details',
@@ -94,15 +95,15 @@ export class SubscriptionDetailsComponent implements OnInit {
     id: 0,
     subscriptionType: 0,
     startDate: '',
-    numberOfMonths: 1
+    monthNumber: 0
   };
 
   isUpgrading: boolean = false;
-  
+
   // Admin popup properties
   addAdminPopupVisible: boolean = false;
   isAddingAdmin: boolean = false;
-  
+
   // Admin form data
   adminData = {
     userName: '',
@@ -162,7 +163,8 @@ export class SubscriptionDetailsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
     private sidebarService: SidebarService,
-    private loaderService: LoaderService) {
+    private loaderService: LoaderService,
+    private dateUtil: DateUtilService) {
 
     this.deviceListEditorOptions = {
       dataSource: this.devicesList,
@@ -178,7 +180,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
 
-    this.loaderService.show(); 
+    this.loaderService.show();
 
     // Subscribe to sidebar state changes
     this.sidebarService.isOpen$.subscribe(isOpen => {
@@ -419,7 +421,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       id: this.id,
       subscriptionType: 0,
       startDate: '',
-      numberOfMonths: 1
+      monthNumber: 0
     };
   }
 
@@ -439,7 +441,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       return;
     }
 
-    const startFormatted = start.toISOString().split('T')[0];
+    const startFormatted = this.dateUtil.formatDate(start);
 
     this.upgradeData.startDate = startFormatted;
 

@@ -143,7 +143,7 @@
     <div class="devices-section">
       <div class="section-header">
         <h2 class="section-title">{{ 'dashboard.devices' | translate }}</h2>
-        <button class="view-all-btn">{{ 'common.view_all' | translate }}</button>
+        <button class="view-all-btn" (click)="navigateToDevices()">{{ 'common.view_all' | translate }}</button>
       </div>
       <div class="devices-table-container">
         <table class="devices-table">

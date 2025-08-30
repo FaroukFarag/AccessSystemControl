@@ -20,6 +20,12 @@ public class CardsController(ICardService service) :
         return Ok(await _service.EnableCardAsync(enableCardDto));
     }
 
+    [HttpPut("RegenerateCard")]
+    public virtual async Task<IActionResult> RegenerateCard(RegenerateCardDto regenerateCardDto)
+    {
+        return Ok(await _service.RegenerateCardAsync(regenerateCardDto));
+    }
+
     [HttpDelete("PauseCard")]
     public virtual async Task<IActionResult> PauseCard(PauseCardDto pauseCardDto)
     {

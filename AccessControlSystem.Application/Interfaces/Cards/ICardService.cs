@@ -11,4 +11,5 @@ public interface ICardService : IBaseService<CreateCardDto, CardDto, CardDto,
     Task<ResultDto<IEnumerable<GetUnitCardDto>>> GetUnitCardsAsync(int unitId);
     Task<ResultDto<bool>> PauseCardAsync(PauseCardDto pauseCardDto);
     Task<ResultDto<bool>> EnableCardAsync(EnableCardDto enableCardDto);
+    Task<ResultDto<bool>> RegenerateCardAsync(RegenerateCardDto regenerateCardDto);
 }

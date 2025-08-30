@@ -139,7 +139,7 @@ public class SubscriptionService(
     public async Task<ResultDto<SubscriptionDto>> UpgradeAsync(UpgradeSubscriptionDto upgradeSubscriptionDto)
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Update Subscription",
+            operationName: "Upgrade Subscription",
             action: async () =>
             {
                 var existingSubscriptionResult = await base.GetAsync(upgradeSubscriptionDto.Id);
@@ -147,12 +147,12 @@ public class SubscriptionService(
 
                 existingSubscription.SubscriptionType = upgradeSubscriptionDto.SubscriptionType;
                 existingSubscription.StartDate = upgradeSubscriptionDto.StartDate;
-                existingSubscription.EndDate = upgradeSubscriptionDto.EndDate;
+                existingSubscription.MonthNumber = upgradeSubscriptionDto.MonthNumber;
 
                 var updateResult = await base.UpdateAsync(existingSubscriptionResult.ResultData);
 
                 return updateResult.ResultData
-                    ?? throw new InvalidOperationException("Subscription update failed");
+                    ?? throw new InvalidOperationException("Subscription upgrade failed");
             });
     }
 

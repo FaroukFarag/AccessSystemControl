@@ -26,5 +26,18 @@ public class VisitorProfile : Profile
                     })
                 )
             );
+
+        CreateMap<CreateVisitorDto, UpdateUserRequest>()
+            .ForMember(des => des.AccessLevels, opt => opt
+                .MapFrom(src => src.Unit!.AccessGroups!
+                    .Select(ag => new UserAccessLevelRequest
+                    {
+                        StartDate = src.StartDate,
+                        EndDate = src.EndDate,
+                        AccessLevelId = ag.AirfobAccessLevelId,
+                        SiteId = src.SiteId
+                    })
+                )
+            );
     }
 }

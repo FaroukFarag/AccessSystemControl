@@ -19,6 +19,7 @@ import {
   DxFormModule,
 } from 'devextreme-angular';
 import { DxFormComponent } from 'devextreme-angular';
+import { DateUtilService } from '../../../services/shared/utils/date-util.service';
 
 
 @Component({
@@ -109,6 +110,7 @@ export class OwnerDetailsComponent {
   constructor(private location: Location,
     private route: ActivatedRoute,
     private userService: UserService,
+    private dateUtil: DateUtilService,
     private router: Router,
     private languageService: LanguageService,
 ) {
@@ -179,7 +181,7 @@ export class OwnerDetailsComponent {
       return;
     }
 
-    const startFormatted = start.toISOString().split('T')[0];
+    const startFormatted = this.dateUtil.formatDate(start);
 
     this.upgradeData.startDate = startFormatted;
 

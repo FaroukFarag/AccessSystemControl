@@ -45,10 +45,10 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
         return await _client.GetAsync<GetUserGroupsResponse>("v1/users/groups");
     }
 
-    public async Task<AirfobResponse<UpdateUserResponse>> UpdateUserAsync(UpdateUserRequest request)
+    public async Task<AirfobResponse<UpdateUserResponse>> UpdateUserAsync(int id, UpdateUserRequest request)
 
     {
-        return await _client.PatchAsync<UpdateUserRequest, UpdateUserResponse>("v1/users/suspend", request);
+        return await _client.PatchAsync<UpdateUserRequest, UpdateUserResponse>($"v1/users/{id}", request);
     }
 
     public async Task<AirfobResponse<SuspendUsersResponse>> SuspendUsersAsync(SuspendUsersRequest request)
@@ -59,6 +59,11 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
     public async Task<AirfobResponse<IEnumerable<ActivateUserResponse>>> ActivateUsersAsync(ActivateUsersRequest request)
     {
         return await _client.PostAsync<ActivateUsersRequest, IEnumerable<ActivateUserResponse>>("v1/users/activate", request);
+    }
+
+    public async Task<AirfobResponse<IEnumerable<ReactivateUserResponse>>> ReactivateUsersAsync(ReactivateUsersRequest request)
+    {
+        return await _client.PostAsync<ReactivateUsersRequest, IEnumerable<ReactivateUserResponse>>("v1/users/reactivate", request);
     }
 
     public async Task<AirfobResponse<int>> DeleteUserAsync(int id)

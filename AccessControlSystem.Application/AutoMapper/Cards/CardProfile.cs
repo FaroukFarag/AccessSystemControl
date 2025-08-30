@@ -41,5 +41,7 @@ public class CardProfile : Profile
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.cardType));
 
         CreateMap<EnableCardDto, ActivateUserRequest>();
+
+        CreateMap<RegenerateCardDto, ReactivateUserRequest>();
     }
 }

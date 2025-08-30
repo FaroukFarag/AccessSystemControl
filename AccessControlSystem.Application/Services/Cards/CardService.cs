@@ -126,6 +126,27 @@ public class CardService(
             });
     }
 
+    public async Task<ResultDto<bool>> RegenerateCardAsync(RegenerateCardDto regenerateCardDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Regenerate Card",
+            action: async () =>
+            {
+                var response = await _airfobUserService.ReactivateUsersAsync(new ReactivateUsersRequest
+                {
+                    Users = [_mapper.Map<ReactivateUserRequest>(regenerateCardDto)]
+                });
+
+                if (!response.Succeeded || response.ResultData == null ||
+                    !response.ResultData.Any())
+                {
+                    throw new InvalidOperationException("Failed to create card in external system");
+                }
+
+                return true;
+            });
+    }
+
     public async override Task<ResultDto<CardDto>> DeleteAsync(int id)
     {
         return await ExecuteServiceCallAsync(

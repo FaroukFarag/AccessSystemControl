@@ -1,6 +1,6 @@
 ﻿namespace AccessControlSystem.Application.Dtos.Cards;
 
-public class EnableCardDto
+public class RegenerateCardDto
 {
     public int UserId { get; set; }
     public string Mobile { get; set; } = default!;

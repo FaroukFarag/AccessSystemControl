@@ -20,6 +20,7 @@ import {
   DxFormModule,
   DxFileUploaderModule,
 } from 'devextreme-angular';
+import { DateUtilService } from '../../../services/shared/utils/date-util.service';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -95,6 +96,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private subscriptionsService: SubscriptionService,
     private userService: UserService,
+    private dateUtil: DateUtilService,
     private sanitizer: DomSanitizer) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
@@ -177,6 +179,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/subscriptions']);
   }
 
+  navigateToDevices() {
+    this.router.navigate(['/devices']);
+  }
+
   navigateToDetailsPage(id: number) {
     this.router.navigate(['/subscription-details', id]);
   }
@@ -255,8 +261,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const startFormatted = start.toISOString().split('T')[0];
-    const endFormatted = end.toISOString().split('T')[0];
+    const startFormatted = this.dateUtil.formatDate(start);
+    const endFormatted = this.dateUtil.formatDate(end);;
 
     console.log('Start Date:', startFormatted);
     console.log('End Date:', endFormatted);

@@ -152,22 +152,28 @@ export class OwnerDashboardComponent implements OnInit {
 
     this.baseService.create('Visitors/Create', payload).subscribe({
       next: (res) => {
-        this.manageVistors_popupVisible = false;
-        notify('Visitor created successfully', 'success', 2000);
-        // Reset form
-        this.formModel = {
-          name: '',
-          mobile: '',
-          siteId: 0,
-          email: '',
-          startDate: new Date(),
-          endDate: new Date(),
-          notes: '',
-          unit: this.ownerDetails?.unit,
-          subscriptionId: this.formModel.subscriptionId
-        };
-        // Refresh visitors list
-        this.getVisitorsDetails();
+        if (res.succeeded) {
+          this.manageVistors_popupVisible = false;
+          notify('Visitor created successfully', 'success', 2000);
+          // Reset form
+          this.formModel = {
+            name: '',
+            mobile: '',
+            siteId: 0,
+            email: '',
+            startDate: new Date(),
+            endDate: new Date(),
+            notes: '',
+            unit: this.ownerDetails?.unit,
+            subscriptionId: this.formModel.subscriptionId
+          };
+          // Refresh visitors list
+          this.getVisitorsDetails();
+        }
+
+        else {
+          notify('Error creating visitor: ' + (res.message), 'error', 3000);
+        }
       },
       error: (err) => {
         console.error('Error creating visitor:', err);
@@ -282,7 +288,6 @@ export class OwnerDashboardComponent implements OnInit {
   // Confirm pause visit
   confirmPauseVisit() {
     if (this.selectedVisitor) {
-      debugger
       // Make API call to delete the visitor
       console.log('Deleting visitor via pause button:', this.selectedVisitor.row.data);
       console.log('Visitor ID being used:', this.selectedVisitor.row.data.id);
