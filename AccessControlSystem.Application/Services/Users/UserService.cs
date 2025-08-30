@@ -6,6 +6,7 @@ using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Common.Extensions;
 using AccessControlSystem.Common.Tokens.Interfaces;
+using AccessControlSystem.Domain.Enums.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
 using AccessControlSystem.Domain.Models.AccessGroupUnits;
@@ -154,6 +155,27 @@ public class UserService(
                 var spec = new BaseSpecification<User>
                 {
                     Criteria = u => userIds.Contains(u.Id)
+                };
+
+                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+
+                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+            });
+    }
+
+    public async Task<ResultDto<IEnumerable<UserDto>>> GetUnassignedOwnersAsync()
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get Unassigned Owners",
+            action: async () =>
+            {
+                var role = await _roleManager.FindByIdAsync(RoleNames.Owner.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                var userIds = usersInRole.Select(u => u.Id).ToList();
+                var spec = new BaseSpecification<User>
+                {
+                    Criteria = u => userIds.Contains(u.Id) && !u.UnitId.HasValue
                 };
 
                 var usersWithIncludes = await _userRepository.GetAllAsync(spec);

@@ -124,7 +124,7 @@ export class UnitDetailsComponent {
   }
 
   getAllOwners() {
-    this.userService.getAll('Users/GetAllOwners').subscribe((data: any) => {
+    this.userService.getAll('Users/GetUnassignedOwners').subscribe((data: any) => {
       this.ownersList = data.resultData;
       console.log("subscriptionssList", this.ownersList);
     })

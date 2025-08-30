@@ -10,6 +10,7 @@ public interface IUserService : IBaseService<UserDto, UserDto, UserDto, UserDto,
 {
     Task<ResultDto<UserDto>> GetUserByRoleAsync(int userId, int roleId);
     Task<ResultDto<IEnumerable<UserDto>>> GetAllUsersByRoleAsync(int roleId);
+    Task<ResultDto<IEnumerable<UserDto>>> GetUnassignedOwnersAsync();
     Task<ResultDto<IEnumerable<UserDto>>> GetAllUsersByRoleAsync(int roleId, string orderBy);
     Task<ResultDto<LoggedInDto>> LoginAsync(LoginDto model);
     Task<ResultDto<bool>> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
