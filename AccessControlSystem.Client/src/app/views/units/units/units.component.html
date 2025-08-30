@@ -1,6 +1,10 @@
 <div class="breadcrumb mb-5">
   <div class="page-title">
-    <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
+    <app-back-button 
+      [direction]="direction" 
+      [marginLeft]="14"
+      (backClick)="goBack()">
+    </app-back-button>
     <h4>{{ 'units.title' | translate }}</h4>
   </div>
   <span>{{ 'units.review_details' | translate }}</span>

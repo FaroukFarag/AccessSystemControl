@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'
+import { CommonModule, Location } from '@angular/common'
 import { Router, ActivatedRoute } from '@angular/router';
 import { LanguageService } from '../../../services/language/language.service';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
 import {
   DxPopupModule,
   DxButtonModule,
@@ -19,7 +20,6 @@ import { DxDropDownButtonModule, DxDropDownButtonTypes } from 'devextreme-angula
 import notify from 'devextreme/ui/notify';
 import { UserService } from '../../../services/users/user.service';
 import { User } from '../../../models/users/user';
-import { Location } from '@angular/common';
 import { AccessGroupService } from '../../../services/access-groups/access-group.service';
 @Component({
   selector: 'app-owners',
@@ -34,7 +34,8 @@ import { AccessGroupService } from '../../../services/access-groups/access-group
     DxDateBoxModule,
     DxFormModule,
     DxDropDownButtonModule,
-    TranslatePipe],
+    TranslatePipe,
+    BackButtonComponent],
   templateUrl: './owners.component.html',
   styleUrl: './owners.component.scss'
 })
@@ -86,7 +87,7 @@ export class OwnersComponent implements OnInit {
       }
     });
   }
-  backClicked() {
+  goBack() {
     this.location.back();
   }
 

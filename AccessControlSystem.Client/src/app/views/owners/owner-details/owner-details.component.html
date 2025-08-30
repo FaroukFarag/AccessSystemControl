@@ -1,11 +1,10 @@
 <div class="breadcrumb mb-5">
-  <div class="page-title" (click)="goBack()">
-    <svg *ngIf="direction === 'ltr'" width="10" height="15" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0.759419 12.724L11.9054 23.344C12.0914 23.5213 12.3385 23.6202 12.5954 23.6202C12.8524 23.6202 13.0994 23.5213 13.2854 23.344L13.2974 23.332C13.3879 23.246 13.4599 23.1426 13.5092 23.0279C13.5584 22.9133 13.5838 22.7898 13.5838 22.665C13.5838 22.5402 13.5584 22.4167 13.5092 22.3021C13.4599 22.1874 13.3879 22.0839 13.2974 21.998L2.80142 11.998L13.2974 2.00199C13.3879 1.91604 13.4599 1.81259 13.5092 1.69792C13.5584 1.58326 13.5838 1.45977 13.5838 1.33499C13.5838 1.2102 13.5584 1.08672 13.5092 0.972054C13.4599 0.857388 13.3879 0.753935 13.2974 0.667988L13.2854 0.655987C13.0994 0.478697 12.8524 0.379795 12.5954 0.379795C12.3385 0.379795 12.0914 0.478697 11.9054 0.655987L0.759419 11.276C0.661395 11.3694 0.583357 11.4817 0.530035 11.6062C0.476714 11.7306 0.449219 11.8646 0.449219 12C0.449219 12.1354 0.476714 12.2694 0.530035 12.3938C0.583357 12.5183 0.661395 12.6306 0.759419 12.724Z" fill="black"/>
-    </svg>
-    <svg *ngIf="direction === 'rtl'" width="10" height="15" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M13.2406 12.724L2.0946 23.344C1.9086 23.5213 1.6615 23.6202 1.4046 23.6202C1.1476 23.6202 0.9006 23.5213 0.7146 23.344L0.7026 23.332C0.6121 23.246 0.5401 23.1426 0.4908 23.0279C0.4416 22.9133 0.4162 22.7898 0.4162 22.665C0.4162 22.5402 0.4416 22.4167 0.4908 22.3021C0.5401 22.1874 0.6121 22.0839 0.7026 21.998L11.1986 11.998L0.7026 2.00199C0.6121 1.91604 0.5401 1.81259 0.4908 1.69792C0.4416 1.58326 0.4162 1.45977 0.4162 1.33499C0.4162 1.2102 0.4416 1.08672 0.4908 0.972054C0.5401 0.857388 0.6121 0.753935 0.7026 0.667988L0.7146 0.655987C0.9006 0.478697 1.1476 0.379795 1.4046 0.379795C1.6615 0.379795 1.9086 0.478697 2.0946 0.655987L13.2406 11.276C13.3386 11.3694 13.4166 11.4817 13.47 11.6062C13.5233 11.7306 13.5508 11.8646 13.5508 12C13.5508 12.1354 13.5233 12.2694 13.47 12.3938C13.4166 12.5183 13.3386 12.6306 13.2406 12.724Z" fill="black"/>
-    </svg>
+  <div class="page-title">
+    <app-back-button 
+      [direction]="direction" 
+      [marginLeft]="14"
+      (backClick)="goBack()">
+    </app-back-button>
     <h4>{{ 'owners.owner_details_title' | translate }}</h4>
   </div>
   <span>{{ 'owners.review_unit_details' | translate }}</span>
@@ -75,7 +74,6 @@
 
   <!-- Bottom Section -->
 <div class="subscription-container mb-5" [ngClass]="{'rtl': direction === 'rtl'}">
-  <!-- Main Content -->
   <div class="content">
     <div class="header">
       <div>
@@ -220,12 +218,12 @@
 </div>-->
 
 <!--UPGRADE SUBSCRIPTION POPUP-->
-<dx-popup width="35%" [height]="400" [showTitle]="true" [title]="'subscriptions.subscription_details.upgrade_subscription' | translate" [dragEnabled]="true"
+<dx-popup [width]="500" [height]="400" [showTitle]="true" [title]="'subscriptions.subscription_details.upgrade_subscription' | translate" [dragEnabled]="true"
           [hideOnOutsideClick]="true" [showCloseButton]="true" [(visible)]="upgradePopupVisible">
   <dx-form #upgradeForm [formData]="upgradeData" [colCount]="1" [labelLocation]="'top'">
     
     <dxi-item dataField="subscriptionType" editorType="dxSelectBox" [editorOptions]="{
-          dataSource: subscriptionTypes ? subscriptionTypes : [],
+          dataSource: subscriptionTypes,
           placeholder: 'subscriptions.subscription_details.select_subscription_type' | translate,
           valueExpr: 'id',
           displayExpr: 'name'
@@ -266,37 +264,8 @@
 
 </dx-popup>
 
-<!-- Card Settings Popup -->
-<dx-popup width="35%" [height]="300" [showTitle]="true" 
-          [title]="cardSettingsPopupTitle" 
-          [dragEnabled]="true" [hideOnOutsideClick]="true" 
-          [showCloseButton]="true" [(visible)]="cardSettingsPopupVisible">
-  <div class="popup-content p-4">
-    <div class="text-center mb-4">
-      <p class="text-muted">{{ 'owners.choose_card_action' | translate }}</p>
-    </div>
-    <div class="d-flex justify-content-center gap-3">
-      <dx-button 
-        [text]="'owners.regenerate' | translate"
-        type="success" 
-        (onClick)="regenerateCard()">
-      </dx-button>
-      <dx-button 
-        [text]="selectedCard?.status?.toLowerCase() === 'active' ? ('owners.pause' | translate) : ('owners.enable' | translate)"
-        type="default" 
-        (onClick)="selectedCard?.status?.toLowerCase() === 'active' ? pauseCard() : enableCard()">
-      </dx-button>
-      <dx-button 
-        [text]="'owners.delete' | translate"
-        type="default" 
-        (onClick)="deleteCard()">
-      </dx-button>
-    </div>
-  </div>
-</dx-popup>
-
 <!-- Cancel Subscription Confirmation Popup -->
-<dx-popup width="35%" [height]="300" [showTitle]="true" 
+<dx-popup [width]="500" [height]="300" [showTitle]="true" 
           [title]="'subscriptions.subscription_details.cancel_subscription' | translate" 
           [dragEnabled]="true" [hideOnOutsideClick]="true" 
           [showCloseButton]="true" [(visible)]="cancelConfirmationPopupVisible">

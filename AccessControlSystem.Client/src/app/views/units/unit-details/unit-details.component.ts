@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
 import { UnitService } from '../../../services/units/unit.service';
 import notify from 'devextreme/ui/notify';
 import {
@@ -12,9 +13,10 @@ import {
   DxFormModule,
 } from 'devextreme-angular';
 import { UserService } from '../../../services/users/user.service';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { BackButtonComponent } from '../../../shared/components/back-button/back-button.component';
+import { LanguageService } from '../../../services/language/language.service';
 
 @Component({
   selector: 'app-unit-details',
@@ -29,7 +31,8 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
     DxSelectBoxModule,
     DxTextAreaModule,
     DxFormModule,
-    TranslatePipe],
+    TranslatePipe,
+    BackButtonComponent],
   templateUrl: './unit-details.component.html',
   styleUrl: './unit-details.component.scss'
 })
@@ -51,14 +54,21 @@ export class UnitDetailsComponent {
   selectedScheduleId: string = '';
   userRole: any;
   formSubmitted = false;
+  direction: 'ltr' | 'rtl' = 'ltr';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private unitsService: UnitService,
     private userService: UserService,
+    private location: Location,
+    private languageService: LanguageService,
   ) { }
   ngOnInit() {
+    // Subscribe to direction changes
+    this.languageService.direction$.subscribe(direction => {
+      this.direction = direction;
+    });
 
     this.getAllSites();
     this.getAllSchedules();
@@ -166,5 +176,9 @@ export class UnitDetailsComponent {
   navigateToAssignedOwners(groupId: number) {
     // Navigate to owners page with group filter
     this.router.navigate(['/owners'], { queryParams: { groupId: groupId } });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

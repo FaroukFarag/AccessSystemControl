@@ -1,6 +1,10 @@
 <div class="breadcrumb mb-5">
-  <div class="page-title" (click)="backClicked()">
-    <img [src]="direction === 'rtl' ? '/assets/icons/forward-arrow.svg' : '/assets/icons/back-arrow.svg'" alt="Back Button" />
+  <div class="page-title">
+    <app-back-button 
+      [direction]="direction" 
+      [marginLeft]="14"
+      (backClick)="goBack()">
+    </app-back-button>
     <h4>
       <span *ngIf="isFilteredByGroup">{{ 'owners.assigned_owners' | translate }} - {{ groupName }}</span>
       <span *ngIf="!isFilteredByGroup">{{ 'owners.title' | translate }}</span>
