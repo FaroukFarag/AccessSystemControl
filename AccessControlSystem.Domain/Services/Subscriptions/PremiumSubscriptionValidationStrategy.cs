@@ -9,6 +9,6 @@ public class PremiumSubscriptionValidationStrategy : ISubscriptionValidationStra
 
     public bool IsValid(int number)
     {
-        return number >= 1 && number > 20;
+        return number > 20;
     }
 }

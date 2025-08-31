@@ -17,7 +17,7 @@ public class SubscriptionProfile : Profile
                 .MapFrom<BaseModelImageDtoUrlResolver>())
             .ForMember(des => des.UsedAdmins, opt => opt
                 .MapFrom(src => src.Users.Count(u => u.UserRoles
-                    .Any(ur => ur.RoleId == (int)RoleNames.Admin))))
+                    .Any(ur => ur.RoleId == (int)RoleNames.SubscriptionAdmin))))
             .ForMember(des => des.UsedDevices, opt => opt
                 .MapFrom(src => src.Devices.Count()))
             .ForMember(des => des.UsedCards, opt => opt

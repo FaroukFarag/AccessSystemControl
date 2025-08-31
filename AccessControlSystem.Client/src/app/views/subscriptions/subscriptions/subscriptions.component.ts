@@ -102,7 +102,7 @@ export class SubscriptionsComponent {
     private sanitizer: DomSanitizer,
     private languageService: LanguageService,
     private loaderService: LoaderService,
-    private location : Location) {
+    private location: Location) {
     this.subscriptionTypeEditorOptions = {
       valueExpr: 'id',
       displayExpr: 'name',
@@ -117,7 +117,7 @@ export class SubscriptionsComponent {
     this.languageService.direction$.subscribe(direction => {
       this.direction = direction;
     });
-    
+
     this.getAllSubscriptions();
   }
 
@@ -139,7 +139,7 @@ export class SubscriptionsComponent {
   showAddSubscriptionPopup() {
     // Reset file uploader value to force re-render
     this.fileUploaderValue = [];
-    
+
     this.subscriptionData = {
       SubscriptionImageFile: null,
       SubscriptionImageUrl: '',
@@ -256,9 +256,9 @@ export class SubscriptionsComponent {
 
 
     const selectedType = this.subscriptionTypes.find(t => t.id === Number(this.subscriptionData.SubscriptionType));
-    
+
     this.subscriptionData.SubscriptionTypeName = selectedType?.name || '';
-    
+
     const formData = new FormData();
 
     formData.append('CustomerName', this.subscriptionData.CustomerName);
@@ -283,10 +283,16 @@ export class SubscriptionsComponent {
 
 
     this.subscriptionsService.create('Subscriptions/Create', formData as any).subscribe({
-      next: (response) => {
-        notify(this.languageService.translate('messages.success.subscription_created'), 'success', 1500);
-        this.popupVisible = false;
-        this.getAllSubscriptions();
+      next: (response: any) => {
+        if (response.succeeded) {
+          notify(this.languageService.translate('messages.success.subscription_created'), 'success', 1500);
+          this.popupVisible = false;
+          this.getAllSubscriptions();
+        }
+
+        else {
+          notify(response.message, 'error', 2000);
+        }
       },
       error: (err) => {
         if (err && err.error && err.error.errors) {

@@ -163,6 +163,27 @@ public class UserService(
             });
     }
 
+    public async Task<ResultDto<IEnumerable<UserDto>>> GetAllSubscriptionUsersByRoleAsync(int subscriptionId, int roleId)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Users by Role",
+            action: async () =>
+            {
+                var role = await _roleManager.FindByIdAsync(roleId.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                var userIds = usersInRole.Select(u => u.Id).ToList();
+                var spec = new BaseSpecification<User>
+                {
+                    Criteria = u => userIds.Contains(u.Id) && u.SubscriptionId == subscriptionId
+                };
+
+                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+
+                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+            });
+    }
+
     public async Task<ResultDto<IEnumerable<UserDto>>> GetUnassignedOwnersAsync()
     {
         return await ExecuteServiceCallAsync(
@@ -197,6 +218,29 @@ public class UserService(
                 var spec = new BaseSpecification<User>
                 {
                     Criteria = u => userIds.Contains(u.Id)
+                };
+
+                _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);
+
+                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+
+                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+            });
+    }
+
+    public async Task<ResultDto<IEnumerable<UserDto>>> GetAllSubscriptionUsersByRoleAsync(int subscriptionId, int roleId, string orderBy = "Recent")
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Get All Users by Role",
+            action: async () =>
+            {
+                var role = await _roleManager.FindByIdAsync(roleId.ToString())
+                    ?? throw new InvalidOperationException("Role not found");
+                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+                var userIds = usersInRole.Select(u => u.Id).ToList();
+                var spec = new BaseSpecification<User>
+                {
+                    Criteria = u => userIds.Contains(u.Id) && u.SubscriptionId == subscriptionId
                 };
 
                 _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);

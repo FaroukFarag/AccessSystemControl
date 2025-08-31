@@ -330,7 +330,7 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   getSubscriptionAdmins() {
     if (this.id) {
-      this.userService.getAll(`Users/GetAllSubscriptionAdmins`).subscribe({
+      this.userService.getAll(`Users/GetSubscriptionAdmins?subscriptionId=${this.id}`).subscribe({
         next: (response: any) => {
           if (response.succeeded) {
             this.subscriptionAdmins = response.resultData || [];
