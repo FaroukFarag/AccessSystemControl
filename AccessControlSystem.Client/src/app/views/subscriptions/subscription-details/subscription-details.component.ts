@@ -253,7 +253,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   getDevicesTraffic() {
-    this.deviceService.getAll(`Devices/GetDevicesTraffic`).subscribe((data: any) => {
+    this.deviceService.getAll(`Devices/GetDevicesTraffic?subscriptionId=${this.id}`).subscribe((data: any) => {
       if (data.succeeded) {
         this.dataSource = data.resultData
       }

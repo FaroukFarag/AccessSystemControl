@@ -190,7 +190,8 @@ public class UserService(
             operationName: "Get Unassigned Owners",
             action: async () =>
             {
-                var role = await _roleManager.FindByIdAsync(RoleNames.Owner.ToString())
+                var roleId = (int)RoleNames.Owner;
+                var role = await _roleManager.FindByIdAsync(roleId.ToString())
                     ?? throw new InvalidOperationException("Role not found");
                 var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
                 var userIds = usersInRole.Select(u => u.Id).ToList();

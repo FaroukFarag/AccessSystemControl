@@ -6,24 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccessControlSystem.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ModifyTables : Migration
+    public partial class CreateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AccessGroups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AccessGroups", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -45,14 +32,18 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SubscriptionType = table.Column<int>(type: "int", nullable: false),
+                    AdminNumber = table.Column<int>(type: "int", nullable: false),
                     DeviceNumber = table.Column<int>(type: "int", nullable: false),
-                    PaymentPerMonth = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CardNumber = table.Column<int>(type: "int", nullable: false),
+                    MonthNumber = table.Column<int>(type: "int", nullable: false),
+                    PaymentPerMonth = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,12 +72,94 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Devices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Serial = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MacAddress = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DeviceType = table.Column<int>(type: "int", nullable: false),
+                    AirfobDeviceId = table.Column<int>(type: "int", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Devices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Devices_Subscriptions_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    Area = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: false),
+                    CardNumber = table.Column<int>(type: "int", nullable: false),
+                    AssignedOwner = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Units_Subscriptions_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Visitors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AirfobUserId = table.Column<int>(type: "int", nullable: false),
+                    SiteId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Visitors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Visitors_Subscriptions_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SubscriptionId = table.Column<int>(type: "int", nullable: true),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false),
+                    UnitId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -110,45 +183,59 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         column: x => x.SubscriptionId,
                         principalTable: "Subscriptions",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Card",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubscriptionId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Card", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Card_Subscriptions_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalTable: "Subscriptions",
+                        name: "FK_AspNetUsers_Units_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Units",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Devices",
+                name: "Cards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UnitId = table.Column<int>(type: "int", nullable: false),
+                    AirfobUserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cards_Subscriptions_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Cards_Units_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Units",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessGroups",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    MacAddress = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DeviceType = table.Column<int>(type: "int", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    SubscriptionId = table.Column<int>(type: "int", nullable: true)
+                    AirfobAccessLevelId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Devices", x => x.Id);
+                    table.PrimaryKey("PK_AccessGroups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Devices_Subscriptions_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalTable: "Subscriptions",
+                        name: "FK_AccessGroups_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
@@ -238,41 +325,13 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Units",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Area = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Units", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Units_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Units_Subscriptions_SubscriptionId",
-                        column: x => x.SubscriptionId,
-                        principalTable: "Subscriptions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AccessGroupDevices",
                 columns: table => new
                 {
                     AccessGroupId = table.Column<int>(type: "int", nullable: false),
-                    DeviceId = table.Column<int>(type: "int", nullable: false)
+                    DeviceId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -291,10 +350,75 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AccessGroupUnits",
+                columns: table => new
+                {
+                    AccessGroupId = table.Column<int>(type: "int", nullable: false),
+                    UnitId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessGroupUnits", x => new { x.AccessGroupId, x.UnitId });
+                    table.ForeignKey(
+                        name: "FK_AccessGroupUnits_AccessGroups_AccessGroupId",
+                        column: x => x.AccessGroupId,
+                        principalTable: "AccessGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccessGroupUnits_Units_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Units",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessGroupVisitor",
+                columns: table => new
+                {
+                    AccessGroupsId = table.Column<int>(type: "int", nullable: false),
+                    VisitorsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessGroupVisitor", x => new { x.AccessGroupsId, x.VisitorsId });
+                    table.ForeignKey(
+                        name: "FK_AccessGroupVisitor_AccessGroups_AccessGroupsId",
+                        column: x => x.AccessGroupsId,
+                        principalTable: "AccessGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccessGroupVisitor_Visitors_VisitorsId",
+                        column: x => x.VisitorsId,
+                        principalTable: "Visitors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AccessGroupDevices_DeviceId",
                 table: "AccessGroupDevices",
                 column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessGroups_UserId",
+                table: "AccessGroups",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessGroupUnits_UnitId",
+                table: "AccessGroupUnits",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccessGroupVisitor_VisitorsId",
+                table: "AccessGroupVisitor",
+                column: "VisitorsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -334,6 +458,11 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_UnitId",
+                table: "AspNetUsers",
+                column: "UnitId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -341,9 +470,14 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Card_SubscriptionId",
-                table: "Card",
+                name: "IX_Cards_SubscriptionId",
+                table: "Cards",
                 column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cards_UnitId",
+                table: "Cards",
+                column: "UnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_SubscriptionId",
@@ -356,9 +490,9 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Units_UserId",
-                table: "Units",
-                column: "UserId");
+                name: "IX_Visitors_SubscriptionId",
+                table: "Visitors",
+                column: "SubscriptionId");
         }
 
         /// <inheritdoc />
@@ -366,6 +500,12 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AccessGroupDevices");
+
+            migrationBuilder.DropTable(
+                name: "AccessGroupUnits");
+
+            migrationBuilder.DropTable(
+                name: "AccessGroupVisitor");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -383,22 +523,25 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Card");
+                name: "Cards");
 
             migrationBuilder.DropTable(
-                name: "Units");
+                name: "Devices");
 
             migrationBuilder.DropTable(
                 name: "AccessGroups");
 
             migrationBuilder.DropTable(
-                name: "Devices");
+                name: "Visitors");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "Subscriptions");

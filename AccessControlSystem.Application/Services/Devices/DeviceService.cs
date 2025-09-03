@@ -105,7 +105,7 @@ public class DeviceService(
             });
     }
 
-    public async Task<ResultDto<IEnumerable<DeviceTrafficDto>>> GetDevicesTrafficAsync()
+    public async Task<ResultDto<IEnumerable<DeviceTrafficDto>>> GetDevicesTrafficAsync(int subscriptionId)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Get Available Devices for Access Group",
@@ -120,7 +120,7 @@ public class DeviceService(
                 var airfobDeviceSerials = airfobDevicesLog.Select(l => l.DeviceSerial).ToHashSet();
                 var devices = await _repository.GetAllAsync(new BaseSpecification<Device>
                 {
-                    Criteria = d => airfobDeviceSerials.Contains(d.Serial)
+                    Criteria = d => airfobDeviceSerials.Contains(d.Serial) && d.SubscriptionId == subscriptionId
                 });
                 var trafficList = (from log in airfobDevicesLog
                                    join device in devices

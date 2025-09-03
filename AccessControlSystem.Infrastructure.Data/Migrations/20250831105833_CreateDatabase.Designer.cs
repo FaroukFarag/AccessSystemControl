@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessControlSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AccessControlDbContext))]
-    [Migration("20250825175839_ModifyCard")]
-    partial class ModifyCard
+    [Migration("20250831105833_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

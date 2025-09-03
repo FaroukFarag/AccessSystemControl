@@ -10,7 +10,7 @@ public interface IDeviceService : IBaseService<DeviceDto, DeviceDto, DeviceDto,
 {
     Task<ResultDto<IEnumerable<DeviceDto>>> GetAllAsync(string orderBy);
     Task<ResultDto<IEnumerable<DeviceDto>>> GetAvailableDevicesForAccessGroupAsync(int accessGroupId);
-    Task<ResultDto<IEnumerable<DeviceTrafficDto>>> GetDevicesTrafficAsync();
+    Task<ResultDto<IEnumerable<DeviceTrafficDto>>> GetDevicesTrafficAsync(int subscriptionId);
     Task<ResultDto<IEnumerable<SubscriptionDeviceDto>>> GetSubscriptionDevicesAsync();
     Task<ResultDto<long>> GetDevicesCountAsync(bool isLastMonth = false);
 }

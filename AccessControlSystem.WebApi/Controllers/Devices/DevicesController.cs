@@ -27,9 +27,9 @@ public class DevicesController(IDeviceService service) :
     }
 
     [HttpGet("GetDevicesTraffic")]
-    public async Task<IActionResult> GetDevicesTraffic()
+    public async Task<IActionResult> GetDevicesTraffic(int subscriptionId)
     {
-        return Ok(await _service.GetDevicesTrafficAsync());
+        return Ok(await _service.GetDevicesTrafficAsync(subscriptionId));
     }
 
     [HttpGet("GetSubscriptionDevices")]
