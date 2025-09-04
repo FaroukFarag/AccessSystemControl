@@ -28,7 +28,7 @@ public class UnitService(
     IOrderingService<Unit> orderingService,
     IUserService userService,
     ICardService cardService) : BaseService<
-        UnitDto, UnitDto, UnitDto, UpdateUnitDto, Unit, int>(
+        CreateUnitDto, UnitDto, UnitDto, UpdateUnitDto, Unit, int>(
         repository, unitOfWork, mapper), IUnitService
 {
     private readonly IUnitRepository _repository = repository;
@@ -43,7 +43,7 @@ public class UnitService(
         ["recent"] = spec => spec.OrderByDescending = s => s.CreatedAt,
     };
 
-    public override async Task<ResultDto<UnitDto>> CreateAsync(UnitDto unitDto)
+    public override async Task<ResultDto<CreateUnitDto>> CreateAsync(CreateUnitDto unitDto)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Create Unit",

@@ -20,6 +20,10 @@ public class UnitProfile : Profile
             .ForMember(des => des.AccessGroups, opt => opt
                 .MapFrom(src => src.AccessGroupUnits.Select(agd => agd.AccessGroup)));
 
+        CreateMap<Unit, UpdateUnitDto>()
+            .ForMember(des => des.ImagePath, opt => opt
+                .MapFrom<BaseModelImageDtoUrlResolver>());
+
         CreateMap<UnitDto, Unit>()
             .ForMember(des => des.ImagePath, opt => opt
                 .MapFrom<BaseModelImageUrlResolver>())
@@ -32,9 +36,18 @@ public class UnitProfile : Profile
                 )
             );
 
-        CreateMap<Unit, UpdateUnitDto>()
+        CreateMap<CreateUnitDto, Unit>()
             .ForMember(des => des.ImagePath, opt => opt
-                .MapFrom<BaseModelImageDtoUrlResolver>());
+                .MapFrom<BaseModelImageUrlResolver>())
+            .ForMember(des => des.AccessGroupUnits, opt => opt
+                .MapFrom(src => src.AccessGroups!
+                    .Select(ag => new AccessGroupUnit
+                    {
+                        AccessGroupId = ag.Id,
+                        SubscriptionId = ag.SubscriptionId
+                    })
+                )
+            );
 
         CreateMap<UpdateUnitDto, Unit>()
             .ForMember(des => des.ImagePath, opt => opt

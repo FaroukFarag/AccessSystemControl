@@ -5,7 +5,7 @@ using AccessControlSystem.Domain.Models.Units;
 
 namespace AccessControlSystem.Application.Interfaces.Units;
 
-public interface IUnitService : IBaseService<UnitDto, UnitDto, UnitDto, UpdateUnitDto,
+public interface IUnitService : IBaseService<CreateUnitDto, UnitDto, UnitDto, UpdateUnitDto,
     Unit, int>
 {
     Task<ResultDto<UnitDto>> GetWithIncludesAsync(int id);

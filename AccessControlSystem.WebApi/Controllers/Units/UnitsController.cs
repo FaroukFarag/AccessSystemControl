@@ -9,7 +9,7 @@ namespace AccessControlSystem.WebApi.Controllers.Units;
 [Route("api/[controller]")]
 [ApiController]
 public class UnitsController(IUnitService service) : BaseController<IUnitService,
-    UnitDto, UnitDto, UnitDto, UpdateUnitDto, Unit, int>(service)
+    CreateUnitDto, UnitDto, UnitDto, UpdateUnitDto, Unit, int>(service)
 {
     private readonly IUnitService _service = service;
 

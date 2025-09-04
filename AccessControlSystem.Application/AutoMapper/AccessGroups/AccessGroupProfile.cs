@@ -19,7 +19,8 @@ public class AccessGroupProfile : Profile
                 .MapFrom(src => src.Devices!
                     .Select(agd => new AccessGroupDevice
                     {
-                        DeviceId = agd.Id
+                        DeviceId = agd.Id,
+                        SubscriptionId = agd.SubscriptionId
                     })
                 )
             );

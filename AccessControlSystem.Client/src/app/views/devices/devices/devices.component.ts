@@ -285,8 +285,6 @@ export class DevicesComponent implements OnInit {
     });
   }
 
-
-
   openGroupDEvicesPopup() {
     this.groupDevice_popupVisible = true;
     this.selectedDevices = [];
@@ -305,6 +303,10 @@ export class DevicesComponent implements OnInit {
   }
 
   submit() {
+    if (!this.groupName || !this.selectedSiteId || !this.selectedScheduleId || this.selectedDevices.length == 0) {
+      notify(this.languageService.translate('validation.fill_required_fields'), 'warning', 1500);
+      return;
+    }
     const payload = {
       name: this.groupName,
       subscriptionId: +localStorage.getItem('subscriptionId')!,
