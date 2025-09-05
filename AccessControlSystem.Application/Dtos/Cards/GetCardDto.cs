@@ -1,6 +1,8 @@
-﻿namespace AccessControlSystem.Application.Dtos.Cards;
+﻿using AccessControlSystem.Application.Dtos.Abstraction;
 
-public class GetUnitCardDto
+namespace AccessControlSystem.Application.Dtos.Cards;
+
+public class GetUnitCardDto : BaseModelDto<int>
 {
     public string Name { get; set; } = default!;
     public string Mobile { get; set; } = default!;

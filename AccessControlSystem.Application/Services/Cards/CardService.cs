@@ -77,6 +77,7 @@ public class CardService(
                         where airfobUser.Type == "normal"
                         select new GetUnitCardDto
                         {
+                            Id = card.Id,
                             Name = airfobUser.Name,
                             Mobile = airfobUser.Mobile,
                             Email = airfobUser.Email,
