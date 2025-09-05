@@ -14,6 +14,12 @@ public class CardsController(ICardService service) :
 {
     private readonly ICardService _service = service;
 
+    [HttpGet("GetUnitCards")]
+    public virtual async Task<IActionResult> EnableCard(int unitId)
+    {
+        return Ok(await _service.GetUnitCardsAsync(unitId));
+    }
+
     [HttpPut("EnableCard")]
     public virtual async Task<IActionResult> EnableCard(EnableCardDto enableCardDto)
     {

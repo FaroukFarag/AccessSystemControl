@@ -13,6 +13,7 @@ public interface IAirfobUserService
     Task<AirfobResponse<InviteUserResponse>> InviteUserAsync(InviteUserRequest request);
     Task<AirfobResponse<GetUsersResponse>> GetUsersAsync();
     Task<AirfobResponse<GetUserGroupsResponse>> GetUserGroupsAsync();
+    Task<AirfobResponse<SearchUsersResponse>> SearchUsersAsync(SearchUsersRequest request);
     Task<AirfobResponse<UpdateUserResponse>> UpdateUserAsync(int id, UpdateUserRequest request);
     Task<AirfobResponse<SuspendUsersResponse>> SuspendUsersAsync(SuspendUsersRequest request);
     Task<AirfobResponse<IEnumerable<ActivateUserResponse>>> ActivateUsersAsync(ActivateUsersRequest request);

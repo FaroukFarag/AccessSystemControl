@@ -45,6 +45,11 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
         return await _client.GetAsync<GetUserGroupsResponse>("v1/users/groups");
     }
 
+    public async Task<AirfobResponse<SearchUsersResponse>> SearchUsersAsync(SearchUsersRequest request)
+    {
+        return await _client.PostAsync<SearchUsersRequest, SearchUsersResponse>("v1/users/search", request);
+    }
+
     public async Task<AirfobResponse<UpdateUserResponse>> UpdateUserAsync(int id, UpdateUserRequest request)
 
     {
