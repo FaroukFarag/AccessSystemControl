@@ -16,9 +16,9 @@ public class UserAccessLevelResponse
     public int ScheduleId { get; set; }
 
     [JsonPropertyName("start_date")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [JsonPropertyName("end_date")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public object Properties { get; set; } = default!;
 }

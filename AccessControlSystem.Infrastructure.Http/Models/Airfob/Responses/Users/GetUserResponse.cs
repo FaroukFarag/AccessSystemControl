@@ -20,10 +20,10 @@ public class GetUserResponse
     public int? InviterUserId { get; set; }
 
     [JsonPropertyName("start_date")]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
     [JsonPropertyName("end_date")]
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public string Status { get; set; } = default!;
     public string Type { get; set; } = default!;
     public string Email { get; set; } = default!;
