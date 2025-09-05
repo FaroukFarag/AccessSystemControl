@@ -2,6 +2,7 @@
 using AccessControlSystem.Application.Dtos.Units;
 using AccessControlSystem.Application.Dtos.Users;
 using AccessControlSystem.Application.Interfaces.Shared;
+using AccessControlSystem.Application.Interfaces.Subscriptions;
 using AccessControlSystem.Application.Interfaces.Users;
 using AccessControlSystem.Application.Services.Abstraction;
 using AccessControlSystem.Common.Extensions;
@@ -28,6 +29,7 @@ public class UserService(
     SignInManager<User> signInManager,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
+    ISubscriptionService subscriptionService,
     ITokensService tokensService,
     IOrderingService<User> orderingService) : BaseService<
         UserDto, UserDto, UserDto, UserDto, User, int>(
@@ -38,8 +40,10 @@ public class UserService(
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
+    private readonly ISubscriptionService _subscriptionService = subscriptionService;
     private readonly ITokensService _tokensService = tokensService;
     private readonly IOrderingService<User> _orderingService = orderingService;
+
     private static readonly BaseSpecification<User> userWithUnitSpec = new()
     {
         IncludeChains =
@@ -75,6 +79,22 @@ public class UserService(
             operationName: "Create User",
             action: async () =>
             {
+                if (userDto.RoleId == (int)RoleNames.SubscriptionAdmin)
+                {
+                    var subscription = await _subscriptionService.GetAsync(userDto.SubscriptionId!.Value);
+                    var admins = await _userRepository.GetCountAsync(new BaseSpecification<User>
+                    {
+                        Criteria = u => u.UserRoles
+                            .Any(ur => ur.RoleId == userDto.RoleId),
+                    });
+
+                    if (subscription.Succeeded &&
+                        subscription.ResultData.AdminNumber == admins)
+                    {
+                        throw new InvalidOperationException("Number of Admins are Exceeded");
+                    }
+                }
+
                 var user = _mapper.Map<User>(userDto);
                 var createResult = await _userManager.CreateAsync(user, userDto.Password!);
 

@@ -24,6 +24,10 @@ public class SubscriptionDtoValidator : AbstractValidator<SubscriptionDto>
         RuleFor(s => s.DeviceNumber)
             .Must((dto, deviceNumber) => ValidateNumberAgainstSubscriptionType(dto.SubscriptionType, deviceNumber))
             .WithMessage("Device number is not valid for the selected subscription type");
+
+        RuleFor(s => s.StartDate)
+           .LessThanOrEqualTo(s => s.EndDate)
+           .WithMessage("Start date must be before or equal to end date.");
     }
 
     private bool ValidateNumberAgainstSubscriptionType(SubscriptionType type, int number)
