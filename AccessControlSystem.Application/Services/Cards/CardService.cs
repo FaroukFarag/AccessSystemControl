@@ -78,6 +78,9 @@ public class CardService(
                         select new GetUnitCardDto
                         {
                             Name = airfobUser.Name,
+                            Mobile = airfobUser.Mobile,
+                            Email = airfobUser.Email,
+                            UserId = airfobUser.Id,
                             Status = airfobUser.Status,
                         });
             });
