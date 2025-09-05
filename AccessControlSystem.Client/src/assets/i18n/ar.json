@@ -384,7 +384,9 @@
     "password_format": "كلمة المرور يجب أن تكون 8+ أحرف مع أحرف كبيرة وصغيرة وأرقام ورمز خاص",
     "confirm_password_required": "يرجى تأكيد كلمة المرور",
     "passwords_not_match": "كلمات المرور غير متطابقة",
-    "username_format": "اسم المستخدم يجب أن يكون 3-20 حرف مع أحرف وأرقام وشرطة سفلية فقط",
+    "username": "اسم المستخدم يجب أن يكون 3-20 حرف مع أحرف وأرقام ومسافات وشرطة سفلية فقط",
+    "username_format": "اسم المستخدم يجب أن يكون 3-20 حرف مع أحرف وأرقام ومسافات وشرطة سفلية فقط",
+    "phone": "رقم الهاتف يجب أن يكون 10-15 رقم فقط",
     "email_format": "يرجى إدخال عنوان بريد إلكتروني صحيح",
     "subscription_not_found": "الاشتراك غير موجود",
     "error_loading_subscription_details": "خطأ في تحميل تفاصيل الاشتراك",
@@ -400,6 +402,7 @@
       "unit_created": "تم إنشاء الوحدة بنجاح",
       "device_created": "تم إنشاء الجهاز بنجاح",
       "access_group_created": "تم إنشاء مجموعة الوصول بنجاح",
+      "owner_created": "تم إنشاء المالك بنجاح",
       "owner_assigned": "تم تعيين المالك بنجاح!",
       "device_group_created": "تم إنشاء مجموعة الأجهزة بنجاح"
     },
@@ -424,7 +427,12 @@
       "loading_owners": "خطأ في تحميل الملاك",
       "loading_access_groups": "فشل في تحميل مجموعات الوصول",
       "fetching_device_details": "خطأ في جلب تفاصيل الجهاز",
-      "fetching_subscription_details": "خطأ في جلب تفاصيل الاشتراك"
+      "fetching_subscription_details": "خطأ في جلب تفاصيل الاشتراك",
+      "loading_unit_cards": "خطأ في تحميل بطاقات الوحدة",
+      "enabling_card": "خطأ في تفعيل البطاقة",
+      "deleting_card": "خطأ في حذف البطاقة",
+      "pausing_card": "خطأ في إيقاف البطاقة مؤقتاً",
+      "regenerating_card": "خطأ في إعادة توليد البطاقة"
     }
   },
   "breadcrumb": {

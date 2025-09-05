@@ -25,13 +25,13 @@
   <dx-form [formData]="ownerData" [colCount]="1" [labelLocation]="'top'">
     <dxi-item dataField="userName" [editorOptions]="{ placeholder: 'owners.username' | translate }">
       <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
-      <dxi-validation-rule type="pattern" pattern="^[a-zA-Z0-9_]{3,20}$"
+      <dxi-validation-rule type="pattern" pattern="^[a-zA-Z0-9_\s]{3,20}$"
                            [message]="'validation.username' | translate">
       </dxi-validation-rule>
       <dxo-label [visible]="false"></dxo-label>
     </dxi-item>
 
-    <dxi-item dataField="Email" [editorOptions]="{ placeholder: 'owners.email' | translate }">
+    <dxi-item dataField="email" [editorOptions]="{ placeholder: 'owners.email' | translate }">
       <dxi-validation-rule type="required" [message]="'validation.required' | translate"></dxi-validation-rule>
       <dxi-validation-rule type="pattern" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                            [message]="'validation.email' | translate">

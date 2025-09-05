@@ -384,7 +384,9 @@
     "password_format": "Password must be 8+ chars with uppercase, lowercase, number, and special char",
     "confirm_password_required": "Please confirm your password",
     "passwords_not_match": "Passwords do not match",
-    "username_format": "Username must be 3-20 characters with letters, numbers, and underscores only",
+    "username": "Username must be 3-20 characters with letters, numbers, spaces, and underscores only",
+    "username_format": "Username must be 3-20 characters with letters, numbers, spaces, and underscores only",
+    "phone": "Phone number must be 10-15 digits only",
     "email_format": "Please enter a valid email address",
     "subscription_not_found": "Subscription not found",
     "error_loading_subscription_details": "Error loading subscription details",
@@ -400,6 +402,7 @@
       "unit_created": "Unit created successfully",
       "device_created": "Device created successfully",
       "access_group_created": "Access group created successfully",
+      "owner_created": "Owner created successfully",
       "owner_assigned": "Owner assigned successfully!",
       "device_group_created": "Device group created successfully"
     },
@@ -424,7 +427,12 @@
       "loading_owners": "Error loading owners",
       "loading_access_groups": "Failed to load access groups",
       "fetching_device_details": "Error fetching device details",
-      "fetching_subscription_details": "Error fetching subscription details"
+      "fetching_subscription_details": "Error fetching subscription details",
+      "loading_unit_cards": "Error loading unit cards",
+      "enabling_card": "Error enabling card",
+      "deleting_card": "Error deleting card",
+      "pausing_card": "Error pausing card",
+      "regenerating_card": "Error regenerating card"
     }
   },
   "breadcrumb": {

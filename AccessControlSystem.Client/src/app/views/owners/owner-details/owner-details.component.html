@@ -291,3 +291,58 @@
     </div>
   </div>
 </dx-popup>
+
+<!-- Card Settings Popup -->
+<dx-popup [width]="560" [height]="210" [showTitle]="true" 
+          [title]="cardSettingsPopupTitle" 
+          [dragEnabled]="true" [hideOnOutsideClick]="true" 
+          [showCloseButton]="true" [(visible)]="cardSettingsPopupVisible">
+  <div class="popup-content p-4">
+    <div class="text-center mb-4">
+      <p class="text-muted">{{ 'owners.choose_card_action' | translate }}</p>
+    </div>
+    <div class="d-flex justify-content-center gap-3">
+      <!-- Regenerate Button (Always shown) -->
+      <dx-button 
+        [text]="'owners.regenerate' | translate"
+        type="success" 
+        (onClick)="regenerateCard()">
+      </dx-button>
+      
+      <!-- Conditional buttons based on card status -->
+      <ng-container *ngIf="selectedCard?.status?.toLowerCase() === 'active'">
+        <!-- Enable Button (for active cards) -->
+        <dx-button 
+          [text]="'owners.enable' | translate"
+          type="default" 
+          (onClick)="enableCard()">
+        </dx-button>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedCard?.status?.toLowerCase() === 'activated'">
+        <!-- Pause Button (for activated cards) -->
+        <dx-button 
+          [text]="'owners.pause' | translate"
+          type="default" 
+          (onClick)="pauseCard()">
+        </dx-button>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedCard?.status?.toLowerCase() === 'disabled' || selectedCard?.status?.toLowerCase() === 'inactive'">
+        <!-- Enable Button (for disabled/inactive cards) -->
+        <dx-button 
+          [text]="'owners.enable' | translate"
+          type="default" 
+          (onClick)="enableCard()">
+        </dx-button>
+      </ng-container>
+      
+      <!-- Delete Button (Always shown) -->
+      <dx-button 
+        [text]="'owners.delete' | translate"
+        type="danger" 
+        (onClick)="deleteCard()">
+      </dx-button>
+    </div>
+  </div>
+</dx-popup>
