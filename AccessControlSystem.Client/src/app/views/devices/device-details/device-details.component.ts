@@ -41,8 +41,6 @@ export class DeviceDetailsComponent implements OnInit {
         this.getDeviceDetails(this.deviceId);
       }
     });
-
-    this.getDevicesTraffic();
   }
 
 
@@ -50,6 +48,7 @@ export class DeviceDetailsComponent implements OnInit {
     this.deviceService.getById('Devices/Get', id).subscribe({
       next: (data: any) => {
         this.deviceDetails = data.resultData;
+        this.getDevicesTraffic();
         console.log('Device Details:', this.deviceDetails);
       },
       error: (err) => {
@@ -61,7 +60,7 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   getDevicesTraffic() {
-    this.deviceService.getAll('Devices/GetDevicesTraffic').subscribe((data: any) => {
+    this.deviceService.getAll(`Devices/GetDevicesTraffic?subscriptionId=${this.deviceDetails.subscriptionId}`).subscribe((data: any) => {
       this.dataSource = data.resultData;
     })
   }

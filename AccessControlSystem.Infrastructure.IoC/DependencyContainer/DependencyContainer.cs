@@ -60,6 +60,7 @@ using AccessControlSystem.Domain.Interfaces.Repositories.Roles;
 using AccessControlSystem.Domain.Interfaces.Repositories.Subscriptions;
 using AccessControlSystem.Domain.Interfaces.Repositories.Units;
 using AccessControlSystem.Domain.Interfaces.Repositories.Users;
+using AccessControlSystem.Domain.Interfaces.Seeders;
 using AccessControlSystem.Domain.Interfaces.Services.Users;
 using AccessControlSystem.Domain.Interfaces.Specifications.Absraction;
 using AccessControlSystem.Domain.Interfaces.UnitOfWork;
@@ -79,6 +80,7 @@ using AccessControlSystem.Infrastructure.Data.Repositories.Subscriptions;
 using AccessControlSystem.Infrastructure.Data.Repositories.Units;
 using AccessControlSystem.Infrastructure.Data.Repositories.Users;
 using AccessControlSystem.Infrastructure.Data.Repositories.Visitors;
+using AccessControlSystem.Infrastructure.Data.Seeders;
 using AccessControlSystem.Infrastructure.Data.Shared.Helpers;
 using AccessControlSystem.Infrastructure.Data.UnitOfWork;
 using AccessControlSystem.Infrastructure.Http.Clients.Airfob;
@@ -274,6 +276,15 @@ public static class DependencyContainer
         dbContext.Database.Migrate();
     }
 
+    public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var services = scope.ServiceProvider;
+        var seeder = services.GetRequiredService<IDatabaseSeeder>();
+
+        await seeder.SeedAsync();
+    }
+
     public static void RegisterMiddlewares(this IServiceCollection services)
     {
         services.AddTransient<ExceptionHandlingMiddleware>();
@@ -304,6 +315,13 @@ public static class DependencyContainer
                 new MediaTypeWithQualityHeaderValue("application/json"));
         })
         .AddHttpMessageHandler<AirfobAuthHandler>();
+
+        return services;
+    }
+
+    public static IServiceCollection RegisterDatabaseSeeder(this IServiceCollection services)
+    {
+        services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
         return services;
     }

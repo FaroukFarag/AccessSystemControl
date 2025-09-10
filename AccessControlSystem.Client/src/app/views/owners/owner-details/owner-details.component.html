@@ -130,24 +130,24 @@
 <!--UNITS SECTION-->
 <!--All Units-->
 <div class="row" *ngIf="ownerDetails">
-  <h2>{{ 'units.title' | translate }} <span>({{ownerDetails.units?.length || 0}})</span></h2>
+  <h2>{{ 'units.title' | translate }}</h2>
 
-  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card" *ngFor="let unit of ownerDetails.units">
+  <div class="col-lg-2 col-md-5 col-sm-4 col-12 col-xs-12 subscription-card">
 
     <div class="card mb-2">
-      <img [src]="unit.imagePath" alt="Card Image" class="card-image" (click)="navigateToUnitDetailsPage(unit.id)">
-      <div class="village-name" (click)="navigateToUnitDetailsPage(unit.id)">{{ unit.name }}</div>
+      <img [src]="ownerDetails?.unit?.imagePath" alt="Card Image" class="card-image" (click)="navigateToUnitDetailsPage(ownerDetails?.unit?.id)">
+      <div class="village-name" (click)="navigateToUnitDetailsPage(ownerDetails?.unit?.id)">{{ ownerDetails?.unit?.name }}</div>
     </div>
 
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/subscription.svg" /></div>
       <div class="info"> {{ 'owners.subscription' | translate }}: </div>
-      <div class="info-value"> {{ unit.subscriptionId }}</div>
+      <div class="info-value"> {{ ownerDetails?.unit?.subscriptionId }}</div>
     </div>
     <div class="card-info">
       <div class="icon"><img src="/assets/icons/device.svg" /></div>
       <div class="info"> {{ 'owners.devices' | translate }}: </div>
-      <div class="info-value">{{ unit.number }}</div>
+      <div class="info-value">{{ ownerDetails?.unit?.number }}</div>
     </div>
 
   </div>

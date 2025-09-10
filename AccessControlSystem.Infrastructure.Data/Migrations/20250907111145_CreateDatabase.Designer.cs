@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessControlSystem.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AccessControlDbContext))]
-    [Migration("20250831105833_CreateDatabase")]
+    [Migration("20250907111145_CreateDatabase")]
     partial class CreateDatabase
     {
         /// <inheritdoc />
@@ -179,10 +179,7 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
             modelBuilder.Entity("AccessControlSystem.Domain.Models.Roles.Role", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -353,7 +350,7 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -636,8 +633,7 @@ namespace AccessControlSystem.Infrastructure.Data.Migrations
                     b.HasOne("AccessControlSystem.Domain.Models.Subscriptions.Subscription", "Subscription")
                         .WithMany("Users")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("AccessControlSystem.Domain.Models.Units.Unit", "Unit")
                         .WithMany("Owners")

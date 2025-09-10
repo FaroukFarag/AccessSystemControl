@@ -17,8 +17,7 @@ public class VisitorService(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IAirfobUserService airfobUserService) :
-    BaseService<
-        CreateVisitorDto, VisitorDto, VisitorDto, VisitorDto, Visitor, int>(
+    BaseService<CreateVisitorDto, VisitorDto, VisitorDto, VisitorDto, Visitor, int>(
         repository, unitOfWork, mapper),
     IVisitorService
 {
@@ -32,49 +31,14 @@ public class VisitorService(
             operationName: "Create Visitor",
             action: async () =>
             {
-                var visitors = await _repository.GetAllAsync(new BaseSpecification<Visitor>
+                var existingVisitor = await FindExistingVisitorAsync(entityDto);
+
+                if (existingVisitor != null)
                 {
-                    Criteria = v => v.Name == entityDto.Name &&
-                        v.Email == entityDto.Email && v.Mobile == entityDto.Mobile,
-                });
-
-                if (visitors.Any())
-                {
-                    var visitor = visitors.FirstOrDefault()!;
-                    var updateExternalResponse = await _airfobUserService
-                        .UpdateUserAsync(visitor.AirfobUserId, _mapper.Map<UpdateUserRequest>(entityDto));
-
-                    if (!updateExternalResponse.Succeeded)
-                        throw new InvalidOperationException("Failed to create visitor in external system");
-
-                    visitor.StartDate = entityDto.StartDate;
-                    visitor.EndDate = entityDto.EndDate;
-
-                    var updateResponse = await base.UpdateAsync(_mapper.Map<VisitorDto>(visitor));
-
-                    if (!updateResponse.Succeeded)
-                        throw new InvalidOperationException("Visitor creation failed");
-
-                    return entityDto;
+                    return await UpdateExistingVisitorAsync(existingVisitor, entityDto);
                 }
 
-                var response = await _airfobUserService.CreateUsersAsync(
-                    new CreateUsersRequest
-                    {
-                        Users = [_mapper.Map<CreateUserRequest>(entityDto)]
-                    }
-                );
-
-                if (!response.Succeeded || response.ResultData == null ||
-                    !response.ResultData.Any())
-                {
-                    throw new InvalidOperationException("Failed to create visitor in external system");
-                }
-
-                entityDto.AirfobUserId = response.ResultData.FirstOrDefault()!.Id;
-
-                return (await base.CreateAsync(entityDto)).ResultData
-                    ?? throw new InvalidOperationException("Visitor creation failed");
+                return await CreateNewVisitorAsync(entityDto);
             });
     }
 
@@ -84,49 +48,161 @@ public class VisitorService(
             operationName: "Suspend Visitor",
             action: async () =>
             {
-                var response = await _airfobUserService.SuspendUsersAsync(
-                    new SuspendUsersRequest
-                    {
-                        Ids = [suspendVisitDto.VisitorId]
-                    }
-                );
-
-                if (!response.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to suspend visitor in external system");
-                }
+                await SuspendVisitorInExternalSystemAsync(suspendVisitDto.VisitorId);
 
                 return true;
             });
     }
 
-    public async override Task<ResultDto<VisitorDto>> DeleteAsync(int id)
+    public override async Task<ResultDto<VisitorDto>> DeleteAsync(int id)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Delete Visitor",
             action: async () =>
             {
-                var getVisitorResult = await GetAsync(id);
+                var visitor = await GetVisitorByIdAsync(id);
 
-                if (!getVisitorResult.Succeeded)
-                    throw new InvalidOperationException("Visitor not found");
+                await DeleteVisitorFromExternalSystemAsync(visitor.AirfobUserId);
 
-                var visitorDto = getVisitorResult.ResultData;
-                var response = await _airfobUserService.DeleteUserAsync(visitorDto.AirfobUserId);
-
-                if (!response.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to pause visitor in external system");
-                }
-
-                var deleteResult = await base.DeleteAsync(id);
-
-                if (!deleteResult.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to delete visitor");
-                }
-
-                return deleteResult.ResultData;
+                return await DeleteVisitorFromDatabaseAsync(id);
             });
+    }
+
+    public override async Task<ResultDto<VisitorDto>> UpdateAsync(VisitorDto entityDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Update Visitor",
+            action: async () =>
+            {
+                await UpdateVisitorInExternalSystemAsync(entityDto.AirfobUserId,
+                    _mapper.Map<CreateVisitorDto>(entityDto));
+
+                return (await base.UpdateAsync(entityDto)).ResultData;
+            });
+    }
+
+    private async Task<Visitor?> FindExistingVisitorAsync(CreateVisitorDto entityDto)
+    {
+        var specification = new BaseSpecification<Visitor>
+        {
+            Criteria = v => v.Name == entityDto.Name &&
+                           v.Email == entityDto.Email &&
+                           v.Mobile == entityDto.Mobile
+        };
+
+        var visitors = await _repository.GetAllAsync(specification);
+
+        return visitors.FirstOrDefault();
+    }
+
+    private async Task<CreateVisitorDto> UpdateExistingVisitorAsync(Visitor existingVisitor, CreateVisitorDto entityDto)
+    {
+        await UpdateVisitorInExternalSystemAsync(existingVisitor.AirfobUserId, entityDto);
+
+        existingVisitor.StartDate = entityDto.StartDate;
+        existingVisitor.EndDate = entityDto.EndDate;
+
+        var updateResponse = await base.UpdateAsync(_mapper.Map<VisitorDto>(existingVisitor));
+
+        if (!updateResponse.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to update existing visitor");
+        }
+
+        return entityDto;
+    }
+
+    private async Task<CreateVisitorDto> CreateNewVisitorAsync(CreateVisitorDto entityDto)
+    {
+        var airfobUserId = await CreateVisitorInExternalSystemAsync(entityDto);
+
+        entityDto.AirfobUserId = airfobUserId;
+
+        var createResult = await base.CreateAsync(entityDto);
+
+        if (!createResult.Succeeded || createResult.ResultData == null)
+        {
+            await RollbackExternalVisitorCreationAsync(airfobUserId);
+
+            throw new InvalidOperationException("Failed to create visitor in database");
+        }
+
+        return createResult.ResultData;
+    }
+
+    private async Task<int> CreateVisitorInExternalSystemAsync(CreateVisitorDto entityDto)
+    {
+        var createUserRequest = _mapper.Map<CreateUserRequest>(entityDto);
+        var response = await _airfobUserService.CreateUsersAsync(
+            new CreateUsersRequest { Users = [createUserRequest] });
+
+        if (!response.Succeeded || response.ResultData == null || !response.ResultData.Any())
+        {
+            throw new InvalidOperationException("Failed to create visitor in external system");
+        }
+
+        return response.ResultData.First().Id;
+    }
+
+    private async Task UpdateVisitorInExternalSystemAsync(int airfobUserId, CreateVisitorDto entityDto)
+    {
+        var updateRequest = _mapper.Map<UpdateUserRequest>(entityDto);
+        var response = await _airfobUserService.UpdateUserAsync(airfobUserId, updateRequest);
+
+        if (!response.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to update visitor in external system");
+        }
+    }
+
+    private async Task SuspendVisitorInExternalSystemAsync(int visitorId)
+    {
+        var visitor = await GetVisitorByIdAsync(visitorId);
+        var response = await _airfobUserService.SuspendUsersAsync(
+            new SuspendUsersRequest { Ids = [visitor.AirfobUserId] });
+
+        if (!response.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to suspend visitor in external system");
+        }
+    }
+
+    private async Task DeleteVisitorFromExternalSystemAsync(int airfobUserId)
+    {
+        var response = await _airfobUserService.DeleteUserAsync(airfobUserId);
+
+        if (!response.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to delete visitor from external system");
+        }
+    }
+
+    private async Task RollbackExternalVisitorCreationAsync(int airfobUserId)
+    {
+        await _airfobUserService.DeleteUserAsync(airfobUserId);
+    }
+
+    private async Task<VisitorDto> GetVisitorByIdAsync(int id)
+    {
+        var getVisitorResult = await base.GetAsync(id);
+
+        if (!getVisitorResult.Succeeded || getVisitorResult.ResultData == null)
+        {
+            throw new InvalidOperationException($"Visitor with ID {id} not found");
+        }
+
+        return getVisitorResult.ResultData;
+    }
+
+    private async Task<VisitorDto> DeleteVisitorFromDatabaseAsync(int id)
+    {
+        var deleteResult = await base.DeleteAsync(id);
+
+        if (!deleteResult.Succeeded || deleteResult.ResultData == null)
+        {
+            throw new InvalidOperationException("Failed to delete visitor from database");
+        }
+
+        return deleteResult.ResultData;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AccessControlSystem.Infrastructure.Http.Models.Airfob.Responses.Users;
 
-public class SuspendUsersResponse
+public class SuspendUserResponse
 {
     [JsonPropertyName("suspend_token")]
     public string SuspendToken { get; set; } = default!;

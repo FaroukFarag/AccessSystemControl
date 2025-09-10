@@ -8,6 +8,7 @@ using AccessControlSystem.Domain.Models.Cards;
 using AccessControlSystem.Domain.Specifications.Absraction;
 using AccessControlSystem.Infrastructure.Http.Interfaces.Airfob.Users;
 using AccessControlSystem.Infrastructure.Http.Models.Airfob.Requests.Users;
+using AccessControlSystem.Infrastructure.Http.Models.Airfob.Responses.Users;
 using AutoMapper;
 
 namespace AccessControlSystem.Application.Services.Cards;
@@ -24,31 +25,17 @@ public class CardService(
     private readonly IMapper _mapper = mapper;
     private readonly IAirfobUserService _airfobUserService = airfobUserService;
 
-    public async override Task<ResultDto<CreateCardDto>> CreateAsync(CreateCardDto createEntityDto)
+    public override async Task<ResultDto<CreateCardDto>> CreateAsync(CreateCardDto createEntityDto)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Create Card",
             action: async () =>
             {
-                var response = await _airfobUserService.CreateUsersAsync(new CreateUsersRequest
-                {
-                    Users = [_mapper.Map<CreateUserRequest>(createEntityDto)]
-                });
+                var airfobUserId = await CreateCardInExternalSystemAsync(createEntityDto);
 
-                if (!response.Succeeded || response.ResultData == null ||
-                    !response.ResultData.Any())
-                {
-                    throw new InvalidOperationException("Failed to create card in external system");
-                }
+                createEntityDto.AirfobUserId = airfobUserId;
 
-                createEntityDto.AirfobUserId = response.ResultData.FirstOrDefault()!.Id;
-
-                var createResult = await base.CreateAsync(createEntityDto);
-
-                if (!createResult.Succeeded)
-                    throw new InvalidOperationException("Failed to create card in database");
-
-                return createResult.ResultData;
+                return await CreateCardInDatabaseAsync(createEntityDto);
             });
     }
 
@@ -58,32 +45,10 @@ public class CardService(
             operationName: "Get Unit Cards",
             action: async () =>
             {
-                var getCardsResult = await _airfobUserService.GetUsersAsync();
+                var externalCards = await GetCardsFromExternalSystemAsync();
+                var internalCards = await GetCardsFromDatabaseAsync(unitId);
 
-                if (!getCardsResult.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to get unit cards in external system");
-                }
-
-                var cardsResult = await _repository.GetAllAsync(new BaseSpecification<Card>
-                {
-                    Criteria = c => c.UnitId == unitId
-                });
-
-                return (from airfobUser in getCardsResult.ResultData.Users
-                        .Where(u => u.Type == "normal")
-                        join card in cardsResult
-                        on airfobUser.Id equals card.AirfobUserId
-                        where airfobUser.Type == "normal"
-                        select new GetUnitCardDto
-                        {
-                            Id = card.Id,
-                            Name = airfobUser.Name,
-                            Mobile = airfobUser.Mobile,
-                            Email = airfobUser.Email,
-                            UserId = airfobUser.Id,
-                            Status = airfobUser.Status,
-                        });
+                return MapUnitCards(externalCards, internalCards);
             });
     }
 
@@ -93,17 +58,7 @@ public class CardService(
             operationName: "Pause Card",
             action: async () =>
             {
-                var response = await _airfobUserService.SuspendUsersAsync(
-                    new SuspendUsersRequest
-                    {
-                        Ids = [pauseCardDto.CardId]
-                    }
-                );
-
-                if (!response.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to suspend card in external system");
-                }
+                await SuspendCardInExternalSystemAsync(pauseCardDto.UserId);
 
                 return true;
             });
@@ -115,16 +70,7 @@ public class CardService(
             operationName: "Enable Card",
             action: async () =>
             {
-                var response = await _airfobUserService.ActivateUsersAsync(new ActivateUsersRequest
-                {
-                    Users = [_mapper.Map<ActivateUserRequest>(enableCardDto)]
-                });
-
-                if (!response.Succeeded || response.ResultData == null ||
-                    !response.ResultData.Any())
-                {
-                    throw new InvalidOperationException("Failed to create card in external system");
-                }
+                await ActivateCardInExternalSystemAsync(enableCardDto);
 
                 return true;
             });
@@ -136,48 +82,176 @@ public class CardService(
             operationName: "Regenerate Card",
             action: async () =>
             {
-                var response = await _airfobUserService.ReactivateUsersAsync(new ReactivateUsersRequest
-                {
-                    Users = [_mapper.Map<ReactivateUserRequest>(regenerateCardDto)]
-                });
-
-                if (!response.Succeeded || response.ResultData == null ||
-                    !response.ResultData.Any())
-                {
-                    throw new InvalidOperationException("Failed to create card in external system");
-                }
+                await ReactivateCardInExternalSystemAsync(regenerateCardDto);
 
                 return true;
             });
     }
 
-    public async override Task<ResultDto<CardDto>> DeleteAsync(int id)
+    public override async Task<ResultDto<CardDto>> UpdateAsync(CardDto entityDto)
+    {
+        return await ExecuteServiceCallAsync(
+            operationName: "Update Card",
+            action: async () =>
+            {
+                return (await base.UpdateAsync(entityDto)).ResultData;
+            });
+    }
+
+    public override async Task<ResultDto<CardDto>> DeleteAsync(int id)
     {
         return await ExecuteServiceCallAsync(
             operationName: "Delete Card",
             action: async () =>
             {
-                var getCardResult = await GetAsync(id);
+                var card = await GetCardByIdAsync(id);
 
-                if (!getCardResult.Succeeded)
-                    throw new InvalidOperationException("Card not found");
+                await DeleteCardFromExternalSystemAsync(card.AirfobUserId);
 
-                var cardDto = getCardResult.ResultData;
-                var response = await _airfobUserService.DeleteUserAsync(cardDto.AirfobUserId);
-
-                if (!response.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to delete card in external system");
-                }
-
-                var deleteResult = await base.DeleteAsync(id);
-
-                if (!deleteResult.Succeeded)
-                {
-                    throw new InvalidOperationException("Failed to delete card");
-                }
-
-                return deleteResult.ResultData;
+                return await DeleteCardFromDatabaseAsync(id);
             });
+    }
+
+    private async Task<int> CreateCardInExternalSystemAsync(CreateCardDto createEntityDto)
+    {
+        var createUserRequest = _mapper.Map<CreateUserRequest>(createEntityDto);
+        var response = await _airfobUserService.CreateUsersAsync(new CreateUsersRequest
+        {
+            Users = [createUserRequest]
+        });
+
+        if (!response.Succeeded || response.ResultData == null || !response.ResultData.Any())
+        {
+            throw new InvalidOperationException("Failed to create card in external system");
+        }
+
+        return response.ResultData.First().Id;
+    }
+
+    private async Task<CreateCardDto> CreateCardInDatabaseAsync(CreateCardDto createEntityDto)
+    {
+        var createResult = await base.CreateAsync(createEntityDto);
+
+        if (!createResult.Succeeded || createResult.ResultData == null)
+        {
+            await TryRollbackExternalCardCreationAsync(createEntityDto.AirfobUserId);
+
+            throw new InvalidOperationException("Failed to create card in database");
+        }
+
+        return createResult.ResultData;
+    }
+
+    private async Task TryRollbackExternalCardCreationAsync(int airfobUserId)
+    {
+
+        await _airfobUserService.DeleteUserAsync(airfobUserId);
+    }
+
+    private async Task<GetUsersResponse> GetCardsFromExternalSystemAsync()
+    {
+        var getCardsResult = await _airfobUserService.GetUsersAsync();
+
+        if (!getCardsResult.Succeeded || getCardsResult.ResultData == null)
+        {
+            throw new InvalidOperationException("Failed to get cards from external system");
+        }
+
+        return getCardsResult.ResultData;
+    }
+
+    private async Task<IEnumerable<Card>> GetCardsFromDatabaseAsync(int unitId)
+    {
+        var specification = new BaseSpecification<Card>
+        {
+            Criteria = c => c.UnitId == unitId
+        };
+
+        return await _repository.GetAllAsync(specification);
+    }
+
+    private IEnumerable<GetUnitCardDto> MapUnitCards(GetUsersResponse externalCards, IEnumerable<Card> internalCards)
+    {
+        return from airfobUser in externalCards.Users.Where(u => u.Type == "normal")
+               join card in internalCards
+               on airfobUser.Id equals card.AirfobUserId
+               select new GetUnitCardDto
+               {
+                   Id = card.Id,
+                   Name = airfobUser.Name,
+                   Mobile = airfobUser.Mobile,
+                   Email = airfobUser.Email,
+                   UserId = airfobUser.Id,
+                   Status = airfobUser.Status,
+               };
+    }
+
+    private async Task SuspendCardInExternalSystemAsync(int userId)
+    {
+        var response = await _airfobUserService.SuspendUsersAsync(
+            new SuspendUsersRequest { Ids = [userId] });
+
+        if (!response.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to suspend card in external system");
+        }
+    }
+
+    private async Task ActivateCardInExternalSystemAsync(EnableCardDto enableCardDto)
+    {
+        var activateRequest = _mapper.Map<ActivateUserRequest>(enableCardDto);
+        var response = await _airfobUserService.ActivateUsersAsync(
+            new ActivateUsersRequest { Users = [activateRequest] });
+
+        if (!response.Succeeded || response.ResultData == null || !response.ResultData.Any())
+        {
+            throw new InvalidOperationException("Failed to activate card in external system");
+        }
+    }
+
+    private async Task ReactivateCardInExternalSystemAsync(RegenerateCardDto regenerateCardDto)
+    {
+        var reactivateRequest = _mapper.Map<ReactivateUserRequest>(regenerateCardDto);
+        var response = await _airfobUserService.ReactivateUsersAsync(
+            new ReactivateUsersRequest { Users = [reactivateRequest] });
+
+        if (!response.Succeeded || response.ResultData == null || !response.ResultData.Any())
+        {
+            throw new InvalidOperationException("Failed to regenerate card in external system");
+        }
+    }
+
+    private async Task<CardDto> GetCardByIdAsync(int id)
+    {
+        var getCardResult = await base.GetAsync(id);
+
+        if (!getCardResult.Succeeded || getCardResult.ResultData == null)
+        {
+            throw new InvalidOperationException($"Card with ID {id} not found");
+        }
+
+        return getCardResult.ResultData;
+    }
+
+    private async Task DeleteCardFromExternalSystemAsync(int airfobUserId)
+    {
+        var response = await _airfobUserService.DeleteUserAsync(airfobUserId);
+
+        if (!response.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to delete card from external system");
+        }
+    }
+
+    private async Task<CardDto> DeleteCardFromDatabaseAsync(int id)
+    {
+        var deleteResult = await base.DeleteAsync(id);
+
+        if (!deleteResult.Succeeded || deleteResult.ResultData == null)
+        {
+            throw new InvalidOperationException("Failed to delete card from database");
+        }
+
+        return deleteResult.ResultData;
     }
 }

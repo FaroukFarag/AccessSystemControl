@@ -147,7 +147,7 @@ export class OwnerDetailsComponent {
 
   loadUnitCards() {
     // Get the first unit ID from owner details, or use a default unit ID
-    const unitId = this.ownerDetails?.units?.[0]?.id || 12; // Default to 12 as mentioned in the API
+    const unitId = this.ownerDetails.unit.id || 12; // Default to 12 as mentioned in the API
     
     this.cardsService.getAll(`Cards/GetUnitCards?unitId=${unitId}`).subscribe({
       next: (data: any) => {
@@ -342,20 +342,12 @@ export class OwnerDetailsComponent {
 
   pauseCard() {
     if (this.selectedCard) {
-      // Try different possible ID field names for card ID
-      const cardId = this.selectedCard.id || 
-                    this.selectedCard.cardId || 
-                    this.selectedCard.card_id || 
-                    this.selectedCard.Id ||
-                    this.selectedCard.CardId;
-      
       // Get userId from the card data (from GetUnitCards response)
       const userId = this.selectedCard.userId || 
                     this.selectedCard.user_id || 
                     this.selectedCard.UserId ||
                     this.selectedCard.User_Id;
-      
-      console.log('Pausing card with cardId:', cardId);
+
       console.log('Using userId from card:', userId);
       console.log('Card properties:', Object.keys(this.selectedCard));
       

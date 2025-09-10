@@ -562,7 +562,7 @@ export class SubAdminDashboardComponent {
   }
 
   getDevicesTraffic() {
-    this.userService.getAll('Devices/GetDevicesTraffic').subscribe((data: any) => {
+    this.userService.getAll(`Devices/GetDevicesTraffic?subscriptionId=${+localStorage.getItem('subscriptionId')!}`).subscribe((data: any) => {
       this.dataSource = data.resultData;
     })
   }

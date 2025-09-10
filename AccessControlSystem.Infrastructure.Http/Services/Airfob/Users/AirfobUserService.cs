@@ -56,9 +56,9 @@ public class AirfobUserService(AirfobClient client) : IAirfobUserService
         return await _client.PatchAsync<UpdateUserRequest, UpdateUserResponse>($"v1/users/{id}", request);
     }
 
-    public async Task<AirfobResponse<SuspendUsersResponse>> SuspendUsersAsync(SuspendUsersRequest request)
+    public async Task<AirfobResponse<IEnumerable<SuspendUserResponse>>> SuspendUsersAsync(SuspendUsersRequest request)
     {
-        return await _client.PostAsync<SuspendUsersRequest, SuspendUsersResponse>("v1/users/suspend", request);
+        return await _client.PostAsync<SuspendUsersRequest, IEnumerable<SuspendUserResponse>>("v1/users/suspend", request);
     }
 
     public async Task<AirfobResponse<IEnumerable<ActivateUserResponse>>> ActivateUsersAsync(ActivateUsersRequest request)

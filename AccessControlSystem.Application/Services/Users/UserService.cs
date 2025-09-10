@@ -79,42 +79,11 @@ public class UserService(
             operationName: "Create User",
             action: async () =>
             {
-                if (userDto.RoleId == (int)RoleNames.SubscriptionAdmin)
-                {
-                    var subscription = await _subscriptionService.GetAsync(userDto.SubscriptionId!.Value);
-                    var admins = await _userRepository.GetCountAsync(new BaseSpecification<User>
-                    {
-                        Criteria = u => u.UserRoles
-                            .Any(ur => ur.RoleId == userDto.RoleId),
-                    });
+                await ValidateUserCreationAsync(userDto);
 
-                    if (subscription.Succeeded &&
-                        subscription.ResultData.AdminNumber == admins)
-                    {
-                        throw new InvalidOperationException("Number of Admins are Exceeded");
-                    }
-                }
+                var user = await CreateUserAsync(userDto);
 
-                var user = _mapper.Map<User>(userDto);
-                var createResult = await _userManager.CreateAsync(user, userDto.Password!);
-
-                if (!createResult.Succeeded)
-                {
-                    throw new InvalidOperationException(
-                        $"User creation failed: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
-                }
-
-                var role = await _roleManager.FindByIdAsync(userDto.RoleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var roleResult = await _userManager.AddToRoleAsync(user, role.Name!);
-
-                if (!roleResult.Succeeded)
-                {
-                    await _userManager.DeleteAsync(user);
-
-                    throw new InvalidOperationException(
-                        $"Role assignment failed: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
-                }
+                await AssignRoleToUserAsync(user, userDto.RoleId);
 
                 return userDto;
             });
@@ -151,12 +120,14 @@ public class UserService(
             operationName: "Get User by Role",
             action: async () =>
             {
-                var role = await _roleManager.FindByIdAsync(roleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
-                var user = usersInRole.FirstOrDefault(u => u.Id == userId)
-                    ?? throw new InvalidOperationException("User not found in specified role");
-                var userWithIncludes = await _userRepository.GetAsync(user.Id, userWithUnitSpec);
+                var userIds = await GetUserIdsByRoleAsync(roleId);
+
+                if (!userIds.Contains(userId))
+                {
+                    throw new InvalidOperationException("User not found in specified role");
+                }
+
+                var userWithIncludes = await _userRepository.GetAsync(userId, userWithUnitSpec);
 
                 return _mapper.Map<UserDto>(userWithIncludes);
             });
@@ -168,39 +139,24 @@ public class UserService(
             operationName: "Get All Users by Role",
             action: async () =>
             {
-                var role = await _roleManager.FindByIdAsync(roleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
-                var userIds = usersInRole.Select(u => u.Id).ToList();
-                var spec = new BaseSpecification<User>
-                {
-                    Criteria = u => userIds.Contains(u.Id)
-                };
+                var userIds = await GetUserIdsByRoleAsync(roleId);
+                var users = await GetUsersWithSpecificationAsync(CreateUsersByRoleSpec(userIds));
 
-                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
-
-                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+                return _mapper.Map<IEnumerable<UserDto>>(users);
             });
     }
 
     public async Task<ResultDto<IEnumerable<UserDto>>> GetAllSubscriptionUsersByRoleAsync(int subscriptionId, int roleId)
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Get All Users by Role",
+            operationName: "Get All Subscription Users by Role",
             action: async () =>
             {
-                var role = await _roleManager.FindByIdAsync(roleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
-                var userIds = usersInRole.Select(u => u.Id).ToList();
-                var spec = new BaseSpecification<User>
-                {
-                    Criteria = u => userIds.Contains(u.Id) && u.SubscriptionId == subscriptionId
-                };
+                var userIds = await GetUserIdsByRoleAsync(roleId);
+                var spec = CreateSubscriptionUsersByRoleSpec(userIds, subscriptionId);
+                var users = await GetUsersWithSpecificationAsync(spec);
 
-                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
-
-                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+                return _mapper.Map<IEnumerable<UserDto>>(users);
             });
     }
 
@@ -210,65 +166,46 @@ public class UserService(
             operationName: "Get Unassigned Owners",
             action: async () =>
             {
-                var roleId = (int)RoleNames.Owner;
-                var role = await _roleManager.FindByIdAsync(roleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
-                var userIds = usersInRole.Select(u => u.Id).ToList();
-                var spec = new BaseSpecification<User>
-                {
-                    Criteria = u => userIds.Contains(u.Id) && !u.UnitId.HasValue
-                };
+                var ownerRoleId = (int)RoleNames.Owner;
+                var userIds = await GetUserIdsByRoleAsync(ownerRoleId);
+                var spec = CreateUnassignedOwnersSpec(userIds);
+                var users = await GetUsersWithSpecificationAsync(spec);
 
-                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
-
-                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+                return _mapper.Map<IEnumerable<UserDto>>(users);
             });
     }
 
     public async Task<ResultDto<IEnumerable<UserDto>>> GetAllUsersByRoleAsync(int roleId, string orderBy = "Recent")
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Get All Users by Role",
+            operationName: "Get All Users by Role with Ordering",
             action: async () =>
             {
-                var role = await _roleManager.FindByIdAsync(roleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
-                var userIds = usersInRole.Select(u => u.Id).ToList();
-                var spec = new BaseSpecification<User>
-                {
-                    Criteria = u => userIds.Contains(u.Id)
-                };
+                var userIds = await GetUserIdsByRoleAsync(roleId);
+                var spec = CreateUsersByRoleSpec(userIds);
 
-                _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);
+                ApplyOrdering(spec, orderBy);
 
-                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+                var users = await GetUsersWithSpecificationAsync(spec);
 
-                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+                return _mapper.Map<IEnumerable<UserDto>>(users);
             });
     }
 
     public async Task<ResultDto<IEnumerable<UserDto>>> GetAllSubscriptionUsersByRoleAsync(int subscriptionId, int roleId, string orderBy = "Recent")
     {
         return await ExecuteServiceCallAsync(
-            operationName: "Get All Users by Role",
+            operationName: "Get All Subscription Users by Role with Ordering",
             action: async () =>
             {
-                var role = await _roleManager.FindByIdAsync(roleId.ToString())
-                    ?? throw new InvalidOperationException("Role not found");
-                var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
-                var userIds = usersInRole.Select(u => u.Id).ToList();
-                var spec = new BaseSpecification<User>
-                {
-                    Criteria = u => userIds.Contains(u.Id) && u.SubscriptionId == subscriptionId
-                };
+                var userIds = await GetUserIdsByRoleAsync(roleId);
+                var spec = CreateSubscriptionUsersByRoleSpec(userIds, subscriptionId);
 
-                _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);
+                ApplyOrdering(spec, orderBy);
 
-                var usersWithIncludes = await _userRepository.GetAllAsync(spec);
+                var users = await GetUsersWithSpecificationAsync(spec);
 
-                return _mapper.Map<IEnumerable<UserDto>>(usersWithIncludes);
+                return _mapper.Map<IEnumerable<UserDto>>(users);
             });
     }
 
@@ -373,6 +310,128 @@ public class UserService(
 
                 return true;
             });
+    }
+
+    private async Task ValidateUserCreationAsync(UserDto userDto)
+    {
+        if (userDto.RoleId == (int)RoleNames.SubscriptionAdmin)
+        {
+            await ValidateSubscriptionAdminLimitAsync(userDto);
+        }
+    }
+
+    private async Task ValidateSubscriptionAdminLimitAsync(UserDto userDto)
+    {
+        if (!userDto.SubscriptionId.HasValue)
+        {
+            throw new InvalidOperationException("Subscription ID is required for SubscriptionAdmin role");
+        }
+
+        var subscription = await _subscriptionService.GetAsync(userDto.SubscriptionId.Value);
+
+        if (!subscription.Succeeded)
+        {
+            throw new InvalidOperationException("Failed to retrieve subscription information");
+        }
+
+        var adminCount = await GetSubscriptionAdminCountAsync(userDto.RoleId);
+
+        if (subscription.ResultData.AdminNumber <= adminCount)
+        {
+            throw new InvalidOperationException("Number of Admins are Exceeded");
+        }
+    }
+
+    private async Task<long> GetSubscriptionAdminCountAsync(int roleId)
+    {
+        var adminCountSpec = new BaseSpecification<User>
+        {
+            Criteria = u => u.UserRoles.Any(ur => ur.RoleId == roleId)
+        };
+
+        return await _userRepository.GetCountAsync(adminCountSpec);
+    }
+
+    private async Task<User> CreateUserAsync(UserDto userDto)
+    {
+        var user = _mapper.Map<User>(userDto);
+        var createResult = await _userManager.CreateAsync(user, userDto.Password!);
+
+        if (!createResult.Succeeded)
+        {
+            var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
+            throw new InvalidOperationException($"User creation failed: {errors}");
+        }
+
+        return user;
+    }
+
+    private async Task AssignRoleToUserAsync(User user, int roleId)
+    {
+        var role = await GetRoleByIdAsync(roleId);
+        var roleResult = await _userManager.AddToRoleAsync(user, role.Name!);
+
+        if (!roleResult.Succeeded)
+        {
+            await CleanupFailedUserCreationAsync(user);
+
+            var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+
+            throw new InvalidOperationException($"Role assignment failed: {errors}");
+        }
+    }
+
+    private async Task<Role> GetRoleByIdAsync(int roleId)
+    {
+        var role = await _roleManager.FindByIdAsync(roleId.ToString());
+
+        return role ?? throw new InvalidOperationException($"Role with ID {roleId} not found");
+    }
+
+    private async Task CleanupFailedUserCreationAsync(User user)
+    {
+        await _userManager.DeleteAsync(user);
+    }
+
+    private async Task<List<int>> GetUserIdsByRoleAsync(int roleId)
+    {
+        var role = await GetRoleByIdAsync(roleId);
+        var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name!);
+        return usersInRole.Select(u => u.Id).ToList();
+    }
+
+    private async Task<IEnumerable<User>> GetUsersWithSpecificationAsync(BaseSpecification<User> spec)
+    {
+        return await _userRepository.GetAllAsync(spec);
+    }
+
+    private static BaseSpecification<User> CreateUsersByRoleSpec(IEnumerable<int> userIds)
+    {
+        return new BaseSpecification<User>
+        {
+            Criteria = u => userIds.Contains(u.Id)
+        };
+    }
+
+    private static BaseSpecification<User> CreateSubscriptionUsersByRoleSpec(IEnumerable<int> userIds, int subscriptionId)
+    {
+        return new BaseSpecification<User>
+        {
+            Criteria = u => userIds.Contains(u.Id) && u.SubscriptionId == subscriptionId
+        };
+    }
+
+    private static BaseSpecification<User> CreateUnassignedOwnersSpec(IEnumerable<int> userIds)
+    {
+        return new BaseSpecification<User>
+        {
+            Criteria = u => userIds.Contains(u.Id) && !u.UnitId.HasValue
+        };
+    }
+
+    private void ApplyOrdering(BaseSpecification<User> spec, string orderBy)
+    {
+        _orderingService.ApplyOrdering(spec, OrderingRules, orderBy);
     }
 
     private async Task<User?> AuthenticateUserAsync(LoginDto model)

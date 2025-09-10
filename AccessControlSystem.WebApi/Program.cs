@@ -62,6 +62,7 @@ builder.Services.RegisterJwtSettings(builder.Configuration);
 builder.Services.RegisterCORS(builder.Configuration);
 builder.Services.RegisterMiddlewares();
 builder.Services.RegisterHttpServices(builder.Configuration);
+builder.Services.RegisterDatabaseSeeder();
 
 var app = builder.Build();
 
@@ -88,6 +89,8 @@ app.UseSwaggerUI();
 //app.UseHttpsRedirection();
 
 app.Services.ApplyMigrations();
+
+await app.Services.SeedDatabaseAsync();
 
 app.UseCors(AppSettings.AllowedOrigins);
 

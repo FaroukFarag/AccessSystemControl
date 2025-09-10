@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AccessControlSystem.Domain.Models.Users;
 
-public class User : IdentityUser<int>, ISubscriptionEntity, IAuditable
+public class User : IdentityUser<int>, IAuditable
 {
-    public int SubscriptionId { get; set; }
+    public int? SubscriptionId { get; set; }
     public int? UnitId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    public Subscription Subscription { get; set; } = default!;
+    public Subscription? Subscription { get; set; } = default!;
     public virtual Unit? Unit { get; set; }
     public virtual ICollection<IdentityUserRole<int>> UserRoles { get; set; } = default!;
     public virtual ICollection<AccessGroup>? AccessGroups { get; set; }
